@@ -1,0 +1,70 @@
+.Footer {
+    background-color: #fff;
+    padding: 70px 50px;
+}
+.Inner {
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    display: flex;
+}
+.FooterLeft {
+    flex-direction: column;
+    flex-basis: 40%;
+}
+.Logo {
+    width: 40%;
+    margin-bottom: 20px;
+    color: #333;
+}
+.Column {
+    flex-basis: 20%;
+}
+.Title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+.Link {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    color: #434343;
+    font-size: 14px;
+    text-decoration: none;
+}
+.Link:hover {
+    text-decoration: underline;
+}
+
+.Bottom {
+    border-top: 1px solid #ddd;
+    margin-top: 25px;
+    padding: 25px 0px;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+}
+.BottomLink {
+    font-weight: 700;
+    color: #777;
+}
+.Inline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    color: #666;
+    text-decoration: none;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 992px) {
+    .Footer {
+        padding: 40px 20px;
+    }
+    .Inner {
+        flex-direction: column;
+    }
+}

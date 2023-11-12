@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+}
+div {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+section {
+  padding: 50px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 20px;
+}
+
+.content {
+  position: absolute;
+  top: 80px;left: 0px;right: 0px;
+  z-index: 1;
+}
+.content.user {
+  left: 20%;right: 20px;
+  padding: 20px;
+}
+.content.organizer {
+  left: 25%;right: 0px;
+  top: 75px;
+  padding: 20px;
+}
+.inline {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+.title {
+  font-weight: 600;
+}
+.basic-multi-select{
+  margin-bottom: 16px;
+}
+.css-13cymwt-control{
+  flex-direction: row;
+}
+.css-1hb7zxy-IndicatorsContainer{
+  flex-direction: row;
+}
+.css-t3ipsp-control{
+  flex-direction: row;
+  box-shadow:0 0 0 1px #fecadf !important;
+}
+.css-t3ipsp-control:hover{
+  border-color: #fecadf !important;
+}
+.css-3w2yfm-ValueContainer{
+  flex-direction: row;
+}
+.css-1p3m7a8-multiValue{
+  flex-direction: row;
+}
+.css-12a83d4-MultiValueRemove{
+  margin: auto;
+}
+/* Select:invalid{
+  border-color: red !important;
+}
+input:invalid{
+  border-color: red !important;
+}
+.has-error > .basic-multi-select > div:first-child {
+  border-color: #a94442;
+} */
+
+
+@media (max-width: 992px) {
+  section {
+    padding: 20px;
+  }
+  .content {
+    top: 90px;
+    padding-bottom: 100px !important;
+  }
+  .content.user {
+    left: 20px;right: 20px;
+    padding: 0px;
+  }
+  .content.organizer {
+    top: 130px;left: 0px;right: 0px;
+    z-index: 2;
+  }
+}

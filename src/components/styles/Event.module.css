@@ -1,0 +1,89 @@
+.Event {
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    /* flex-basis: 31.8%;
+    max-width: 31.8%; */
+    width: 31.4%;
+    max-width: 31.8%;
+    flex-grow: 1;
+    white-space: wrap;
+}
+.Cover {
+    aspect-ratio: 1.94/1;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+.Title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #444;
+    max-height: 37px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 290px;
+    display: inline-block;
+    white-space: nowrap;
+}
+.Price{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    font-family: 'Inter';
+}
+.Price .PriceText{
+    font-size: 12px;
+    color: #666;
+    margin-right: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.Price .PriceNumber{
+    font-size: 16px;
+    font-weight: 500;
+    color: #CA0C64;
+}
+.Organizer {
+    flex-direction: row;
+    gap: 5px;
+    font-size: 14px;
+    color: #666;
+    /* margin-top: 10px; */
+    padding: 10px;
+}
+.Organizer div{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.Organizer b{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.Organizer img{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    /* margin-left: auto; */
+}
+.Info {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+}
+.HrSeparator{
+    width: 100%;
+    margin-top: 25px;
+}
+
+@media (max-width: 744px) {
+    .Event {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+}

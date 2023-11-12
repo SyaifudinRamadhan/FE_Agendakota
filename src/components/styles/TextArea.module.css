@@ -1,0 +1,29 @@
+.TextArea{
+    border-radius: 8px;
+    background: var(--Background, #FFF);
+    background: var(--Background, color(display-p3 1 1 1));
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 0px 4px 0px color(display-p3 0 0 0 / 0.10);
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #eae7e7;
+    height: 60px;
+    font-family: 'Inter';
+}
+
+.TextArea:focus{
+    outline-color: #fecadf;
+    box-shadow: #f59abf !important;
+    border: 1px solid #FAE1EB !important;
+}
+
+textarea{
+    font-family: 'Inter';
+}
+
+textarea:focus {
+    outline-color: #fecadf;
+    box-shadow: #f59abf !important;
+    border: 1px solid #FAE1EB !important;
+    font-family: 'Inter';
+}

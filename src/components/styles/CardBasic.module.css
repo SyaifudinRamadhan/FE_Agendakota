@@ -1,0 +1,50 @@
+.Card {
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    /* flex-basis: 31.8%;
+    max-width: 31.8%; */
+    width: 31.4%;
+    max-width: 31.8%;
+    flex-grow: 1;
+    white-space: wrap;
+}
+.Cover {
+    aspect-ratio: 1.94/1;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+.Title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #444;
+    max-height: 37px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 290px;
+    display: inline-block;
+    white-space: nowrap;
+}
+.Info {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #666;
+}
+.HrSeparator{
+    width: 100%;
+    margin-top: 25px;
+}
+
+@media (max-width: 744px) {
+    .Card {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+}

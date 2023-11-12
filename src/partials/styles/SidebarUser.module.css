@@ -1,0 +1,236 @@
+.Sidebar {
+    background-color: #fff;
+    position: fixed;
+    top: 0px;left: 0px;bottom: 0px;
+    width: 20%;
+    padding: 20px;
+    z-index: 5;
+}
+.Logo {
+    height: 30px;
+    width: min-content;
+}
+.MenuArea {
+    margin-top: 40px;
+}
+.MenuItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+    text-decoration: none;
+    height: 30px;
+    padding: 10px 15px;
+    margin-bottom: 0px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.MenuActive {
+    background-color: #f0f0f0;
+    font-weight: 700;
+}
+
+.OrganizerArea {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+.OrganizerItem {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+    color: #212121;
+}
+.OrganizerLogo {
+    height: 40px;
+    aspect-ratio: 1;
+    background-color: #ddd;
+    border-radius: 8px;
+    background-size: cover;
+}
+.OrganizerName {
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    flex-grow: 1;
+}
+.OrganizerLabel {
+    padding: 5px 12px;
+    border: 1px solid #CA0C64;
+    border-radius: 99px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #CA0C64;
+}
+.OrganizerCreate {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 40px;
+    font-size: 12px;
+}
+
+.OrganizerCreateBottom{
+    width: 100%;
+    width: 100%;
+    height: 41px;
+    padding: 12px;
+    border-radius: 10px;
+    gap: 12px;
+    text-align: center;
+    color: #fff;
+    background: rgb(202, 12, 100) !important;
+    border: none;
+}
+
+.SidebarMobile {
+    display: none;
+}
+.OrganizerAreaMobile {
+    display: none;
+}
+.Overlay {
+    position: fixed;
+    top: 0px;left: 0px;right: 0px;bottom: 0px;
+    background-color: #000000aa;
+    z-index: 4;
+    display: none;
+}
+.Title {
+    font-weight: 600;
+    color: #212121;
+    font-size: 24px;
+}
+
+.ButtonCreate {
+    width: 80%; 
+    display: flex;
+    padding: 10px 15px;
+}
+
+.ButtonCreate svg{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+}
+
+.ButtonCreate div{
+    margin-top: -1.5px;
+}
+
+.OrganizerBlank{
+    width: 100%;
+    display: flex;
+    height: 143px;
+    padding: 12px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-radius: 10px;
+    background: linear-gradient(53.08deg, #DD0064 34.56%, #7CC9EF 88.89%);
+}
+
+.OrganizerBlankIcon{
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    margin-bottom: 12px;
+}
+
+.OrganizerBlankText{
+    width: 100%;
+    height: 34px;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.OrganizerBlank button{
+    width: 100%;
+    height: 41px;
+    padding: 12px;
+    border-radius: 10px;
+    gap: 12px;
+    text-align: center;
+    color: #fff;
+    background: #FFFFFF3B !important;
+    border: none;
+}
+
+.FontLabel{
+    color: var(--Title, #1B1B1B);
+    color: var(--Title, color(display-p3 0.1041 0.1041 0.1041));
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 992px) {
+    .SidebarMobile {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        position: fixed;
+        bottom: 0px;left: 0px;right: 0px;
+        height: 70px;
+        align-items: center;
+        border-top: 1px solid #ddd;
+        padding: 0px 20px;
+        z-index: 5;
+        background-color: #fff;
+    }
+    .SidebarMobile .MenuArea {
+        margin: 0px;
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+        gap: 10px;
+    }
+    .SidebarMobile .MenuItem {
+        padding: 5px 10px;
+    }
+    .SidebarMobile .OrganizerLogo {
+        border: 1px solid #eee;
+    }
+
+    .OrganizerAreaMobile {
+        position: fixed;
+        bottom: 0px;left: 0px;right: 0px;
+        padding: 30px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        transition: 0.4s;
+        z-index: 5;
+    }
+    .Title {
+        font-size: 18px;
+    }
+    .OrganizerAreaClose {
+        background-color: #eee;
+        height: 32px;
+        aspect-ratio: 1;
+        border-radius: 99px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #777;
+    }
+}

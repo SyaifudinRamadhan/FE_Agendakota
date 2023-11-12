@@ -1,0 +1,16 @@
+.TitleArea,.Inline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.Title {
+    display: flex;
+    flex-grow: 1;
+    margin: 0;
+    font-size: 24px;
+}
+.Inline {
+    align-items: flex-start;
+}

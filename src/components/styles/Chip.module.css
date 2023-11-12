@@ -1,0 +1,21 @@
+.Container {    
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    /* flex-wrap: wrap; */
+    margin-top: 20px;
+    overflow: scroll;
+}
+.Item {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+.ItemActive {
+    background-color: #2ecc7130;
+    border-color: #2ecc71;
+}
+.Container::-webkit-scrollbar{
+    display: none;
+}

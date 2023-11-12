@@ -1,0 +1,25 @@
+.Alert{
+    border-radius: 8px;
+    font-size: 10pt;
+    font-family: 'Inter';
+    width: 100%;
+    padding: 10px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.InnerAlert{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.InnerAlert div{
+    text-wrap: wrap;
+}
+
+.InnerAlert svg{
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
