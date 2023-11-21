@@ -1,0 +1,65 @@
+.InputImage{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+.InputForm{
+    display: none;
+}
+.InputArea{
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    border: 1px dashed #CA0C64;
+    display: flex;
+    flex-direction: column;
+    color: #CA0C64;
+    text-align: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+    background-color: #fef6f9;
+    cursor: pointer;
+}
+.InputArea:hover{
+    background-color: #fcd8e6;
+}
+.Hidden{
+    display: none !important;
+}
+.InputIcon{
+    width: 34px;
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+.InputText{
+    width: 100%;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+.InputPreview{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 20px;
+}
+.DeleteImage{
+    width: unset;
+    background-color: white !important;
+    color: red !important;
+    border-color: red !important;
+}
+.DeleteImage:hover{
+    background-color: red !important;
+    color: white !important;
+}
+.PreviewImage{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 8px;
+}

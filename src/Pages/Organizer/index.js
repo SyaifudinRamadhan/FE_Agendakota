@@ -5,7 +5,6 @@ import OrganizerBilling from "./Billing";
 import OrganizerLegality from "./Legality";
 import OrganizerActivities from "./Activities";
 import OrganizerTeam from "./Team";
-import OrganizerBank from "./Bank";
 import OrganizerSettings from "./Settings";
 
 const OrganizerRouter = () => {
@@ -16,7 +15,6 @@ const OrganizerRouter = () => {
             <Route path="/organizer/legality" Component={OrganizerLegality} />
             <Route path="/organizer/activities" Component={OrganizerActivities} />
             <Route path="/organizer/team" Component={OrganizerTeam} />
-            <Route path="/organizer/bank-account" Component={OrganizerBank} />
             <Route path="/organizer/settings" Component={OrganizerSettings} />
         </Routes>
     )

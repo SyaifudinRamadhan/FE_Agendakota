@@ -616,7 +616,7 @@ const Home = () => {
                                 <div className={styles.CustomSpotSubtitle}>
                                     {spotlightEvent.spotlight.sub_title}
                                 </div>
-                                <Button title={<div>Create Event</div>} icon={<BiPlusCircle />} classes={[styles.ButtonBasic]}/>
+                                <Button title={"Create Event"} icon={<BiPlusCircle />} classes={[styles.ButtonBasic]}/>
                             </div>
                             <div className={styles.CustomSpotEvents}>
                                 <Slider 
@@ -709,11 +709,7 @@ const Home = () => {
                             </div>
                             <div className={styles.JumboDescription}>
                             Agenda kota juga merupakan platform dimana kamu bisa membuat eventmu mulai dari gratis hingga berbayar loh! </div>
-                            <Button title={<div>Create Event</div>} icon={<BiPlusCircle />} classes={[styles.ButtonBasic]}/>
-
-                            <div className={`${styles.JumboChip} ${styles.JumboOnline}`}>Online</div>
-                            <div className={`${styles.JumboChip} ${styles.JumboOnsite}`}>Onsite</div>
-                            <div className={`${styles.JumboChip} ${styles.JumboHybrid}`}>Hybrid</div>
+                            <Button title={"Create Event"} icon={<BiPlusCircle />} classes={[styles.ButtonBasic]}/>
                         </div>
                         <div className={styles.JumboSecR}>
                             <img src="/images/FrontCover1.png" alt="" srcset="" />
@@ -733,7 +729,7 @@ const Home = () => {
                             <div className={styles.JumboDescription}>
                                 Agenda kota juga merupakan platform dimana kamu bisa membuat eventmu mulai dari gratis hingga berbayar loh!
                             </div>
-                            <Button title={<div>Create Event</div>} icon={<BiPlusCircle />} classes={[styles.ButtonBasic]} style={{width: "150px"}}/>
+                            <Button title={"Create Event"} icon={<BiPlusCircle />} classes={[styles.ButtonBasic]} style={{width: "150px"}}/>
                         </div>
                     </div>
                 </section>

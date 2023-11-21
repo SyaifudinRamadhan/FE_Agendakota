@@ -4,7 +4,7 @@
     top: 0px;left: 0px;bottom: 0px;
     width: 20%;
     padding: 20px;
-    z-index: 5;
+    /* z-index: 5; */
 }
 .Logo {
     height: 30px;
@@ -25,6 +25,9 @@
     margin-bottom: 0px;
     border-radius: 8px;
     font-size: 14px;
+}
+.MenuItem div{
+    text-align: left;
 }
 .MenuActive {
     background-color: #f0f0f0;
@@ -51,6 +54,8 @@
     background-color: #ddd;
     border-radius: 8px;
     background-size: cover;
+    object-fit: cover;
+    object-position: center;
 }
 .OrganizerName {
     font-size: 14px;

@@ -1,0 +1,19 @@
+.BoxIconProfile{
+    display: flex;
+    width: 100%;
+    margin-bottom: 16px;
+}
+.IconProfile{
+    width: 80px;
+    height: 80px;
+    margin-bottom: -50px;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translate(0px, -40px);
+    border: 1px solid rgb(246, 67, 144);
+}
+.BoxButtonNav{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}

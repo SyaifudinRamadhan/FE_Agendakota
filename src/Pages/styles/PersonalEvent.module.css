@@ -14,3 +14,69 @@
 .Inline {
     align-items: flex-start;
 }
+.BlankData{
+    display: flex;
+    width: 100%;
+    text-align: center;
+}
+.IconBlank{
+    width: 206px;
+    height: 206px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 9px;
+}
+.IconBlank2{
+    transform: rotate(-15deg);
+}
+.BlankTitle{
+    color: #2C2C2C;
+    font-family: 'Inter';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 16px;
+}
+.BlankDesc{
+    color: #8B8B8B;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 66px;
+}
+.PromoArea{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 12px;
+    gap: 20px;
+}
+.CardPromo{
+    width: 50%;
+    max-width: 50%;
+}
+.CardPromo .Title{
+    max-height: unset;
+    overflow: unset;
+    max-width: 100%;
+    display: inline-block;
+    white-space: wrap;
+}
+.IconPromo{
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background: #E5E5E5;
+}
+@media (max-width: 550px){
+    .PromoArea{
+        flex-direction: column;
+    }
+    .CardPromo{
+        width: 100%;
+        max-width: 100%;
+    }
+}

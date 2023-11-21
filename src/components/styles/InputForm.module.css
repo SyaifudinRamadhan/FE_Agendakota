@@ -9,7 +9,7 @@
     border: 1px solid #eae7e7;
 }
 
-.InputForm[type=text]:focus{
+.InputForm[type=text]:focus, .InputForm[type=number]:focus{
     outline-color: #fecadf;
     box-shadow: #f59abf !important;
     border: 1px solid #FAE1EB !important;

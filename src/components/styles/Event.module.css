@@ -16,6 +16,7 @@
     height: 150px;
     border-radius: 8px;
     object-fit: cover;
+    cursor: pointer;
 }
 .Title {
     font-size: 15px;
@@ -27,6 +28,10 @@
     max-width: 290px;
     display: inline-block;
     white-space: nowrap;
+    cursor: pointer;
+    /* margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto; */
 }
 .Price{
     margin-top: 10px;
@@ -79,6 +84,72 @@
 .HrSeparator{
     width: 100%;
     margin-top: 25px;
+}
+.Point{
+    width: 10.147px;
+    height: 10.147px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    margin-right: 3px;
+}
+.PointActive{
+    background-color: #F20063;
+    box-shadow: 0px 0px 4px 4px rgba(221, 0, 100, 0.20);
+    stroke-width: 4px;
+}
+.PointDisabled{
+    background-color: #4b4b4b;
+    box-shadow: 0px 0px 4px 4px #b3b3b3;
+    stroke-width: 4px;
+}
+.PointEnabled{
+    background-color: green;
+    box-shadow: 0px 0px 4px 4px rgb(184, 254, 184);
+    stroke-width: 4px;
+}
+.DeleteSpace{
+    margin-left: auto;
+}
+.PopupNotify{
+    display: flex;
+    text-align: center;
+    font-size: 16px;
+}
+.PopupControl{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.ControlLeft{
+    margin-left: auto;
+}
+.ControlRight{
+    margin-right: auto;
+}
+.IconPopUp{
+    width: 100%;
+    height: 100px;
+}
+.IconPopUp svg{
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+hr{
+    border: 1px solid #eaeaea;
+}
+.DraftText{
+    color: #CA0C64;
+    font-weight: 600;
+}
+.DraftDesc{
+    padding-left: 5px;
+    border-left: 1px solid #000;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media (max-width: 744px) {

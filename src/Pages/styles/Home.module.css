@@ -1,5 +1,5 @@
 .JumboTop {
-    background: url(/images/JumboBackground.png) no-repeat center center;
+    background: url('../../../public/images/JumboBackground.png') no-repeat center center;
     background-size: cover;
     width: 100%;
     aspect-ratio: 5/2;
@@ -126,7 +126,8 @@
 }
 
 .ButtonBasic div{
-    margin-top: -2.5px;
+    /* margin-top: -2.5px; */
+    margin: 0;
 }
 .CustomSpotlight{
     width: 100%;
