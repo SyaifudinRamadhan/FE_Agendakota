@@ -1,0 +1,103 @@
+input {
+	margin-bottom: 0px !important;
+}
+.FormLayout {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 14px;
+	margin-top: -40px;
+}
+.FormHeader {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	width: 100%;
+}
+.HeaderControl {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	margin-left: auto;
+}
+.TitleArea {
+	display: inline-block;
+	margin-bottom: 16px;
+	font-size: 20px;
+	font-weight: 600;
+}
+.Desc {
+	margin-top: 10px;
+	font-size: 14px;
+	color: #8b8b8b;
+}
+.FormButton {
+	width: unset;
+}
+.AlertBox {
+	width: 100%;
+	display: flex;
+	margin-bottom: 10px;
+}
+.FormFieldBox {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+.TitleInput {
+	font-size: 14px;
+	text-align: left;
+}
+.InputButton {
+	padding: 10px !important;
+	background-color: #f1f1f1 !important;
+	border: 1px solid #f1f1f1 !important;
+	color: #000 !important;
+}
+.InputButtonActive {
+	color: #ca0c64 !important;
+	border: 1px solid #ca0c64 !important;
+	background-color: #fff1f8 !important;
+}
+.FormSplitBox,
+.FormSplitBoxFixed {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	gap: 20px;
+}
+.FormSplitContent {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 10px;
+	width: 50%;
+}
+.FormPictureArea {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 10px;
+	max-width: 600px;
+	width: 25%;
+}
+.FormFooter {
+	background-color: #f1f1f1;
+	color: #8b8b8b;
+	font-size: 14px;
+	padding: 12px;
+}
+
+@media (max-width: 882px) {
+	.FormSplitBox {
+		flex-direction: column;
+	}
+	.FormPictureArea {
+		max-width: unset;
+		width: 100%;
+	}
+	.FormSplitContent {
+		width: 100%;
+	}
+}

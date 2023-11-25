@@ -1,0 +1,11 @@
+.BgLayout {
+	background: conic-gradient(
+		from 154deg at 50% 50%,
+		#dd0064 0deg,
+		#19274f 360deg
+	);
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	display: flex;
+}

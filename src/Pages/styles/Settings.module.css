@@ -1,0 +1,23 @@
+.ProfileLayout {
+	width: 80%;
+}
+.PopupNotify {
+	display: flex;
+	text-align: center;
+	font-size: 16px;
+}
+.IconPopUp {
+	width: 100%;
+	height: 100px;
+}
+.IconPopUp svg {
+	width: 100%;
+	height: 100px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+@media (max-width: 768px) {
+	.ProfileLayout {
+		width: 100%;
+	}
+}

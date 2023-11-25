@@ -1,17 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles/InputForm.module.css";
+import Button from "./Button";
+import { BiShow } from "react-icons/bi";
 
-const InputForm = ({id, type, placeholder, style = {}, className = [], refData, required = false}) => {
-    const classNames = [styles.InputForm].concat(className);
-    return (
-        <input id={id} 
-            type={type} 
-            placeholder={placeholder} 
-            className={classNames.join(" ")} 
-            style={style}
-            ref={refData}
-            required={required}/>
-    );
-}
+const InputForm = ({
+	id,
+	type,
+	placeholder,
+	style = {},
+	className = [],
+	refData,
+	required = false,
+	readOnly = false,
+}) => {
+	const [showPass, setShowPass] = useState(false);
+
+	const classNames = [
+		styles.InputForm,
+		type === "password" ? styles.InputPassword : "",
+	].concat(className);
+
+	const showPassFn = () => {
+		setShowPass(!showPass);
+	};
+	return (
+		<>
+			<input
+				id={id}
+				type={showPass ? "text" : type}
+				placeholder={placeholder}
+				className={classNames.join(" ")}
+				style={style}
+				ref={refData}
+				required={required}
+				readOnly={readOnly}
+			/>
+			<Button
+				style={{ display: type === "password" ? "unset" : "none" }}
+				classes={styles.HidePassword}
+				bgColor={"white"}
+				borderColor={"white"}
+				textColor={"black"}
+				icon={<BiShow />}
+				fnOnClick={showPassFn}
+			/>
+		</>
+	);
+};
 
 export default InputForm;
