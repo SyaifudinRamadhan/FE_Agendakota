@@ -8,4 +8,48 @@
 	height: 100%;
 	width: 100%;
 	display: flex;
+	overflow-y: auto;
+	padding: 50px 0px;
+}
+.BoxContent {
+	margin: auto;
+	width: 40%;
+	display: flex;
+	padding: 20px;
+	border-radius: 8px;
+	background-color: #fff;
+	box-shadow: 2px 3px 10px 1px #b98ba0;
+}
+.Logo {
+	margin: auto;
+	width: 200px;
+}
+.Content {
+	margin: auto;
+	width: 100%;
+	padding: 20px;
+}
+.Title {
+	margin: auto;
+	font-size: 18pt;
+}
+.TextCenter {
+	text-align: center;
+	width: 100%;
+	margin: 8px 0px;
+}
+.GoogleLoginBtn iframe {
+	margin: auto !important;
+}
+
+@media (max-width: 992px) {
+	.BoxContent {
+		width: 65% !important;
+	}
+}
+
+@media (max-width: 550px) {
+	.BoxContent {
+		width: 80% !important;
+	}
 }

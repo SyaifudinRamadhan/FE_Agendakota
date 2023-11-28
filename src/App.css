@@ -1,84 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap");
+
+@keyframes rotation {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
 
 body {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
+	font-family: "Inter", sans-serif;
+	font-weight: 400;
 }
 div {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
 }
 section {
-  padding: 50px;
+	padding: 50px;
 }
 h3 {
-  font-size: 24px;
+	font-size: 24px;
 }
 h4 {
-  font-size: 20px;
+	font-size: 20px;
 }
 
 .content {
-  position: absolute;
-  top: 80px;left: 0px;right: 0px;
-  z-index: 1;
+	position: absolute;
+	top: 80px;
+	left: 0px;
+	right: 0px;
+	z-index: 1;
 }
 .content.user {
-  left: 20%;right: 20px;
-  padding: 20px;
+	left: 20%;
+	right: 20px;
+	padding: 20px;
 }
 .content.organizer {
-  left: 25%;right: 0px;
-  top: 75px;
-  padding: 20px;
+	left: 25%;
+	right: 0px;
+	top: 75px;
+	padding: 20px;
 }
 .inline {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  align-items: center;
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
 }
 .title {
-  font-weight: 600;
+	font-weight: 600;
 }
-.basic-multi-select{
-  margin-bottom: 16px;
+.basic-multi-select {
+	margin-bottom: 16px;
 }
-.css-13cymwt-control{
-  flex-direction: row;
+.css-13cymwt-control {
+	flex-direction: row;
 }
-.css-1hb7zxy-IndicatorsContainer{
-  flex-direction: row;
+.css-1hb7zxy-IndicatorsContainer {
+	flex-direction: row;
 }
-.css-t3ipsp-control{
-  flex-direction: row;
-  box-shadow:0 0 0 1px #fecadf !important;
+.css-t3ipsp-control {
+	flex-direction: row;
+	box-shadow: 0 0 0 1px #fecadf !important;
 }
-.css-t3ipsp-control:hover{
-  border-color: #fecadf !important;
+.css-t3ipsp-control:hover {
+	border-color: #fecadf !important;
 }
-.css-3w2yfm-ValueContainer{
-  flex-direction: row;
+.css-3w2yfm-ValueContainer {
+	flex-direction: row;
 }
-.css-1p3m7a8-multiValue{
-  flex-direction: row;
+.css-1p3m7a8-multiValue {
+	flex-direction: row;
 }
-.css-12a83d4-MultiValueRemove{
-  margin: auto;
+.css-12a83d4-MultiValueRemove {
+	margin: auto;
 }
-.css-1nmdiq5-menu{
-  z-index: 999;
-  display: block !important;
-  position: absolute !important;
+.css-1nmdiq5-menu {
+	z-index: 999;
+	display: block !important;
+	position: absolute !important;
 }
-#react-select-11-listbox{
-  z-index: 999;
-  display: block !important;
-  position: absolute !important;
-  max-height: 20px;
+#react-select-11-listbox {
+	z-index: 999;
+	display: block !important;
+	position: absolute !important;
+	max-height: 20px;
 }
-.Select-menu-outer{top: auto; bottom: 100%}
+.Select-menu-outer {
+	top: auto;
+	bottom: 100%;
+}
 /* Select:invalid{
   border-color: red !important;
 }
@@ -88,30 +104,56 @@ input:invalid{
 .has-error > .basic-multi-select > div:first-child {
   border-color: #a94442;
 } */
-table{
-  padding: 10px;
-  text-align: left;
+table {
+	padding: 10px;
+	text-align: left;
 }
-table th{
-  padding: 10px;
+table th {
+	padding: 10px;
 }
-table td{
-  padding: 10px;
+table td {
+	padding: 10px;
 }
+
+.spinner-border {
+	--bs-spinner-width: 2rem;
+	--bs-spinner-height: 2rem;
+	--bs-spinner-vertical-align: -0.125em;
+	--bs-spinner-border-width: 0.25em;
+	--bs-spinner-animation-speed: 0.75s;
+	--bs-spinner-animation-name: spinner-border;
+	border: var(--bs-spinner-border-width) solid currentcolor;
+	border-right-color: transparent;
+}
+
+.spinner-border,
+.spinner-grow {
+	display: inline-block;
+	width: var(--bs-spinner-width);
+	height: var(--bs-spinner-height);
+	vertical-align: var(--bs-spinner-vertical-align);
+	border-radius: 50%;
+	animation: var(--bs-spinner-animation-speed) linear infinite
+		var(--bs-spinner-animation-name);
+	animation: rotation 1s linear infinite;
+}
+
 @media (max-width: 992px) {
-  section {
-    padding: 20px;
-  }
-  .content {
-    top: 90px;
-    padding-bottom: 100px !important;
-  }
-  .content.user {
-    left: 20px;right: 20px;
-    padding: 0px;
-  }
-  .content.organizer {
-    left: 0px;right: 0px;
-    z-index: 2;
-  }
+	section {
+		padding: 20px;
+	}
+	.content {
+		top: 90px;
+		padding-bottom: 100px !important;
+	}
+	.content.user {
+		left: 20px;
+		right: 20px;
+		padding: 0px;
+	}
+	.content.organizer {
+		left: 0px;
+		right: 0px;
+		z-index: 2;
+	}
 }

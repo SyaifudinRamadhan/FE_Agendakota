@@ -134,6 +134,9 @@ const UserProfile = () => {
 	});
 	return (
 		<>
+			<HeaderUser active="profile-user" expand={true} />
+			<SidebarUser active={""} />
+
 			<PopUp
 				width="45%"
 				isActive={popUpActive}
@@ -176,11 +179,6 @@ const UserProfile = () => {
 							style={{ display: isLoading ? "none" : "unset" }}
 						>
 							<div className={styles2.AlertBox}>
-								{alertDanger.state ? (
-									<Alert variant="danger">{alertDanger.content}</Alert>
-								) : (
-									<></>
-								)}
 								<Alert
 									type="danger"
 									isShow={alertDanger.state}
@@ -288,9 +286,6 @@ const UserProfile = () => {
 					</form>
 				</div>
 			</div>
-
-			<SidebarUser active={""} />
-			<HeaderUser expand={true} />
 		</>
 	);
 };

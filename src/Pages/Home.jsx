@@ -666,6 +666,7 @@ const Home = () => {
 									title={"Create Event"}
 									icon={<BiPlusCircle />}
 									classes={[styles.ButtonBasic]}
+									style={{ width: "unset", marginRight: "auto" }}
 								/>
 							</div>
 							<div className={styles.CustomSpotEvents}>
@@ -826,6 +827,7 @@ const Home = () => {
 								title={"Create Event"}
 								icon={<BiPlusCircle />}
 								classes={[styles.ButtonBasic]}
+								style={{ width: "unset", marginRight: "auto" }}
 							/>
 						</div>
 						<div className={styles.JumboSecR}>
@@ -861,7 +863,7 @@ const Home = () => {
 								title={"Create Event"}
 								icon={<BiPlusCircle />}
 								classes={[styles.ButtonBasic]}
-								style={{ width: "150px" }}
+								style={{ width: "unset", marginRight: "auto" }}
 							/>
 						</div>
 					</div>

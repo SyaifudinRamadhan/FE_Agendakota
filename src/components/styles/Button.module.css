@@ -1,51 +1,51 @@
-.Button{
-    width: 90px;
-    /* height: 35px; */
-    /* padding: 8px 24px 10px 24px; */
-    border-radius: 10px;
-    border: 1px solid;
-    gap: 8px;
-    box-shadow: 0px 0px 4px 0px #0000001A;
-    font-family: Inter;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 17px;
-    letter-spacing: 0em;
-    text-align: left;
-    cursor: pointer;
-    margin-top: auto;
-    margin-bottom: auto;
-    text-decoration: none;
+.Button {
+	width: 90px;
+	/* height: 35px; */
+	/* padding: 8px 24px 10px 24px; */
+	border-radius: 10px;
+	border: 1px solid;
+	gap: 8px;
+	box-shadow: 0px 0px 4px 0px #0000001a;
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 17px;
+	letter-spacing: 0em;
+	text-align: left;
+	cursor: pointer;
+	margin-top: auto;
+	margin-bottom: auto;
+	text-decoration: none;
 
-    padding: 10px;
-    /* overflow: hidden; */
-    /* white-space: nowrap; */
-    /* text-overflow: ellipsis; */
-    display: flex;
-    flex-direction: row;
+	padding: 10px;
+	/* overflow: hidden; */
+	/* white-space: nowrap; */
+	/* text-overflow: ellipsis; */
+	display: flex;
+	flex-direction: row;
 }
 
-.Icon{
-    margin-top: auto !important;
-    margin-bottom: auto !important;
+.Icon {
+	margin-top: auto !important;
+	margin-bottom: auto !important;
 }
 
-.Title{
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-    width: 100%;
-    /* text-align: center; */
+.Title {
+	margin-top: auto !important;
+	margin-bottom: auto !important;
+	width: 100%;
+	/* text-align: center; */
 }
 
 .ButtonCenter {
-    display: flex;
+	display: flex;
 }
 
-.ButtonCenter .Title{
-    /* width: unset !important; */
-    margin-right: auto;
+.ButtonCenter .Title {
+	width: unset !important;
+	margin-right: auto;
 }
 
-.ButtonCenter .Icon{
-    margin-left: auto;
+.ButtonCenter .Icon {
+	margin-left: auto;
 }
