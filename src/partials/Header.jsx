@@ -55,7 +55,7 @@ const Header = ({ isLogin, setLogin }) => {
 					</div>
 				)}
 				{isLogin ? (
-					<div className={styles.ProfileMenu}>
+					<div className={`${styles.ProfileMenu} ${styles.ProfileMenuMobile}`}>
 						<a
 							href="/events"
 							className={`${styles.ProfileMenuItem} ${styles.ProfileMenuItemActive}`}
@@ -82,7 +82,7 @@ const Header = ({ isLogin, setLogin }) => {
 						</a>
 					</div>
 				) : (
-					<div className={styles.ProfileMenu}>
+					<div className={`${styles.ProfileMenu} ${styles.ProfileMenuMobile}`}>
 						<Button
 							title={"Daftar"}
 							bgColor={"#ffffff"}

@@ -112,6 +112,7 @@ const SidebarUser = ({ show = true, active = null }) => {
 			<PopUp
 				isActive={isPopUpAddOrg}
 				setActiveFn={setPopUpAddOrg}
+				width="40%"
 				content={
 					<form style={{ display: "grid" }} onSubmit={onSubmit}>
 						<Alert
@@ -168,14 +169,14 @@ const SidebarUser = ({ show = true, active = null }) => {
 							<Button
 								title={"Simpan"}
 								typeBtn={"submit"}
-								style={{ margin: "auto", width: "unset" }}
+								style={{ margin: "auto", width: "100%" }}
 							/>
 						</div>
 					</form>
 				}
 			/>
 			{width > 992 && show ? (
-				<div className={styles.Sidebar}>
+				<div id="sidebar" className={styles.Sidebar}>
 					<img
 						src="/images/logo.png"
 						alt="Logo Agendakota"
@@ -239,7 +240,7 @@ const SidebarUser = ({ show = true, active = null }) => {
 								{organizers.map((org) => {
 									return (
 										<a
-											href="#"
+											href="/organizer/events"
 											className={styles.OrganizerItem}
 											onClick={() => {
 												handleOpenOrg(org.id);

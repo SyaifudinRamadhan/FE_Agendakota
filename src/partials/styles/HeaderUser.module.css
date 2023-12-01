@@ -73,8 +73,12 @@
 	font-weight: 600;
 	border-radius: 8px;
 }
+.ProfileMenuItem:hover,
+.MenuMobileItem:hover {
+	background-color: #f9f9f9;
+}
 .ProfileMenuItemActive {
-	background-color: #eee;
+	background-color: #eee !important;
 }
 .Separator {
 	width: 60%;
@@ -85,10 +89,19 @@
 .MenuMobile {
 	display: none;
 }
+.ProfileMenuMobile {
+	display: unset;
+}
 
 @media (max-width: 992px) {
 	.Header {
 		display: none;
+	}
+	.ProfileMenu {
+		display: none;
+	}
+	.ProfileMenuMobile {
+		display: unset;
 	}
 	.HeaderMobile {
 		display: flex;

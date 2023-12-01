@@ -7,6 +7,8 @@
 	width: 20%;
 	padding: 20px;
 	overflow-y: auto;
+	max-width: 300px;
+	min-width: 250px;
 	/* z-index: 5; */
 }
 .Logo {
@@ -33,8 +35,14 @@
 	text-align: left;
 }
 .MenuActive {
-	background-color: #f0f0f0;
+	background-color: #f0f0f0 !important;
 	font-weight: 700;
+}
+
+.MenuItem:hover,
+.OrganizerItem:hover {
+	background-color: #f9f9f9;
+	border-radius: 8px;
 }
 
 .OrganizerArea {
@@ -46,7 +54,7 @@
 .OrganizerItem {
 	display: flex;
 	flex-direction: row;
-	gap: 10px;
+	gap: 15px;
 	align-items: center;
 	text-decoration: none;
 	color: #212121;
@@ -63,8 +71,12 @@
 .OrganizerName {
 	font-size: 14px;
 	font-weight: 600;
-	display: flex;
+	display: inline;
 	flex-grow: 1;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .OrganizerLabel {
 	padding: 5px 12px;

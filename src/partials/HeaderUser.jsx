@@ -114,7 +114,7 @@ const HeaderUser = ({
 					<div style={{ fontWeight: 600 }}>Riyan Satria</div>
 				</div>
 
-				<div className={styles.ProfileMenu}>
+				<div className={`${styles.ProfileMenu} ${styles.ProfileMenuMobile}`}>
 					<a
 						href="/profile"
 						className={`${styles.ProfileMenuItem} ${

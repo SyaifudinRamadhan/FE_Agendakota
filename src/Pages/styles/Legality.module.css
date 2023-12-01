@@ -88,6 +88,20 @@ input {
 	font-size: 14px;
 	padding: 12px;
 }
+.VerifiedBanner {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	vertical-align: middle;
+}
+.VerifiedText {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.VerifiedBanner svg {
+	width: 20px;
+	height: 20px;
+}
 
 @media (max-width: 882px) {
 	.FormSplitBox {

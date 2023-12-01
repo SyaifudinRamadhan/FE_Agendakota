@@ -39,7 +39,7 @@ const InputImage = ({
 				onClick={handleOpenInput}
 			>
 				<BiImage className={styles.InputIcon} />
-				<div className={styles.InputText}>Input gambar (max : 2048)</div>
+				<div className={styles.InputText}>Input gambar (max : 2 Mb)</div>
 			</div>
 			<div className={`${styles.InputPreview} ${content ? "" : styles.Hidden}`}>
 				<img

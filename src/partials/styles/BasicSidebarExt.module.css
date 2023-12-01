@@ -2,6 +2,8 @@
 	display: flex;
 	flex-direction: row;
 	width: 25%;
+	max-width: 400px;
+	min-width: 340px;
 }
 .MainMenu {
 	padding: 16px 10px 16px 0px;
@@ -11,7 +13,7 @@
 .ExtMenu {
 	width: calc(100% - 44px);
 	margin-top: 40px;
-	padding: 16px 5px;
+	padding: 16px 26px;
 	border-right: 1px solid #eaeaea;
 }
 .SelectMenu {

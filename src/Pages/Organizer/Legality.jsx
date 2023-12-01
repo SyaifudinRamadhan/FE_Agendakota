@@ -31,6 +31,7 @@ const FormLayout = ({
 	},
 	isEdit = false,
 	readOnly = false,
+	cancelBtn = true,
 	defaultValue = {
 		picName: null,
 		ktpStr: null,
@@ -40,6 +41,7 @@ const FormLayout = ({
 		compName: null,
 		compType: null,
 		type: null,
+		isVerfied: null,
 	},
 	fnSetPopUpContent = () => {},
 }) => {
@@ -192,13 +194,17 @@ const FormLayout = ({
 							typeBtn="submit"
 							classes={[styles2.FormButton]}
 						/>
-						<Button
-							title={"Batal"}
-							classes={[styles2.FormButton]}
-							bgColor={"white"}
-							textColor={"#ca0c64"}
-							fnOnClick={() => fnSetPopUpActive(false)}
-						/>
+						{cancelBtn ? (
+							<Button
+								title={"Batal"}
+								classes={[styles2.FormButton]}
+								bgColor={"white"}
+								textColor={"#ca0c64"}
+								fnOnClick={() => fnSetPopUpActive(false)}
+							/>
+						) : (
+							<></>
+						)}
 					</div>
 				</div>
 			) : (
@@ -216,6 +222,22 @@ const FormLayout = ({
 					setShowFn={() => {}}
 					message={alertDanger.content}
 				/>
+				{isEdit && defaultValue.isVerfied ? (
+					<Alert
+						type="success"
+						isShow={true}
+						setShowFn={() => {}}
+						message={
+							<div className={styles2.VerifiedBanner}>
+								<BiCheckCircle />
+								<div className={styles2.VerifiedText}>Verified</div>
+							</div>
+						}
+						closeBtn={false}
+					/>
+				) : (
+					<></>
+				)}
 			</div>
 			<div className={styles2.FormFieldBox}>
 				<div className={styles2.TitleInput}>Jenis Perusahaan</div>
@@ -390,6 +412,7 @@ const OrganizerLegality = () => {
 		compName: null,
 		compType: "Peseroan Terbatas (PT)",
 		type: "Perusahaan",
+		isVerfied: true,
 	};
 
 	// const legalityData = null;
@@ -416,19 +439,19 @@ const OrganizerLegality = () => {
 		setPopUpActive(true);
 	};
 
-	const handleOpenEdit = () => {
-		setPopUpContent(
-			<FormLayout
-				fnSetIsLoading={setLoading}
-				fnSetPopUpActive={setPopUpActive}
-				fieldLegality={fieldLegality}
-				defaultValue={legalityData}
-				fnSetPopUpContent={setPopUpContent}
-				isEdit={true}
-			/>
-		);
-		setPopUpActive(true);
-	};
+	// const handleOpenEdit = () => {
+	// 	setPopUpContent(
+	// 		<FormLayout
+	// 			fnSetIsLoading={setLoading}
+	// 			fnSetPopUpActive={setPopUpActive}
+	// 			fieldLegality={fieldLegality}
+	// 			defaultValue={legalityData}
+	// 			fnSetPopUpContent={setPopUpContent}
+	// 			isEdit={true}
+	// 		/>
+	// 	);
+	// 	setPopUpActive(true);
+	// };
 
 	useEffect(() => {
 		document.title = "Legality - Agendakota";
@@ -465,8 +488,13 @@ const OrganizerLegality = () => {
 			/>
 			<div className="content organizer">
 				<div className={styles2.FormSplitBox}>
-					<h1 className={styles.Title}>Legality</h1>
 					{legalityData !== null ? (
+						<></>
+					) : (
+						<h1 className={styles.Title}>Legality</h1>
+					)}
+
+					{/* {legalityData !== null ? (
 						<Button
 							title={"Edit Data"}
 							classes={[styles2.FormButton]}
@@ -478,7 +506,7 @@ const OrganizerLegality = () => {
 						/>
 					) : (
 						<></>
-					)}
+					)} */}
 				</div>
 				{legalityData !== null ? (
 					<div style={{ marginTop: "40px" }}>
@@ -489,7 +517,7 @@ const OrganizerLegality = () => {
 							defaultValue={legalityData}
 							fnSetPopUpContent={setPopUpContent}
 							isEdit={true}
-							readOnly={true}
+							cancelBtn={false}
 						/>
 					</div>
 				) : (

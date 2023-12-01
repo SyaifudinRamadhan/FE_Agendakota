@@ -147,12 +147,12 @@ table td {
 		padding-bottom: 100px !important;
 	}
 	.content.user {
-		left: 20px;
+		left: 20px !important;
 		right: 20px;
 		padding: 0px;
 	}
 	.content.organizer {
-		left: 0px;
+		left: 0px !important;
 		right: 0px;
 		z-index: 2;
 	}
