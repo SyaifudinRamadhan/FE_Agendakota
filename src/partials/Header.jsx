@@ -14,12 +14,82 @@ import Compass from "../icons/Compass";
 import Button from "../components/Button";
 import AddCircle from "../icons/AddCircle";
 import { colors } from "../config";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Header = ({ isLogin, setLogin }) => {
-	const [isProfileActive, setProfileActive] = useState(false);
+const isLoginLoad = async (accessToken) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL + "/api/is-login",
+			undefined,
+			{
+				headers: {
+					Authorization: "Bearer " + accessToken,
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return {
+			data: res.data,
+			status: res.status,
+		};
+	} catch (error) {
+		if (error.response === undefined) {
+			return {
+				data: { data: error.message },
+				status: 500,
+			};
+		} else {
+			return {
+				data: error.response,
+				status: error.response.status,
+			};
+		}
+	}
+};
+
+let loopLoad = 0;
+
+const Header = ({
+	isLogin,
+	setLogin,
+	userData,
+	setUserData,
+	children,
+	show = false,
+}) => {
+	const [isProfileActive, setProfileActive] = useState(null);
 	const [isMenuMobileActive, setMenuMobileActive] = useState(false);
 
-	return (
+	const navigate = useNavigate();
+
+	const handleLogout = () => {
+		localStorage.clear();
+		setLogin(false);
+		setUserData(null);
+		setProfileActive(false);
+	};
+
+	// single load
+	useEffect(() => {
+		if (
+			loopLoad === 0 &&
+			localStorage.getItem("access_token") !== undefined &&
+			show === true
+		) {
+			console.log("load is login baasic", loopLoad);
+			isLoginLoad(localStorage.getItem("access_token")).then((res) => {
+				if (res.status === 200) {
+					setLogin(true);
+					setUserData(res.data);
+					console.log(res, loopLoad);
+				}
+			});
+			loopLoad++;
+		}
+	});
+
+	return show ? (
 		<>
 			<header className={styles.HeaderMobile}>
 				<img src="/images/logo.png" alt="Logo Header" className={styles.Logo} />
@@ -45,13 +115,13 @@ const Header = ({ isLogin, setLogin }) => {
 						}}
 					>
 						<div
+							id="profile-icon"
 							className={styles.ProfileIcon}
 							style={{
-								backgroundImage:
-									"url(https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg)",
+								backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${userData.photo}")`,
 							}}
 						></div>
-						<div style={{ fontWeight: 600 }}>Riyan Satria</div>
+						<div style={{ fontWeight: 600 }}>{userData.name}</div>
 					</div>
 				)}
 				{isLogin ? (
@@ -75,7 +145,9 @@ const Header = ({ isLogin, setLogin }) => {
 						<a
 							href="#"
 							className={`${styles.ProfileMenuItem}`}
-							onClick={() => setLogin(!isLogin)}
+							onClick={() => {
+								handleLogout();
+							}}
 						>
 							<BiLogOut />
 							Logout
@@ -87,12 +159,16 @@ const Header = ({ isLogin, setLogin }) => {
 							title={"Daftar"}
 							bgColor={"#ffffff"}
 							textColor={colors.primary}
-							fnOnClick={() => setLogin(!isLogin)}
+							fnOnClick={() => {
+								navigate("/register-user");
+							}}
 							style={{ width: "100%", textAlign: "center" }}
 						/>
 						<Button
 							title={"Login"}
-							fnOnClick={() => setLogin(!isLogin)}
+							fnOnClick={() => {
+								navigate("/auth-user");
+							}}
 							style={{ width: "100%", marginTop: "10px", textAlign: "center" }}
 						/>
 					</div>
@@ -121,8 +197,7 @@ const Header = ({ isLogin, setLogin }) => {
 						<div
 							className={styles.ProfileIcon}
 							style={{
-								backgroundImage:
-									"url(https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg)",
+								backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${userData.photo}")`,
 							}}
 							onClick={() => setProfileActive(!isProfileActive)}
 						></div>
@@ -132,17 +207,24 @@ const Header = ({ isLogin, setLogin }) => {
 								title={"Daftar"}
 								bgColor={"#ffffff"}
 								textColor={colors.primary}
-								fnOnClick={() => setLogin(!isLogin)}
+								fnOnClick={() => {
+									navigate("/register-user");
+								}}
 							/>
-							<Button title={"Login"} fnOnClick={() => setLogin(!isLogin)} />
+							<Button
+								title={"Login"}
+								fnOnClick={() => {
+									navigate("/auth-user");
+								}}
+							/>
 						</>
 					)}
 				</nav>
 			</header>
 			{isProfileActive && (
-				<div className={styles.ProfileMenu}>
+				<div id="profile-popup" className={`${styles.ProfileMenu}`}>
 					<a
-						href="/evnts"
+						href="/events"
 						className={`${styles.ProfileMenuItem} ${styles.ProfileMenuItemActive}`}
 					>
 						<img src={Icons.Calendar} alt="Calendar" />
@@ -160,14 +242,19 @@ const Header = ({ isLogin, setLogin }) => {
 					<a
 						href="#"
 						className={`${styles.ProfileMenuItem}`}
-						onClick={() => setLogin(!isLogin)}
+						onClick={() => {
+							handleLogout();
+						}}
 					>
 						<BiLogOut />
 						Logout
 					</a>
 				</div>
 			)}
+			{children}
 		</>
+	) : (
+		<></>
 	);
 };
 

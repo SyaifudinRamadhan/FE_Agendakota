@@ -84,9 +84,6 @@ const Setting = () => {
 
 	return (
 		<>
-			<HeaderUser active="settings-user" expand={true} />
-			<SidebarUser active={""} />
-
 			<PopUp
 				width="45%"
 				isActive={popUpActive}

@@ -62,7 +62,7 @@
 .OrganizerLogo {
 	height: 40px;
 	aspect-ratio: 1;
-	background-color: #ddd;
+	/* background-color: #ddd; */
 	border-radius: 8px;
 	background-size: cover;
 	object-fit: cover;
@@ -229,9 +229,9 @@
 	.SidebarMobile .MenuItem {
 		padding: 5px 10px;
 	}
-	.SidebarMobile .OrganizerLogo {
+	/* .SidebarMobile .OrganizerLogo {
 		border: 1px solid #eee;
-	}
+	} */
 
 	.OrganizerAreaMobile {
 		position: fixed;

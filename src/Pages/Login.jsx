@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles/Login.module.css";
 import styles2 from "./styles/Legality.module.css";
 import InputForm from "../components/InputForm";
@@ -6,75 +6,121 @@ import Button from "../components/Button";
 import Alert from "../components/Alert";
 import { useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import jwtEncode from "jwt-encode";
+import { BiEnvelope, BiKey } from "react-icons/bi";
+import ReCAPTCHA from "react-google-recaptcha";
 
-const Login = () => {
+const dummyLoad = () => {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			resolve(false);
+		}, 3000);
+	});
+};
+
+const loginDefLoad = async ({ email, password }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL + "/api/login",
+			{
+				email: email,
+				password: password,
+			},
+			{
+				headers: {
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return {
+			data: res.data,
+			status: res.status,
+		};
+	} catch (error) {
+		console.log(error);
+		if (error.response === undefined) {
+			return {
+				data: { data: [error.message] },
+				status: 500,
+			};
+		} else {
+			return {
+				data: error.response,
+				status: error.response.status,
+			};
+		}
+	}
+};
+
+const loginGoogleLoad = async ({ email, credential }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL + "/api/login-w-google",
+			{
+				email: email,
+				credential: credential,
+			},
+			{
+				headers: {
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return {
+			data: res.data,
+			status: res.status,
+		};
+	} catch (error) {
+		console.log(error);
+		if (error.response === undefined) {
+			return {
+				data: { data: [error.message] },
+				status: 500,
+			};
+		} else {
+			return {
+				data: error.response,
+				status: error.response.status,
+			};
+		}
+	}
+};
+
+const Login = ({ isLogin }) => {
 	const [alertDanger, setAlertDanger] = useState({
 		state: false,
 		content: "",
 		variant: "danger",
 	});
-	const [loginType, setLoginType] = useState("password");
 	const [loading, setLoading] = useState(false);
-	// Only for login otp
-	const [loginOtpState, setLoginOtpState] = useState("request");
+	const [inputFocus, setInputFocus] = useState(null);
+	const [captcha, setCaptchaState] = useState(null);
 
 	const navigate = useNavigate();
 
 	const fieldLogin = {
 		email: useRef(null),
 		password: useRef(null),
-		emailOtp: useRef(null),
-		otpCode: useRef(null),
-		emailRegister: useRef(null),
-		fName: useRef(null),
-		lName: useRef(null),
-		username: useRef(null),
-		passwordRegister: useRef(null),
-		passwordRegister2: useRef(null),
-	};
-
-	const dummyLoad = () => {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				resolve(false);
-			}, 3000);
-		});
 	};
 
 	const handleResponse = (res) => {
-		if (res) {
-			if (loginType === "password") {
-				setAlertDanger({
-					state: true,
-					content: "Login berhasil",
-					variant: "success",
-				});
-				// Redirect to home
-				navigate("/events");
-			} else {
-				if (loginOtpState === "verify") {
-					setAlertDanger({
-						state: true,
-						content: "Login berhasil",
-						variant: "success",
-					});
-					// Redirect to home
-					navigate("/events");
-				} else {
-					setAlertDanger({
-						state: true,
-						content: "Periksa emailmu untuk mendapatkan kode OTP",
-						variant: "success",
-					});
-					setLoginOtpState("verify");
-					setLoading(false);
-				}
-			}
+		if (res.status === 200) {
+			setAlertDanger({
+				state: true,
+				content: "Login berhasil",
+				variant: "success",
+			});
+			// Redirect to home
+			localStorage.setItem("access_token", res.data.access_token);
+			// window.location.reload();
+			window.location.replace("/");
 		} else {
 			setAlertDanger({
 				state: true,
 				content:
-					"Akun tidak dapat ditemukan. Periksa email, password, ataupun kode otp mu !!!",
+					"Akun tidak dapat ditemukan. Periksa email, password, ataupun akunmu belum aktif. Coba cek emailmu untuk aktivasi !!!",
 				variant: "danger",
 			});
 			setLoading(false);
@@ -82,84 +128,21 @@ const Login = () => {
 				setAlertDanger({
 					state: false,
 					content:
-						"Akun tidak dapat ditemukan. Periksa email, password, ataupun kode otp mu !!!",
+						"Akun tidak dapat ditemukan. Periksa email, password, ataupun akunmu belum aktif. Coba cek emailmu untuk aktivasi !!!",
 					variant: "danger",
 				});
 			}, 3000);
 		}
 	};
-	const handleRegister = (e) => {
-		e.preventDefault();
-		if (
-			!fieldLogin.emailRegister.current.value ||
-			fieldLogin.emailRegister.current.value === "" ||
-			!fieldLogin.username.current.value ||
-			fieldLogin.username.current.value === "" ||
-			!fieldLogin.fName.current.value ||
-			fieldLogin.fName.current.value === "" ||
-			!fieldLogin.lName.current.value ||
-			fieldLogin.lName.current.value === "" ||
-			!fieldLogin.passwordRegister.current.value ||
-			fieldLogin.passwordRegister.current.value === "" ||
-			!fieldLogin.passwordRegister2.current.value ||
-			fieldLogin.passwordRegister2.current.value === ""
-		) {
-			setAlertDanger({
-				state: true,
-				content: "Semua field wajib diisi !!!",
-				variant: "danger",
-			});
-			setTimeout(() => {
-				setAlertDanger({
-					state: false,
-					content: "Semua field wajib diisi !!!",
-					variant: "danger",
-				});
-			}, 3000);
-		} else {
-			setLoading(true);
-			dummyLoad().then((res) => {
-				if (res) {
-					setLoginType("password");
-					setAlertDanger({
-						state: true,
-						content: "Periksa emailmu untuk aktivasi akun agar bisa login !!!",
-						variant: "success",
-					});
-					setLoading(false);
-					setTimeout(() => {
-						setAlertDanger({
-							state: false,
-							content:
-								"Periksa emailmu untuk aktivasi akun agar bisa login !!!",
-							variant: "success",
-						});
-					}, 3000);
-				} else {
-					setAlertDanger({
-						state: true,
-						content: "Akun gagal dibuat. {custom message} !!!",
-						variant: "danger",
-					});
-					setLoading(false);
-					setTimeout(() => {
-						setAlertDanger({
-							state: false,
-							content: "Akun gagal dibuat. {custom message} !!!",
-							variant: "danger",
-						});
-					}, 3000);
-				}
-			});
-		}
-	};
+
 	const handleLoginDef = (e) => {
 		e.preventDefault();
 		if (
 			!fieldLogin.email.current.value ||
 			fieldLogin.email.current.value === "" ||
 			!fieldLogin.password.current.value ||
-			fieldLogin.password.current.value === ""
+			fieldLogin.password.current.value === "" ||
+			!captcha
 		) {
 			setAlertDanger({
 				state: true,
@@ -175,85 +158,49 @@ const Login = () => {
 			}, 3000);
 		} else {
 			setLoading(true);
-			dummyLoad().then(handleResponse);
+			loginDefLoad({
+				email: fieldLogin.email.current.value,
+				password: fieldLogin.password.current.value,
+			}).then(handleResponse);
 		}
 	};
-	const handleGetOtp = (e) => {
-		e.preventDefault();
-		if (
-			!fieldLogin.emailOtp.current.value ||
-			fieldLogin.emailOtp.current.value === ""
-		) {
-			setAlertDanger({
-				state: true,
-				content: "Field email wajib diisi !!!",
-				variant: "danger",
-			});
-			setTimeout(() => {
-				setAlertDanger({
-					state: false,
-					content: "Field email wajib diisi !!!",
-					variant: "danger",
-				});
-			}, 3000);
-		} else {
-			setLoading(true);
-			dummyLoad().then(handleResponse);
-		}
-	};
-	const handleVerifyOtp = (e) => {
-		e.preventDefault();
-		if (
-			!fieldLogin.otpCode.current.value ||
-			fieldLogin.otpCode.current.value === ""
-		) {
-			setAlertDanger({
-				state: true,
-				content: "Field OTP Code wajib diisi !!!",
-				variant: "danger",
-			});
-			setTimeout(() => {
-				setAlertDanger({
-					state: false,
-					content: "Field OTP Code wajib diisi !!!",
-					variant: "danger",
-				});
-			}, 3000);
-		} else {
-			setLoading(true);
-			dummyLoad().then(handleResponse);
-		}
-	};
+
 	const handleLoginGoogle = (credentialData) => {
-		console.log(credentialData);
 		setLoading(true);
-		dummyLoad().then((res) => {
-			if (res) {
-				setAlertDanger({
-					state: true,
-					content: "Login berhasil",
-					variant: "success",
-				});
-				// Redirect to home
-				navigate("/events");
-			} else {
-				setAlertDanger({
-					state: true,
-					content:
-						"Akun tidak dapat ditemukan. Periksa email, password, ataupun kode otp mu !!!",
-					variant: "danger",
-				});
-				setLoading(false);
-				setTimeout(() => {
+		let data = jwtDecode(credentialData.credential);
+		let encodedCredential = jwtEncode(data, process.env.REACT_APP_JWT_SECRET, {
+			alg: process.env.REACT_APP_JWT_ALG,
+		});
+		console.log(encodedCredential);
+		loginGoogleLoad({ email: data.email, credential: encodedCredential }).then(
+			(res) => {
+				if (res.status === 200) {
 					setAlertDanger({
-						state: false,
-						content:
-							"Akun tidak dapat ditemukan. Periksa email, password, ataupun kode otp mu !!!",
+						state: true,
+						content: "Login berhasil",
+						variant: "success",
+					});
+					localStorage.setItem("access_token", res.data.access_token);
+					// Redirect to home
+					// window.location.reload();
+					window.location.replace("/");
+				} else {
+					setAlertDanger({
+						state: true,
+						content: "Akun tidak dapat ditemukan. Silahkan coba lagi !!!",
 						variant: "danger",
 					});
-				}, 3000);
+					setLoading(false);
+					setTimeout(() => {
+						setAlertDanger({
+							state: false,
+							content: "Akun tidak dapat ditemukan. Silahkan coba lagi !!!",
+							variant: "danger",
+						});
+					}, 3000);
+				}
 			}
-		});
+		);
 	};
 	const handleLoginGoogleErr = () => {
 		setAlertDanger({
@@ -270,49 +217,133 @@ const Login = () => {
 		}, 3000);
 	};
 
+	useEffect(() => {
+		if (isLogin) {
+			window.location.replace("/");
+		}
+		window.addEventListener("click", (e) => {
+			e.target === fieldLogin.email.current ||
+			e.target === fieldLogin.password.current
+				? e.target === fieldLogin.email.current
+					? setInputFocus("email")
+					: setInputFocus("password")
+				: setInputFocus(null);
+		});
+	});
+
 	return (
 		<div className={styles.BgLayout}>
 			<div className={styles.BoxContent}>
-				<div className={styles.Logo}>
-					<img src="/images/logo.png" alt="" srcset="" />
-				</div>
 				<div className={styles.Content}>
 					<div style={{ marginTop: 20 }}>
-						<form
-							onSubmit={handleLoginDef}
-							style={{ display: loginType === "password" ? "unset" : "none" }}
-						>
+						<form onSubmit={handleLoginDef}>
 							<div className={styles2.FormHeader}>
 								<div className={styles2.TitleArea}>
-									<h1 className={styles.Title}>Login</h1>
+									<h1 className={styles.Title}>Masuk atau Daftar</h1>
+									<p className={styles.SubTitle}>
+										Masuk ke akun agendakota mu dengan email dan password yang
+										sudah terdaftar
+									</p>
 								</div>
 							</div>
+							<div className={styles2.AlertBox}>
+								<Alert
+									type={alertDanger.variant}
+									isShow={alertDanger.state}
+									setShowFn={() => {}}
+									message={alertDanger.content}
+									closeBtn={false}
+								/>
+							</div>
+							<div className={styles2.FormFieldBox}>
+								<div className={styles.GoogleLoginBtn}>
+									<GoogleOAuthProvider
+										clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+									>
+										<GoogleLogin
+											theme="filled_black"
+											logo_alignment="center"
+											shape="pill"
+											onSuccess={handleLoginGoogle}
+											onError={handleLoginGoogleErr}
+										></GoogleLogin>
+									</GoogleOAuthProvider>
+								</div>
+							</div>
+							<div className={`${styles.SubTitle} ${styles.TextCenter}`}>
+								Atau Masuk dengan Email
+							</div>
 							<div>
-								<div className={styles2.AlertBox}>
-									<Alert
-										type={alertDanger.variant}
-										isShow={alertDanger.state}
-										setShowFn={() => {}}
-										message={alertDanger.content}
-										closeBtn={false}
+								<div
+									className={`${styles.BoxInput} ${
+										inputFocus === "email"
+											? styles.ShadowBoxInput2
+											: inputFocus === "password"
+											? styles.ShadowBoxInput1
+											: ""
+									}`}
+								>
+									<div className={styles.FormFieldInput}>
+										<label
+											className={styles.TitleInput}
+											style={{
+												color:
+													inputFocus === "email" ? "rgb(202, 12, 100)" : "#000",
+											}}
+											htmlFor="email-input"
+											onFocus={() => {
+												setInputFocus("email");
+											}}
+										>
+											<BiEnvelope />
+											<div>Email</div>
+										</label>
+										<InputForm
+											id={"email-input"}
+											className={styles.FieldInput}
+											refData={fieldLogin.email}
+											type={"text"}
+											placeholder={"Tuliskan alamat email akunmu"}
+										/>
+									</div>
+									<div className={styles.FormFieldInput}>
+										<label
+											className={styles.TitleInput}
+											style={{
+												color:
+													inputFocus === "password"
+														? "rgb(202, 12, 100)"
+														: "#000",
+											}}
+											htmlFor="pass-input"
+											onFocus={() => {
+												setInputFocus("password");
+											}}
+										>
+											<BiKey />
+											<div>Password</div>
+										</label>
+										<InputForm
+											id={"pass-input"}
+											className={styles.FieldInput}
+											refData={fieldLogin.password}
+											hidePassBtn={false}
+											type={"password"}
+											placeholder={"Tuliskan password akun agendakota"}
+										/>
+									</div>
+								</div>
+
+								<div className={styles.CapcthaField}>
+									<ReCAPTCHA
+										sitekey={process.env.REACT_APP_CAPTCHA_SITE_KEY}
+										onChange={(value) => {
+											setCaptchaState(value);
+										}}
+										style={{ margin: "auto" }}
 									/>
 								</div>
-								<div className={styles2.FormFieldBox}>
-									<div className={styles2.TitleInput}>Email</div>
-									<InputForm
-										refData={fieldLogin.email}
-										type={"text"}
-										placeholder={"Tuliskan alamat email akunmu"}
-									/>
-								</div>
-								<div className={styles2.FormFieldBox}>
-									<div className={styles2.TitleInput}>Password</div>
-									<InputForm
-										refData={fieldLogin.password}
-										type={"password"}
-										placeholder={"Tuliskan password akun agendakota"}
-									/>
-								</div>
+
 								<div className={styles2.FormFieldBox}>
 									{loading ? (
 										<Button
@@ -345,286 +376,13 @@ const Login = () => {
 										}}
 									>
 										<div>Belum punya akun ? </div>
-										<a
-											style={{ textDecoration: "none" }}
-											href="#"
-											onClick={() => {
-												setLoginType("register");
-											}}
-										>
+										<a style={{ textDecoration: "none" }} href="/register-user">
 											Daftar
 										</a>
 									</div>
 								</div>
 							</div>
 						</form>
-						<form
-							onSubmit={handleRegister}
-							style={{ display: loginType === "register" ? "unset" : "none" }}
-						>
-							<div className={styles2.FormHeader}>
-								<div className={styles2.TitleArea}>
-									<h1 className={styles.Title}>Register Akun</h1>
-								</div>
-							</div>
-							<div>
-								<div className={styles2.AlertBox}>
-									<Alert
-										type={alertDanger.variant}
-										isShow={alertDanger.state}
-										setShowFn={() => {}}
-										message={alertDanger.content}
-										closeBtn={false}
-									/>
-								</div>
-								<div className={styles2.FormFieldBox}>
-									<div className={styles2.TitleInput}>Email</div>
-									<InputForm
-										refData={fieldLogin.emailRegister}
-										type={"text"}
-										placeholder={"Tuliskan alamat email akunmu"}
-									/>
-								</div>
-								<div className={styles2.FormFieldBox}>
-									<div className={styles2.TitleInput}>Username</div>
-									<InputForm
-										refData={fieldLogin.username}
-										type={"text"}
-										placeholder={"Tuliskan nama pengguna"}
-									/>
-								</div>
-								<div className={styles2.FormFieldBox}>
-									<div className={styles2.TitleInput}>Nama Depan</div>
-									<InputForm
-										refData={fieldLogin.fName}
-										type={"text"}
-										placeholder={"Tuliskan nama depanmu"}
-									/>
-								</div>
-								<div className={styles2.FormFieldBox}>
-									<div className={styles2.TitleInput}>Nama Belakang</div>
-									<InputForm
-										refData={fieldLogin.lName}
-										type={"text"}
-										placeholder={"Tuliskan nama belakangmu"}
-									/>
-								</div>
-								<div className={styles2.FormFieldBox}>
-									<div className={styles2.TitleInput}>Password</div>
-									<InputForm
-										refData={fieldLogin.passwordRegister}
-										type={"password"}
-										placeholder={"Tuliskan password akun agendakota"}
-									/>
-								</div>
-								<div className={styles2.FormFieldBox}>
-									<div className={styles2.TitleInput}>Konfirmasi Password</div>
-									<InputForm
-										refData={fieldLogin.passwordRegister2}
-										type={"password"}
-										placeholder={"Tuliskan ulang password akun agendakota"}
-									/>
-								</div>
-								<div className={styles2.FormFieldBox}>
-									{loading ? (
-										<Button
-											bgColor={"rgb(212 132 169)"}
-											borderColor={"rgb(212 132 169)"}
-											title={"Loading ..."}
-											icon={
-												<div
-													className="spinner-border"
-													style={{ width: "20px", height: "20px" }}
-													animation="border"
-												/>
-											}
-											center={true}
-											style={{ width: "100%", textAlign: "center" }}
-										/>
-									) : (
-										<Button
-											title={"Register"}
-											typeBtn="submit"
-											classes={[styles2.FormButton]}
-											style={{ width: "100%", margin: "auto" }}
-										/>
-									)}
-									<div
-										style={{
-											flexDirection: "row",
-											margin: "auto",
-											gap: "10px",
-										}}
-									>
-										<div>Sudah punya akun ? </div>
-										<a
-											style={{ textDecoration: "none" }}
-											href="#"
-											onClick={() => {
-												setLoginType("password");
-											}}
-										>
-											Login
-										</a>
-									</div>
-								</div>
-							</div>
-						</form>
-						<div style={{ display: loginType === "otp" ? "unset" : "none" }}>
-							<form
-								onSubmit={handleGetOtp}
-								style={{
-									display: loginOtpState === "request" ? "unset" : "none",
-								}}
-							>
-								<div className={styles2.FormHeader}>
-									<div className={styles2.TitleArea}>
-										<h1 className={styles.Title}>Login</h1>
-									</div>
-								</div>
-								<div>
-									<div className={styles2.AlertBox}>
-										<Alert
-											type={alertDanger.variant}
-											isShow={alertDanger.state}
-											setShowFn={() => {}}
-											message={alertDanger.content}
-											closeBtn={false}
-										/>
-									</div>
-									<div className={styles2.FormFieldBox}>
-										<div className={styles2.TitleInput}>Email</div>
-										<InputForm
-											refData={fieldLogin.emailOtp}
-											type={"text"}
-											placeholder={"Tuliskan alamat email akunmu"}
-										/>
-									</div>
-									<div className={styles2.FormFieldBox}>
-										{loading ? (
-											<Button
-												bgColor={"rgb(212 132 169)"}
-												borderColor={"rgb(212 132 169)"}
-												title={"Loading ..."}
-												icon={
-													<div
-														className="spinner-border"
-														style={{ width: "20px", height: "20px" }}
-														animation="border"
-													/>
-												}
-												center={true}
-												style={{ width: "100%", textAlign: "center" }}
-											/>
-										) : (
-											<Button
-												title={"Get OTP Code"}
-												typeBtn="submit"
-												classes={[styles2.FormButton]}
-												style={{ width: "100%", margin: "auto" }}
-											/>
-										)}
-									</div>
-								</div>
-							</form>
-							<form
-								onSubmit={handleVerifyOtp}
-								style={{
-									display: loginOtpState === "verify" ? "unset" : "none",
-								}}
-							>
-								<div className={styles2.FormHeader}>
-									<div className={styles2.TitleArea}>
-										<h1 className={styles.Title}>Login</h1>
-									</div>
-								</div>
-								<div>
-									<div className={styles2.AlertBox}>
-										<Alert
-											type={alertDanger.variant}
-											isShow={alertDanger.state}
-											setShowFn={() => {}}
-											message={alertDanger.content}
-											closeBtn={false}
-										/>
-									</div>
-									<div className={styles2.FormFieldBox}>
-										<div className={styles2.TitleInput}>OTP Code</div>
-										<InputForm
-											refData={fieldLogin.otpCode}
-											type={"password"}
-											placeholder={"Tuliskan password akun agendakota"}
-										/>
-									</div>
-									<div className={styles2.FormFieldBox}>
-										{loading ? (
-											<Button
-												bgColor={"rgb(212 132 169)"}
-												borderColor={"rgb(212 132 169)"}
-												title={"Loading ..."}
-												icon={
-													<div
-														className="spinner-border"
-														style={{ width: "20px", height: "20px" }}
-														animation="border"
-													/>
-												}
-												center={true}
-												style={{ width: "100%", textAlign: "center" }}
-											/>
-										) : (
-											<Button
-												title={"Login"}
-												typeBtn="submit"
-												classes={[styles2.FormButton]}
-												style={{ width: "100%", margin: "auto" }}
-											/>
-										)}
-									</div>
-								</div>
-							</form>
-						</div>
-						<div className={styles.TextCenter}>Atau</div>
-						<div className={styles2.FormFieldBox}>
-							<div className={styles.GoogleLoginBtn}>
-								<GoogleOAuthProvider
-									clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-								>
-									<GoogleLogin
-										theme="filled_black"
-										logo_alignment="center"
-										shape="pill"
-										onSuccess={handleLoginGoogle}
-										onError={handleLoginGoogleErr}
-									></GoogleLogin>
-								</GoogleOAuthProvider>
-							</div>
-						</div>
-						<div className={styles2.FormFieldBox}>
-							{loginType === "password" || loginType === "register" ? (
-								<Button
-									title={"Login With OTP"}
-									classes={[styles2.FormButton]}
-									style={{ width: "150px", margin: "auto" }}
-									bgColor={"white"}
-									textColor={"#CA0C64"}
-									fnOnClick={() => {
-										setLoginType("otp");
-									}}
-								/>
-							) : (
-								<Button
-									title={"Login With Password"}
-									classes={[styles2.FormButton]}
-									style={{ width: "200px", margin: "auto" }}
-									bgColor={"white"}
-									textColor={"#CA0C64"}
-									fnOnClick={() => {
-										setLoginType("password");
-									}}
-								/>
-							)}
-						</div>
 					</div>
 				</div>
 			</div>

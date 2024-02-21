@@ -13,12 +13,54 @@ import {
 import styles from "./styles/HeaderUser.module.css";
 import { useEffect, useState } from "react";
 import Separator from "../components/Separator";
+import axios from "axios";
+import PopUpLogin from "./PopUpLogin";
+
+const isLoginLoad = async ({ accessToken }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL + "/api/is-login",
+			undefined,
+			{
+				headers: {
+					Authorization: "Bearer " + accessToken,
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return {
+			data: res.data,
+			status: res.status,
+		};
+	} catch (error) {
+		console.log(error);
+		if (error.response === undefined) {
+			return {
+				data: { data: [error.message] },
+				status: 500,
+			};
+		} else {
+			return {
+				data: error.response,
+				status: error.response.status,
+			};
+		}
+	}
+};
+
+let loopLoad = 0;
 
 const HeaderUser = ({
+	isLogin,
+	setLogin = () => {},
+	userData,
+	setUserData = () => {},
 	expand = false,
+	childrenExtra,
 	children,
 	organizerMode = false,
 	active = "",
+	show = false,
 }) => {
 	const [isProfileActive, setProfileActive] = useState(false);
 	const [isMenuMobileActive, setMenuMobileActive] = useState(false);
@@ -39,12 +81,32 @@ const HeaderUser = ({
 	};
 
 	useEffect(() => {
+		if (
+			loopLoad === 0 &&
+			localStorage.getItem("access_token") !== undefined &&
+			show === true
+		) {
+			isLoginLoad({ accessToken: localStorage.getItem("access_token") }).then(
+				(res) => {
+					if (res.status === 200) {
+						setLogin(true);
+						setUserData(res.data);
+						loopLoad++;
+					} else {
+						setLogin(false);
+					}
+				}
+			);
+		}
 		document.addEventListener("click", handleClick);
 		return () => document.removeEventListener("click", handleClick);
 	});
 
-	return (
+	return show ? (
 		<>
+			{/* ======== Login Pop Up =========== */}
+			{!isLogin ? <PopUpLogin setLogin={setLogin} /> : <></>}
+			{/* ================================= */}
 			<div className={styles.HeaderMobile}>
 				<div className={styles.LogoArea}>
 					<img
@@ -66,7 +128,7 @@ const HeaderUser = ({
 				}`}
 			>
 				{organizerMode ? (
-					children
+					childrenExtra
 				) : (
 					<>
 						<a
@@ -107,18 +169,23 @@ const HeaderUser = ({
 					<div
 						className={styles.ProfileIcon}
 						style={{
-							backgroundImage:
-								"url(https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg)",
+							backgroundImage: `url("${
+								userData
+									? process.env.REACT_APP_BACKEND_URL + userData.photo
+									: ""
+							}")`,
 						}}
 					></div>
-					<div style={{ fontWeight: 600 }}>Riyan Satria</div>
+					<div style={{ fontWeight: 600 }}>
+						{userData ? userData.name : "Loading ..."}
+					</div>
 				</div>
 
 				<div className={`${styles.ProfileMenu} ${styles.ProfileMenuMobile}`}>
 					<a
 						href="/profile"
 						className={`${styles.ProfileMenuItem} ${
-							active === "profile-user" ? styles.ProfileMenuItemActive : ""
+							active === "profile" ? styles.ProfileMenuItemActive : ""
 						}`}
 					>
 						<BiUser />
@@ -127,7 +194,7 @@ const HeaderUser = ({
 					<a
 						href="/settings"
 						className={`${styles.ProfileMenuItem} ${
-							active === "settings-user" ? styles.ProfileMenuItemActive : ""
+							active === "settings" ? styles.ProfileMenuItemActive : ""
 						}`}
 					>
 						<BiCog />
@@ -150,7 +217,7 @@ const HeaderUser = ({
 						/>
 					</div>
 				)}
-				<div className={styles.Left}>Boost</div>
+				{/* <div className={styles.Left}>Boost</div> */}
 				<div className={styles.Right}>
 					<a
 						href="#"
@@ -172,8 +239,11 @@ const HeaderUser = ({
 						className={styles.ProfileIcon}
 						onClick={() => setProfileActive(!isProfileActive)}
 						style={{
-							backgroundImage:
-								"url(https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg)",
+							backgroundImage: `url("${
+								userData
+									? process.env.REACT_APP_BACKEND_URL + userData.photo
+									: ""
+							}")`,
 						}}
 					></div>
 				</div>
@@ -183,7 +253,7 @@ const HeaderUser = ({
 					<a
 						href="/profile"
 						className={`${styles.ProfileMenuItem} ${
-							active === "profile-user" ? styles.ProfileMenuItemActive : ""
+							active === "profile" ? styles.ProfileMenuItemActive : ""
 						}`}
 					>
 						<BiUser />
@@ -192,7 +262,7 @@ const HeaderUser = ({
 					<a
 						href="/settings"
 						className={`${styles.ProfileMenuItem} ${
-							active === "settings-user" ? styles.ProfileMenuItemActive : ""
+							active === "settings" ? styles.ProfileMenuItemActive : ""
 						}`}
 					>
 						<BiCog />
@@ -205,7 +275,10 @@ const HeaderUser = ({
 					</a>
 				</div>
 			)}
+			{children}
 		</>
+	) : (
+		<></>
 	);
 };
 

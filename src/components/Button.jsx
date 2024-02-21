@@ -13,6 +13,8 @@ const Button = ({
 	style = {},
 	classes = [],
 	center = false,
+	disabled = false,
+	refData,
 }) => {
 	const basicStyle = {
 		background: bgColor ? bgColor : config.primaryColor,
@@ -32,6 +34,8 @@ const Button = ({
 			style={{ ...basicStyle, ...style }}
 			onClick={fnOnClick}
 			type={typeBtn}
+			disabled={disabled}
+			ref={refData}
 		>
 			{icon ? (
 				<div id="icon" className={styles.Icon}>

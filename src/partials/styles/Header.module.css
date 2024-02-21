@@ -85,7 +85,7 @@
 .ProfileIcon {
 	height: 50px;
 	aspect-ratio: 1;
-	background-color: #ddd;
+	/* background-color: #ddd; */
 	border-radius: 8px;
 	cursor: pointer;
 	background-size: cover;

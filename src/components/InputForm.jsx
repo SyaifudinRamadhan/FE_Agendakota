@@ -12,6 +12,11 @@ const InputForm = ({
 	refData,
 	required = false,
 	readOnly = false,
+	hidePassBtn = true,
+	min = 0,
+	onFocus = () => {},
+	value,
+	onInput = () => {},
 }) => {
 	const [showPass, setShowPass] = useState(false);
 
@@ -34,16 +39,24 @@ const InputForm = ({
 				ref={refData}
 				required={required}
 				readOnly={readOnly}
+				onFocus={onFocus}
+				min={min}
+				onInput={onInput}
+				defaultValue={value}
 			/>
-			<Button
-				style={{ display: type === "password" ? "unset" : "none" }}
-				classes={styles.HidePassword}
-				bgColor={"white"}
-				borderColor={"white"}
-				textColor={"black"}
-				icon={<BiShow />}
-				fnOnClick={showPassFn}
-			/>
+			{hidePassBtn ? (
+				<Button
+					style={{ display: type === "password" ? "unset" : "none" }}
+					classes={styles.HidePassword}
+					bgColor={"white"}
+					borderColor={"white"}
+					textColor={"black"}
+					icon={<BiShow />}
+					fnOnClick={showPassFn}
+				/>
+			) : (
+				<></>
+			)}
 		</>
 	);
 };

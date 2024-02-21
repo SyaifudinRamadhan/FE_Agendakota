@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styles from "./styles/InputImage.module.css";
 import { BiImage, BiTrash } from "react-icons/bi";
 import Button from "./Button";
@@ -8,6 +8,7 @@ const InputImage = ({
 	defaultFile = null,
 	hiddenDelete = false,
 	style,
+	viewOnClick = false,
 }) => {
 	const [content, setContent] = useState(defaultFile);
 
@@ -16,14 +17,22 @@ const InputImage = ({
 	};
 
 	const handlePreview = (evt) => {
-		setContent(URL.createObjectURL(evt.target.files[0]));
-		console.log(evt.target.files[0]);
+		try {
+			setContent(URL.createObjectURL(evt.target.files[0]));
+			console.log(evt.target.files[0]);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const handleRemoveImage = () => {
 		setContent(null);
 		refData.current.value = null;
 	};
+
+	useEffect(() => {
+		setContent(defaultFile);
+	}, [defaultFile]);
 
 	return (
 		<div className={styles.InputImage} style={style}>
@@ -46,8 +55,15 @@ const InputImage = ({
 					src={content}
 					className={`${styles.PreviewImage} ${
 						hiddenDelete ? styles.PreviewImage100 : ""
-					}`}
+					} ${viewOnClick ? styles.Pointer : ""}`}
 					style={style}
+					onClick={
+						viewOnClick
+							? () => {
+									window.open(content, "_blank").focus();
+							  }
+							: () => {}
+					}
 				/>
 				{hiddenDelete ? (
 					<></>

@@ -134,9 +134,6 @@ const UserProfile = () => {
 	});
 	return (
 		<>
-			<HeaderUser active="profile-user" expand={true} />
-			<SidebarUser active={""} />
-
 			<PopUp
 				width="45%"
 				isActive={popUpActive}

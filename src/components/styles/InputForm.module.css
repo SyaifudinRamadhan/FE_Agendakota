@@ -13,16 +13,16 @@
 .InputForm[type="number"]:focus,
 .InputForm[type="password"]:focus {
 	outline-color: #fecadf;
-	box-shadow: #f59abf !important;
-	border: 1px solid #fae1eb !important;
+	box-shadow: #f59abf;
+	border: 1px solid #fae1eb;
 }
 
 input[type="text" i]:focus,
 input[type="number" i]:focus,
 input[type="password" i]:focus {
 	outline-color: #fecadf;
-	box-shadow: #f59abf !important;
-	border: 1px solid #fae1eb !important;
+	box-shadow: #f59abf;
+	border: 1px solid #fae1eb;
 }
 .HidePassword {
 	margin-top: -48px;

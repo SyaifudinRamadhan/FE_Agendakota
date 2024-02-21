@@ -16,118 +16,105 @@ import {
 import PopUp from "../../partials/PopUp";
 import Loading from "../../components/Loading";
 import InputForm from "../../components/InputForm";
+import CardProfile2 from "../../components/CardProfile2";
+import axios from "axios";
+import ErrorPage from "../../partials/ErrorPage";
 
-const OrganizerTeam = () => {
+const handleSuccess = (res) => {
+	return {
+		data: res.data,
+		status: res.status,
+	};
+};
+
+const handleError = (error) => {
+	console.log(error);
+	if (error.response === undefined) {
+		return {
+			data: { data: [error.message] },
+			status: 500,
+		};
+	} else {
+		return {
+			data: error.response,
+			status: error.response.status,
+		};
+	}
+};
+
+const loadData = async ({ orgId }) => {
+	try {
+		let res = await axios.get(
+			process.env.REACT_APP_BACKEND_URL + "/api/org/teams?org_id=" + orgId,
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const addTeam = async ({ orgId, email }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL + "/api/org/team/invite",
+			{
+				email: email,
+				org_id: orgId,
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const deleteMember = async ({ orgId, teamId }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL + "/api/org/team/delete",
+			{
+				team_id: teamId,
+				org_id: orgId,
+				_method: "DELETE",
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const OrganizerTeam = ({ organization, fnSetLogin, isLogin }) => {
 	const [orgSelected, setOrgSelected] = useState(null);
 	const [popUpActive, setPopUpActive] = useState(false);
 	const [popUpTitle, setPopUpTitle] = useState("");
 	const [popUpContent, setPopUpContent] = useState(<></>);
 	const [popUpLoading, setPopUPLoading] = useState(false);
+	const [teams, setTeams] = useState(null);
+	const [isLoading, setLoading] = useState(false);
+	const [errorLoad, setErrorState] = useState(false);
+	const [pausedProcess, setPausedProcess] = useState(null);
+	const [firstLoad, setFirstLoad] = useState(true);
 
 	const emailTarget = useRef(null);
-
-	const teams = [
-		{
-			id: "9a26ceca-2536-4d2e-bd76-04e51c7dc720",
-			org_id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-			user_id: "9a26b3ed-aa1f-45f2-b4b7-bf0649a8f466",
-			created_at: "2023-09-17T01:38:07.000000Z",
-			updated_at: "2023-09-17T01:38:07.000000Z",
-			user: {
-				id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-				f_name: "Ahmad",
-				l_name: "Syaifudin",
-				name: "ASR",
-				email: "syaifudinramadhan@gmail.com",
-				email_verified_at: null,
-				g_id: "112668041094238806306",
-				photo: "https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg",
-				is_active: "1",
-				phone: "088217466532",
-				linkedin: "-",
-				instagram: "-",
-				twitter: "-",
-				whatsapp: "-",
-				created_at: "2023-09-17T00:39:25.000000Z",
-				updated_at: "2023-09-17T00:59:07.000000Z",
-			},
-		},
-		{
-			id: "9a26ceca-2536-4d2e-bd76-04e51c7dc720",
-			org_id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-			user_id: "9a26b3ed-aa1f-45f2-b4b7-bf0649a8f466",
-			created_at: "2023-09-17T01:38:07.000000Z",
-			updated_at: "2023-09-17T01:38:07.000000Z",
-			user: {
-				id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-				f_name: "Ahmad",
-				l_name: "Syaifudin",
-				name: "ASR",
-				email: "syaifudinramadhan@gmail.com",
-				email_verified_at: null,
-				g_id: "112668041094238806306",
-				photo: "https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg",
-				is_active: "1",
-				phone: "088217466532",
-				linkedin: "-",
-				instagram: "-",
-				twitter: "-",
-				whatsapp: "-",
-				created_at: "2023-09-17T00:39:25.000000Z",
-				updated_at: "2023-09-17T00:59:07.000000Z",
-			},
-		},
-		{
-			id: "9a26ceca-2536-4d2e-bd76-04e51c7dc720",
-			org_id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-			user_id: "9a26b3ed-aa1f-45f2-b4b7-bf0649a8f466",
-			created_at: "2023-09-17T01:38:07.000000Z",
-			updated_at: "2023-09-17T01:38:07.000000Z",
-			user: {
-				id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-				f_name: "Ahmad",
-				l_name: "Syaifudin",
-				name: "ASR",
-				email: "syaifudinramadhan@gmail.com",
-				email_verified_at: null,
-				g_id: "112668041094238806306",
-				photo: "https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg",
-				is_active: "1",
-				phone: "088217466532",
-				linkedin: "-",
-				instagram: "-",
-				twitter: "-",
-				whatsapp: "-",
-				created_at: "2023-09-17T00:39:25.000000Z",
-				updated_at: "2023-09-17T00:59:07.000000Z",
-			},
-		},
-		{
-			id: "9a26ceca-2536-4d2e-bd76-04e51c7dc720",
-			org_id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-			user_id: "9a26b3ed-aa1f-45f2-b4b7-bf0649a8f466",
-			created_at: "2023-09-17T01:38:07.000000Z",
-			updated_at: "2023-09-17T01:38:07.000000Z",
-			user: {
-				id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-				f_name: "Ahmad",
-				l_name: "Syaifudin",
-				name: "ASR",
-				email: "syaifudinramadhan@gmail.com",
-				email_verified_at: null,
-				g_id: "112668041094238806306",
-				photo: "https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg",
-				is_active: "1",
-				phone: "088217466532",
-				linkedin: "-",
-				instagram: "-",
-				twitter: "-",
-				whatsapp: "-",
-				created_at: "2023-09-17T00:39:25.000000Z",
-				updated_at: "2023-09-17T00:59:07.000000Z",
-			},
-		},
-	];
 
 	const dummyLoad = () => {
 		return new Promise((resolve, reject) => {
@@ -170,66 +157,52 @@ const OrganizerTeam = () => {
 	};
 
 	const handleDelete = (id) => {
-		setPopUPLoading(true);
-		dummyLoad().then((res) => {
-			res
-				? setPopUpContent(
-						<>
-							<div className={styles2.PopUpText}>
-								Data anggota team berhasil dihapus
-							</div>
-							<BiCheckCircle color="green" className={styles2.IconPopUp} />
-						</>
-				  )
-				: setPopUpContent(
-						<>
-							<div className={styles2.PopUpText}>
-								Data gagal dihapus. Coba lagi !
-							</div>
-							<BiError className={styles2.IconPopUp} color="#CA0C64" />
-						</>
-				  );
-			setPopUPLoading(false);
-			// fn reload data teams
-			setTimeout(() => {
-				setPopUpContent(<></>);
-				setPopUpActive(false);
-			}, 3000);
+		setPopUpActive(false);
+		setLoading(true);
+		deleteMember({ orgId: orgSelected, teamId: id }).then((res) => {
+			if (res.status === 202) {
+				setTeams(teams.filter((team) => team.id !== id));
+				setPopUpContent(
+					<>
+						<div className={styles2.PopUpText}>
+							Data anggota team berhasil dihapus
+						</div>
+						<BiCheckCircle color="green" className={styles2.IconPopUp} />
+					</>
+				);
+				setFirstLoad(true);
+			} else if (res.status === 401) {
+				fnSetLogin(false);
+				setPopUpActive(true);
+				setPausedProcess("delete~!@!~" + id);
+			} else {
+				setPopUpContent(
+					<>
+						<div className={styles2.PopUpText}>
+							Data gagal dihapus. Coba lagi !
+						</div>
+						<BiError className={styles2.IconPopUp} color="#CA0C64" />
+					</>
+				);
+			}
+			setLoading(false);
+			if (res.status !== 401) {
+				setPopUpActive(true);
+				setTimeout(() => {
+					setPopUpActive(false);
+				}, 1000);
+			}
 		});
 	};
 
-	const handleOpenAdd = () => {
-		setPopUpContent(
-			<form onSubmit={handleAddMember}>
-				<div className={styles2.InputForm}>
-					<label>Email Tujuan :</label>
-					<InputForm
-						type={"text"}
-						placeholder={"Input alamat email temanmu !"}
-						refData={emailTarget}
-					/>
-				</div>
-				<div className={styles2.FormControl}>
-					<Button title={"Submit"} typeBtn="submit" center={true} />
-					<Button
-						title={"Batal"}
-						bgColor={"white"}
-						textColor={"rgb(202, 12, 100"}
-						center={true}
-						fnOnClick={handleCancel}
-					/>
-				</div>
-			</form>
-		);
-		setPopUpTitle("Tambah Anggota");
-		setPopUpActive(true);
-	};
-
-	const handleAddMember = () => {
+	const handleAddMember = (e) => {
+		if (e) {
+			e.preventDefault();
+		}
 		if (
-			!emailTarget.current.value ||
+			!emailTarget.current ||
 			emailTarget.current.value === "" ||
-			emailTarget.current.value === ""
+			emailTarget.current.value === " "
 		) {
 			setPopUpContent(
 				<>
@@ -239,140 +212,189 @@ const OrganizerTeam = () => {
 					<BiError className={styles2.IconPopUp} color="#CA0C64" />
 				</>
 			);
+			setPopUpActive(true);
 			setTimeout(() => {
-				handleOpenAdd();
-			}, 3000);
+				setPopUpActive(false);
+			}, 1000);
 		} else {
-			setPopUPLoading(true);
-			dummyLoad().then((res) => {
-				res
-					? setPopUpContent(
+			setLoading(true);
+			addTeam({ orgId: orgSelected, email: emailTarget.current.value }).then(
+				(res) => {
+					if (res.status === 202) {
+						setPopUpContent(
 							<>
 								<div className={styles2.PopUpText}>
-									Data anggota team berhasil ditambahkan
+									Undangan email berhasil dikirim !!!
 								</div>
 								<BiCheckCircle color="green" className={styles2.IconPopUp} />
 							</>
-					  )
-					: setPopUpContent(
+						);
+						emailTarget.current.value = "";
+					} else if (res.status === 401) {
+						fnSetLogin(false);
+						setPausedProcess("add-data");
+					} else if (res.status === 403) {
+						setPopUpContent(
 							<>
 								<div className={styles2.PopUpText}>
-									Data gagal ditambahkan. Coba lagi !
+									Email sudah terdaftar sebagai member di organisasimu !!!
 								</div>
 								<BiError className={styles2.IconPopUp} color="#CA0C64" />
 							</>
-					  );
-				setPopUPLoading(false);
-				// fn reload data teams
-				setTimeout(() => {
-					if (res) {
-						setPopUpContent(<></>);
-						setPopUpActive(false);
+						);
 					} else {
-						handleOpenAdd();
+						setPopUpContent(
+							<>
+								<div className={styles2.PopUpText}>
+									Undangan email gagal dikirim. Coba lagi !!!
+								</div>
+								<BiError className={styles2.IconPopUp} color="#CA0C64" />
+							</>
+						);
 					}
-				}, 3000);
-			});
+					setLoading(false);
+					if (res.status !== 401) {
+						setPopUpActive(true);
+						setTimeout(() => {
+							setPopUpActive(false);
+						}, 2000);
+					}
+				}
+			);
 		}
 	};
 
 	const handleCancel = () => {
-		setPopUpContent(<></>);
 		setPopUpActive(false);
 	};
 
 	useEffect(() => {
 		document.title = "Team - Agendakota";
-	});
+		if (organization.length === 0) {
+			setLoading(true);
+		} else if (firstLoad) {
+			setLoading(true);
+			loadData({ orgId: organization[0].id }).then((res) => {
+				if (res.status === 200) {
+					setTeams(res.data.teams);
+					setFirstLoad(false);
+				} else if (res.status === 401) {
+					fnSetLogin(false);
+				} else if (res.status !== 404) {
+					setErrorState(true);
+				} else {
+					setTeams([]);
+				}
+				setOrgSelected(organization[0].id);
+				setLoading(false);
+			});
+		}
+	}, [organization, firstLoad]);
+
+	useEffect(() => {
+		if (isLogin && pausedProcess) {
+			if (pausedProcess === "add-data") {
+				handleAddMember();
+			} else if (pausedProcess.split("~!@!~")[0] === "delete") {
+				handleDelete(pausedProcess.split("~!@!~")[1]);
+			}
+			setPausedProcess(null);
+		}
+	}, [isLogin, pausedProcess]);
+
 	return (
 		<>
 			<PopUp
 				isActive={popUpActive}
 				title={popUpTitle}
-				content={popUpLoading ? <Loading /> : popUpContent}
+				content={popUpContent}
 				setActiveFn={setPopUpActive}
 				width="45%"
 			/>
-			<HeaderOrganizer
-				active={"team"}
-				activeOrg={localStorage.getItem("active-org")}
-				orgSelected={orgSelected}
-				setOrgSelected={setOrgSelected}
-			/>
-			<SidebarOrganizer
-				active={"team"}
-				activeOrg={localStorage.getItem("active-org")}
-				orgSelected={orgSelected}
-				setOrgSelected={setOrgSelected}
-			/>
 			<div className="content organizer">
-				<h1 className={styles.Title}>Team</h1>
-				<div className={styles.Inline} style={{ marginTop: 20 }}>
-					{teams.length > 0 ? (
-						<>
-							<CardBasic
-								className={styles2.CardPlus}
-								customContent={
-									<div
-										className={styles2.ContentCardPlus}
-										onClick={handleOpenAdd}
-									>
-										<BiPlusCircle className={styles2.CardPlusIcon} />
-										<div className={styles2.CardPlusText}>
-											Tambah Anggota Tim Organizer
-										</div>
-									</div>
-								}
-							/>
-							{teams.map((team) => {
-								return (
-									<CardProfile
-										style={{ marginTop: "60px" }}
-										data={{
-											cover: team.user.photo,
-											title: team.user.name,
-											info: team.user.email,
-											desc: "Anggota dari tim organizer",
-										}}
-										customNavButton={
-											<>
-												<Button
-													title={"Hapus"}
-													center={true}
-													icon={<BiTrash />}
-													classes={styles2.DeleteCard}
-													fnOnClick={() => {
-														handleOpenDelete(team.id);
-													}}
-												/>
-											</>
-										}
+				{errorLoad ? (
+					<ErrorPage />
+				) : (
+					<>
+						<h1 className={styles.Title}>Team</h1>
+						<p className={styles.SubTitle}>
+							Add members to the organizers team where they can gain access to
+							managing and tracking the event
+						</p>
+						<form style={{ marginTop: "10px" }} onSubmit={handleAddMember}>
+							<div className={styles2.InputForm}>
+								<label>Email of invite</label>
+								<div
+									style={{
+										display: "flex",
+										flexDirection: "row",
+										gap: "10px",
+									}}
+								>
+									<InputForm
+										type={"email"}
+										placeholder={"Input alamat email temanmu !"}
+										refData={emailTarget}
+										style={{ width: "100%", maxWidth: "370px" }}
 									/>
-								);
-							})}
-						</>
-					) : (
-						<div className={styles.BlankData}>
-							<img
-								className={`${styles.IconBlank}`}
-								src="/images/blank_teams.png"
-								style={{ width: "unset", marginTop: "40px" }}
-							/>
-							<div className={styles.BlankTitle}>
-								Buat tim untuk organisasimu
+									<Button title={"Invite"} typeBtn="submit" center={true} />
+								</div>
 							</div>
-							<div className={styles.BlankDesc}>
-								Tap pada tombol ‘Tambah Angggota’ untuk menambah anggota baru
-							</div>
-							<Button
-								icon={<BiPlusCircle />}
-								title={"Tambah Anggota"}
-								style={{ width: "unset", margin: "auto" }}
-								fnOnClick={handleOpenAdd}
-							/>
+						</form>
+						<div className={styles.Inline} style={{ marginTop: 20 }}>
+							{isLoading ? (
+								<div
+									className={styles.BlankData}
+									style={{ marginTop: "140px" }}
+								>
+									<Loading />
+								</div>
+							) : teams && teams.length > 0 ? (
+								teams.map((team) => {
+									return (
+										<CardProfile2
+											style={{ marginTop: "60px" }}
+											data={{
+												cover:
+													process.env.REACT_APP_BACKEND_URL + team.user.photo,
+												title: team.user.name,
+												info: team.user.email,
+												desc: "Anggota dari tim organizer",
+											}}
+											customNavButton={
+												<>
+													<Button
+														title={"Hapus Member"}
+														center={true}
+														classes={styles2.DeleteCard}
+														fnOnClick={() => {
+															handleOpenDelete(team.id);
+														}}
+														style={{ width: "unset", margin: "auto" }}
+													/>
+												</>
+											}
+										/>
+									);
+								})
+							) : (
+								<div className={styles.BlankData}>
+									<img
+										className={`${styles.IconBlank}`}
+										src="/images/f2d838169942be81b70e17d60fc9f3c7.png"
+										style={{ width: "unset", marginTop: "40px" }}
+									/>
+									<div className={styles.BlankTitle}>
+										Yuk, Buat Team eventmu
+									</div>
+									<div className={styles.BlankDesc}>
+										Tambahkan member untuk membentuk team organizermu
+									</div>
+								</div>
+							)}
 						</div>
-					)}
-				</div>
+					</>
+				)}
 			</div>
 		</>
 	);

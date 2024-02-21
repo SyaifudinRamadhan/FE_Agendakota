@@ -1,17 +1,30 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import Header from "../partials/Header";
+import Register from "./Register";
 
-const PageRouter = () => {
+const PageRouter = ({ typeRouter }) => {
+	const [isLogin, setLogin] = useState(false);
+	const [userData, setUserData] = useState(null);
+
 	return (
-		<Routes>
-			<Route path="/" Component={Home} />
-			<Route path="/dashboard" Component={Dashboard} />
-			<Route path="/login" Component={Login} />
-			{/* <Route path='/register'/> */}
-		</Routes>
+		<Header
+			isLogin={isLogin}
+			setLogin={setLogin}
+			userData={userData}
+			setUserData={setUserData}
+			show={typeRouter === "basic" ? true : false}
+		>
+			<Routes>
+				<Route path="/" element={<Home />} />
+				{/* <Route path="/dashboard" Component={Dashboard} /> */}
+				<Route path="/auth-user" element={<Login isLogin={isLogin} />} />
+				<Route path="/register-user" element={<Register isLogin={isLogin} />} />
+			</Routes>
+		</Header>
 	);
 };
 

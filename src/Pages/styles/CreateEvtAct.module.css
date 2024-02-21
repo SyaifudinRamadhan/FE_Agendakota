@@ -1,0 +1,98 @@
+.MainContainer {
+	margin-top: 70px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+}
+.Title {
+	color: #2c2c2c;
+	font-family: Inter;
+	font-size: 24px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	margin-bottom: 16px;
+}
+.SubTitle {
+	color: #2c2c2c;
+	font-family: Inter;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	margin-bottom: 16px;
+}
+.ContentCard {
+	width: 100%;
+	margin-top: 44px;
+	justify-content: center;
+	display: flex;
+	flex-direction: row;
+	gap: 21px;
+}
+.CardBox {
+	position: relative;
+	width: 25%;
+	cursor: pointer;
+	box-shadow: 0 0 4px #63636394;
+	border-radius: 8px;
+}
+.Disabled {
+	cursor: unset !important;
+}
+.Badge {
+	position: absolute;
+	padding: 5px;
+	font-size: 15px;
+	color: white;
+	background-color: red;
+	border-radius: 0px 0px 8px 0px;
+}
+.CardContainer {
+	padding: 32px;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+.IconCard {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 16px;
+}
+.IconCard img {
+	width: 64px;
+}
+.TitleCard {
+	text-align: center;
+	color: #000;
+	font-family: Inter;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+}
+.OpenNote {
+	margin-top: 72px;
+	text-align: center;
+	color: #dd0064;
+	font-family: Inter;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+	cursor: pointer;
+	display: block;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media (max-width: 650px) {
+	.ContentCard {
+		flex-direction: column;
+	}
+	.CardBox {
+		width: 80%;
+		margin-left: 10%;
+	}
+}

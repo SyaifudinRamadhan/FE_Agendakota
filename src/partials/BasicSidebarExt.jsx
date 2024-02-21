@@ -13,21 +13,19 @@ import TextArea from "../components/TextArea";
 import Alert from "../components/Alert";
 import config from "../config";
 import { useNavigate } from "react-router-dom";
+import AddOrganization from "./AddOrganization";
 
 const BasicSidebarExt = ({
 	show = true,
 	active = null,
 	children,
-	organizers = [],
+	organizers,
+	setOrganizers,
+	setLogin,
 }) => {
 	const [isOrganizerAreaVisible, setOrganizerAreaVisible] = useState(false);
 	const [width, setWidth] = useState(window.innerWidth);
 	const [isPopUpAddOrg, setPopUpAddOrg] = useState(false);
-	const [isShowAlert, setShowAlert] = useState(false);
-	const orgName = useRef(null);
-	const orgType = useRef(null);
-	const interestEvt = useRef(null);
-	const desc = useRef(null);
 	const navigate = useNavigate();
 
 	const overlayClick = () => {
@@ -43,19 +41,7 @@ const BasicSidebarExt = ({
 
 	const handleOpenOrg = (orgId) => {
 		localStorage.setItem("active-org", orgId);
-		navigate("/organizer/events");
-	};
-
-	const onSubmit = (event) => {
-		if (
-			orgName.current.value === "" ||
-			orgType.current.value === "" ||
-			interestEvt.current.value === "" ||
-			desc.current.value === ""
-		) {
-			setShowAlert(true);
-		}
-		event.preventDefault();
+		window.location.replace("/organizer/events");
 	};
 
 	useEffect(() => {
@@ -66,7 +52,14 @@ const BasicSidebarExt = ({
 
 	return (
 		<>
-			<PopUp
+			<AddOrganization
+				isPopUpAddOrg={isPopUpAddOrg}
+				setPopUpAddOrg={setPopUpAddOrg}
+				organizers={organizers}
+				setOrganizers={setOrganizers}
+				setLogin={setLogin}
+			/>
+			{/* <PopUp
 				isActive={isPopUpAddOrg}
 				setActiveFn={setPopUpAddOrg}
 				width="40%"
@@ -131,7 +124,7 @@ const BasicSidebarExt = ({
 						</div>
 					</form>
 				}
-			/>
+			/> */}
 			{width > 992 && show ? (
 				<div id="sidebar" className={`${styles.Sidebar} ${styles2.SidebarExt}`}>
 					<div className={styles2.MainMenu}>
@@ -155,23 +148,26 @@ const BasicSidebarExt = ({
 						</div>
 						<Separator width="40px" margin="20px 0" />
 						<div className={styles.OrganizerArea} style={{ width: "40px" }}>
-							{organizers.map((org, num) => {
-								return (
-									<a
-										key={num}
-										href="/organizer/events"
-										className={styles.OrganizerItem}
-										onClick={() => {
-											handleOpenOrg(org.id);
-										}}
-									>
-										<div
-											className={styles.OrganizerLogo}
-											style={{ backgroundImage: `url("${org.photo}")` }}
-										></div>
-									</a>
-								);
-							})}
+							{organizers &&
+								organizers.map((org, num) => {
+									return (
+										<a
+											key={num}
+											href="/organizer/events"
+											className={styles.OrganizerItem}
+											onClick={() => {
+												handleOpenOrg(org.id);
+											}}
+										>
+											<div
+												className={styles.OrganizerLogo}
+												style={{
+													backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${org.photo}")`,
+												}}
+											></div>
+										</a>
+									);
+								})}
 							<div className={`${styles.OrganizerItem} ${styles2.AddOrg}`}>
 								<BiPlusCircle onClick={openPopUporg} size={"20px"} />
 							</div>
@@ -211,7 +207,7 @@ const BasicSidebarExt = ({
 								className={styles.OrganizerLogo}
 								onClick={showOrganizers}
 								style={{
-									backgroundImage: `url('https://s3-ap-southeast-1.amazonaws.com/loket-production-sg/images/organization/20230927233556_651459ec86c5a.jpg')`,
+									backgroundImage: `url("/images/Pattern-31.png")`,
 									borderRadius: 999,
 								}}
 							></div>
@@ -248,25 +244,28 @@ const BasicSidebarExt = ({
 						</div>
 
 						<div className={styles.OrganizerArea}>
-							{organizers.map((org, num) => {
-								return (
-									<a
-										key={num}
-										href="#"
-										className={styles.OrganizerItem}
-										onClick={() => {
-											handleOpenOrg(org.id);
-										}}
-									>
-										<div
-											className={styles.OrganizerLogo}
-											style={{ backgroundImage: `url("${org.photo}")` }}
-										></div>
-										<div className={styles.OrganizerName}>{org.name}</div>
-										<div className={styles.OrganizerLabel}>Pilih</div>
-									</a>
-								);
-							})}
+							{organizers &&
+								organizers.map((org, num) => {
+									return (
+										<a
+											key={num}
+											href="#"
+											className={styles.OrganizerItem}
+											onClick={() => {
+												handleOpenOrg(org.id);
+											}}
+										>
+											<div
+												className={styles.OrganizerLogo}
+												style={{
+													backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${org.photo}")`,
+												}}
+											></div>
+											<div className={styles.OrganizerName}>{org.name}</div>
+											<div className={styles.OrganizerLabel}>Pilih</div>
+										</a>
+									);
+								})}
 							<div className={`${styles.OrganizerItem} ${""}`}>
 								<Button
 									title={"Create Organizer"}

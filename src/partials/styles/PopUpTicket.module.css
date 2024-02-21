@@ -1,0 +1,289 @@
+.PopUpHeader {
+	margin-left: unset;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.PopUpContent {
+	margin-left: -12px;
+	margin-right: -12px;
+}
+.GroupTitle {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.GroupTitle svg {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+.InputTitle {
+	border: none;
+	outline: none;
+	box-shadow: none;
+	font-size: 20px;
+	font-weight: bold;
+}
+.MainContainer {
+	gap: 10px;
+}
+.ChipBox {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	margin-bottom: 30px;
+}
+.BlankTicket {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	justify-content: center;
+	text-align: center;
+	width: 100%;
+	margin-bottom: 35px;
+}
+.BlankTicket img {
+	width: 163px;
+	height: 163px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.Note {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	padding: 16px;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0px 1px 18.2px 0px rgba(0, 0, 0, 0.1);
+}
+.Note p {
+	color: color(display-p3 0.2854 0.2854 0.2854);
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+.Note svg {
+	width: 24px;
+	height: 24px;
+}
+.CmdField1 {
+	color: #1b1b1b;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+}
+.CmdField2 {
+	color: #ca0c64;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+	margin-left: auto;
+	cursor: pointer;
+}
+.FlatButtonBox {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	margin-top: 26px;
+}
+.ContentBody {
+	height: 330px;
+}
+.TicketsBox {
+	margin: -10px;
+	padding: 10px;
+	overflow: auto;
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+}
+.FooterBox {
+	margin-top: auto;
+}
+.TicketCard {
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.16);
+	display: flex;
+	padding: 16px 16px 16px 12px;
+	flex-direction: row;
+	align-items: flex-start;
+	gap: 12px;
+	align-self: stretch;
+	width: calc(33.33% - 6.7px);
+	position: relative;
+}
+.TicketCard img {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+.TicketDesc {
+	gap: 5px;
+	display: flex;
+	flex-direction: column;
+}
+.TicketDesc h5 {
+	color: #2c2c2c;
+	font-family: Inter;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	cursor: pointer;
+}
+.TicketDesc p {
+	color: #8b8b8b;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	display: inline-flex;
+}
+.TicketDesc svg {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.DeleteTicket {
+	position: absolute;
+	right: 10px;
+	color: #ca0c64;
+	font-size: 18px;
+	top: 10px;
+	cursor: pointer;
+}
+.TicketEditorContainer {
+	gap: 25px;
+	display: flex;
+	flex-direction: row;
+}
+.TicketSettingContainer {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+.EditorRight {
+	width: 100%;
+	gap: 14px;
+}
+.TitleInputImage {
+	font-weight: bold;
+}
+.SubTitleInputImage {
+	color: #6b6a6a;
+}
+.DateGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	box-shadow: 0px 0px 10px -5px #000000a6;
+	border-radius: 12px;
+}
+.TextSecondary {
+	color: rgb(108 108 108);
+}
+.BasicLabel {
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+.BottomContainer {
+	margin-top: 22px;
+	gap: 30px;
+}
+.SettingLabel {
+	display: flex;
+	width: 269px;
+	/* height: 43px; */
+	padding: 12px 12px 12px 0px;
+	align-items: flex-start;
+	gap: 6px;
+	color: #1b1b1b;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+}
+.SettingLabel p {
+	color: #8b8b8b;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+}
+.SettingField {
+	width: calc(100% - 279px);
+	display: flex;
+}
+.SettingField input,
+.SettingField label {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.Info {
+	display: flex;
+	padding: 12px;
+	gap: 10px;
+	align-self: stretch;
+	background: #f1f1f1;
+	border-radius: 12px;
+	color: #8b8b8b;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	margin-bottom: 26px;
+}
+.CustomForm {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+.SplitCustomForm {
+	width: 33.33%;
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	margin-bottom: 20px;
+	font-size: 14px;
+}
+.SplitCustomForm label,
+.SplitCustomForm input {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.Loading {
+	margin: auto;
+	margin-top: 40px;
+}
+
+@media (max-width: 992px) {
+	.TicketCard,
+	.SplitCustomForm {
+		width: 100%;
+	}
+	.TicketEditorContainer,
+	.CustomForm {
+		flex-direction: column;
+	}
+	.BottomContainer {
+		margin-top: 40px;
+	}
+}

@@ -1,0 +1,172 @@
+.DFlexRow {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.DFlexRow svg {
+	height: 24px;
+	width: 20px;
+}
+.FormTitle {
+	font-size: 24px;
+	font-weight: 700;
+	width: 100%;
+}
+.BtnBox {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	margin-left: auto;
+}
+.BtnBoxWrap {
+	display: none;
+	flex-direction: row;
+	gap: 10px;
+	justify-content: end;
+}
+.BtnTitle {
+	flex-wrap: nowrap;
+	display: flex;
+	flex-direction: row;
+	color: #a8a7a7;
+	font-weight: 400;
+}
+.Bold {
+	color: #000;
+	font-weight: bold;
+}
+
+.Split {
+	display: flex;
+	flex-direction: row;
+	gap: 35px;
+}
+.ColSplit2 {
+	width: 50%;
+	gap: 9px;
+}
+.CmdField1 {
+	color: #1b1b1b;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+}
+.CmdField2 {
+	color: #ca0c64;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+	margin-left: auto;
+	cursor: pointer;
+}
+.TitleInputImage {
+	font-weight: bold;
+}
+.SubTitleInputImage {
+	color: #6b6a6a;
+}
+.DateGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	box-shadow: 0px 0px 10px -5px #000000a6;
+	border-radius: 12px;
+}
+.TextSecondary {
+	color: rgb(108 108 108);
+}
+.BasicLabel {
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+.PopUpContent {
+	/* display: flex;
+	flex-direction: column; */
+	gap: 15px;
+}
+.AvailableDays {
+	display: flex;
+	flex-direction: row;
+	gap: 12px;
+	flex-wrap: wrap;
+	width: 100%;
+}
+.AvailableDaysCol {
+	width: calc(50% - 6px);
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+	border-radius: 8px;
+	box-shadow: 0px 2px 10px 0px #0000001a;
+	align-items: center;
+	opacity: 60%;
+	padding: 12px;
+}
+.AvailableDaysCol > * {
+	box-shadow: none;
+	border: none;
+	padding: 0;
+	height: unset;
+	outline: none;
+}
+.AvailableDaysCol:has(input[type="checkbox"]:checked) {
+	opacity: 1;
+}
+.Info {
+	display: flex;
+	flex-direction: row;
+	padding: 12px;
+	gap: 10px;
+	align-self: stretch;
+	align-items: center;
+	background: #f1f1f1;
+	border-radius: 12px;
+	color: #8b8b8b;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	margin: 0 12px 12px 12px;
+}
+.Info svg {
+	height: 24px;
+	width: 24px;
+}
+.ErrorPopUp {
+	text-align: center;
+	gap: 20px;
+}
+.ErrorPopUp svg {
+	color: #ca0c64;
+	width: 75px;
+	height: 75px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.ErrorPopUpFooter {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	justify-content: center;
+}
+@media (max-width: 772px) {
+	.BtnBox {
+		display: none;
+	}
+	.BtnBoxWrap {
+		display: flex;
+	}
+	.Split {
+		flex-direction: column;
+		gap: 10px;
+	}
+	.ColSplit2,
+	.AvailableDaysCol {
+		width: 100%;
+	}
+}

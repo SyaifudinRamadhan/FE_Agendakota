@@ -95,6 +95,46 @@ h4 {
 	top: auto;
 	bottom: 100%;
 }
+.no-border-outline-shadow {
+	border: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+	outline-color: #fff !important;
+}
+.bordered-focus {
+	outline-color: #fecadf;
+	box-shadow: #f59abf !important;
+	border: 1px solid #fae1eb !important;
+	font-family: "Inter";
+}
+.rdw-colorpicker-wrapper,
+.rdw-link-wrapper,
+.rdw-embedded-wrapper,
+.rdw-emoji-wrapper,
+.rdw-image-wrapper,
+.rdw-remove-wrapper {
+	display: none !important;
+}
+.rdw-editor-toolbar,
+.rdw-inline-wrapper,
+.rdw-block-wrapper,
+.rdw-fontsize-wrapper,
+.rdw-fontfamily-wrapper,
+.rdw-list-wrapper,
+.rdw-text-align-wrapper,
+.rdw-history-wrapper {
+	flex-direction: row;
+}
+.rdw-editor-wrapper {
+	box-sizing: content-box;
+	border: 1px solid #eaeaea;
+	border-radius: 8px;
+	box-shadow: 0 0 5px #ddd;
+	padding: 10px;
+}
+.ck.ck-editor .ck-editor__top .ck-sticky-panel .ck-toolbar {
+	z-index: unset !important;
+}
 /* Select:invalid{
   border-color: red !important;
 }
@@ -136,6 +176,9 @@ table td {
 	animation: var(--bs-spinner-animation-speed) linear infinite
 		var(--bs-spinner-animation-name);
 	animation: rotation 1s linear infinite;
+}
+.d-none {
+	display: none !important;
 }
 
 @media (max-width: 992px) {

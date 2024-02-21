@@ -1,19 +1,103 @@
-.BoxIconProfile{
-    display: flex;
-    width: 100%;
-    margin-bottom: 16px;
+/* Card profile 2 */
+.BoxCardProfile {
+	box-shadow: 0 0 3px 2px #eaeaea;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	width: 31%;
+	max-width: 31.8%;
+	flex-grow: 1;
+	white-space: wrap;
 }
-.IconProfile{
-    width: 80px;
-    height: 80px;
-    margin-bottom: -50px;
-    margin-left: auto;
-    margin-right: auto;
-    transform: translate(0px, -40px);
-    border: 1px solid rgb(246, 67, 144);
+
+.BoxCardContent {
+	padding: 16px;
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
 }
-.BoxButtonNav{
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
+
+.BoxIconProfile {
+	display: flex;
+	margin-bottom: 16px;
+}
+
+.TextBox {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	overflow: hidden;
+}
+
+.TextBox h5 {
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	text-wrap: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: inline;
+}
+
+.TextBox p {
+	color: #8b8b8b;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	text-wrap: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: inline;
+}
+
+.NavLayer {
+	position: absolute;
+	border-radius: 10px;
+	padding: 16px;
+	display: flex;
+	flex-direction: row;
+	opacity: 0;
+	background-color: #dddddd2a;
+}
+
+.NavLayer:hover {
+	opacity: 100%;
+}
+
+@media (max-width: 744px) {
+	.BoxCardProfile {
+		flex-basis: 100%;
+		max-width: 100%;
+	}
+}
+
+/* Card profile basic and card profile 2 */
+.IconProfile,
+.IconProfile2 {
+	width: 80px;
+	height: 80px;
+	margin-bottom: -50px;
+	margin-left: auto;
+	margin-right: auto;
+	transform: translate(0px, -40px);
+	border: 1px solid rgb(246, 67, 144);
+}
+.IconProfile2 {
+	margin-bottom: 0;
+	transform: unset;
+	margin-left: unset;
+	margin-bottom: unset;
+	width: 48px;
+	height: 48px;
+}
+.BoxButtonNav {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+}
+.BoxButtonNav2 {
+	position: absolute;
 }

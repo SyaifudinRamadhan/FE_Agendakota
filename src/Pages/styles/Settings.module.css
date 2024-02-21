@@ -1,5 +1,5 @@
 .ProfileLayout {
-	width: 80%;
+	width: 100%;
 }
 .PopupNotify {
 	display: flex;
@@ -16,8 +16,79 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+.Content {
+	background-color: #fff;
+	display: inline-flex;
+	padding: 24px;
+	border-radius: 24px;
+	width: calc(100% - 100px);
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 32px;
+	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+	/* right: 69px; */
+	margin-left: 30px;
+	margin-top: 240px;
+	position: absolute;
+	z-index: 1;
+}
+.ContentRow {
+	width: 100%;
+	display: flex !important;
+	flex-direction: row !important;
+}
+.GroupBox {
+	width: 100%;
+	gap: 20px;
+	display: flex;
+	flex-direction: column;
+}
+.Subtitle,
+.Subtitle2 {
+	padding: 8px 0px;
+	font-family: Inter;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	color: #8b8b8b;
+}
+.Subtitle2 {
+	font-size: 14px;
+	color: #000;
+	padding: 0px;
+}
+
+@media (max-width: 1350px) {
+	.Content {
+		margin-top: 150px;
+	}
+}
+@media (max-width: 992px) {
+	.Banner {
+		padding-left: 40px;
+	}
+	.Content {
+		right: 45px;
+		width: calc(100% - 90px);
+	}
+}
+
+@media (max-width: 882px) {
+	.ProfileIcon {
+		width: 100%;
+		display: flex;
+		align-items: center;
+	}
+}
+
 @media (max-width: 768px) {
 	.ProfileLayout {
 		width: 100%;
+	}
+}
+@media (max-width: 650px) {
+	.Content {
+		margin-top: 100px;
 	}
 }

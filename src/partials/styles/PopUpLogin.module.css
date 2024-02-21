@@ -1,0 +1,70 @@
+@keyframes showBgOverlay {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 100%;
+	}
+}
+
+@keyframes showPopUp {
+	from {
+		translate: 0px -300px;
+	}
+	to {
+		translate: 0px 0px;
+	}
+}
+
+.Wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1055;
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	outline: 0;
+	background-color: #0000006e;
+	animation: showBgOverlay 300ms;
+}
+
+.ModalDialog {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	display: flex;
+	padding: 12px;
+}
+
+.PopUpBox {
+	margin: auto;
+	/* width: 70%; */
+	border-radius: 10px;
+	background-color: #fff;
+	padding: 20px;
+	animation: showPopUp 300ms;
+}
+
+.Content {
+	padding: 12px;
+	margin: 0px 12px 12px 12px;
+}
+.Logo {
+	display: flex;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	width: 100%;
+}
+.Logo img {
+	width: 50%;
+	margin: auto;
+}
+
+@media (max-width: 992px) {
+	.PopUpBox {
+		width: 95% !important;
+	}
+}

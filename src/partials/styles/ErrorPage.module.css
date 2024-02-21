@@ -1,0 +1,33 @@
+.ErrorPage {
+	display: flex;
+	flex-direction: column;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	justify-content: center;
+	text-align: center;
+}
+.IconBlank {
+	width: 206px;
+	height: 206px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+}
+.Title {
+	color: #2c2c2c;
+	font-family: "Inter";
+	font-size: 24px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+	margin-bottom: 16px;
+}
+.SubTitle {
+	color: #8b8b8b;
+	font-family: Inter;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	margin-bottom: 66px;
+}

@@ -1,0 +1,50 @@
+.BoxInput {
+	display: flex;
+	flex-direction: row;
+	height: 45.6px;
+	padding: 12px;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 8px;
+	box-shadow: 0px 0px 10px -5px #000000a6;
+	gap: 10px;
+}
+.BoxInputRadio {
+	align-items: center;
+	justify-content: unset;
+}
+.InputCheckRadio {
+	width: 16px;
+	height: 16px;
+	padding: 2.329px 2.36px 2.671px 2.64px;
+}
+.InputCheckRadio:checked {
+	accent-color: #ca0c64;
+}
+.Label {
+	display: flex;
+	flex-direction: row;
+	gap: 6px;
+}
+.Label svg,
+.Label p,
+.Label div {
+	margin-bottom: auto;
+	margin-top: auto;
+}
+.Label svg {
+	width: 24px;
+	height: 24px;
+}
+.Label p,
+.Label div {
+	font-size: 14px;
+	white-space: nowrap;
+}
+.BoxInput input {
+	text-align: right;
+	border: none !important;
+	box-shadow: none !important;
+	outline-color: #fff !important;
+	border-radius: 8px;
+}

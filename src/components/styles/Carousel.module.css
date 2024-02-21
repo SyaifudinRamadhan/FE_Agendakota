@@ -1,82 +1,92 @@
-.CarouselBox{
-    width: 100%;
-    overflow: hidden;
+.CarouselBox {
+	width: 100%;
+	overflow: hidden;
 }
-.Carousel{
-    display: flex;
-    padding: 0;
-    overflow: visible;
-    transition-duration: 500ms;
+.Carousel {
+	display: flex;
+	padding: 0;
+	overflow: visible;
+	transition-duration: 500ms;
+	z-index: 999;
 }
-.CarouselInner{
-    list-style: none;
-    min-width: 100%;
+.CarouselInner {
+	list-style: none;
+	min-width: 100%;
 }
-.CarouselInner div{
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: block;
+.CarouselInner div {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: block;
 }
-.Carousel img{
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    object-position: center;
-    border: 0;
-    border-radius: 10px;
+.Carousel img {
+	width: 100%;
+	height: 160px;
+	object-fit: cover;
+	object-position: center;
+	border: 0;
+	border-radius: 10px;
+	cursor: pointer;
 }
-.Navigator{
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    margin-top: 20px;
-    left: 0;
-    width: 100%;
-    height: 312px;
-    padding: 50px;
+.Carousel .Skeleton {
+	width: 100%;
+	height: 160px;
+	object-fit: cover;
+	object-position: center;
+	border: 0;
+	border-radius: 10px;
 }
-
-.ButtonNav{
-    margin-top: auto;
-    margin-bottom: auto;
-    color: rgb(255, 255, 255);
-    background-color: black;
-    opacity: 0.3;
-    z-index: 999;
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
-    border-radius: 8px;
-    padding: 10px;
+.Navigator {
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	margin-top: 20px;
+	left: 0;
+	width: 100%;
+	height: 312px;
+	padding: 50px;
 }
 
-.ButtonNav:hover{
-    opacity: 0.9;
-    border: 1px solid #fff;
+.ButtonNav {
+	margin-top: auto;
+	margin-bottom: auto;
+	color: rgb(255, 255, 255);
+	background-color: black;
+	opacity: 0.3;
+	z-index: 999;
+	width: 50px;
+	height: 50px;
+	font-size: 30px;
+	border-radius: 8px;
+	padding: 10px;
 }
 
-.ButtonNavLeft{
-    margin-right: auto;
-    margin-left: 0px;
-    z-index: 999;
-}
-.ButtonNavRight{
-    margin-left: auto;
-    margin-right: 0px;
-    z-index: 999;
+.ButtonNav:hover {
+	opacity: 0.9;
+	border: 1px solid #fff;
 }
 
-.ButtonNavLeft svg{
-    transform: rotate(0deg);
+.ButtonNavLeft {
+	margin-right: auto;
+	margin-left: 0px;
+	z-index: 999;
+}
+.ButtonNavRight {
+	margin-left: auto;
+	margin-right: 0px;
+	z-index: 999;
 }
 
-.ButtonNavRight svg{
-    transform: rotate(180deg);
+.ButtonNavLeft svg {
+	transform: rotate(0deg);
 }
 
-@media (max-width: 760px){
-    .Carousel img{
-        height: 100px;
-    }
+.ButtonNavRight svg {
+	transform: rotate(180deg);
+}
+
+@media (max-width: 760px) {
+	.Carousel img {
+		height: 100px;
+	}
 }

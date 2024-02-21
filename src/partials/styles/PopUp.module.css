@@ -1,71 +1,93 @@
-.Wrapper{
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1055;
-    display: none;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    outline: 0;
-    background-color: #0000006e;
-    transition: 0.4s;
+@keyframes showBgOverlay {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 100%;
+	}
 }
 
-.ModalDialog{
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    padding: 12px;
+@keyframes showPopUp {
+	from {
+		translate: 0px -300px;
+	}
+	to {
+		translate: 0px 0px;
+	}
 }
 
-.PopUpBox{
-    margin: auto;
-    width: 70%;
-    border-radius: 10px;
-    background-color: #fff;
-    transition: 0.5s;
+.Wrapper {
+	position: fixed;
+	top: 71px;
+	left: 0;
+	z-index: 888;
+	display: none;
+	width: 100%;
+	height: calc(100% - 71px);
+	overflow-x: hidden;
+	overflow-y: auto;
+	outline: 0;
+	background-color: #0000006e;
+	animation: showBgOverlay 300ms;
 }
 
-.Header{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-top: 12px;
-    margin-bottom: 16px;
-    padding: 12px;
+.ModalDialog {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	display: flex;
+	padding: 12px;
 }
 
-.Header h5{
-    text-align: center;
-    font-family: 'Inter';
-    font-weight: 600;
-    font-size: 16px;
-    margin: 0;
-    margin-left: auto;
+.PopUpBox {
+	margin: auto;
+	width: 70%;
+	border-radius: 10px;
+	background-color: #fff;
+	animation: showPopUp 300ms;
 }
 
-.CloseButton{
-    margin-left: auto;
-    margin-right: 12px;
+.Header {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	margin-top: 12px;
+	margin-bottom: 16px;
+	padding: 12px;
 }
 
-.CloseButton svg{
-    width: 25px;
-    height: 25px;
-    color: #CA0C64;
-    opacity: 50%;
+.Header h5 {
+	text-align: center;
+	font-family: "Inter";
+	font-weight: 600;
+	font-size: 16px;
+	margin: 0;
+	margin-left: auto;
 }
 
-.Content{
-    padding: 12px;
-    margin: 0px 12px 12px 12px;
+.CloseButton {
+	margin-left: auto;
+	margin-right: 12px;
 }
 
-@media (max-width: 992px){
-    .PopUpBox{
-        width: 95% !important;
-    }
+.CloseButton svg {
+	width: 25px;
+	height: 25px;
+	color: #ca0c64;
+	opacity: 50%;
+}
+
+.Content {
+	padding: 12px;
+	margin: 0px 12px 12px 12px;
+}
+
+@media (max-width: 992px) {
+	.PopUpBox {
+		width: 95% !important;
+	}
+	.Wrapper {
+		bottom: 70px;
+		height: calc(100% - 141px);
+	}
 }

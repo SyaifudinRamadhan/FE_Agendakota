@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import OrganizerEvent from "./Event";
 import OrganizerBilling from "./Billing";
@@ -6,6 +6,11 @@ import OrganizerLegality from "./Legality";
 import OrganizerActivities from "./Activities";
 import OrganizerTeam from "./Team";
 import OrganizerSettings from "./Settings";
+import HeaderOrganizer from "../../partials/HeaderOrganizer";
+import SidebarOrganizer from "../../partials/SidebarOrganizer";
+import axios from "axios";
+import CreateEvtAct from "./CreateEvtAct";
+import EventDashboard from "./EventManagement/EventDashboard";
 
 const changeFitSidebarContent = () => {
 	let content = document.getElementsByClassName("content")[0];
@@ -17,19 +22,211 @@ const changeFitSidebarContent = () => {
 	}
 };
 
-const OrganizerRouter = () => {
+const loadOrganizers = async () => {
+	try {
+		let res = await axios.get(
+			process.env.REACT_APP_BACKEND_URL + "/api/org/user-orgs",
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return {
+			data: res.data,
+			status: res.status,
+		};
+	} catch (error) {
+		console.log(error);
+		if (error.response === undefined) {
+			return {
+				data: { data: [error.message] },
+				status: 500,
+			};
+		} else {
+			return {
+				data: error.response,
+				status: error.response.status,
+			};
+		}
+	}
+};
+
+const OrganizerRouter = ({ typeRouter }) => {
+	const [orgSelected, setOrgSelected] = useState(null);
+	const [isLogin, setLogin] = useState(true);
+	const [activePath, setActivePath] = useState(null);
+	const [organizers, setOrganizers] = useState(null);
+
 	useEffect(() => {
-		changeFitSidebarContent();
+		setActivePath(window.location.pathname.split("/organizer/")[1]);
+		if (typeRouter === "organizer") {
+			changeFitSidebarContent();
+			console.log("use effect type organizer");
+			if (!organizers && isLogin) {
+				loadOrganizers().then((res) => {
+					console.log(res);
+					if (res.status === 200) {
+						setOrganizers(res.data.organizations);
+					} else if (res.status === 401) {
+						setLogin(false);
+					} else {
+						setOrganizers([]);
+					}
+				});
+			}
+		}
 	});
 	return (
-		<Routes>
-			<Route path="/organizer/events" Component={OrganizerEvent} />
-			<Route path="/organizer/billing" Component={OrganizerBilling} />
-			<Route path="/organizer/legality" Component={OrganizerLegality} />
-			<Route path="/organizer/activities" Component={OrganizerActivities} />
-			<Route path="/organizer/team" Component={OrganizerTeam} />
-			<Route path="/organizer/settings" Component={OrganizerSettings} />
-		</Routes>
+		<HeaderOrganizer
+			active={activePath}
+			orgSelected={orgSelected}
+			setOrgSelected={setOrgSelected}
+			isLogin={isLogin}
+			setLogin={setLogin}
+			show={typeRouter === "organizer" ? true : false}
+			organizers={organizers}
+		>
+			<SidebarOrganizer
+				active={activePath}
+				orgSelected={orgSelected}
+				setOrgSelected={setOrgSelected}
+				setOrganizers={setOrganizers}
+				setLogin={setLogin}
+				organizers={organizers}
+			/>
+			<div className={`${!isLogin ? "d-none" : ""}`}>
+				<Routes>
+					{/* All route must have isLogin and setLogin fn for renew login state every loading data */}
+					<Route
+						path="/organizer/events"
+						element={
+							<OrganizerEvent
+								organization={
+									organizers && orgSelected
+										? organizers.filter((org) => org.id === orgSelected.value)
+										: []
+								}
+								fnSetLogin={setLogin}
+							/>
+						}
+					/>
+					<Route
+						path="/organizer/billing"
+						element={
+							<OrganizerBilling
+								organization={
+									organizers && orgSelected
+										? organizers.filter((org) => org.id === orgSelected.value)
+										: []
+								}
+								isLogin={isLogin}
+								fnSetLogin={setLogin}
+							/>
+						}
+					/>
+					<Route
+						path="/organizer/legality"
+						element={
+							<OrganizerLegality
+								organization={
+									organizers && orgSelected
+										? organizers.filter((org) => org.id === orgSelected.value)
+										: []
+								}
+								fnSetLogin={setLogin}
+								isLogin={isLogin}
+							/>
+						}
+					/>
+					<Route
+						path="/organizer/activities"
+						element={
+							<OrganizerActivities
+								organization={
+									organizers && orgSelected
+										? organizers.filter((org) => org.id === orgSelected.value)
+										: []
+								}
+								fnSetLogin={setLogin}
+							/>
+						}
+					/>
+					<Route
+						path="/organizer/team"
+						element={
+							<OrganizerTeam
+								fnSetLogin={setLogin}
+								isLogin={isLogin}
+								organization={
+									organizers && orgSelected
+										? organizers.filter((org) => org.id === orgSelected.value)
+										: []
+								}
+							/>
+						}
+					/>
+					<Route
+						path="/organizer/settings"
+						element={
+							<OrganizerSettings
+								organization={
+									organizers && orgSelected
+										? organizers.filter((org) => org.id === orgSelected.value)
+										: []
+								}
+								loginState={isLogin}
+								fnSetLogin={setLogin}
+							/>
+						}
+					/>
+					<Route
+						path="/organizer/create-event"
+						element={
+							<CreateEvtAct
+								organization={
+									organizers && orgSelected
+										? organizers.filter((org) => org.id === orgSelected.value)
+										: []
+								}
+								fnSetLogin={setLogin}
+								isLogin={isLogin}
+							/>
+						}
+					/>
+					<Route
+						path="/organizer/create-activity"
+						element={
+							<CreateEvtAct
+								organization={
+									organizers && orgSelected
+										? organizers.filter((org) => org.id === orgSelected.value)
+										: []
+								}
+								loginState={isLogin}
+								fnSetLogin={setLogin}
+								forEvent={false}
+							/>
+						}
+					/>
+					<Route
+						path="/organizer/event/dashboard"
+						element={
+							<EventDashboard
+								organization={
+									organizers && orgSelected
+										? organizers.filter((org) => org.id === orgSelected.value)
+										: []
+								}
+								isLogin={isLogin}
+								fnSetLogin={setLogin}
+							/>
+						}
+					/>
+				</Routes>
+			</div>
+		</HeaderOrganizer>
 	);
 };
 

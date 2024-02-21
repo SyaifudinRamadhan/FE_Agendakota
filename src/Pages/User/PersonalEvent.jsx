@@ -442,9 +442,6 @@ const PersonalEvent = () => {
 
 	return (
 		<>
-			<HeaderUser expand={true} />
-			<SidebarUser active={"personal-events"} />
-
 			<div className="content user">
 				<div className={styles.TitleArea}>
 					<h1 className={styles.Title}>Personal Events</h1>

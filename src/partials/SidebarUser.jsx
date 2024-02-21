@@ -3,26 +3,28 @@ import styles from "./styles/SidebarUser.module.css";
 import Icons from "../icons";
 import Separator from "../components/Separator";
 import AddCircle from "../icons/AddCircle";
-import { BiChevronDown, BiCircle, BiPlus, BiPlusCircle } from "react-icons/bi";
+import {
+	BiChevronDown,
+	BiCircle,
+	BiFilter,
+	BiGroup,
+	BiPlus,
+	BiPlusCircle,
+} from "react-icons/bi";
 import Button from "../components/Button";
-import PopUp from "./PopUp";
-import InputForm from "../components/InputForm";
-import Select from "react-select";
-import TextArea from "../components/TextArea";
-import Alert from "../components/Alert";
-import config from "../config";
 import { useNavigate } from "react-router-dom";
+import AddOrganization from "./AddOrganization";
 
-const SidebarUser = ({ show = true, active = null }) => {
+const SidebarUser = ({
+	show = true,
+	active = null,
+	organizers,
+	setOrganizers,
+	setLogin,
+}) => {
 	const [isOrganizerAreaVisible, setOrganizerAreaVisible] = useState(false);
 	const [width, setWidth] = useState(window.innerWidth);
 	const [isPopUpAddOrg, setPopUpAddOrg] = useState(false);
-	const [isShowAlert, setShowAlert] = useState(false);
-	const [organizers, setOrganizers] = useState([]);
-	const orgName = useRef(null);
-	const orgType = useRef(null);
-	const interestEvt = useRef(null);
-	const desc = useRef(null);
 	const navigate = useNavigate();
 
 	const overlayClick = () => {
@@ -38,19 +40,7 @@ const SidebarUser = ({ show = true, active = null }) => {
 
 	const handleOpenOrg = (orgId) => {
 		localStorage.setItem("active-org", orgId);
-		navigate("/organizer/events");
-	};
-
-	const onSubmit = (event) => {
-		if (
-			orgName.current.value === "" ||
-			orgType.current.value === "" ||
-			interestEvt.current.value === "" ||
-			desc.current.value === ""
-		) {
-			setShowAlert(true);
-		}
-		event.preventDefault();
+		window.location.replace("/organizer/events");
 	};
 
 	useEffect(() => {
@@ -58,122 +48,16 @@ const SidebarUser = ({ show = true, active = null }) => {
 			setWidth(window.innerWidth);
 			// console.log(window.innerWidth);
 		});
-		// Dummy data organizers
-		if (organizers.length === 0) {
-			setOrganizers([
-				{
-					id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-					user_id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-					type: "test2",
-					name: "Agendakota",
-					slug: "test-update",
-					photo: "/images/Pattern-32.png",
-					banner:
-						"/storage/org_banners/Screenshot 2023-09-14 220918_1694914178.png",
-					interest: "-",
-					email: "-",
-					linkedin: "-",
-					instagram: "-",
-					twitter: "-",
-					whatsapp: "-",
-					website: "-",
-					desc: "lorem ipsum dolor sit amet",
-					deleted: 0,
-					created_at: "2023-09-17T01:25:15.000000Z",
-					updated_at: "2023-09-17T01:30:44.000000Z",
-				},
-				{
-					id: "9a26ca30-4579-48fa-99fb-7d487ac702dd",
-					user_id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-					type: "test2",
-					name: "Agendakota 2",
-					slug: "test-update",
-					photo: "/images/Pattern-31.png",
-					banner:
-						"/storage/org_banners/Screenshot 2023-09-14 220918_1694914178.png",
-					interest: "-",
-					email: "-",
-					linkedin: "-",
-					instagram: "-",
-					twitter: "-",
-					whatsapp: "-",
-					website: "-",
-					desc: "lorem ipsum dolor sit amet",
-					deleted: 0,
-					created_at: "2023-09-17T01:25:15.000000Z",
-					updated_at: "2023-09-17T01:30:44.000000Z",
-				},
-			]);
-		}
 	});
 
 	return (
 		<>
-			<PopUp
-				isActive={isPopUpAddOrg}
-				setActiveFn={setPopUpAddOrg}
-				width="40%"
-				content={
-					<form style={{ display: "grid" }} onSubmit={onSubmit}>
-						<Alert
-							isShow={isShowAlert}
-							setShowFn={setShowAlert}
-							type={"danger"}
-							message={"Semua field wajib diisi !!!"}
-						/>
-						<label htmlFor="org_name" className={styles.FontLabel}>
-							Nama Organisasi
-						</label>
-						<InputForm
-							id={"org_name"}
-							type={"text"}
-							placeholder={"Nama Organisasi"}
-							refData={orgName}
-						/>
-						<label className={styles.FontLabel}>Tipe Organisasi</label>
-						<Select
-							options={config.orgTypeOptions}
-							className="basic-multi-select"
-							ref={orgType}
-							styles={{
-								option: (basicStyle, state) => ({
-									...basicStyle,
-									backgroundColor: state.isFocused ? "#fecadf" : "white",
-								}),
-							}}
-						/>
-						<label className={styles.FontLabel}>
-							Tertarik Mengadakan Event
-						</label>
-						<Select
-							isMulti
-							options={config.interestEventOptions}
-							ref={interestEvt}
-							className="basic-multi-select"
-							styles={{
-								option: (basicStyle, state) => ({
-									...basicStyle,
-									backgroundColor: state.isFocused ? "#fecadf" : "white",
-								}),
-							}}
-						/>
-						<label htmlFor="org_desc" className={styles.FontLabel}>
-							Deskripsi Organisasi
-						</label>
-						<TextArea
-							id={"org_desc"}
-							placehorder={"Deskripsi organisasi"}
-							refData={desc}
-						/>
-						<div style={{ display: "flex" }}>
-							<Button
-								title={"Simpan"}
-								typeBtn={"submit"}
-								style={{ margin: "auto", width: "100%" }}
-							/>
-						</div>
-					</form>
-				}
+			<AddOrganization
+				isPopUpAddOrg={isPopUpAddOrg}
+				setPopUpAddOrg={setPopUpAddOrg}
+				organizers={organizers}
+				setOrganizers={setOrganizers}
+				setLogin={setLogin}
 			/>
 			{width > 992 && show ? (
 				<div id="sidebar" className={styles.Sidebar}>
@@ -209,7 +93,10 @@ const SidebarUser = ({ show = true, active = null }) => {
                         <img src={Icons.Chat} alt="Messages" />
                         <div className={styles.MenuText}>Messages</div>
                     </a> */}
-						<a href="/create-event" style={{ textDecoration: "none" }}>
+						<a
+							href="/create-event"
+							style={{ textDecoration: "none", marginTop: "10px" }}
+						>
 							<Button
 								title={"Create Event"}
 								icon={<BiPlusCircle />}
@@ -220,48 +107,54 @@ const SidebarUser = ({ show = true, active = null }) => {
 
 					<Separator width="100%" margin="20px 0" />
 
-					{organizers.length == 0 ? (
-						<div className={styles.OrganizerBlank}>
-							<div className={styles.OrganizerBlankIcon} />
-							<div className={styles.OrganizerBlankText}>
-								Create Hybrid events attended by Millions
+					{organizers ? (
+						organizers.length == 0 ? (
+							<div className={styles.OrganizerBlank}>
+								<div className={styles.OrganizerBlankIcon} />
+								<div className={styles.OrganizerBlankText}>
+									Create Hybrid events attended by Millions
+								</div>
+								<Button title={"Create Organizer"} fnOnClick={openPopUporg} />
 							</div>
-							<Button title={"Create Organizer"} fnOnClick={openPopUporg} />
-						</div>
-					) : (
-						<>
-							<div
-								className={styles.MenuText}
-								style={{ color: "#aaa", fontWeight: 700, fontSize: 12 }}
-							>
-								ORGANIZATIONS
-							</div>
-							<div className={styles.OrganizerArea}>
-								{organizers.map((org) => {
-									return (
-										<a
-											href="/organizer/events"
-											className={styles.OrganizerItem}
-											onClick={() => {
-												handleOpenOrg(org.id);
-											}}
-										>
-											<div
-												className={styles.OrganizerLogo}
-												style={{ backgroundImage: `url("${org.photo}")` }}
-											></div>
-											<div className={styles.OrganizerName}>{org.name}</div>
-											{/* <div className={styles.OrganizerLabel}>Baru</div> */}
-										</a>
-									);
-								})}
-							</div>
+						) : (
+							<>
+								<div
+									className={styles.MenuText}
+									style={{ color: "#aaa", fontWeight: 700, fontSize: 12 }}
+								>
+									ORGANIZATIONS
+								</div>
+								<div className={styles.OrganizerArea}>
+									{organizers.map((org) => {
+										return (
+											<a
+												href="/organizer/events"
+												className={styles.OrganizerItem}
+												onClick={() => {
+													handleOpenOrg(org.id);
+												}}
+											>
+												<div
+													className={styles.OrganizerLogo}
+													style={{
+														backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${org.photo}")`,
+													}}
+												></div>
+												<div className={styles.OrganizerName}>{org.name}</div>
+												{/* <div className={styles.OrganizerLabel}>Baru</div> */}
+											</a>
+										);
+									})}
+								</div>
 
-							<div className={styles.OrganizerCreate} onClick={openPopUporg}>
-								<AddCircle />
-								Create Organization
-							</div>
-						</>
+								<div className={styles.OrganizerCreate} onClick={openPopUporg}>
+									<AddCircle />
+									Create Organization
+								</div>
+							</>
+						)
+					) : (
+						<></>
 					)}
 				</div>
 			) : (
@@ -310,7 +203,7 @@ const SidebarUser = ({ show = true, active = null }) => {
 								className={styles.OrganizerLogo}
 								onClick={() => showOrganizers()}
 								style={{
-									backgroundImage: `url('https://s3-ap-southeast-1.amazonaws.com/loket-production-sg/images/organization/20230927233556_651459ec86c5a.jpg')`,
+									backgroundImage: `url("/images/Pattern-31.png")`,
 									borderRadius: 999,
 								}}
 							></div>
@@ -347,31 +240,34 @@ const SidebarUser = ({ show = true, active = null }) => {
 						</div>
 
 						<div className={styles.OrganizerArea}>
-							{organizers.map((org) => {
-								return (
-									<a
-										href="#"
-										className={styles.OrganizerItem}
-										onClick={() => {
-											handleOpenOrg(org.id);
-										}}
-									>
-										<div
-											className={styles.OrganizerLogo}
-											style={{ backgroundImage: `url("${org.photo}")` }}
-										></div>
-										<div className={styles.OrganizerName}>{org.name}</div>
-										<div
-											className={styles.OrganizerLabel}
+							{organizers &&
+								organizers.map((org) => {
+									return (
+										<a
+											href="/organizer/events"
+											className={styles.OrganizerItem}
 											onClick={() => {
 												handleOpenOrg(org.id);
 											}}
 										>
-											Pilih
-										</div>
-									</a>
-								);
-							})}
+											<div
+												className={styles.OrganizerLogo}
+												style={{
+													backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${org.photo}")`,
+												}}
+											></div>
+											<div className={styles.OrganizerName}>{org.name}</div>
+											<div
+												className={styles.OrganizerLabel}
+												onClick={() => {
+													handleOpenOrg(org.id);
+												}}
+											>
+												Pilih
+											</div>
+										</a>
+									);
+								})}
 							<div className={`${styles.OrganizerItem} ${""}`}>
 								<Button
 									title={"Create Organizer"}

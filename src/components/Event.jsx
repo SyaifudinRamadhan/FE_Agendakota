@@ -64,72 +64,6 @@ const Event = ({
 		"Sabtu",
 	];
 
-	// const deleteFunction = async (eventId) => {
-	//   return fnDelete(eventId);
-	// };
-
-	// const deleteAction = (eventId) => {
-	//   setPopUpLoading(true);
-	//   // dummy loading
-	//   deleteFunction(eventId).then((res) => {
-	//     setPopUpLoading(false);
-	//     setPopUpContent(
-	//       res === false ? (
-	//         <>
-	//           <div>
-	//             Data {isActivities ? "Activities" : "Event"} gagal dihapus
-	//           </div>
-	//           <div className={styles.IconPopUp}>
-	//             <BiError color={"#CA0C64"} fontWeight={"600"} />
-	//           </div>
-	//         </>
-	//       ) : (
-	//         <>
-	//           <div>
-	//             Data {isActivities ? "Activities" : "Event"} telah dihapus
-	//           </div>
-	//           <div className={styles.IconPopUp}>
-	//             <BiCheckCircle color={"green"} fontWeight={"600"} />
-	//           </div>
-	//         </>
-	//       )
-	//     );
-	//     setTimeout(() => {
-	//       setPopUpActive(false);
-	//       setPopUpContent(<></>);
-	//       res === true && fnReload();
-	//     }, 1000);
-	//   });
-	// };
-
-	// const openDelete = () => {
-	//   setPopUpTitle(`Hapus ${isActivities ? "Activities" : "Event"}`);
-	//   setPopUpActive(true);
-	//   setPopUpContent(
-	//     <>
-	//       <div>
-	//         Apakah kamu ingin menghapus {isActivities ? "activities" : "event"}{" "}
-	//         ini ?
-	//       </div>
-	//       <div className={styles.IconPopUp}>
-	//         <BiQuestionMark color={"#CA0C64"} fontWeight={"600"} />
-	//       </div>
-	//       <div className={styles.PopupControl}>
-	//         <div className={styles.ControlLeft}>
-	//           <Button title={"Hapus"} fnOnClick={() => deleteAction(data.id)} />
-	//         </div>
-	//         <div className={styles.ControlRight}>
-	//           <Button
-	//             title={"Batal"}
-	//             style={{ backgroundColor: "white", color: "#CA0C64" }}
-	//             fnOnClick={cancelHandle}
-	//           />
-	//         </div>
-	//       </div>
-	//     </>
-	//   );
-	// };
-
 	const copyHandle = (url) => {
 		// process to copy
 		navigator.clipboard.writeText(url);
@@ -150,11 +84,6 @@ const Event = ({
 			setPopUpActive(false);
 		}, 1000);
 	};
-
-	// const cancelHandle = () => {
-	//   setPopUpActive(false);
-	//   setPopUpContent(<></>);
-	// };
 
 	useEffect(() => {
 		if (startDate === null && nowDate !== null) {
@@ -245,8 +174,14 @@ const Event = ({
 			/>
 
 			<div className={classNames.join(" ")} style={style}>
+				<div className="city-label" style={{ display: "none" }}>
+					{data.city.toLowerCase()}
+				</div>
+				<div className="name-label" style={{ display: "none" }}>
+					{data.name.toLowerCase()}
+				</div>
 				<img
-					src={data.logo}
+					src={process.env.REACT_APP_BACKEND_URL + data.logo}
 					alt={data.name}
 					className={styles.Cover}
 					style={
@@ -444,7 +379,7 @@ const Event = ({
 						</div>
 					) : (
 						<div className={styles.Organizer}>
-							<img src={data.org.photo} />
+							<img src={process.env.REACT_APP_BACKEND_URL + data.org.photo} />
 							<b>{data.org.name}</b>
 						</div>
 					)}

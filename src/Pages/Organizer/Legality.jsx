@@ -16,8 +16,133 @@ import InputImage from "../../components/InputImage";
 import Select from "react-select";
 import Alert from "../../components/Alert";
 import Loading from "../../components/Loading";
+import axios from "axios";
+import ErrorPage from "../../partials/ErrorPage";
+
+const handleSuccess = (res) => {
+	return {
+		data: res.data,
+		status: res.status,
+	};
+};
+
+const handleError = (error) => {
+	console.log(error);
+	if (error.response === undefined) {
+		return {
+			data: { data: [error.message] },
+			status: 500,
+		};
+	} else {
+		return {
+			data: error.response,
+			status: error.response.status,
+		};
+	}
+};
+
+const loadData = async ({ orgId }) => {
+	try {
+		let res = await axios.get(
+			process.env.REACT_APP_BACKEND_URL + "/api/org/" + orgId + "/org-legality",
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const addData = async ({
+	orgId,
+	type_legality,
+	pic_name,
+	nic_number,
+	nic_image,
+	tax_id_number,
+	tax_image,
+	company_name,
+	business_entity,
+}) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL +
+				"/api/org/" +
+				orgId +
+				"/org-legality/create",
+			{
+				type_legality: type_legality,
+				pic_name: pic_name,
+				nic_number: nic_number,
+				nic_image: nic_image.files[0],
+				tax_id_number: tax_id_number,
+				tax_image: tax_image.files[0],
+				company_name: company_name,
+				business_entity: business_entity,
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+					"Content-Type": "multipart/form-data",
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const updateData = async ({
+	orgId,
+	type_legality,
+	pic_name,
+	nic_number,
+	nic_image,
+	tax_id_number,
+	tax_image,
+	company_name,
+	business_entity,
+}) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL +
+				"/api/org/" +
+				orgId +
+				"/org-legality/update",
+			{
+				type_legality: type_legality,
+				pic_name: pic_name,
+				nic_number: nic_number,
+				nic_image: nic_image.files.length === 0 ? null : nic_image.files[0],
+				tax_id_number: tax_id_number,
+				tax_image: tax_image.files.length === 0 ? null : tax_image.files[0],
+				company_name: company_name,
+				business_entity: business_entity,
+				_method: "PUT",
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+					"Content-Type": "multipart/form-data",
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
 
 const FormLayout = ({
+	fnSetLoad = () => {},
 	fnSetPopUpActive = () => {},
 	fnSetIsLoading = () => {},
 	fieldLegality = {
@@ -44,13 +169,19 @@ const FormLayout = ({
 		isVerfied: null,
 	},
 	fnSetPopUpContent = () => {},
+	orgId,
+	fnSetLogin,
+	isLogin,
+	fnSetData,
 }) => {
 	const [inputBtn, setInputBtnValue] = useState("Individu");
 	const [alertDanger, setAlertDanger] = useState({
 		state: false,
+		variant: "danger",
 		content: "Semua field form ini wajib diisi !!!",
 	});
 	const [loop, setLoop] = useState(0);
+	const [pausedProcess, setPausedProcess] = useState(null);
 
 	const dummyLoad = () => {
 		return new Promise((resolve, reject) => {
@@ -61,77 +192,126 @@ const FormLayout = ({
 	};
 
 	const hanldeAlertDanger = (message) => {
-		setAlertDanger({ state: true, content: message });
+		setAlertDanger({ state: true, variant: "danger", content: message });
 		setTimeout(() => {
 			setAlertDanger({
 				state: false,
+				variant: "danger",
 				content: "Semua field form ini wajib diisi !!!",
 			});
 		}, 3000);
 	};
 
 	const handleResponse = (res) => {
-		res
-			? fnSetPopUpActive(false)
-			: setAlertDanger({
-					state: true,
-					content: "Data legalitas, gagal dibuat !!!",
-			  });
-		fnSetIsLoading(false);
-		if (!res) {
+		if (res.status === 201 || res.status === 202) {
+			fnSetData(res.data.data);
+			setAlertDanger({
+				state: true,
+				variant: "success",
+				content: "Data legalitas berhasil disimpan / diperbarui",
+			});
 			setTimeout(() => {
 				setAlertDanger({
 					state: false,
-					content: "Semua field form ini wajib diisi !!!",
+					variant: "success",
+					content: "Data legalitas berhasil disimpan / diperbarui",
 				});
 			}, 3000);
+		} else if (res.status === 401) {
+			fnSetLogin(false);
+			setPausedProcess("submit");
+			if (!isEdit) {
+				fnSetPopUpActive(true);
+			}
 		} else {
-			fnSetPopUpContent(<></>);
+			setAlertDanger({
+				state: true,
+				variant: "danger",
+				content: "Terjadi kesalahan. Mohon periksa ulang dan coba lagi !!!",
+			});
+			setTimeout(() => {
+				setAlertDanger({
+					state: false,
+					variant: "danger",
+					content: "Terjadi kesalahan. Mohon periksa ulang dan coba lagi !!!",
+				});
+				if (!isEdit) {
+					fnSetPopUpActive(true);
+				}
+			}, 3000);
 		}
+		fnSetIsLoading(false);
 	};
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
+		if (e) {
+			e.preventDefault();
+		}
 		if (
-			!fieldLegality.picName.current.value ||
+			!fieldLegality.picName.current ||
 			fieldLegality.picName.current.value === "" ||
 			fieldLegality.picName.current.value === " " ||
-			!fieldLegality.ktpStr.current.value ||
+			!fieldLegality.ktpStr.current ||
 			fieldLegality.ktpStr.current.value === "" ||
 			fieldLegality.ktpStr.current.value === " " ||
-			!fieldLegality.npwpStr.current.value ||
+			!fieldLegality.npwpStr.current ||
 			fieldLegality.npwpStr.current.value === "" ||
 			fieldLegality.npwpStr.current.value === " " ||
 			(isEdit === false &&
-				(!fieldLegality.ktpImage.current.value ||
-					fieldLegality.ktpImage.current.value === "" ||
-					fieldLegality.ktpImage.current.value === " " ||
-					!fieldLegality.npwpImage.current.value ||
-					fieldLegality.npwpImage.current.value === "" ||
-					fieldLegality.npwpImage.current.value === " "))
+				(!fieldLegality.ktpImage.current ||
+					fieldLegality.ktpImage.current.files.length === 0 ||
+					!fieldLegality.npwpImage.current ||
+					fieldLegality.npwpImage.current.files.length === 0))
 		) {
 			// set content to error
 			hanldeAlertDanger("Semua field form ini wajib diisi !!!");
+		} else if (
+			inputBtn === "Perusahaan" &&
+			(!fieldLegality.compName.current ||
+				fieldLegality.compName.current.value === "" ||
+				fieldLegality.compName.current.value === " " ||
+				!fieldLegality.compType.current ||
+				fieldLegality.compType.current.getValue().length === 0)
+		) {
+			hanldeAlertDanger("Semua field form ini wajib diisi !!!");
 		} else {
-			if (inputBtn === "Perusahaan") {
-				if (
-					!fieldLegality.compName.current.value ||
-					fieldLegality.compName.current.value === "" ||
-					fieldLegality.compName.current.value === " " ||
-					!fieldLegality.compType.current.value ||
-					fieldLegality.compType.current.value === "" ||
-					fieldLegality.compType.current.value === " "
-				) {
-					// set content to error
-					hanldeAlertDanger("Semua field form ini wajib diisi !!!");
-				} else {
-					fnSetIsLoading(true);
-					dummyLoad().then(handleResponse);
-				}
-			} else {
-				fnSetIsLoading(true);
-				dummyLoad().then(handleResponse);
-			}
+			fnSetIsLoading(true);
+			fnSetPopUpActive(false);
+			isEdit
+				? updateData({
+						orgId: orgId,
+						type_legality: inputBtn,
+						pic_name: fieldLegality.picName.current.value,
+						nic_number: fieldLegality.ktpStr.current.value,
+						nic_image: fieldLegality.ktpImage.current,
+						tax_id_number: fieldLegality.npwpStr.current.value,
+						tax_image: fieldLegality.npwpImage.current,
+						company_name:
+							inputBtn === "Perusahaan"
+								? fieldLegality.compName.current.value
+								: null,
+						business_entity:
+							inputBtn === "Perusahaan"
+								? fieldLegality.compType.current.getValue()[0].value
+								: null,
+				  }).then(handleResponse)
+				: addData({
+						orgId: orgId,
+						type_legality: inputBtn,
+						pic_name: fieldLegality.picName.current.value,
+						nic_number: fieldLegality.ktpStr.current.value,
+						nic_image: fieldLegality.ktpImage.current,
+						tax_id_number: fieldLegality.npwpStr.current.value,
+						tax_image: fieldLegality.npwpImage.current,
+						company_name:
+							inputBtn === "Perusahaan"
+								? fieldLegality.compName.current.value
+								: null,
+						business_entity:
+							inputBtn === "Perusahaan"
+								? fieldLegality.compType.current.getValue()[0].value
+								: null,
+				  }).then(handleResponse);
 		}
 	};
 
@@ -177,6 +357,13 @@ const FormLayout = ({
 		}
 	});
 
+	useEffect(() => {
+		if (pausedProcess && isLogin) {
+			handleSubmit();
+			setPausedProcess(null);
+		}
+	}, [isLogin, pausedProcess]);
+
 	return (
 		<form onSubmit={handleSubmit} className={styles2.FormLayout}>
 			{readOnly === false ? (
@@ -211,13 +398,8 @@ const FormLayout = ({
 				<></>
 			)}
 			<div className={styles2.AlertBox}>
-				{alertDanger.state ? (
-					<Alert variant="danger">{alertDanger.content}</Alert>
-				) : (
-					<></>
-				)}
 				<Alert
-					type="danger"
+					type={alertDanger.variant}
 					isShow={alertDanger.state}
 					setShowFn={() => {}}
 					message={alertDanger.content}
@@ -368,6 +550,7 @@ const FormLayout = ({
 							refData={fieldLegality.ktpImage}
 							defaultFile={defaultValue.ktpImage}
 							hiddenDelete={readOnly}
+							viewOnClick={true}
 						/>
 					</div>
 					<div className={styles2.FormPictureArea}>
@@ -382,6 +565,7 @@ const FormLayout = ({
 							refData={fieldLegality.npwpImage}
 							defaultFile={defaultValue.npwpImage}
 							hiddenDelete={readOnly}
+							viewOnClick={true}
 						/>
 					</div>
 				</div>
@@ -396,26 +580,15 @@ const FormLayout = ({
 	);
 };
 
-const OrganizerLegality = () => {
+const OrganizerLegality = ({ organization, fnSetLogin, isLogin }) => {
 	const [orgSelected, setOrgSelected] = useState("");
 	const [popUpActive, setPopUpActive] = useState(false);
 	const [popUpTitle, setPopUpTitle] = useState("");
 	const [popUpContent, setPopUpContent] = useState(<></>);
 	const [isLoading, setLoading] = useState(false);
-
-	const legalityData = {
-		picName: "sdgbfuydbfubds",
-		ktpStr: "gsdujsdbf",
-		ktpImage: "/images/certificate.png",
-		npwpStr: "ydyufshufh",
-		npwpImage: "/images/certificate.png",
-		compName: null,
-		compType: "Peseroan Terbatas (PT)",
-		type: "Perusahaan",
-		isVerfied: true,
-	};
-
-	// const legalityData = null;
+	const [legalityData, setData] = useState(null);
+	const [firstLoad, setFirstLoad] = useState(true);
+	const [errorState, setErrorState] = useState(false);
 
 	const fieldLegality = {
 		picName: useRef(null),
@@ -430,41 +603,49 @@ const OrganizerLegality = () => {
 	const handleOpenAdd = () => {
 		setPopUpContent(
 			<FormLayout
+				fnSetLoad={setFirstLoad}
 				fnSetIsLoading={setLoading}
 				fnSetPopUpActive={setPopUpActive}
 				fieldLegality={fieldLegality}
 				fnSetPopUpContent={setPopUpContent}
+				orgId={orgSelected}
+				fnSetLogin={fnSetLogin}
+				isLogin={isLogin}
+				fnSetData={setData}
 			/>
 		);
 		setPopUpActive(true);
 	};
 
-	// const handleOpenEdit = () => {
-	// 	setPopUpContent(
-	// 		<FormLayout
-	// 			fnSetIsLoading={setLoading}
-	// 			fnSetPopUpActive={setPopUpActive}
-	// 			fieldLegality={fieldLegality}
-	// 			defaultValue={legalityData}
-	// 			fnSetPopUpContent={setPopUpContent}
-	// 			isEdit={true}
-	// 		/>
-	// 	);
-	// 	setPopUpActive(true);
-	// };
-
 	useEffect(() => {
 		document.title = "Legality - Agendakota";
-	});
+		if (organization.length === 0) {
+			setLoading(true);
+		} else if (firstLoad) {
+			setLoading(true);
+			loadData({ orgId: organization[0].id }).then((res) => {
+				if (res.status === 200) {
+					console.log(res.data.data.legality_data);
+					setData(res.data.data.legality_data);
+					setFirstLoad(false);
+				} else if (res.status === 401) {
+					fnSetLogin(false);
+				} else {
+					setErrorState(true);
+				}
+				setLoading(false);
+			});
+			setOrgSelected(organization[0].id);
+			setPopUpContent(<></>);
+			// setLoop(loop + 1);
+		}
+	}, [organization, firstLoad]);
 	return (
 		<>
 			<PopUp
 				title={popUpTitle}
 				content={
 					<>
-						<div style={{ display: isLoading ? "unset" : "none" }}>
-							<Loading />
-						</div>
 						<div style={{ display: isLoading ? "none" : "unset" }}>
 							{popUpContent}
 						</div>
@@ -474,76 +655,86 @@ const OrganizerLegality = () => {
 				setActiveFn={setPopUpActive}
 				width="95%"
 			/>
-			<HeaderOrganizer
-				active={"legality"}
-				activeOrg={localStorage.getItem("active-org")}
-				orgSelected={orgSelected}
-				setOrgSelected={setOrgSelected}
-			/>
-			<SidebarOrganizer
-				active={"legality"}
-				activeOrg={localStorage.getItem("active-org")}
-				orgSelected={orgSelected}
-				setOrgSelected={setOrgSelected}
-			/>
 			<div className="content organizer">
-				<div className={styles2.FormSplitBox}>
-					{legalityData !== null ? (
-						<></>
-					) : (
-						<h1 className={styles.Title}>Legality</h1>
-					)}
-
-					{/* {legalityData !== null ? (
-						<Button
-							title={"Edit Data"}
-							classes={[styles2.FormButton]}
-							style={{
-								marginLeft: "auto",
-								width: "200px",
-							}}
-							fnOnClick={handleOpenEdit}
-						/>
-					) : (
-						<></>
-					)} */}
-				</div>
-				{legalityData !== null ? (
-					<div style={{ marginTop: "40px" }}>
-						<FormLayout
-							fnSetIsLoading={setLoading}
-							fnSetPopUpActive={setPopUpActive}
-							fieldLegality={fieldLegality}
-							defaultValue={legalityData}
-							fnSetPopUpContent={setPopUpContent}
-							isEdit={true}
-							cancelBtn={false}
-						/>
-					</div>
+				{errorState ? (
+					<ErrorPage />
 				) : (
 					<>
-						<div className={styles.BlankData}>
-							<img
-								className={`${styles.IconBlank}`}
-								src="/images/certificate.png"
-								style={{ width: "unset", marginTop: "40px" }}
-							/>
-							<div className={styles.BlankTitle}>
-								Buat data legalitas untuk organisasimu
+						<div
+							style={{
+								display: isLoading ? "unset" : "none",
+								margin: "auto",
+								marginTop: "150px",
+							}}
+						>
+							<Loading />
+						</div>
+						<div style={{ display: isLoading ? "none" : "unset" }}>
+							<div className={styles2.FormSplitBox}>
+								{legalityData !== null ? (
+									<></>
+								) : (
+									<h1 className={styles.Title}>Legality</h1>
+								)}
 							</div>
-							<div className={styles.BlankDesc}>
-								Kamu wajib membuat data legalitas untuk organisasimu agar event{" "}
-								<br />
-								yang kamu buat dapat diplubikasikan. Serta agar kamu bisa
-								melakukan <br />
-								pengajuan penarikan dana (withdraw) penjualan tiketmu.
-							</div>
-							<Button
-								icon={<BiPlusCircle />}
-								title={"Buat Legalitas"}
-								style={{ width: "unset", margin: "auto" }}
-								fnOnClick={handleOpenAdd}
-							/>
+							{legalityData !== null ? (
+								<div style={{ marginTop: "40px" }}>
+									<FormLayout
+										fnSetLoad={setFirstLoad}
+										fnSetIsLoading={setLoading}
+										fnSetPopUpActive={setPopUpActive}
+										fieldLegality={fieldLegality}
+										defaultValue={{
+											picName: legalityData.pic_name,
+											ktpStr: legalityData.pic_nic,
+											ktpImage:
+												process.env.REACT_APP_BACKEND_URL +
+												legalityData.pic_nic_image,
+											npwpStr: legalityData.tax_id_number,
+											npwpImage:
+												process.env.REACT_APP_BACKEND_URL +
+												legalityData.tax_image,
+											compName: legalityData.company_name,
+											compType: legalityData.business_entity,
+											type: legalityData.type_legality,
+											isVerfied: legalityData.status,
+										}}
+										fnSetPopUpContent={setPopUpContent}
+										isEdit={true}
+										cancelBtn={false}
+										orgId={orgSelected}
+										fnSetLogin={fnSetLogin}
+										fnSetData={setData}
+										isLogin={isLogin}
+									/>
+								</div>
+							) : (
+								<>
+									<div className={styles.BlankData}>
+										<img
+											className={`${styles.IconBlank}`}
+											src="/images/certificate.png"
+											style={{ width: "unset", marginTop: "40px" }}
+										/>
+										<div className={styles.BlankTitle}>
+											Buat data legalitas untuk organisasimu
+										</div>
+										<div className={styles.BlankDesc}>
+											Kamu wajib membuat data legalitas untuk organisasimu agar
+											event <br />
+											yang kamu buat dapat diplubikasikan. Serta agar kamu bisa
+											melakukan <br />
+											pengajuan penarikan dana (withdraw) penjualan tiketmu.
+										</div>
+										<Button
+											icon={<BiPlusCircle />}
+											title={"Buat Legalitas"}
+											style={{ width: "unset", margin: "auto" }}
+											fnOnClick={handleOpenAdd}
+										/>
+									</div>
+								</>
+							)}
 						</div>
 					</>
 				)}

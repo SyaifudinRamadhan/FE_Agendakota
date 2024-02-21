@@ -1,35 +1,40 @@
-.Card{
-    display: flex;
-    padding: 8px 8px 12px 8px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    border-radius: 10px;
-    background: #FFF;
-    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.16);
-    /* flex-basis: 31.8%; */
-    max-width: 31.8%; 
+.Card {
+	display: flex;
+	padding: 8px 8px 12px 8px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.16);
+	flex-basis: 31.8%;
+	/* max-width: 31.8%;  */
 }
-.Cover{
-    /* width: 100%; */
-    aspect-ratio: 1,010 / 1;
-    height: 260px;
-    border-radius: 8px;
-    object-fit: cover;
-    object-position: center;
-    margin-left: auto;
-    margin-right: auto;
+.Cover {
+	/* width: 100%; */
+	aspect-ratio: 1;
+	height: 260px;
+	border-radius: 8px;
+	object-fit: cover;
+	object-position: center;
+	margin-left: auto;
+	margin-right: auto;
 }
-.Title{
-    width: 100%;
-    color: #2C2C2C;
-    text-align: center;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 12px;
+.Title {
+	width: 100%;
+	color: #2c2c2c;
+	text-align: center;
+	font-family: Inter;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 12px;
+}
+.TitleSkeleton {
+	border-radius: 8px;
+	height: 25px;
+	width: 100%;
 }
