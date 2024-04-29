@@ -17,6 +17,7 @@ const InputForm = ({
 	onFocus = () => {},
 	value,
 	onInput = () => {},
+	onChange = () => {},
 }) => {
 	const [showPass, setShowPass] = useState(false);
 
@@ -42,6 +43,7 @@ const InputForm = ({
 				onFocus={onFocus}
 				min={min}
 				onInput={onInput}
+				onChange={onChange}
 				defaultValue={value}
 			/>
 			{hidePassBtn ? (

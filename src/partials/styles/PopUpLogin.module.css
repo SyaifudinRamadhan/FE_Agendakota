@@ -62,7 +62,32 @@
 	width: 50%;
 	margin: auto;
 }
-
+.InfoBox {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+	padding: 15px;
+	border-radius: 12px;
+	background-color: #eaeaea;
+	color: #888;
+	margin-bottom: 40px;
+}
+.InfoBox svg {
+	width: 20px;
+	height: 20px;
+}
+.InfoText {
+	width: calc(100% - 30px);
+}
+.RegisterButton {
+	width: 100%;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	color: blue;
+	cursor: pointer;
+	text-align: center;
+}
 @media (max-width: 992px) {
 	.PopUpBox {
 		width: 95% !important;

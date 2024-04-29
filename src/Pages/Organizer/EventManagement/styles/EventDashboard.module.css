@@ -337,7 +337,10 @@
 	text-align: left;
 	color: #8b8b8b;
 }
-.GraphBox {
+.GraphBox canvas {
+	width: 100% !important;
+	height: unset !important;
+	aspect-ratio: 2;
 }
 .BasicTable {
 	overflow-x: auto;
@@ -360,7 +363,7 @@
 	color: #8b8b8b;
 }
 .SearchBox {
-	width: calc(100% - 408px);
+	width: calc(100% - 175px);
 }
 .DownloadBox div,
 .DownloadBox label {
@@ -370,7 +373,90 @@
 	padding-top: 20px;
 	padding-bottom: 20px;
 }
-
+.QRBox {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+}
+.PreviewQR {
+	padding: 16px;
+	border: 1px solid #eaeaea;
+	border-radius: 8px;
+	/* aspect-ratio: 210 / 297;
+	height: 100%; */
+	width: 793.7007874px;
+	height: 1122.519685px;
+	display: flex;
+	flex-direction: column;
+}
+.PreviewQRContent {
+	padding: 20px;
+	width: 100%;
+	/* background: linear-gradient(317deg, #ffc7de61, transparent); */
+}
+.PreviewTitle {
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 50px;
+	text-align: center;
+}
+.Sponsor {
+	display: flex;
+	flex-direction: row;
+	gap: 15px;
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+.Sponsor img {
+	width: 120px;
+	margin-right: auto;
+}
+.Sponsor span {
+	margin-left: auto;
+}
+.Instruction {
+	margin-top: 30px;
+}
+.DangerZone {
+	padding: 10px;
+	background-color: rgba(255, 0, 0, 0.202);
+	border-radius: 8px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.DangerZoneTitle {
+	margin-right: auto;
+}
+.CopyBox {
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: row;
+	margin-left: -10px;
+	gap: 20px;
+}
+.CopyBox p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.InputGroup {
+	gap: 10px;
+	width: 100%;
+	text-align: left;
+	margin-bottom: 20px;
+}
+.InputGroup label {
+	margin-left: unset;
+	font-size: 14px;
+	font-weight: bold;
+}
+.InputGroup img {
+	width: 75%;
+	border-radius: 12px;
+}
 @media (max-width: 1123px) {
 	.TopInfo {
 		flex-direction: column;
@@ -381,7 +467,7 @@
 	}
 }
 @media (max-width: 1023px) {
-	.SearchBox {
+	/* .SearchBox {
 		width: 100%;
 	}
 	.SelectBox {
@@ -390,7 +476,7 @@
 	}
 	.DownloadBox {
 		width: calc(50% - 9px);
-	}
+	} */
 }
 @media (max-width: 992px) {
 	.TopInfo {
@@ -400,7 +486,7 @@
 	.RightInfo {
 		width: 50%;
 	}
-	.SearchBox {
+	/* .SearchBox {
 		width: calc(100% - 408px);
 	}
 	.SelectBox {
@@ -409,7 +495,7 @@
 	}
 	.DownloadBox {
 		width: unset;
-	}
+	} */
 }
 @media (max-width: 772px) {
 	.TopInfo {
@@ -419,7 +505,7 @@
 	.RightInfo {
 		width: 100%;
 	}
-	.SearchBox {
+	/* .SearchBox {
 		width: 100%;
 	}
 	.SelectBox {
@@ -428,7 +514,7 @@
 	}
 	.DownloadBox {
 		width: calc(50% - 9px);
-	}
+	} */
 }
 @media (max-width: 675px) {
 	.FeatureBox {

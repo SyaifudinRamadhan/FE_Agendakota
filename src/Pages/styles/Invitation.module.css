@@ -1,0 +1,172 @@
+.Subtitle {
+	font-family: Inter;
+	font-size: 18px;
+	font-weight: 700;
+	color: #2c2c2c;
+	margin-top: 34.5px;
+	margin-bottom: 26.5px;
+	margin-left: 10px;
+}
+.Blank {
+	margin-top: 150px;
+	gap: 20px;
+}
+.Badge {
+	position: absolute;
+	font-size: 13px;
+	font-weight: bold;
+	padding: 6px;
+	border-radius: 8px;
+	top: -7px;
+	right: -7px;
+}
+.Blank img {
+	margin-left: auto;
+	margin-right: auto;
+	width: 150px;
+	height: 150px;
+}
+.BlankDesc {
+	text-align: center;
+	font-weight: 400;
+	font-size: 18px;
+}
+.CardGroup {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 25px;
+}
+.InvitationCard {
+	border-radius: 16px;
+	padding: 10px;
+	box-shadow: 0 0 18px #eaeaea;
+	width: 100%;
+	max-width: 250px;
+	position: relative;
+}
+.Cover {
+	width: 100%;
+	aspect-ratio: 5 / 2;
+	border-radius: 12px;
+}
+.Title {
+	font-weight: 600;
+	font-size: 18px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+.Desc {
+	font-size: 13px;
+	overflow-wrap: anywhere;
+	margin-bottom: 10px;
+}
+.MoreBtn {
+	font-size: 13px;
+	color: blue;
+	cursor: pointer;
+	margin-bottom: 20px;
+}
+.BtnGroup {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	width: 100%;
+	border-top: 1px dashed #ddd;
+	padding-top: 10px;
+	/* width: calc(100% + 20px);
+	margin: -10px;
+	padding: 10px;
+	border-bottom-left-radius: 16px;
+	border-bottom-right-radius: 16px;
+	background-color: #ddd; */
+	/* margin-left: auto; */
+}
+.DetailCover {
+	width: 50%;
+	aspect-ratio: 5/2;
+	border-radius: 8px;
+}
+.Title {
+	margin-top: 20px;
+}
+.EventTime {
+	font-size: 14x;
+	margin-bottom: 20px;
+}
+.DetailOrigin {
+	margin-bottom: 10px;
+	margin-top: 10px;
+	gap: 10px;
+}
+.TicketItem {
+	width: 100%;
+	border-radius: 12px;
+	padding: 12px;
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	box-shadow: 0 0 11px 2px #ddd;
+	margin-top: 30px;
+	margin-bottom: 10px;
+	position: relative;
+}
+.TicketItem img {
+	width: 25%;
+	aspect-ratio: 1;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.TicketDesc {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.TicketName {
+	font-size: 16px;
+	font-weight: 600;
+}
+.TicketPrice {
+	font-size: 14px;
+	color: #ca0c64;
+}
+.TicketVisitDate {
+	font-size: 15px;
+}
+.AlertMessage {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	text-align: center;
+}
+.AlertMessage svg {
+	margin-left: auto;
+	margin-right: auto;
+	width: 80px;
+	height: 80px;
+}
+.AlertMessage button {
+	margin-left: auto;
+	margin-right: auto;
+}
+.DecorationBox {
+	position: absolute;
+	top: -364.94px;
+	right: 0;
+	z-index: -1;
+	overflow: hidden;
+}
+.Decoration {
+	width: 837.9px;
+	height: 837.9px;
+	/* top: -364.94px; */
+	/* left: 541.93px; */
+	transform: translate(364.94px, 54px);
+	background: radial-gradient(
+			43.61% 43.61% at 50% 50%,
+			rgba(221, 0, 99, 0.06) 0%,
+			rgba(221, 0, 100, 0) 100%
+		)
+		/* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+	/* radial-gradient(43.61% 43.61% at 50% 50%, color(display-p3 0.792 0.047 0.392 / 0.1) 0%, color(display-p3 0.792 0.047 0.392 / 0) 100%) warning: gradient uses a rotation that is not supported by CSS and may not behave as expected; */
+}

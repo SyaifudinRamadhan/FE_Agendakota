@@ -9,6 +9,8 @@ const InputImage2 = ({
 	hiddenDelete = false,
 	style,
 	coverStyle,
+	maxFile = 2048,
+	fnSetAlert = () => {},
 }) => {
 	const [content, setContent] = useState(defaultFile);
 
@@ -17,11 +19,20 @@ const InputImage2 = ({
 	};
 
 	const handlePreview = (evt) => {
-		try {
-			setContent(URL.createObjectURL(evt.target.files[0]));
-			console.log(evt.target.files[0]);
-		} catch (error) {
-			console.log(error);
+		if (evt.target.files[0].size > maxFile * 1024) {
+			fnSetAlert({
+				state: true,
+				type: "danger",
+				content: `Max input file ${maxFile / 1024} Mb`,
+			});
+			refData.current.value = null;
+		} else {
+			try {
+				setContent(URL.createObjectURL(evt.target.files[0]));
+				console.log(evt.target.files[0]);
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	};
 

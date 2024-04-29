@@ -1,0 +1,17 @@
+.AlertBox {
+	text-align: center;
+	gap: 20px;
+}
+.AlertBox svg {
+	width: 55px;
+	height: 55px;
+	color: #ca0c64;
+	margin-left: auto;
+	margin-right: auto;
+}
+.Split {
+	display: flex;
+	flex-direction: row;
+	gap: 15px;
+	margin-top: 25px;
+}

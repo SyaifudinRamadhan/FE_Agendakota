@@ -43,6 +43,7 @@ import ErrorPage from "./ErrorPage";
 import config from "../config";
 import { log } from "util";
 import { useNavigate } from "react-router-dom";
+import AddSelectOrgFront from "./AddSelectOrgFront";
 
 const handleSuccess = (res) => {
 	return {
@@ -131,6 +132,7 @@ const addData = async ({
 	daily_start_times,
 	breakdowns,
 	limit_reschedule,
+	allow_refund,
 }) => {
 	try {
 		console.log("start - ", daily_limit_times, daily_start_times);
@@ -171,6 +173,7 @@ const addData = async ({
 				daily_start_times,
 				breakdowns,
 				limit_reschedule,
+				allow_refund,
 			},
 			{
 				headers: {
@@ -375,6 +378,7 @@ const EditorAddEvtAct = ({
 	eventId = null,
 	isLogin,
 	fnSetLogin,
+	typeEditor = "inner",
 }) => {
 	const [isPopActive, setPopUpActive] = useState(false);
 	const [titlePopUp, setPopUpTitle] = useState("");
@@ -396,6 +400,9 @@ const EditorAddEvtAct = ({
 	const [savedEventId, setSavedEvtId] = useState(null);
 	const [orgId, setOrgId] = useState(selectedOrgId);
 	const [defImgCover, setDefImgCover] = useState(null);
+	// const [actionInFrontType, setActionInFrontType] = useState(null);
+	const [openOrganizerWindow, setOrganizerWindowState] = useState(false);
+	const [finalDataFrontType, setFinalDataFrontType] = useState(null);
 	const navigate = useNavigate();
 
 	// ***************** form data ****************************
@@ -421,7 +428,7 @@ const EditorAddEvtAct = ({
 
 	const [visbibilty, setDefVisbility] = useState(null);
 	const [category, setDefCategory] = useState(null);
-	const [topic, setDefTopic] = useState(null);
+	const [topic, setDefTopic] = useState([]);
 	const [city, setDefCity] = useState(null);
 	const [province, setDefProvince] = useState(null);
 	const [address, setAddress] = useState("");
@@ -435,6 +442,7 @@ const EditorAddEvtAct = ({
 		singleTrxs: null,
 		maxLimitRsc: -1,
 		globalSeatMap: null,
+		enableRefundReq: false,
 	});
 	const [orderForm, setOrderForm] = useState([]);
 	// ---------------------------
@@ -490,8 +498,7 @@ const EditorAddEvtAct = ({
 			// reuired for all (base useState)
 			visbibilty === "" ||
 			visbibilty === null ||
-			topic === "" ||
-			topic === null ||
+			topic.length === 0 ||
 			city === "" ||
 			city === null ||
 			province === "" ||
@@ -499,7 +506,7 @@ const EditorAddEvtAct = ({
 			address === "" ||
 			snk === "" ||
 			desc === "" ||
-			!orgId ||
+			(!orgId && typeEditor === "inner") ||
 			// required for only event type (non activities data)
 			((forEvtAct === "Onsite Event" ||
 				forEvtAct === "Online Event" ||
@@ -538,6 +545,128 @@ const EditorAddEvtAct = ({
 		}
 	};
 
+	const handleSavePubFrontType = (type) => {
+		let start = null;
+		let end = null;
+		if (
+			forEvtAct === "Online Event" ||
+			forEvtAct === "Onsite Event" ||
+			forEvtAct === "Hybrid Event"
+		) {
+			start = startDate.current.value;
+			end = endDate.current.value;
+		}
+		if (basicValidator()) {
+			// setActionInFrontType(type);
+			setOrganizerWindowState(true);
+			setFinalDataFrontType({
+				event: {
+					orgId: orgId,
+					// required field for all
+					name: title.current.value,
+					category:
+						forEvtAct === "Onsite Event" ||
+						forEvtAct === "Online Event" ||
+						forEvtAct === "Hybrid Event"
+							? category.value
+							: forEvtAct,
+					topics: topic.map((t) => t.value).join("~!^!~"),
+					logo: inputCover.current.files[0],
+					desc: desc,
+					snk: snk,
+					exe_type:
+						forEvtAct === "Online Event"
+							? "online"
+							: forEvtAct === "Hybrid Event"
+							? "hybrid"
+							: "offline",
+					location: address,
+					province: province.value,
+					city: city.value,
+					// date and time is only required for reguler event type
+					start_date:
+						forEvtAct === "Online Event" ||
+						forEvtAct === "Onsite Event" ||
+						forEvtAct === "Hybrid Event"
+							? start.toString().split("T")[0]
+							: null,
+					start_time:
+						forEvtAct === "Online Event" ||
+						forEvtAct === "Onsite Event" ||
+						forEvtAct === "Hybrid Event"
+							? start.toString().split("T")[1].split("Z")[0]
+							: null,
+					end_date:
+						forEvtAct === "Online Event" ||
+						forEvtAct === "Onsite Event" ||
+						forEvtAct === "Hybrid Event"
+							? end.toString().split("T")[0]
+							: null,
+					end_time:
+						forEvtAct === "Online Event" ||
+						forEvtAct === "Onsite Event" ||
+						forEvtAct === "Hybrid Event"
+							? end.toString().split("T")[1].split("Z")[0]
+							: null,
+					// required field for all
+					instagram: "-",
+					twitter: "-",
+					website: "-",
+					twn_url: "-",
+					// optional field for all
+					custom_fields: orderForm,
+					single_trx: ticketSettings.singleTrxs ? 1 : 0,
+					seat_map: ticketSettings.globalSeatMap,
+					// required field for all
+					visibility: visbibilty.value,
+					// optional data in other table (array, array, array, integer)
+					available_days: Object.entries(availableDayTime)
+						.filter(
+							(avldt) =>
+								avldt[1].day.current.checked === true &&
+								avldt[1].startTime.current.value !== "" &&
+								avldt[1].endTime.current.value !== ""
+						)
+						.map((avldt) => config.dayIndToEn[avldt[0]]),
+					daily_limit_times: Object.entries(availableDayTime)
+						.filter(
+							(avldt) =>
+								avldt[1].day.current.checked === true &&
+								avldt[1].startTime.current.value !== "" &&
+								avldt[1].endTime.current.value !== ""
+						)
+						.map((avldt) => avldt[1].endTime.current.value),
+					daily_start_times: Object.entries(availableDayTime)
+						.filter(
+							(avldt) =>
+								avldt[1].day.current.checked === true &&
+								avldt[1].startTime.current.value !== "" &&
+								avldt[1].endTime.current.value !== ""
+						)
+						.map((avldt) => avldt[1].startTime.current.value),
+					breakdowns: breakdowns,
+					limit_reschedule: ticketSettings.maxLimitRsc,
+					is_publish: type === "save" ? 0 : 1,
+					allow_refund: ticketSettings.enableRefundReq ? 1 : 0,
+				},
+				tickets: tickets.map((ticket) => ({
+					name: ticket.name,
+					desc: ticket.desc,
+					type_price: ticket.type_price,
+					price: ticket.price,
+					max_purchase: ticketSettings.limitPchs,
+					seat_map: ticket.seat_map,
+					enable_seat_number: ticket.seat_number == false ? false : true,
+					quantity: ticket.quantity,
+					start_date: ticket.start_date,
+					end_date: ticket.end_date,
+					cover: ticket.cover,
+					daily_limit_qty: ticket.limit_daily,
+				})),
+			});
+		}
+	};
+
 	const handleSave = (interuptProcess, savedEventId) => {
 		let start = null;
 		let end = null;
@@ -569,7 +698,7 @@ const EditorAddEvtAct = ({
 					desc: desc,
 					snk: snk,
 					exe_type:
-						forEvtAct === "Onsite Event"
+						forEvtAct === "Online Event"
 							? "online"
 							: forEvtAct === "Hybrid Event"
 							? "hybrid"
@@ -670,9 +799,11 @@ const EditorAddEvtAct = ({
 										content: "Data berhasil disimpan sebagai draft",
 									});
 									setInteruptProcess(null);
-									resetAllForm();
+									// resetAllForm();
 									localStorage.setItem("active-event", savedEventId);
-									window.location.href = "/organizer/event/dashboard";
+									setTimeout(() => {
+										window.location.href = "/organizer/event/dashboard";
+									}, 50);
 								} else if (res.status === 401) {
 									fnSetLogin(false);
 									setPausedProcess("ticket-1");
@@ -694,9 +825,11 @@ const EditorAddEvtAct = ({
 								type: "success",
 								content: "Data berhasil disimpan sebagai draft",
 							});
-							resetAllForm();
+							// resetAllForm();
 							localStorage.setItem("active-event", savedEventId);
-							window.location.href = "/organizer/event/dashboard";
+							setTimeout(() => {
+								window.location.href = "/organizer/event/dashboard";
+							}, 50);
 						}
 					} else if (res.status === 401) {
 						fnSetLogin(false);
@@ -730,7 +863,7 @@ const EditorAddEvtAct = ({
 					desc: desc,
 					snk: snk,
 					exe_type:
-						forEvtAct === "Onsite Event"
+						forEvtAct === "Online Event"
 							? "online"
 							: forEvtAct === "Hybrid Event"
 							? "hybrid"
@@ -801,6 +934,7 @@ const EditorAddEvtAct = ({
 						.map((avldt) => avldt[1].startTime.current.value),
 					breakdowns: breakdowns,
 					limit_reschedule: ticketSettings.maxLimitRsc,
+					allow_refund: ticketSettings.enableRefundReq ? 1 : 0,
 					is_publish: 0,
 				}).then((res) => {
 					if (res.status === 201) {
@@ -833,9 +967,11 @@ const EditorAddEvtAct = ({
 										type: "success",
 										content: "Data berhasil disimpan sebagai draft",
 									});
-									resetAllForm();
+									// resetAllForm();
 									localStorage.setItem("active-event", eventId);
-									window.location.href = "/organizer/event/dashboard";
+									setTimeout(() => {
+										window.location.href = "/organizer/event/dashboard";
+									}, 50);
 								} else if (res.status === 401) {
 									fnSetLogin(false);
 									setPausedProcess("ticket-1");
@@ -857,9 +993,11 @@ const EditorAddEvtAct = ({
 								type: "success",
 								content: "Data berhasil disimpan sebagai draft",
 							});
-							resetAllForm();
+							// resetAllForm();
 							localStorage.setItem("active-event", eventId);
-							window.location.href = "/organizer/event/dashboard";
+							setTimeout(() => {
+								window.location.href = "/organizer/event/dashboard";
+							}, 50);
 						}
 					} else if (res.status === 401) {
 						fnSetLogin(false);
@@ -909,7 +1047,7 @@ const EditorAddEvtAct = ({
 					desc: desc,
 					snk: snk,
 					exe_type:
-						forEvtAct === "Onsite Event"
+						forEvtAct === "Online Event"
 							? "online"
 							: forEvtAct === "Hybrid Event"
 							? "hybrid"
@@ -1012,9 +1150,11 @@ const EditorAddEvtAct = ({
 										content: "Data berhasil disimpan sebagai draft",
 									});
 									setInteruptProcess(null);
-									resetAllForm();
+									// resetAllForm();
 									localStorage.setItem("active-event", savedEventId);
-									window.location.href = "/organizer/event/dashboard";
+									setTimeout(() => {
+										window.location.href = "/organizer/event/dashboard";
+									}, 50);
 								} else if (res.status === 401) {
 									fnSetLogin(false);
 									setPausedProcess("ticket-2");
@@ -1036,9 +1176,11 @@ const EditorAddEvtAct = ({
 								type: "success",
 								content: "Data berhasil disimpan sebagai draft",
 							});
-							resetAllForm();
+							// resetAllForm();
 							localStorage.setItem("active-event", savedEventId);
-							window.location.href = "/organizer/event/dashboard";
+							setTimeout(() => {
+								window.location.href = "/organizer/event/dashboard";
+							}, 50);
 						}
 					} else if (res.status === 401) {
 						fnSetLogin(false);
@@ -1072,7 +1214,7 @@ const EditorAddEvtAct = ({
 					desc: desc,
 					snk: snk,
 					exe_type:
-						forEvtAct === "Onsite Event"
+						forEvtAct === "Online Event"
 							? "online"
 							: forEvtAct === "Hybrid Event"
 							? "hybrid"
@@ -1143,6 +1285,7 @@ const EditorAddEvtAct = ({
 						.map((avldt) => avldt[1].startTime.current.value),
 					breakdowns: breakdowns,
 					limit_reschedule: ticketSettings.maxLimitRsc,
+					allow_refund: ticketSettings.enableRefundReq ? 1 : 0,
 					is_publish: 1,
 				}).then((res) => {
 					if (res.status === 201) {
@@ -1176,9 +1319,11 @@ const EditorAddEvtAct = ({
 										type: "success",
 										content: "Data berhasil disimpan dan dipublish",
 									});
-									resetAllForm();
+									// resetAllForm();
 									localStorage.setItem("active-event", eventId);
-									window.location.href = "/organizer/event/dashboard";
+									setTimeout(() => {
+										window.location.href = "/organizer/event/dashboard";
+									}, 50);
 								} else if (res.status === 401) {
 									fnSetLogin(false);
 									setPausedProcess("ticket-2");
@@ -1200,9 +1345,11 @@ const EditorAddEvtAct = ({
 								type: "success",
 								content: "Data berhasil disimpan dan dipublish",
 							});
-							resetAllForm();
+							// resetAllForm();
 							localStorage.setItem("active-event", eventId);
-							window.location.href = "/organizer/event/dashboard";
+							setTimeout(() => {
+								window.location.href = "/organizer/event/dashboard";
+							}, 50);
 						}
 					} else if (res.status === 401) {
 						fnSetLogin(false);
@@ -1249,12 +1396,12 @@ const EditorAddEvtAct = ({
 				topics: topic.map((t) => t.value).join("~!^!~"),
 				logo:
 					inputCover.current.files.length > 0
-						? inputCover.current.filess[0]
+						? inputCover.current.files[0]
 						: null,
 				desc: desc,
 				snk: snk,
 				exe_type:
-					forEvtAct === "Onsite Event"
+					forEvtAct === "Online Event"
 						? "online"
 						: forEvtAct === "Hybrid Event"
 						? "hybrid"
@@ -1522,6 +1669,7 @@ const EditorAddEvtAct = ({
 						? eventData.available_reschedule.limit_time
 						: null,
 					globalSeatMap: null,
+					enableRefundReq: eventData.event.allow_refund,
 				});
 				setOrderForm(eventData.event.custom_fields);
 			} catch (error) {
@@ -1583,51 +1731,110 @@ const EditorAddEvtAct = ({
 	}, [province]);
 
 	return (
-		<div>
-			<PopUpTicket
-				isPopActive={isPopActive}
-				titlePopUp={titlePopUp}
-				setPopUpActive={setPopUpActive}
-				tickets={tickets}
-				ticketSetup={ticketSettings}
-				orderForm={orderForm}
-				fnSetOrderForm={setOrderForm}
-				forEvtAct={forEvtAct}
-				endEvent={endDate.current ? endDate.current.value : null}
-			/>
-			<PopUp2
-				isActive={isPopActive && titlePopUp !== "Tickets"}
-				setActiveFn={setPopUpActive}
-				titleHeader={
-					<h5
-						style={{
-							marginLeft: "unset",
-							marginRight: "auto",
-							marginTop: "auto",
-							marginBottom: "auto",
-						}}
-					>
-						{titlePopUp}
-					</h5>
-				}
-				closeBtnTitle={"Simpan"}
-				content={
-					<div className={styles.PopUpContent}>
-						<div
-							className={`${
-								titlePopUp === "Kategori dan Topik" ? "" : "d-none"
-							}`}
-							style={{ gap: 10 }}
+		<>
+			<div
+				className={`${
+					openOrganizerWindow && typeEditor != "inner" ? "" : "d-none"
+				}`}
+			>
+				<AddSelectOrgFront
+					isLogin={isLogin}
+					fnSetLogin={fnSetLogin}
+					eventData={finalDataFrontType}
+					fnCreateEvent={addData}
+					fnUpdateEvent={updateData}
+					fnCreateTickets={createTickets}
+				/>
+			</div>
+			<div
+				className={`${
+					openOrganizerWindow && typeEditor != "inner" ? "d-none" : ""
+				}`}
+			>
+				<PopUpTicket
+					isPopActive={isPopActive}
+					titlePopUp={titlePopUp}
+					setPopUpActive={setPopUpActive}
+					tickets={tickets}
+					ticketSetup={ticketSettings}
+					orderForm={orderForm}
+					fnSetOrderForm={setOrderForm}
+					forEvtAct={forEvtAct}
+					endEvent={endDate.current ? endDate.current.value : null}
+				/>
+				<PopUp2
+					isActive={isPopActive && titlePopUp !== "Tickets"}
+					setActiveFn={setPopUpActive}
+					titleHeader={
+						<h5
+							style={{
+								marginLeft: "unset",
+								marginRight: "auto",
+								marginTop: "auto",
+								marginBottom: "auto",
+							}}
 						>
-							<div>
-								<label className={styles.BasicLabel}>Kategori</label>
-								{forEvtAct === "Onsite Event" ||
-								forEvtAct === "Online Event" ||
-								forEvtAct === "Hybrid Event" ? (
+							{titlePopUp}
+						</h5>
+					}
+					closeBtnTitle={"Simpan"}
+					content={
+						<div className={styles.PopUpContent}>
+							<div
+								className={`${
+									titlePopUp === "Kategori dan Topik" ? "" : "d-none"
+								}`}
+								style={{ gap: 10 }}
+							>
+								<div>
+									<label className={styles.BasicLabel}>Kategori</label>
+									{forEvtAct === "Onsite Event" ||
+									forEvtAct === "Online Event" ||
+									forEvtAct === "Hybrid Event" ? (
+										<Select
+											options={categories ? categories : []}
+											className="basic-multi-select"
+											placeholder="Pilih Kaegori Eventmu"
+											styles={{
+												option: (basicStyle, state) => ({
+													...basicStyle,
+													backgroundColor: state.isFocused
+														? "#fecadf"
+														: "white",
+												}),
+												control: (basicStyle, state) => ({
+													...basicStyle,
+													// width: "100%",
+													// textAlign: "left",
+													// margin: "unset",
+													display: "flex",
+													flexDirection: "row",
+												}),
+												container: (basicStyle, state) => ({
+													...basicStyle,
+													width: "100%",
+													margin: "unset",
+													borderRadius: "8px",
+												}),
+											}}
+											// ref={category}
+											onChange={(e) => {
+												setDefCategory(e);
+											}}
+											value={category}
+										/>
+									) : (
+										<></>
+									)}
+								</div>
+								<div>
+									<label className={styles.BasicLabel}>Topik</label>
 									<Select
-										options={categories ? categories : []}
+										isMulti={true}
+										options={topics ? topics : []}
+										isOptionDisabled={() => topic.length >= 3}
 										className="basic-multi-select"
-										placeholder="Pilih Kaegori Eventmu"
+										placeholder="Pilih Topik / Sub Kategori"
 										styles={{
 											option: (basicStyle, state) => ({
 												...basicStyle,
@@ -1648,174 +1855,25 @@ const EditorAddEvtAct = ({
 												borderRadius: "8px",
 											}),
 										}}
-										// ref={category}
 										onChange={(e) => {
-											setDefCategory(e);
+											setDefTopic(e);
 										}}
-										value={category}
+										value={topic}
 									/>
-								) : (
-									<></>
-								)}
+								</div>
 							</div>
-							<div>
-								<label className={styles.BasicLabel}>Topik</label>
-								<Select
-									isMulti={true}
-									options={topics ? topics : []}
-									className="basic-multi-select"
-									placeholder="Pilih Topik / Sub Kategori"
-									styles={{
-										option: (basicStyle, state) => ({
-											...basicStyle,
-											backgroundColor: state.isFocused ? "#fecadf" : "white",
-										}),
-										control: (basicStyle, state) => ({
-											...basicStyle,
-											// width: "100%",
-											// textAlign: "left",
-											// margin: "unset",
-											display: "flex",
-											flexDirection: "row",
-										}),
-										container: (basicStyle, state) => ({
-											...basicStyle,
-											width: "100%",
-											margin: "unset",
-											borderRadius: "8px",
-										}),
-									}}
-									onChange={(e) => {
-										setDefTopic(e);
-									}}
-									value={topic}
-								/>
-							</div>
-						</div>
 
-						<div
-							className={`${
-								titlePopUp === "Syarat dan Ketentuan" ? "" : "d-none"
-							}`}
-						>
-							<CKEditor
-								editor={ClassicEditor}
-								data={snk}
-								onChange={(event, editor) => {
-									setSnk(editor.getData());
-								}}
-								config={{
-									toolbar: [
-										"heading",
-										"|",
-										"bold",
-										"italic",
-										"link",
-										"bulletedList",
-										"numberedList",
-										"blockQuote",
-									],
-									heading: {
-										options: [
-											{
-												model: "paragraph",
-												title: "Paragraph",
-												class: "ck-heading_paragraph",
-											},
-											{
-												model: "heading1",
-												view: "h1",
-												title: "Heading 1",
-												class: "ck-heading_heading1",
-											},
-											{
-												model: "heading2",
-												view: "h2",
-												title: "Heading 2",
-												class: "ck-heading_heading2",
-											},
-										],
-									},
-								}}
-							/>
-						</div>
-
-						<div
-							className={`${titlePopUp === "Lokasi Event" ? "" : "d-none"}`}
-							style={{ gap: 10 }}
-						>
-							<div>
-								<label className={styles.BasicLabel} htmlFor="province">
-									Provinsi
-								</label>
-								<Select
-									options={provinces ? provinces : []}
-									className="basic-multi-select"
-									placeholder={"Provinsi"}
-									styles={{
-										option: (basicStyle, state) => ({
-											...basicStyle,
-											backgroundColor: state.isFocused ? "#fecadf" : "white",
-										}),
-										control: (basicStyle, state) => ({
-											...basicStyle,
-											// width: "100%",
-											// textAlign: "left",
-											// margin: "unset",
-											display: "flex",
-											flexDirection: "row",
-										}),
-										container: (basicStyle, state) => ({
-											...basicStyle,
-											width: "100%",
-											margin: "unset",
-											borderRadius: "8px",
-										}),
-									}}
-									onChange={(e) => setDefProvince(e)}
-									value={province}
-								/>
-							</div>
-							<div>
-								<label className={styles.BasicLabel} htmlFor="city">
-									Kota
-								</label>
-								<Select
-									options={cities ? cities : []}
-									className="basic-multi-select"
-									placeholder={"Kota pelaksanaan"}
-									styles={{
-										option: (basicStyle, state) => ({
-											...basicStyle,
-											backgroundColor: state.isFocused ? "#fecadf" : "white",
-										}),
-										control: (basicStyle, state) => ({
-											...basicStyle,
-											// width: "100%",
-											// textAlign: "left",
-											// margin: "unset",
-											display: "flex",
-											flexDirection: "row",
-										}),
-										container: (basicStyle, state) => ({
-											...basicStyle,
-											width: "100%",
-											margin: "unset",
-											borderRadius: "8px",
-										}),
-									}}
-									onChange={(e) => setDefCity(e)}
-									value={city}
-								/>
-								{console.log(city)}
-							</div>
-							<div>
-								<label className={styles.BasicLabel} htmlFor="address">
-									Alamat Lengkap
-								</label>
+							<div
+								className={`${
+									titlePopUp === "Syarat dan Ketentuan" ? "" : "d-none"
+								}`}
+							>
 								<CKEditor
 									editor={ClassicEditor}
-									data={address}
+									data={snk}
+									onChange={(event, editor) => {
+										setSnk(editor.getData());
+									}}
 									config={{
 										toolbar: [
 											"heading",
@@ -1849,47 +1907,159 @@ const EditorAddEvtAct = ({
 											],
 										},
 									}}
-									onChange={(e, editor) => {
-										setAddress(editor.getData());
-									}}
 								/>
 							</div>
-						</div>
 
-						<div
-							className={`${
-								titlePopUp === "Waktu Operasional" ? "" : "d-none"
-							}`}
-							style={{ gap: 10 }}
-						>
-							<div className={styles.AvailableDays}>
-								{Object.entries(availableDayTime).map((refData) => (
-									<div className={styles.AvailableDaysCol}>
-										<InputCheckRadio
-											refData={refData[1].day}
-											type={"checkbox"}
-											label={refData[0]}
-										/>
-										<InputForm
-											style={{ marginLeft: "auto" }}
-											type={"time"}
-											refData={refData[1].startTime}
-											value={"07:00"}
-										/>{" "}
-										-{" "}
-										<InputForm
-											type={"time"}
-											refData={refData[1].endTime}
-											value={"23:59"}
-										/>
-									</div>
-								))}
+							<div
+								className={`${titlePopUp === "Lokasi Event" ? "" : "d-none"}`}
+								style={{ gap: 10 }}
+							>
+								<div>
+									<label className={styles.BasicLabel} htmlFor="province">
+										Provinsi
+									</label>
+									<Select
+										options={provinces ? provinces : []}
+										className="basic-multi-select"
+										placeholder={"Provinsi"}
+										styles={{
+											option: (basicStyle, state) => ({
+												...basicStyle,
+												backgroundColor: state.isFocused ? "#fecadf" : "white",
+											}),
+											control: (basicStyle, state) => ({
+												...basicStyle,
+												// width: "100%",
+												// textAlign: "left",
+												// margin: "unset",
+												display: "flex",
+												flexDirection: "row",
+											}),
+											container: (basicStyle, state) => ({
+												...basicStyle,
+												width: "100%",
+												margin: "unset",
+												borderRadius: "8px",
+											}),
+										}}
+										onChange={(e) => setDefProvince(e)}
+										value={province}
+									/>
+								</div>
+								<div>
+									<label className={styles.BasicLabel} htmlFor="city">
+										Kota
+									</label>
+									<Select
+										options={cities ? cities : []}
+										className="basic-multi-select"
+										placeholder={"Kota pelaksanaan"}
+										styles={{
+											option: (basicStyle, state) => ({
+												...basicStyle,
+												backgroundColor: state.isFocused ? "#fecadf" : "white",
+											}),
+											control: (basicStyle, state) => ({
+												...basicStyle,
+												// width: "100%",
+												// textAlign: "left",
+												// margin: "unset",
+												display: "flex",
+												flexDirection: "row",
+											}),
+											container: (basicStyle, state) => ({
+												...basicStyle,
+												width: "100%",
+												margin: "unset",
+												borderRadius: "8px",
+											}),
+										}}
+										onChange={(e) => setDefCity(e)}
+										value={city}
+									/>
+									{console.log(city)}
+								</div>
+								<div>
+									<label className={styles.BasicLabel} htmlFor="address">
+										Alamat Lengkap
+									</label>
+									<CKEditor
+										editor={ClassicEditor}
+										data={address}
+										config={{
+											toolbar: [
+												"heading",
+												"|",
+												"bold",
+												"italic",
+												"link",
+												"bulletedList",
+												"numberedList",
+												"blockQuote",
+											],
+											heading: {
+												options: [
+													{
+														model: "paragraph",
+														title: "Paragraph",
+														class: "ck-heading_paragraph",
+													},
+													{
+														model: "heading1",
+														view: "h1",
+														title: "Heading 1",
+														class: "ck-heading_heading1",
+													},
+													{
+														model: "heading2",
+														view: "h2",
+														title: "Heading 2",
+														class: "ck-heading_heading2",
+													},
+												],
+											},
+										}}
+										onChange={(e, editor) => {
+											setAddress(editor.getData());
+										}}
+									/>
+								</div>
+							</div>
+
+							<div
+								className={`${
+									titlePopUp === "Waktu Operasional" ? "" : "d-none"
+								}`}
+								style={{ gap: 10 }}
+							>
+								<div className={styles.AvailableDays}>
+									{Object.entries(availableDayTime).map((refData) => (
+										<div className={styles.AvailableDaysCol}>
+											<InputCheckRadio
+												refData={refData[1].day}
+												type={"checkbox"}
+												label={refData[0]}
+											/>
+											<InputForm
+												style={{ marginLeft: "auto" }}
+												type={"time"}
+												refData={refData[1].startTime}
+												value={"07:00"}
+											/>{" "}
+											-{" "}
+											<InputForm
+												type={"time"}
+												refData={refData[1].endTime}
+												value={"23:59"}
+											/>
+										</div>
+									))}
+								</div>
 							</div>
 						</div>
-					</div>
-				}
-			/>
-			{/* <PopUp
+					}
+				/>
+				{/* <PopUp
 				isActive={interuptProcess === "set-publish"}
 				title=""
 				width="40%"
@@ -1925,63 +2095,49 @@ const EditorAddEvtAct = ({
 					</div>
 				}
 			/> */}
-			<Alert
-				isShow={alert.state}
-				setShowFn={() => {}}
-				type={alert.type}
-				message={alert.content}
-				closeBtn={false}
-			/>
-			<div
-				className={`${loading ? "" : "d-none"}`}
-				style={{ marginTop: "100px" }}
-			>
-				<Loading />
-			</div>
-			<div className={`${errorLoad ? "" : "d-none"}`}>
-				<ErrorPage />
-			</div>
-			<form className={`${loading || errorLoad ? "d-none" : ""}`}>
-				<div className={styles.DFlexRow}>
-					<BiArrowBack
-						onClick={() => {
-							setForEvtAct(null);
-						}}
-						style={{ cursor: "pointer" }}
-					/>
-					<InputForm
-						type="text"
-						placeholder={
-							forEvtAct === "Onsite Event" ||
-							forEvtAct === "Online Event" ||
-							forEvtAct === "Hybrid Event"
-								? "Masukkan Nama Eventmu"
-								: "Judul Daily Activity Site"
-						}
-						className={styles.FormTitle}
-						style={{
-							border: "none",
-							outline: "none",
-							boxShadow: "none",
-						}}
-						refData={title}
-					/>
-					<div className={styles.BtnBox}>
-						{eventId ? (
-							<Button
-								bgColor={"#fff"}
-								borderColor={"#eaeaea"}
-								textColor={"#000"}
-								style={{ width: "unset" }}
-								title={
-									<div className={styles.BtnTitle}>
-										<div className={styles.Bold}>Simpan</div>
-									</div>
-								}
-								fnOnClick={handleUpdate}
-							/>
-						) : (
-							<>
+				<Alert
+					isShow={alert.state}
+					setShowFn={() => {}}
+					type={alert.type}
+					message={alert.content}
+					closeBtn={false}
+				/>
+				<div
+					className={`${loading ? "" : "d-none"}`}
+					style={{ marginTop: "100px" }}
+				>
+					<Loading />
+				</div>
+				<div className={`${errorLoad ? "" : "d-none"}`}>
+					<ErrorPage />
+				</div>
+				<form className={`${loading || errorLoad ? "d-none" : ""}`}>
+					<div className={styles.DFlexRow}>
+						<BiArrowBack
+							onClick={() => {
+								setForEvtAct(null);
+							}}
+							style={{ cursor: "pointer" }}
+						/>
+						<InputForm
+							type="text"
+							placeholder={
+								forEvtAct === "Onsite Event" ||
+								forEvtAct === "Online Event" ||
+								forEvtAct === "Hybrid Event"
+									? "Masukkan Nama Eventmu"
+									: "Judul Daily Activity Site"
+							}
+							className={styles.FormTitle}
+							style={{
+								border: "none",
+								outline: "none",
+								boxShadow: "none",
+							}}
+							refData={title}
+						/>
+						<div className={styles.BtnBox}>
+							{eventId ? (
 								<Button
 									bgColor={"#fff"}
 									borderColor={"#eaeaea"}
@@ -1989,69 +2145,235 @@ const EditorAddEvtAct = ({
 									style={{ width: "unset" }}
 									title={
 										<div className={styles.BtnTitle}>
-											<div className={styles.Bold}>Simpan</div>&nbsp;(Draft)
+											<div className={styles.Bold}>Simpan</div>
 										</div>
 									}
-									fnOnClick={() => {
-										handleSave(interuptProcess, savedEventId);
-									}}
+									fnOnClick={handleUpdate}
 								/>
-								<Button
-									title={"Publish"}
-									fnOnClick={() => {
-										handlePublish(interuptProcess, savedEventId);
-									}}
-								/>
-							</>
-						)}
+							) : (
+								<>
+									<Button
+										bgColor={"#fff"}
+										borderColor={"#eaeaea"}
+										textColor={"#000"}
+										style={{ width: "unset" }}
+										title={
+											<div className={styles.BtnTitle}>
+												<div className={styles.Bold}>Simpan</div>&nbsp;(Draft)
+											</div>
+										}
+										fnOnClick={() => {
+											if (typeEditor == "inner") {
+												handleSave(interuptProcess, savedEventId);
+											} else {
+												handleSavePubFrontType("save");
+											}
+										}}
+									/>
+									<Button
+										title={"Publish"}
+										fnOnClick={() => {
+											if (typeEditor == "inner") {
+												handlePublish(interuptProcess, savedEventId);
+											} else {
+												handleSavePubFrontType("publish");
+											}
+										}}
+									/>
+								</>
+							)}
+						</div>
 					</div>
-				</div>
-				<div className={styles.Split} style={{ marginTop: "61px" }}>
-					<div className={styles.ColSplit2}>
-						<InputImage4
-							style={{ aspectRatio: "5/2", height: "unset" }}
-							textMsg={
-								<div>
-									<div className={styles.TitleInputImage}>
-										Add Cover Picture
+					<div className={styles.Split} style={{ marginTop: "61px" }}>
+						<div className={styles.ColSplit2}>
+							<InputImage4
+								style={{ aspectRatio: "5/2", height: "unset" }}
+								textMsg={
+									<div>
+										<div className={styles.TitleInputImage}>
+											Add Cover Picture
+										</div>
+										<div className={styles.SubTitleInputImage}>
+											5:2 PNG or JPG Max 2 MB
+										</div>
 									</div>
-									<div className={styles.SubTitleInputImage}>
-										5:2 PNG or JPG Max 2 MB
-									</div>
-								</div>
-							}
-							refData={inputCover}
-							refDelBtn={delBtnImg}
-							defaultFile={defImgCover}
-						/>
-						<FieldBox
-							iconSvg={<BiFilter />}
-							label={
-								forEvtAct === "Onsite Event" ||
+								}
+								refData={inputCover}
+								refDelBtn={delBtnImg}
+								defaultFile={defImgCover}
+								fnSetAlert={setAlert}
+							/>
+							<FieldBox
+								iconSvg={<BiFilter />}
+								label={
+									forEvtAct === "Onsite Event" ||
+									forEvtAct === "Online Event" ||
+									forEvtAct === "Hybrid Event"
+										? "Kategori dan Topik"
+										: "Topic/ Sub Kategori"
+								}
+								style={{ marginTop: "10px" }}
+							>
+								{forEvtAct === "Onsite Event" ||
 								forEvtAct === "Online Event" ||
-								forEvtAct === "Hybrid Event"
-									? "Kategori dan Topik"
-									: "Topic/ Sub Kategori"
-							}
-							style={{ marginTop: "10px" }}
-						>
-							{forEvtAct === "Onsite Event" ||
-							forEvtAct === "Online Event" ||
-							forEvtAct === "Hybrid Event" ? (
+								forEvtAct === "Hybrid Event" ? (
+									<div
+										className={styles.CmdField2}
+										onClick={() => {
+											setPopUpActive(true);
+											setPopUpTitle("Kategori dan Topik");
+										}}
+									>
+										{category && topic ? "Lihat & Edit" : "Tambahkan"}
+									</div>
+								) : (
+									<Select
+										options={topics ? topics : []}
+										className="basic-multi-select"
+										isMulti
+										isOptionDisabled={() => topic.length >= 3}
+										styles={{
+											option: (basicStyle, state) => ({
+												...basicStyle,
+												backgroundColor: state.isFocused ? "#fecadf" : "white",
+											}),
+											control: (basicStyle, state) => ({
+												...basicStyle,
+												// width: "100%",
+												// textAlign: "left",
+												// margin: "unset",
+												display: "flex",
+												flexDirection: "row",
+												borderStyle: "none!important",
+												boxShadow: "none!important",
+												textAlign: "end",
+											}),
+											container: (basicStyle, state) => ({
+												...basicStyle,
+												width: "100%",
+												margin: "unset",
+												borderRadius: "8px",
+											}),
+										}}
+										onChange={(e) => {
+											setDefTopic(e);
+										}}
+										value={topic}
+									/>
+								)}
+							</FieldBox>
+							{console.log(topic.length >= 3)}
+							<FieldBox iconSvg={<BiBookOpen />} label={"Syarat & Ketentuan"}>
 								<div
 									className={styles.CmdField2}
 									onClick={() => {
 										setPopUpActive(true);
-										setPopUpTitle("Kategori dan Topik");
+										setPopUpTitle("Syarat dan Ketentuan");
 									}}
 								>
-									{category && topic ? "Lihat & Edit" : "Tambahkan"}
+									{snk === "" ? "Tambahkan" : "Lihat & Edit"}
+								</div>
+							</FieldBox>
+						</div>
+						<div className={styles.ColSplit2}>
+							{forEvtAct === "Onsite Event" ||
+							forEvtAct === "Online Event" ||
+							forEvtAct === "Hybrid Event" ? (
+								<div className={styles.DateGroup}>
+									<InputLabeled
+										type={"datetime-local"}
+										id={"start_date"}
+										placeholder={"Pilih tanggal & waktu"}
+										iconSvg={<BiCalendar />}
+										label={<p className={styles.TextSecondary}>Mulai</p>}
+										style={{ boxShadow: "none", outline: "none" }}
+										refData={startDate}
+									/>
+									<InputLabeled
+										type={"datetime-local"}
+										id={"end_date"}
+										placeholder={"Pilih tanggal & waktu"}
+										iconSvg={<BiCalendar />}
+										label={<p className={styles.TextSecondary}>Berakhir</p>}
+										style={{ boxShadow: "none", outline: "none" }}
+										refData={endDate}
+									/>
 								</div>
 							) : (
+								<div className={styles.AvailableDays}>
+									<div className={styles.DateGroup}>
+										<FieldBox
+											iconSvg={<BiCalendar />}
+											label={
+												<p className={styles.TextSecondary}>
+													Hari dan Jam Operasional
+												</p>
+											}
+											style={{ boxShadow: "none", outline: "none" }}
+										>
+											<div
+												className={styles.CmdField2}
+												onClick={() => {
+													setPopUpActive(true);
+													setPopUpTitle("Waktu Operasional");
+												}}
+											>
+												Atur Waktu
+											</div>
+										</FieldBox>
+										<div className={styles.Info}>
+											<div className={styles2.CmdField}>
+												<BiInfoCircle />
+											</div>
+
+											<p>
+												Pilih hari operasional untuk layanan / paketan /
+												produkmu dapat dipesan. Serta atur juga maksimal sampai
+												pukul berapa layanan / paketan / produkmu dapat dbeli
+												jika dipesan pada hari H (Bukan Pre-Order)
+											</p>
+										</div>
+									</div>
+								</div>
+							)}
+							{console.log(address)}
+							<FieldBox
+								iconSvg={<BiMapPin />}
+								label={
+									<p className={styles.TextSecondary}>
+										{address === ""
+											? "Tambahkan Lokasi Event"
+											: address.split("<p>").length <= 1
+											? address.slice(0, 18)
+											: address.split("<p>")[1].split("</p>")[0].split("")
+													.length > 22
+											? address
+													.split("<p>")[1]
+													.split("</p>")[0]
+													.split("")
+													.slice(0, 18)
+													.join("") + "..."
+											: address.split("<p>")[1].split("</p>")[0]}
+									</p>
+								}
+							>
+								<div
+									className={styles.CmdField2}
+									onClick={() => {
+										setPopUpActive(true);
+										setPopUpTitle("Lokasi Event");
+									}}
+								>
+									{address === "" ? "Tambahkan" : "Lihat & Edit"}
+								</div>
+							</FieldBox>
+							<FieldBox iconSvg={<BiLockOpen />} label={"Visibilitas"}>
 								<Select
-									options={topics ? topics : []}
+									options={[
+										{ label: "Publik", value: 1 },
+										{ label: "Privat", value: "0" },
+									]}
 									className="basic-multi-select"
-									isMulti
 									styles={{
 										option: (basicStyle, state) => ({
 											...basicStyle,
@@ -2076,241 +2398,101 @@ const EditorAddEvtAct = ({
 										}),
 									}}
 									onChange={(e) => {
-										setDefTopic(e);
+										setDefVisbility(e);
 									}}
-									value={topic}
+									value={visbibilty}
 								/>
-							)}
-						</FieldBox>
-						<FieldBox iconSvg={<BiBookOpen />} label={"Syarat & Ketentuan"}>
-							<div
-								className={styles.CmdField2}
-								onClick={() => {
-									setPopUpActive(true);
-									setPopUpTitle("Syarat dan Ketentuan");
-								}}
-							>
-								{snk === "" ? "Tambahkan" : "Lihat & Edit"}
-							</div>
-						</FieldBox>
-					</div>
-					<div className={styles.ColSplit2}>
-						{forEvtAct === "Onsite Event" ||
-						forEvtAct === "Online Event" ||
-						forEvtAct === "Hybrid Event" ? (
-							<div className={styles.DateGroup}>
-								<InputLabeled
-									type={"datetime-local"}
-									id={"start_date"}
-									placeholder={"Pilih tanggal & waktu"}
-									iconSvg={<BiCalendar />}
-									label={<p className={styles.TextSecondary}>Mulai</p>}
-									style={{ boxShadow: "none", outline: "none" }}
-									refData={startDate}
-								/>
-								<InputLabeled
-									type={"datetime-local"}
-									id={"end_date"}
-									placeholder={"Pilih tanggal & waktu"}
-									iconSvg={<BiCalendar />}
-									label={<p className={styles.TextSecondary}>Berakhir</p>}
-									style={{ boxShadow: "none", outline: "none" }}
-									refData={endDate}
-								/>
-							</div>
-						) : (
-							<div className={styles.AvailableDays}>
-								<div className={styles.DateGroup}>
-									<FieldBox
-										iconSvg={<BiCalendar />}
-										label={
-											<p className={styles.TextSecondary}>
-												Hari dan Jam Operasional
-											</p>
-										}
-										style={{ boxShadow: "none", outline: "none" }}
-									>
-										<div
-											className={styles.CmdField2}
-											onClick={() => {
-												setPopUpActive(true);
-												setPopUpTitle("Waktu Operasional");
-											}}
-										>
-											Atur Waktu
-										</div>
-									</FieldBox>
-									<div className={styles.Info}>
-										<div className={styles2.CmdField}>
-											<BiInfoCircle />
-										</div>
-
-										<p>
-											Pilih hari operasional untuk layanan / paketan / produkmu
-											dapat dipesan. Serta atur juga maksimal sampai pukul
-											berapa layanan / paketan / produkmu dapat dbeli jika
-											dipesan pada hari H (Bukan Pre-Order)
-										</p>
-									</div>
-								</div>
-							</div>
-						)}
-						{console.log(address)}
-						<FieldBox
-							iconSvg={<BiMapPin />}
-							label={
-								<p className={styles.TextSecondary}>
-									{address === ""
-										? "Tambahkan Lokasi Event"
-										: address.split("<p>").length <= 1
-										? address.slice(0, 18)
-										: address.split("<p>")[1].split("</p>")[0].split("")
-												.length > 22
-										? address
-												.split("<p>")[1]
-												.split("</p>")[0]
-												.split("")
-												.slice(0, 18)
-												.join("") + "..."
-										: address.split("<p>")[1].split("</p>")[0]}
-								</p>
-							}
-						>
-							<div
-								className={styles.CmdField2}
-								onClick={() => {
-									setPopUpActive(true);
-									setPopUpTitle("Lokasi Event");
-								}}
-							>
-								{address === "" ? "Tambahkan" : "Lihat & Edit"}
-							</div>
-						</FieldBox>
-						<FieldBox iconSvg={<BiLockOpen />} label={"Visibilitas"}>
-							<Select
-								options={[
-									{ label: "Publik", value: 1 },
-									{ label: "Privat", value: "0" },
-								]}
-								className="basic-multi-select"
-								styles={{
-									option: (basicStyle, state) => ({
-										...basicStyle,
-										backgroundColor: state.isFocused ? "#fecadf" : "white",
-									}),
-									control: (basicStyle, state) => ({
-										...basicStyle,
-										// width: "100%",
-										// textAlign: "left",
-										// margin: "unset",
-										display: "flex",
-										flexDirection: "row",
-										borderStyle: "none!important",
-										boxShadow: "none!important",
-										textAlign: "end",
-									}),
-									container: (basicStyle, state) => ({
-										...basicStyle,
-										width: "100%",
-										margin: "unset",
-										borderRadius: "8px",
-									}),
-								}}
-								onChange={(e) => {
-									setDefVisbility(e);
-								}}
-								value={visbibilty}
-							/>
-						</FieldBox>
-						{eventId ? (
-							<></>
-						) : (
-							<FieldBox
-								iconSvg={<BiCard />}
-								label={
-									<p>
-										{forEvtAct === "Onsite Event" ||
-										forEvtAct === "Online Event" ||
-										forEvtAct === "Hybrid Event"
-											? "Ticket"
-											: "Produk/Layanan"}
-									</p>
-								}
-							>
-								<div
-									className={styles.CmdField2}
-									onClick={() => {
-										setPopUpActive(true);
-										setPopUpTitle("Tickets");
-									}}
-								>
-									{tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
-								</div>
 							</FieldBox>
-						)}
+							{eventId ? (
+								<></>
+							) : (
+								<FieldBox
+									iconSvg={<BiCard />}
+									label={
+										<p>
+											{forEvtAct === "Onsite Event" ||
+											forEvtAct === "Online Event" ||
+											forEvtAct === "Hybrid Event"
+												? "Ticket"
+												: "Produk/Layanan"}
+										</p>
+									}
+								>
+									<div
+										className={styles.CmdField2}
+										onClick={() => {
+											setPopUpActive(true);
+											setPopUpTitle("Tickets");
+										}}
+									>
+										{tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
+									</div>
+								</FieldBox>
+							)}
+						</div>
 					</div>
-				</div>
-				<div style={{ marginTop: "35px" }}>
-					<div className={styles.CmdField1} style={{ marginBottom: "10px" }}>
-						Deskripsi Event
-					</div>
-					<CKEditor
-						editor={ClassicEditor}
-						data={desc}
-						config={{
-							toolbar: [
-								"heading",
-								"|",
-								"bold",
-								"italic",
-								"link",
-								"bulletedList",
-								"numberedList",
-								"blockQuote",
-							],
-							heading: {
-								options: [
-									{
-										model: "paragraph",
-										title: "Paragraph",
-										class: "ck-heading_paragraph",
-									},
-									{
-										model: "heading1",
-										view: "h1",
-										title: "Heading 1",
-										class: "ck-heading_heading1",
-									},
-									{
-										model: "heading2",
-										view: "h2",
-										title: "Heading 2",
-										class: "ck-heading_heading2",
-									},
+					<div style={{ marginTop: "35px" }}>
+						<div className={styles.CmdField1} style={{ marginBottom: "10px" }}>
+							Deskripsi Event
+						</div>
+						<CKEditor
+							editor={ClassicEditor}
+							data={desc}
+							config={{
+								toolbar: [
+									"heading",
+									"|",
+									"bold",
+									"italic",
+									"link",
+									"bulletedList",
+									"numberedList",
+									"blockQuote",
 								],
-							},
-						}}
-						onChange={(e, editor) => {
-							setDesc(editor.getData());
-						}}
-					/>
-				</div>
-				<div className={styles.BtnBoxWrap} style={{ marginTop: "40px" }}>
-					<Button
-						bgColor={"#fff"}
-						borderColor={"#eaeaea"}
-						textColor={"#000"}
-						style={{ width: "unset" }}
-						title={
-							<div className={styles.BtnTitle}>
-								<div className={styles.Bold}>Simpan</div>&nbsp;(Draft)
-							</div>
-						}
-					/>
-					<Button title={"Publish"} />
-				</div>
-			</form>
-		</div>
+								heading: {
+									options: [
+										{
+											model: "paragraph",
+											title: "Paragraph",
+											class: "ck-heading_paragraph",
+										},
+										{
+											model: "heading1",
+											view: "h1",
+											title: "Heading 1",
+											class: "ck-heading_heading1",
+										},
+										{
+											model: "heading2",
+											view: "h2",
+											title: "Heading 2",
+											class: "ck-heading_heading2",
+										},
+									],
+								},
+							}}
+							onChange={(e, editor) => {
+								setDesc(editor.getData());
+							}}
+						/>
+					</div>
+					<div className={styles.BtnBoxWrap} style={{ marginTop: "40px" }}>
+						<Button
+							bgColor={"#fff"}
+							borderColor={"#eaeaea"}
+							textColor={"#000"}
+							style={{ width: "unset" }}
+							title={
+								<div className={styles.BtnTitle}>
+									<div className={styles.Bold}>Simpan</div>&nbsp;(Draft)
+								</div>
+							}
+						/>
+						<Button title={"Publish"} />
+					</div>
+				</form>
+			</div>
+		</>
 	);
 };
 

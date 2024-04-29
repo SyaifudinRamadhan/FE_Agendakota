@@ -1,0 +1,457 @@
+.MainBox {
+	margin: -63px -24px -24px -24px;
+	background-color: #eaeaea;
+	border-radius: 12px;
+}
+.Header {
+	padding: 32px;
+	background-color: #fff;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	flex-direction: row;
+	align-items: center;
+}
+.HeaderTitle {
+	font-family: Inter;
+	font-size: 20px;
+	font-weight: 600;
+	color: #000;
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: inline;
+}
+.SubTitle {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 400;
+	color: #888;
+}
+.Header svg {
+	margin-left: auto;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+}
+/* .TextSecondary {
+	color: #888888;
+}
+
+.TextBasic {
+	color: #000;
+} */
+.TextPrimaryBasic {
+	color: #ca0c64;
+	font-weight: bold;
+}
+.Split,
+.SplitWrap {
+	flex-direction: row;
+	display: flex;
+}
+.SplitLeft,
+.SplitRight {
+	background-color: #fff;
+	border-bottom-left-radius: 12px;
+	width: 50%;
+	padding: 32px;
+	border-top: 1px solid #ddd;
+}
+
+.Banner img {
+	width: 141px;
+	aspect-ratio: 5/2;
+	border-radius: 8px;
+	margin-bottom: 28px;
+}
+.Info {
+	margin-bottom: 24px;
+}
+.InfoTitle {
+	font-family: Inter;
+	font-size: 24px;
+	font-weight: 600;
+	line-height: 29px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #000;
+	margin-bottom: 8px;
+}
+.InfoLocation {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 17px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #8b8b8b;
+	margin-bottom: 17px;
+}
+.InfoTime {
+}
+.Form {
+	gap: 27px;
+}
+.BoxTime {
+	gap: 12px;
+}
+.Time {
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 19px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #000;
+	display: flex;
+	flex-direction: row;
+	grid-area: 10px;
+	width: 100%;
+}
+.Time .Clock {
+	margin-left: auto;
+}
+.TitleInputImage {
+	font-weight: bold;
+}
+.SubTitleInputImage {
+	color: #6b6a6a;
+}
+.GroupInput {
+	gap: 10px;
+}
+.GroupInput label {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+}
+.Invoice {
+	background-color: #fff;
+	border-radius: 16px;
+	padding: 24px;
+	width: 100%;
+	max-width: 399px;
+	box-shadow: 0px 0px 8px 0px #0000001a;
+	margin-left: auto;
+	margin-right: auto;
+}
+.Total,
+.Highlight {
+	text-align: center;
+	gap: 10px;
+}
+.Total p,
+.Highlight p {
+	color: #888;
+	font-size: 16px;
+	font-weight: 500;
+	font-family: Inter;
+}
+.Total div,
+.Highlight div {
+	font-family: Inter;
+	font-size: 24px;
+	font-weight: 600;
+}
+.Separation {
+	width: 100%;
+	border: 1px dashed #e4e4e4;
+	margin-top: 24px;
+	margin-bottom: 24px;
+}
+.TextSecondary {
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 600;
+	color: #888;
+}
+.TextPrimary {
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 600;
+	color: #000;
+}
+.FlexRow {
+	display: flex;
+	flex-direction: row;
+}
+.InvoiceDesc {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+	color: #888;
+}
+.PaymentMethods {
+	border-radius: 8px;
+	box-shadow: 0px 0px 8px 0px #0000001a;
+	margin-top: 20px;
+}
+.GroupMethod {
+	padding: 12px;
+}
+.PaymentBtn {
+	/* width: 100%; */
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	align-items: center;
+	/* margin: -9px -19px; */
+}
+.PaymentBtn img {
+	margin: auto;
+	/* width: 100%; */
+	height: 24px;
+	border-radius: 8px;
+}
+.PaymentBtn div {
+	font-size: 14px;
+}
+
+.SplitRight {
+	background-color: unset;
+}
+.TicketBox {
+	width: 100%;
+	height: 80px;
+	padding: 12px;
+	background-color: #fff;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	gap: 20px;
+	border-radius: 12px;
+	margin-bottom: 12px;
+	box-shadow: 0px 0px 4px 0px #00000029;
+	position: relative;
+}
+.TicketItem {
+	width: calc(100% - 120px);
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
+}
+.TicketItem img {
+	height: 48px;
+	aspect-ratio: 1;
+}
+.TicketTitle {
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 700;
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: inline;
+}
+.GroupForm {
+	margin-bottom: 48px;
+	gap: 12px;
+}
+.GroupTitle {
+	font-family: Inter;
+	font-size: 24px;
+	font-weight: 700;
+}
+.SubTitle {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 400;
+}
+.GroupForm label {
+	margin-top: 12px;
+	margin-bottom: 10px;
+}
+.GroupForm .Split {
+	gap: 10px;
+}
+.DummyForm {
+	width: 100%;
+	height: 40px;
+	padding: 8px;
+	border-radius: 8px;
+	border: 1px solid #eaeaea;
+	color: #808080;
+	font-size: 14px;
+	box-shadow: 0px 0px 4px 0px color(display-p3 0 0 0 / 0.1);
+	display: flex;
+	align-content: center;
+}
+.DummyForm div {
+	margin-top: auto;
+	margin-bottom: auto;
+	width: 100%;
+}
+.InfoTicket {
+	padding: 24px;
+	margin: 12px;
+	/* margin-top: auto; */
+	/* margin-bottom: auto; */
+	background-color: #fff;
+	border-radius: 12px;
+	box-shadow: 0px 0px 4px 0px color(display-p3 0 0 0 / 0.1);
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+.QRBox {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	text-align: center;
+	align-items: center;
+}
+.QRBox canvas {
+	width: 180px !important;
+	height: 180px !important;
+}
+.Disabled {
+	/* background-color: #ddd; */
+	opacity: 0.7;
+}
+.PopUpAlert {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	text-align: center;
+	width: 100%;
+}
+.PopUpAlert svg {
+	margin-left: auto;
+	margin-right: auto;
+	width: 65px;
+	height: 65px;
+}
+.AlertContent {
+	text-align: center;
+}
+.PopUpAlert button {
+	margin-left: auto;
+	margin-right: auto;
+}
+.Bagde {
+	position: absolute;
+	font-size: 12px;
+	background-color: yellow;
+	font-weight: bold;
+	border-radius: 12px;
+	padding: 5px;
+	top: -10px;
+	right: 10px;
+}
+.DownloadHeader {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
+	margin-top: -30px;
+}
+.DownloadHeader button {
+	width: unset !important;
+}
+.Title {
+	font-weight: bold;
+	margin-right: auto;
+}
+.InfoOrganizer {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+.OrgBox {
+	display: flex;
+	flex-direction: row;
+	gap: 15px;
+	margin-left: 10px;
+}
+.OrgBox img {
+	aspect-ratio: 1;
+	width: 50px;
+	border-radius: 50%;
+}
+.OrgBox div {
+	font-weight: 500;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+/* PDF LAYOUT */
+
+.MainPaper {
+	display: flex;
+	flex-direction: column;
+	gap: 18.897637795px;
+	padding: 18.897637795px;
+	margin: 37.795275591px;
+	width: 756.7007874px;
+	height: 1085.519685px;
+	background-color: #ddd;
+}
+.MainPaper .GroupInner {
+	gap: 18.897637795px;
+	display: flex;
+	flex-direction: column;
+}
+.PaperSplit {
+	display: flex;
+	flex-direction: row !important;
+}
+.BoxInner {
+	background-color: #fff;
+	padding: 18.897637795px;
+	gap: 15px;
+	font-size: 12px;
+}
+.BoxInner div {
+	overflow: hidden;
+	overflow-wrap: anywhere;
+}
+.LeftPanel {
+	width: 434.004898px;
+}
+.ImgBanner {
+	width: 100%;
+}
+.BoxInnerTitle {
+	font-weight: bold;
+	font-size: 16px;
+}
+.InfoGroup {
+	gap: 10px;
+	align-content: center;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.InfoGroup svg {
+	margin-top: auto;
+	margin-bottom: auto;
+	width: 23px;
+	height: 23px;
+}
+.InfoGroup div {
+	margin-top: auto;
+	margin-bottom: auto;
+	width: calc(100% - 40px);
+}
+.GroupSocmed svg {
+	width: 30px;
+	height: 30px;
+}
+/* ---------- */
+
+@media (max-width: 768px) {
+	.SplitWrap {
+		flex-direction: column;
+	}
+	.SplitLeft {
+		width: 100%;
+		border-bottom-left-radius: 0px;
+	}
+	.SplitRight {
+		width: 100%;
+	}
+}

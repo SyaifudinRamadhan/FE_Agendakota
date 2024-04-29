@@ -11,7 +11,8 @@
 
 .InputForm[type="text"]:focus,
 .InputForm[type="number"]:focus,
-.InputForm[type="password"]:focus {
+.InputForm[type="password"]:focus,
+.InputForm[type="email"]:focus {
 	outline-color: #fecadf;
 	box-shadow: #f59abf;
 	border: 1px solid #fae1eb;
@@ -19,7 +20,8 @@
 
 input[type="text" i]:focus,
 input[type="number" i]:focus,
-input[type="password" i]:focus {
+input[type="password" i]:focus,
+.InputForm[type="email"]:focus {
 	outline-color: #fecadf;
 	box-shadow: #f59abf;
 	border: 1px solid #fae1eb;

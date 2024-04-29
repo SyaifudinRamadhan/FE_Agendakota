@@ -14,6 +14,9 @@ const InputLabeled = ({
 	min = 0,
 	iconSvg,
 	label,
+	value,
+	fnOnInput = () => {},
+	fnOnChange = () => {},
 	onFocus = () => {},
 }) => {
 	const classNames = [styles2.BoxInput].concat(className);
@@ -43,7 +46,10 @@ const InputLabeled = ({
 				required={required}
 				readOnly={readOnly}
 				onFocus={onFocus}
+				onInput={fnOnInput}
+				onChange={fnOnChange}
 				min={min}
+				defaultValue={value}
 			/>
 		</div>
 	);

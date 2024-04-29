@@ -1,0 +1,32 @@
+.CustomHeader {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+.CustomHeader svg {
+	cursor: pointer;
+	margin-left: 20px;
+}
+.CustomHeader h5 {
+	margin-right: auto;
+}
+.HeaderClose {
+	width: 20px;
+	height: 20px;
+	color: red;
+	cursor: pointer;
+}
+.InteruptNotify {
+	gap: 30px;
+	text-align: center;
+}
+.InteruptNotify svg {
+	margin-left: auto;
+	margin-right: auto;
+	width: 76px;
+	height: 76px;
+	color: #ca0c64;
+}
+.EditorContent {
+	padding: 30px;
+}

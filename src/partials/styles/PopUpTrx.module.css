@@ -1,0 +1,258 @@
+.MainContent {
+	display: flex;
+	flex-direction: row;
+	margin: -12px -24px -24px -24px;
+	border-radius: 10px;
+	border-top: 1px solid #e6e6e6;
+}
+.Split2 {
+	width: 50%;
+	padding: 29px;
+}
+.Right {
+	background-color: #fbfbfb;
+	border-bottom-right-radius: 10px;
+}
+.HeaderBox {
+	display: flex;
+	flex-direction: row;
+	padding-left: 16px;
+	padding-right: 16px;
+	width: 100%;
+}
+.HeaderTitle {
+	width: 100%;
+	margin-right: 30px;
+	gap: 8px;
+}
+.Title {
+	font-family: Inter;
+	font-size: 20px;
+	font-weight: 600;
+	text-align: left;
+	color: #1b1b1b;
+	width: 100%;
+	display: inline;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.Highlight {
+	background-color: #ca0c6405;
+	padding-top: 24px;
+	padding-bottom: 24px;
+	margin-top: 24px;
+	border-radius: 10px;
+}
+.Desc {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: left;
+	color: #888;
+	width: 100%;
+	display: inline;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.Banner img {
+	width: 141px;
+	aspect-ratio: 5/2;
+	border-radius: 8px;
+	margin-bottom: 28px;
+}
+.Info {
+	margin-bottom: 56px;
+}
+.InfoTitle {
+	font-family: Inter;
+	font-size: 24px;
+	font-weight: 600;
+	line-height: 29px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #000;
+	margin-bottom: 8px;
+}
+.InfoLocation {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 17px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #8b8b8b;
+	margin-bottom: 17px;
+}
+.InfoTime {
+}
+.Form {
+	gap: 27px;
+}
+.BoxTime {
+	gap: 12px;
+}
+.Time {
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 19px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #000;
+	display: flex;
+	flex-direction: row;
+	grid-area: 10px;
+	width: 100%;
+}
+.Time .Clock {
+	margin-left: auto;
+}
+.TitleInputImage {
+	font-weight: bold;
+}
+.SubTitleInputImage {
+	color: #6b6a6a;
+}
+.GroupInput {
+	gap: 10px;
+}
+.GroupInput label {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+}
+.Invoice {
+	background-color: #fff;
+	border-radius: 16px;
+	padding: 24px;
+	width: 100%;
+	max-width: 399px;
+	box-shadow: 0px 0px 8px 0px #0000001a;
+	margin-left: auto;
+	margin-right: auto;
+}
+.Total,
+.Highlight {
+	text-align: center;
+	gap: 10px;
+}
+.Total p,
+.Highlight p {
+	color: #888;
+	font-size: 16px;
+	font-weight: 500;
+	font-family: Inter;
+}
+.Total div,
+.Highlight div {
+	font-family: Inter;
+	font-size: 24px;
+	font-weight: 600;
+}
+.Separation {
+	width: 100%;
+	border: 1px dashed #e4e4e4;
+	margin-top: 24px;
+	margin-bottom: 24px;
+}
+.TextSecondary {
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 600;
+	color: #888;
+}
+.TextPrimary {
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 600;
+	color: #000;
+}
+.FlexRow {
+	display: flex;
+	flex-direction: row;
+}
+.InvoiceDesc {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+	color: #888;
+}
+.PaymentMethods {
+	border-radius: 8px;
+	box-shadow: 0px 0px 8px 0px #0000001a;
+	margin-top: 20px;
+}
+.GroupMethod {
+	padding: 12px;
+}
+.PaymentBtn {
+	/* width: 100%; */
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	align-items: center;
+	/* margin: -9px -19px; */
+}
+.PaymentBtn img {
+	margin: auto;
+	/* width: 100%; */
+	height: 24px;
+	border-radius: 8px;
+}
+.PaymentBtn div {
+	font-size: 14px;
+}
+.Pointer {
+	cursor: pointer;
+}
+.QRBox {
+	gap: 8px;
+	text-align: center;
+	align-items: center;
+	margin-top: 24px;
+}
+.QRBox div {
+	margin-left: auto;
+	margin-right: auto;
+}
+.QRBox .QRCode {
+	margin-top: 24px;
+	height: 200px;
+	aspect-ratio: 1;
+}
+.PayHint {
+	font-size: 14px;
+	color: #000;
+}
+.PopUpAlert {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	text-align: center;
+	width: 100%;
+}
+.PopUpAlert svg {
+	margin-left: auto;
+	margin-right: auto;
+	width: 65px;
+	height: 65px;
+}
+.AlertContent {
+	text-align: center;
+}
+.PopUpAlert button {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media (max-width: 768px) {
+	.MainContent {
+		flex-direction: column;
+	}
+	.Split2 {
+		width: 100%;
+	}
+}

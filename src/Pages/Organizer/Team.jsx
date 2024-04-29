@@ -109,7 +109,7 @@ const OrganizerTeam = ({ organization, fnSetLogin, isLogin }) => {
 	const [popUpContent, setPopUpContent] = useState(<></>);
 	const [popUpLoading, setPopUPLoading] = useState(false);
 	const [teams, setTeams] = useState(null);
-	const [isLoading, setLoading] = useState(false);
+	const [isLoading, setLoading] = useState(true);
 	const [errorLoad, setErrorState] = useState(false);
 	const [pausedProcess, setPausedProcess] = useState(null);
 	const [firstLoad, setFirstLoad] = useState(true);
@@ -270,10 +270,9 @@ const OrganizerTeam = ({ organization, fnSetLogin, isLogin }) => {
 
 	useEffect(() => {
 		document.title = "Team - Agendakota";
-		if (organization.length === 0) {
+		if (organization.length > 0) {
 			setLoading(true);
-		} else if (firstLoad) {
-			setLoading(true);
+			setErrorState(false);
 			loadData({ orgId: organization[0].id }).then((res) => {
 				if (res.status === 200) {
 					setTeams(res.data.teams);
@@ -289,7 +288,7 @@ const OrganizerTeam = ({ organization, fnSetLogin, isLogin }) => {
 				setLoading(false);
 			});
 		}
-	}, [organization, firstLoad]);
+	}, [organization]);
 
 	useEffect(() => {
 		if (isLogin && pausedProcess) {
@@ -312,6 +311,9 @@ const OrganizerTeam = ({ organization, fnSetLogin, isLogin }) => {
 				width="45%"
 			/>
 			<div className="content organizer">
+				<div className={styles.DecorationBox}>
+					<div className={styles.Decoration}></div>
+				</div>
 				{errorLoad ? (
 					<ErrorPage />
 				) : (

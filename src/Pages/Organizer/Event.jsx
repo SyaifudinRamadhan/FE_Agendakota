@@ -97,10 +97,8 @@ const OrganizerEvent = ({ organization, fnSetLogin }) => {
 			let endedEvents = [];
 			let upcomingEvents = [];
 			events.forEach((evt) => {
-				let start = new Date(
-					evt.event.start_date + "T" + evt.event.start_time + "Z"
-				);
-				let end = new Date(evt.event.end_date + "T" + evt.event.end_time + "Z");
+				let start = new Date(evt.event.start_date + "T" + evt.event.start_time);
+				let end = new Date(evt.event.end_date + "T" + evt.event.end_time);
 
 				if (evt.event.is_publish === 1) {
 					drafts.push({
@@ -143,6 +141,9 @@ const OrganizerEvent = ({ organization, fnSetLogin }) => {
 	return (
 		<>
 			<div className="content organizer">
+				<div className={styles.DecorationBox}>
+					<div className={styles.Decoration}></div>
+				</div>
 				{errorState ? (
 					<ErrorPage />
 				) : (

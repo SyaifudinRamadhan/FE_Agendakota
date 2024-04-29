@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles/Header.module.css";
 import {
 	BiSearch,
@@ -61,6 +61,8 @@ const Header = ({
 	const [isProfileActive, setProfileActive] = useState(null);
 	const [isMenuMobileActive, setMenuMobileActive] = useState(false);
 
+	const searchForm = useRef();
+
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
@@ -68,6 +70,13 @@ const Header = ({
 		setLogin(false);
 		setUserData(null);
 		setProfileActive(false);
+	};
+
+	const handleSearch = (e) => {
+		e.preventDefault();
+		let searchParam = searchForm.current.value;
+		// navigate("/explore?name=" + searchParam);
+		window.location.href = "/explore?name=" + searchParam;
 	};
 
 	// single load
@@ -176,20 +185,26 @@ const Header = ({
 			</div>
 			<header className={styles.Header}>
 				<img src="/images/logo.png" alt="Logo Header" className={styles.Logo} />
-				<form className={styles.SearchForm}>
+				<form className={styles.SearchForm} onSubmit={handleSearch}>
 					<Search />
 					<input
 						type="text"
 						className={styles.SearchInput}
 						placeholder="Cari event atau atraksi lainnya"
+						ref={searchForm}
+						defaultValue={
+							window.location.href.split("name=").length > 1
+								? window.location.href.split("name=")[1].split("&")[0]
+								: ""
+						}
 					/>
 				</form>
 				<nav className={styles.Menu}>
-					<a href="#" className={styles.MenuItem}>
+					<a href="/explore" className={styles.MenuItem}>
 						<Compass size={80} />
 						Explore Events
 					</a>
-					<a href="#" className={styles.MenuItem}>
+					<a href="/create-event" className={styles.MenuItem}>
 						<AddCircle />
 						Create Event
 					</a>

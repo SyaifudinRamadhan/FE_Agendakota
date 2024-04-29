@@ -205,6 +205,7 @@ const updatePeripheralEnd = async ({
 	custom_fields,
 	limit_reschedule,
 	remove_seat_map,
+	allow_refund,
 }) => {
 	try {
 		let res = await axios.post(
@@ -221,6 +222,7 @@ const updatePeripheralEnd = async ({
 				custom_fields,
 				limit_reschedule,
 				remove_seat_map,
+				allow_refund,
 			},
 			{
 				headers: {
@@ -253,10 +255,12 @@ const PopUpTicket = ({
 	orderForm,
 	fnSetOrderForm,
 	endEvent,
+	// parmeter remote global state
+	fnSetGlobalLoading,
 }) => {
 	const listFixFieldName = ["Nama", "Email", "No. Handphone", "ID Card/ KTP"];
 	const typeDataForm = [
-		{ label: "Switch", value: "boolean" },
+		{ label: "Boolean", value: "boolean" },
 		{ label: "Angka", value: "number" },
 		{ label: "Teks", value: "text" },
 	];
@@ -277,6 +281,7 @@ const PopUpTicket = ({
 	const [numberFormat, setNumFormat] = useState(Intl.NumberFormat("id-ID"));
 	const [selectedTicketIndex, setTicketIndex] = useState(null);
 	const [enableRsc, setEnableRscState] = useState(false);
+	const [enableRefund, setEnableRefundState] = useState(false);
 	const [alert, setAlert] = useState({
 		state: false,
 		content: "",
@@ -305,6 +310,8 @@ const PopUpTicket = ({
 	const singleTrx = useRef();
 	const maxLimitRsc = useRef();
 	const seatMapGlobalImg = useRef();
+	const enRscToogle = useRef();
+	const enRefundToogle = useRef();
 
 	// Ref custom forms
 	const fixedField = useRef(new Array());
@@ -450,7 +457,10 @@ const PopUpTicket = ({
 				name: title.current.value,
 				desc: desc,
 				type_price: defaultTypePrice,
-				price: defaultTypePrice == "1" ? 0 : price.current.value,
+				price:
+					defaultTypePrice == "1" || defaultTypePrice == "3"
+						? 0
+						: price.current.value,
 				max_purchase: maxPurchaseRef.current.value,
 				enable_seat_number: refInpuSeatMap.current.checked ? 1 : 0,
 				seat_map:
@@ -490,7 +500,10 @@ const PopUpTicket = ({
 						cover: res.data.ticket.cover,
 						desc: desc,
 						type_price: defaultTypePrice,
-						price: defaultTypePrice == "1" ? 0 : price.current.value,
+						price:
+							defaultTypePrice == "1" || defaultTypePrice == "3"
+								? 0
+								: price.current.value,
 						quantity:
 							forEvtAct === "Onsite Event" ||
 							forEvtAct === "Online Event" ||
@@ -549,7 +562,10 @@ const PopUpTicket = ({
 				cover: !coverImg.current ? null : coverImg.current.files[0],
 				desc: desc,
 				type_price: defaultTypePrice,
-				price: defaultTypePrice == "1" ? 0 : price.current.value,
+				price:
+					defaultTypePrice == "1" || defaultTypePrice == "3"
+						? 0
+						: price.current.value,
 				quantity:
 					forEvtAct === "Onsite Event" ||
 					forEvtAct === "Online Event" ||
@@ -599,7 +615,10 @@ const PopUpTicket = ({
 				name: title.current.value,
 				desc: desc,
 				type_price: defaultTypePrice,
-				price: defaultTypePrice == "1" ? 0 : price.current.value,
+				price:
+					defaultTypePrice == "1" || defaultTypePrice == "3"
+						? 0
+						: price.current.value,
 				max_purchase: maxPurchaseRef.current.value,
 				enable_seat_number: refInpuSeatMap.current.checked ? 1 : 0,
 				seat_map:
@@ -773,13 +792,15 @@ const PopUpTicket = ({
 				!evtActId &&
 				contentBody !== "View Ticket" &&
 				coverImg.current.files.length === 0) ||
-			(defaultTypePrice != "1" &&
+			(defaultTypePrice == "2" &&
 				(price.current.value < 10000 ||
 					price.current.value === "" ||
 					price.current.value === " ")) ||
 			desc === "" ||
 			(refInpuSeatMap.current.checked === true &&
-				!evtActId &&
+				(contentBody !== "View Ticket" ||
+					(contentBody === "View Ticket" &&
+						!tickets[selectedTicketIndex].seat_map)) &&
 				seatMapImg.current.files.length === 0)
 		) {
 			setAlert({
@@ -857,6 +878,7 @@ const PopUpTicket = ({
 		}
 		if (evtActId) {
 			// Update data to API
+			let customForms = handleUpdateCustomForm();
 			setLoading(true);
 			updatePeripheralEnd({
 				orgId: orgId,
@@ -869,8 +891,9 @@ const PopUpTicket = ({
 					seatMapGlobalImg.current.files.length === 0
 						? null
 						: seatMapGlobalImg.current.files[0],
-				custom_fields: orderForm,
+				custom_fields: customForms,
 				limit_reschedule: enableRsc ? maxLimitRsc.current.value : -1,
+				allow_refund: enRefundToogle.current.checked ? 1 : 0,
 			}).then((res) => {
 				setLoading(false);
 				if (res.status === 202) {
@@ -880,6 +903,9 @@ const PopUpTicket = ({
 						content: "Data berhasil diperbarui",
 					});
 					resetAlert();
+					setTimeout(() => {
+						setPopUpActive(false);
+					}, 2000);
 				} else if (res.status === 401) {
 					fnSetLogin(false);
 					setPausedProcess("submit");
@@ -902,58 +928,104 @@ const PopUpTicket = ({
 				seatMapGlobalImg.current.files.length === 0
 					? null
 					: seatMapGlobalImg.current.files[0];
+			ticketSetup.enableRefundReq = enRefundToogle.current.checked;
 			return 1;
 		}
 	};
 
 	const handleUpdateCustomForm = () => {
-		if (evtActId) {
-			// Update data to API
-			// has handled in one function handleUpdateSetting by updatePeripheral
-		} else {
-			let fields = [];
-			console.log(fields, customFieldName.current.length);
-			fixedField.current.forEach((field, index) => {
-				if (field.checked) {
-					fields.push(`${listFixFieldName[index]}~!!!~text~!!!~required`);
-				}
-			});
+		let fields = [];
+		console.log(fields, customFieldName.current.length);
+		fixedField.current.forEach((field, index) => {
+			if (field.checked) {
+				fields.push(
+					`${listFixFieldName[index]}~!!!~${
+						index === 3 ? "file" : "text"
+					}~!!!~required`
+				);
+			}
+		});
 
-			customFieldName.current.forEach((field, index) => {
-				try {
-					if (
-						fields.indexOf(
-							`${field.value}~!!!~${
-								customFieldType.current[index].getValue()[0].value
-							}~!!!~${
-								customFieldReq.current[index].checked
-									? "required"
-									: "un-required"
-							}`
-						) === -1
-					) {
-						fields.push(
-							`${field.value}~!!!~${
-								customFieldType.current[index].getValue()[0].value
-							}~!!!~${
-								customFieldReq.current[index].checked
-									? "required"
-									: "un-required"
-							}`
-						);
-						console.log(field, customFieldName.current.length);
-					}
-				} catch (error) {
-					console.log(error);
+		customFieldName.current.forEach((field, index) => {
+			try {
+				if (
+					fields.indexOf(
+						`${field.value}~!!!~${
+							customFieldType.current[index].getValue()[0].value
+						}~!!!~${
+							customFieldReq.current[index].checked ? "required" : "un-required"
+						}`
+					) === -1
+				) {
+					fields.push(
+						`${field.value}~!!!~${
+							customFieldType.current[index].getValue()[0].value
+						}~!!!~${
+							customFieldReq.current[index].checked ? "required" : "un-required"
+						}`
+					);
+					console.log(field, customFieldName.current.length);
 				}
-			});
-			console.log(fields);
-			fnSetOrderForm(fields);
-			setLayoutCustomForm([]);
-			customFieldName.current = [];
-			customFieldReq.current = [];
-			customFieldType.current = [];
+			} catch (error) {
+				console.log(error);
+			}
+		});
+		console.log(fields);
+		fnSetOrderForm(fields);
+		setLayoutCustomForm([]);
+		customFieldName.current = [];
+		customFieldReq.current = [];
+		customFieldType.current = [];
+		if (evtActId) {
+			return fields;
 		}
+		// if (evtActId) {
+		// 	// Update data to API
+		// 	// has handled in one function handleUpdateSetting by updatePeripheral
+		// } else {
+		// 	let fields = [];
+		// 	console.log(fields, customFieldName.current.length);
+		// 	fixedField.current.forEach((field, index) => {
+		// 		if (field.checked) {
+		// 			fields.push(`${listFixFieldName[index]}~!!!~text~!!!~required`);
+		// 		}
+		// 	});
+
+		// 	customFieldName.current.forEach((field, index) => {
+		// 		try {
+		// 			if (
+		// 				fields.indexOf(
+		// 					`${field.value}~!!!~${
+		// 						customFieldType.current[index].getValue()[0].value
+		// 					}~!!!~${
+		// 						customFieldReq.current[index].checked
+		// 							? "required"
+		// 							: "un-required"
+		// 					}`
+		// 				) === -1
+		// 			) {
+		// 				fields.push(
+		// 					`${field.value}~!!!~${
+		// 						customFieldType.current[index].getValue()[0].value
+		// 					}~!!!~${
+		// 						customFieldReq.current[index].checked
+		// 							? "required"
+		// 							: "un-required"
+		// 					}`
+		// 				);
+		// 				console.log(field, customFieldName.current.length);
+		// 			}
+		// 		} catch (error) {
+		// 			console.log(error);
+		// 		}
+		// 	});
+		// 	console.log(fields);
+		// 	fnSetOrderForm(fields);
+		// 	setLayoutCustomForm([]);
+		// 	customFieldName.current = [];
+		// 	customFieldReq.current = [];
+		// 	customFieldType.current = [];
+		// }
 	};
 
 	const templateCustomForm = (index, title, type, required) => {
@@ -1027,35 +1099,56 @@ const PopUpTicket = ({
 		) {
 			handleSubmitTicket();
 		} else {
+			if (!evtActId) {
+				handleUpdateCustomForm();
+			}
 			let acc = handleUpdateSetting();
-			handleUpdateCustomForm();
 			if (acc === 1) {
 				resetAlert();
-				evtActId
-					? setTimeout(() => {
-							setPopUpActive(false);
-					  }, 2000)
-					: setPopUpActive(false);
+				// evtActId
+				// 	? setTimeout(() => {
+				// 			setPopUpActive(false);
+				// 			fnSetGlobalLoading(true);
+				// 			setTimeout(() => {
+				// 				fnSetGlobalLoading(false);
+				// 			}, 200);
+				// 	  }, 2000)
+				// 	: setPopUpActive(false);
+				if (!evtActId) {
+					setPopUpActive(false);
+				}
 			}
 		}
 	};
+
+	useEffect(() => {
+		if (maxLimitRsc.current && enRscToogle.current) {
+			if (enableRsc) {
+				maxLimitRsc.current.value =
+					maxLimitRsc.current.value == -1 ? 0 : maxLimitRsc.current.value;
+			} else {
+				maxLimitRsc.current.value = -1;
+			}
+		}
+	}, [enableRsc]);
 
 	useEffect(() => {
 		if (
 			ticketSetup &&
 			maxPurchaseRef.current &&
 			singleTrx.current &&
-			maxLimitRsc.current
+			maxLimitRsc.current &&
+			enRscToogle.current &&
+			enRefundToogle.current
 		) {
-			console.log(ticketSetup, "ini ticket setup");
 			maxPurchaseRef.current.value = ticketSetup.limitPchs;
 			singleTrx.current.checked = ticketSetup.singleTrxs;
 			maxLimitRsc.current.value = ticketSetup.maxLimitRsc;
-			setEnableRscState(
-				ticketSetup.maxLimitRsc !== -1 && ticketSetup.maxLimitRsc !== null
-					? true
-					: false
-			);
+			if (ticketSetup.maxLimitRsc !== -1 && ticketSetup.maxLimitRsc !== null) {
+				enRscToogle.current.click();
+			}
+			enRefundToogle.current.checked = ticketSetup.enableRefundReq;
+
 			setDefGlobalMap(
 				!ticketSetup.globalSeatMap
 					? null
@@ -1063,6 +1156,7 @@ const PopUpTicket = ({
 					? process.env.REACT_APP_BACKEND_URL + ticketSetup.globalSeatMap
 					: URL.createObjectURL(ticketSetup.globalSeatMap)
 			);
+			console.log(ticketSetup, maxLimitRsc.current.value, "ini ticket setup");
 		}
 	}, [ticketSetup]);
 
@@ -1101,7 +1195,7 @@ const PopUpTicket = ({
 	}, [orderForm]);
 
 	useEffect(() => {
-		if (isLogin && pausedProcess) {
+		if (isLogin && pausedProcess && orgId) {
 			if (pausedProcess === "create") {
 				addTicket();
 			} else if (pausedProcess === "update") {
@@ -1109,11 +1203,13 @@ const PopUpTicket = ({
 			} else if (pausedProcess.split("-index-")[0] === "delete") {
 				deleteTicket(pausedProcess.split("-index-")[1], selectedTicketId);
 			} else if (pausedProcess === "submit") {
-				handleSubmitTicket();
+				// handleSubmitTicket();
+				setPopUpActive(true);
+				handleSaveBtn();
 			}
 			setPausedProcess(null);
 		}
-	}, [pausedProcess, isLogin]);
+	}, [pausedProcess, isLogin, orgId]);
 
 	return (
 		<PopUp2
@@ -1121,6 +1217,12 @@ const PopUpTicket = ({
 			isActive={isPopActive && titlePopUp === "Tickets"}
 			setActiveFn={() => {
 				handleSaveBtn();
+			}}
+			closeBtnAbs={{
+				title: "Tutup",
+				fn: () => {
+					setPopUpActive(false);
+				},
 			}}
 			titleHeader={
 				<div className={styles2.PopUpHeader}>
@@ -1436,6 +1538,7 @@ const PopUpTicket = ({
 											onChange={(e) => {
 												setEnableRscState(e.target.checked);
 											}}
+											refData={enRscToogle}
 										/>
 									</div>
 								</div>
@@ -1450,7 +1553,10 @@ const PopUpTicket = ({
 									}`}
 								>
 									<div className={styles2.SettingLabel}>
-										Maximum Days Reschedule Allowed
+										<span>
+											Maximum Days Reschedule Allowed{" "}
+											<span style={{ color: "red" }}>(required)</span>
+										</span>
 										<p>Batas waktu ganti jadwal</p>
 									</div>
 									<div className={styles2.SettingField}>
@@ -1458,6 +1564,28 @@ const PopUpTicket = ({
 											type={"number"}
 											placeholder={0}
 											refData={maxLimitRsc}
+										/>
+									</div>
+								</div>
+								<div className={`${styles2.TicketSettingContainer}`}>
+									<div className={styles2.SettingLabel}>
+										<label htmlFor="enable-refund">
+											Allow users to request refund
+										</label>
+										<p>
+											The refund process is not automatic. Rather, it is through
+											an approval process between the organizer and the
+											Agendakota.id admin regarding the refund request submitted
+											by the user.
+										</p>
+									</div>
+									<div className={styles2.SettingField}>
+										<InputToogle
+											id={"enable-refund"}
+											onChange={(e) => {
+												setEnableRefundState(e.target.checked);
+											}}
+											refData={enRefundToogle}
 										/>
 									</div>
 								</div>
@@ -1481,6 +1609,7 @@ const PopUpTicket = ({
 												</div>
 											</div>
 										}
+										fnSetAlert={setAlert}
 									/>
 								</div>
 							</div>
@@ -1615,6 +1744,7 @@ const PopUpTicket = ({
 													</div>
 												</div>
 											}
+											fnSetAlert={setAlert}
 										/>
 									)}
 									<div className={styles2.EditorRight}>
@@ -1676,7 +1806,7 @@ const PopUpTicket = ({
 										<div
 											className={`${
 												contentBody === "Tiket Berbayar" ||
-												contentBody === "Tiket Donasi" ||
+												// contentBody === "Tiket Donasi" ||
 												(contentBody === "View Ticket" &&
 													defaultTypePrice == "2")
 													? ""
@@ -1689,7 +1819,11 @@ const PopUpTicket = ({
 												placeholder={"Rp. 0"}
 												iconSvg={<BiMoney />}
 												label={
-													<p className={styles2.TextSecondary}>Harga Tiket</p>
+													<p className={styles2.TextSecondary}>
+														{defaultTypePrice == "2"
+															? "Harga Tiket"
+															: "Min. Harga"}
+													</p>
 												}
 												refData={price}
 											/>
@@ -1790,6 +1924,7 @@ const PopUpTicket = ({
 													</div>
 												</div>
 											}
+											fnSetAlert={setAlert}
 										/>
 									</div>
 									<label htmlFor="desc" style={{ marginBottom: -19 }}>

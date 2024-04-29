@@ -1,0 +1,134 @@
+.MainContainer {
+	margin-top: -40px;
+}
+.Header {
+	display: flex;
+	flex-direction: row;
+	text-align: center;
+}
+.Header .Left {
+	margin-right: auto;
+	font-size: 18px;
+	cursor: pointer;
+}
+.Header .Right {
+	margin-left: auto;
+	color: red;
+	font-size: 25px;
+	cursor: pointer;
+}
+.Header * {
+	margin-top: auto;
+	margin-top: auto;
+}
+.Header div {
+	font-weight: bold;
+}
+.Center {
+	margin-top: 20px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	gap: 25px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+.Center * {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.CardMenu {
+	padding: 30px;
+	border-radius: 8px;
+	text-align: center;
+	justify-content: center;
+	font-size: 15px;
+	font-weight: bold;
+	gap: 10px;
+	background-color: #fff;
+	cursor: pointer;
+	box-shadow: 0 0 4px #63636394;
+	height: 135px;
+	width: 135px;
+}
+.CardMenu * {
+	margin-left: auto;
+	margin-right: auto;
+}
+.CardMenu svg {
+	width: 65px;
+	height: 65px;
+	color: #ca0c64;
+}
+.Alert {
+	flex-direction: column;
+	justify-content: center;
+	gap: 15px;
+}
+.Alert * {
+	margin-left: auto;
+	margin-right: auto;
+}
+.Alert svg {
+	color: #ca0c64;
+	width: 85px;
+	height: 85px;
+}
+.Alert div {
+	font-weight: bold;
+}
+.BarcodeReader {
+	flex-direction: column;
+}
+.BarcodeReader svg {
+	margin-left: auto;
+	margin-right: auto;
+	color: #ca0c64;
+	width: 85px;
+	height: 85px;
+}
+.NotifBox {
+	gap: 20px;
+}
+.IslandGroup {
+	text-align: center;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+	gap: 10px;
+	font-weight: 400 !important;
+}
+.DynaminIsland {
+	padding: 5px;
+	border-radius: 50px;
+	background-color: #ca0c6518;
+	border: 1px solid #ca0c64;
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+.DynaminIsland svg {
+	width: 20px;
+	height: 20px;
+	color: green;
+}
+.ProfileBox {
+	text-align: center;
+	gap: 15px;
+}
+.ProfileBox div {
+	font-weight: 400;
+}
+.ProfileIcon {
+	width: 50%;
+	aspect-ratio: 1;
+	margin-left: auto;
+	margin-right: auto;
+	/* margin-top: 20px; */
+	/* margin-bottom: 20px; */
+	border-radius: 50%;
+	border: 1px solid #ddd;
+	box-shadow: 1px 3px 2px #ddd;
+}

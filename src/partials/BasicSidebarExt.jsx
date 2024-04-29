@@ -4,7 +4,14 @@ import styles2 from "./styles/BasicSidebarExt.module.css";
 import Icons from "../icons";
 import Separator from "../components/Separator";
 import AddCircle from "../icons/AddCircle";
-import { BiChevronDown, BiCircle, BiPlus, BiPlusCircle } from "react-icons/bi";
+import {
+	BiCheckCircle,
+	BiChevronDown,
+	BiCircle,
+	BiNote,
+	BiPlus,
+	BiPlusCircle,
+} from "react-icons/bi";
 import Button from "../components/Button";
 import PopUp from "./PopUp";
 import InputForm from "../components/InputForm";
@@ -145,6 +152,14 @@ const BasicSidebarExt = ({
 							>
 								<img src={Icons.Ticket} alt="Tickets" />
 							</a>
+							<a
+								href="/invitations"
+								className={`${styles.MenuItem} ${
+									active === "invitations" ? styles.MenuActive : ""
+								}`}
+							>
+								<BiNote style={{ width: "21px", height: "21px" }} />
+							</a>
 						</div>
 						<Separator width="40px" margin="20px 0" />
 						<div className={styles.OrganizerArea} style={{ width: "40px" }}>
@@ -163,8 +178,27 @@ const BasicSidebarExt = ({
 												className={styles.OrganizerLogo}
 												style={{
 													backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${org.photo}")`,
+													position: "relative",
 												}}
-											></div>
+											>
+												{org.legality && org.legality.status == 1 ? (
+													<img
+														src="/images/verify.png"
+														alt=""
+														srcset=""
+														style={{
+															width: "20px",
+															height: "20px",
+															color: "green",
+															position: "absolute",
+															top: "-7px",
+															right: "-12px",
+														}}
+													/>
+												) : (
+													<></>
+												)}
+											</div>
 										</a>
 									);
 								})}
@@ -199,6 +233,17 @@ const BasicSidebarExt = ({
 								<img src={Icons.Ticket} alt="Tickets" />
 								{active === "my-tickets" && (
 									<div className={styles.MenuText}>My Tickets</div>
+								)}
+							</a>
+							<a
+								href="/invitations"
+								className={`${styles.MenuItem} ${
+									active === "invitations" ? styles.MenuActive : ""
+								}`}
+							>
+								<BiNote style={{ width: "21px", height: "21px" }} />
+								{active === "invitations" && (
+									<div className={styles.MenuText}>Invitations</div>
 								)}
 							</a>
 						</div>
@@ -261,8 +306,30 @@ const BasicSidebarExt = ({
 													backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${org.photo}")`,
 												}}
 											></div>
-											<div className={styles.OrganizerName}>{org.name}</div>
-											<div className={styles.OrganizerLabel}>Pilih</div>
+											<div
+												className={styles.OrganizerName}
+												style={{ maxWidth: "calc(100% - 170px)" }}
+											>
+												{org.name}
+											</div>
+											{org.legality && org.legality.status == 1 ? (
+												<img
+													src="/images/verify.png"
+													style={{
+														color: "green",
+														width: "23px",
+														height: "23px",
+													}}
+												/>
+											) : (
+												<></>
+											)}
+											<div
+												className={styles.OrganizerLabel}
+												style={{ marginLeft: "auto" }}
+											>
+												Pilih
+											</div>
 										</a>
 									);
 								})}

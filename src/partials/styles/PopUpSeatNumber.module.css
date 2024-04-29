@@ -1,0 +1,139 @@
+.HeaderBox {
+	display: flex;
+	flex-direction: row;
+	padding-left: 16px;
+	padding-right: 16px;
+	width: 100%;
+}
+.HeaderLeft {
+	width: calc(100% - 120px);
+	margin-right: 30px;
+	gap: 8px;
+}
+.Title {
+	font-family: Inter;
+	font-size: 20px;
+	font-weight: 600;
+	text-align: left;
+	color: #1b1b1b;
+	width: 100%;
+	display: inline;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.Desc {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: left;
+	color: #888;
+	width: 100%;
+	display: inline;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.HeaderRight {
+}
+.MainContent {
+	margin-top: 16px;
+	padding-left: 16px;
+	padding-right: 16px;
+	display: flex;
+	flex-direction: row;
+	gap: 32.84px;
+}
+.Left {
+	width: 35%;
+}
+.Right {
+	width: calc(65% - 32.84px);
+	flex-direction: column;
+	gap: 20px;
+}
+.MainContent img {
+	width: 100%;
+	aspect-ratio: 1;
+	border-radius: 8px;
+}
+.Selector {
+	margin: auto;
+	width: 100%;
+}
+.SelectorInner {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+.Info {
+	display: flex;
+	flex-direction: row;
+	margin-top: auto;
+}
+.TextPrimary {
+	color: #ca0c64;
+}
+.TextBasic {
+	color: #000;
+}
+.TextSecondary {
+	color: #888;
+}
+.BtnSeatNum {
+	width: 44px;
+	height: 35px;
+	padding: 8px 12px 8px 12px;
+	border-radius: 10px;
+	gap: 8px;
+	background-color: #f1f1f1;
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 500;
+	text-align: center;
+	color: #000;
+}
+.Pointer {
+	cursor: pointer;
+}
+.BtnSeatNumActive {
+	background-color: #ca0c6412;
+	color: #ca0c64;
+	border: 1px solid #ca0c64;
+}
+.BtnSeatNumDisabled {
+	background-color: #9494949c;
+	color: #949494;
+}
+.PopUpAlert {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	text-align: center;
+	width: 100%;
+}
+.PopUpAlert svg {
+	margin-left: auto;
+	margin-right: auto;
+	width: 65px;
+	height: 65px;
+	color: #ca0c64;
+}
+.AlertContent {
+	text-align: center;
+}
+.PopUpAlert button {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media (max-width: 772px) {
+	.MainContent {
+		flex-direction: column;
+	}
+	.Left,
+	.Right {
+		width: 100%;
+	}
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../styles/CreateEvtAct.module.css";
 import PopUp from "../../partials/PopUp";
 import EditorAddEvtAct from "../../partials/EditorAddEvtAct";
+import Loading from "../../components/Loading";
 
 const CreateEvtAct = ({
 	organization,
@@ -70,7 +71,14 @@ const CreateEvtAct = ({
 	return (
 		<>
 			<div className="content organizer">
-				{openEditor ? (
+				<div className={styles.DecorationBox}>
+					<div className={styles.Decoration}></div>
+				</div>
+				{organization.length === 0 ? (
+					<div style={{ marginTop: "100px" }}>
+						<Loading />
+					</div>
+				) : openEditor ? (
 					<EditorAddEvtAct
 						forEvtAct={openEditor}
 						setForEvtAct={setOpenEditor}

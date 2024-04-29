@@ -1,0 +1,264 @@
+@keyframes swipeLeft {
+	0% {
+		transform: translate(1000px, 0);
+	}
+
+	100% {
+		transform: translate(0, 0);
+	}
+}
+
+@keyframes swipeRight {
+	0% {
+		transform: translate(-1000px, 0);
+	}
+
+	100% {
+		transform: translate(0, 0);
+	}
+}
+
+.NavigationPanel {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 16.94px;
+	margin-left: 18px;
+	margin-right: 18px;
+}
+.NavItemSecondary {
+	color: #888888 !important;
+}
+.NavItemSecondary a {
+	color: #888888 !important;
+	text-decoration: none;
+}
+.NavItemPrimary {
+	color: #000 !important;
+}
+.NavItemPrimary a {
+	color: #000 !important;
+	text-decoration: none;
+}
+.BasicTimeFilter {
+	display: flex;
+	flex-direction: row;
+	margin-left: 18px;
+	margin-right: 18px;
+}
+.MainBody {
+	display: flex;
+	flex-direction: row;
+	margin-top: 57px;
+	height: 100%;
+}
+.FilterPanel {
+	display: flex;
+	flex-direction: column;
+	width: 20%;
+	height: 100%;
+	min-width: 323px;
+	max-width: 450px;
+	border-radius: 16px;
+	gap: 32px;
+	box-shadow: 0px 0px 8px 0px #0000001a;
+	background-color: #fff;
+	animation: swipeRight 300ms;
+}
+.BoxFIlterCotent {
+	width: 100%;
+	height: 100%;
+	padding: 34px;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	overflow-y: auto;
+}
+.GroupFilter {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 100%;
+}
+.SearchBox input {
+	width: calc(100% - 46px);
+}
+.SearchBox button {
+	width: 41px;
+	height: 41px;
+}
+.FilterTitle {
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 600;
+	color: #000;
+}
+.SearchBox {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	width: 100%;
+}
+.BoxChipSelector {
+	/* margin-top: -20px; */
+	padding: 0px 5px 5px 5px;
+	box-shadow: 0px 0px 8px 0px #0000001a;
+	width: 100%;
+}
+.FieldDropDownLabel {
+	color: #828282;
+	margin-top: auto;
+	margin-bottom: auto;
+	cursor: pointer;
+	font-size: 14px;
+	width: calc(100% - 20px);
+}
+.FieldDropDownIcon {
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+	cursor: pointer;
+	height: 20px;
+	width: 20px;
+}
+.ContentPanel {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 16px;
+	padding: 0 27px 0 27px;
+	height: 100%;
+	/* height: 100px; */
+	/* background-color: green; */
+}
+.Wrapper {
+	display: none;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	background-color: #00000027;
+	top: 0;
+	left: 0;
+}
+
+.FilterClose {
+	display: none;
+	position: absolute;
+	background-color: #fff;
+	width: 30px;
+	height: 100px;
+	padding: 5px;
+	left: -30px;
+	top: 20px;
+	border-top-left-radius: 12px;
+	border-bottom-left-radius: 12px;
+	cursor: pointer;
+}
+.FilterClose svg {
+	margin: auto;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+.FloatButton {
+	display: none;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	position: fixed;
+	bottom: 25px;
+	right: 25px;
+	animation: swipeLeft 300ms;
+}
+.FloatButton svg {
+	width: 30px;
+	height: 30px;
+}
+.SkeletonFilterTitle {
+	width: 30%;
+	height: 20px;
+	border-radius: 12px;
+}
+.SkeletonFilterForm {
+	width: 100%;
+	height: 40px;
+	border-radius: 12px;
+}
+.BlankEvents {
+	font-size: 18px;
+	font-weight: 500;
+	color: #3a3a3a;
+	text-align: center;
+	width: 100%;
+	margin-top: 100px;
+}
+.BlankEvents img {
+	width: 200px;
+	height: 200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.ButtonLoadBox {
+	width: 100%;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+.ButtonLoadBox button {
+	margin: auto;
+}
+.EventCard {
+	height: fit-content;
+}
+
+@media (min-width: 1600px) {
+	.EventCard {
+		max-width: calc(25% - 12px);
+		flex-basis: 25%;
+	}
+}
+@media (max-width: 1290px) {
+	.EventCard {
+		max-width: calc(50% - 8px);
+		flex-basis: 50%;
+	}
+}
+@media (max-width: 1050px) {
+	.FilterPanel {
+		display: none;
+		position: fixed;
+		right: 0;
+		height: calc(100% - 71px);
+		top: 71px;
+		animation: swipeLeft 300ms;
+	}
+	.Wrapper {
+		display: unset;
+	}
+	.FloatButton {
+		display: unset;
+	}
+	.FilterClose {
+		display: flex;
+	}
+	.EventCard {
+		max-width: 31.4%;
+		flex-basis: 31.8%;
+	}
+}
+@media (max-width: 896px) {
+	.EventCard {
+		max-width: calc(50% - 8px);
+		flex-basis: 50%;
+	}
+}
+@media (max-width: 744px) {
+	.EventCard {
+		max-width: 100%;
+		flex-basis: 100%;
+	}
+}

@@ -12,6 +12,7 @@
 body {
 	font-family: "Inter", sans-serif;
 	font-weight: 400;
+	background-color: #fff;
 }
 div {
 	display: flex;
@@ -37,7 +38,8 @@ h4 {
 }
 .content.user {
 	left: 20%;
-	right: 20px;
+	/* right: 20px; */
+	right: 0;
 	padding: 20px;
 }
 .content.organizer {
@@ -191,8 +193,9 @@ table td {
 	}
 	.content.user {
 		left: 20px !important;
-		right: 20px;
-		padding: 0px;
+		/* right: 20px; */
+		right: 0;
+		/* padding: 0px; */
 	}
 	.content.organizer {
 		left: 0px !important;

@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import Separator from "../components/Separator";
 import axios from "axios";
 import PopUpLogin from "./PopUpLogin";
+import PopUpCheckinUser from "./PopUpCheckinUserr";
 
 const isLoginLoad = async ({ accessToken }) => {
 	try {
@@ -64,6 +65,7 @@ const HeaderUser = ({
 }) => {
 	const [isProfileActive, setProfileActive] = useState(false);
 	const [isMenuMobileActive, setMenuMobileActive] = useState(false);
+	const [openPopUpCheckin, setPopUpQRState] = useState(false);
 
 	const handleClick = (e) => {
 		let target = e.target;
@@ -73,11 +75,20 @@ const HeaderUser = ({
 		if (window.innerWidth > 480) {
 			if (
 				classes === undefined ||
-				(classes?.indexOf("HeaderUser") < 0 && isProfileActive)
+				(classes.indexOf("HeaderUser") < 0 && isProfileActive)
 			) {
 				setProfileActive(false);
 			}
 		}
+	};
+
+	const handleLogout = () => {
+		localStorage.setItem("access_token", "");
+		window.location.href = "/";
+		// setLogin(false);
+		// setUserData(null);
+		// setProfileActive(false);
+		// console.log("logout clickedd");
 	};
 
 	useEffect(() => {
@@ -107,6 +118,17 @@ const HeaderUser = ({
 			{/* ======== Login Pop Up =========== */}
 			{!isLogin ? <PopUpLogin setLogin={setLogin} /> : <></>}
 			{/* ================================= */}
+			{/* ========= User Checkin Pop Up ========= */}
+			{openPopUpCheckin ? (
+				<PopUpCheckinUser
+					fnSetLogin={setLogin}
+					isLogin={isLogin}
+					fnClose={setPopUpQRState}
+				/>
+			) : (
+				<></>
+			)}
+			{/* ======================================= */}
 			<div className={styles.HeaderMobile}>
 				<div className={styles.LogoArea}>
 					<img
@@ -132,7 +154,7 @@ const HeaderUser = ({
 				) : (
 					<>
 						<a
-							href="#"
+							href="/explore"
 							className={styles.MenuMobileItem}
 							style={{
 								borderWidth: 1,
@@ -143,14 +165,21 @@ const HeaderUser = ({
 							<BiCompass size={20} />
 							Explore Events
 						</a>
-						<a href="#" className={styles.MenuMobileItem}>
+						<div
+							onClick={() => {
+								setPopUpQRState(true);
+								console.log("CLICK OPEN POPUP CHECKIN");
+							}}
+							className={`${styles.MenuMobileItem}`}
+							style={{ flexDirection: "row", cursor: "pointer" }}
+						>
 							<BiQrScan size={20} />
 							QR Check-in
-						</a>
-						<a href="#" className={styles.MenuMobileItem}>
+						</div>
+						{/* <a href="/invitations" className={styles.MenuMobileItem}>
 							<BiGroup size={20} />
 							Invitations
-						</a>
+						</a> */}
 					</>
 				)}
 
@@ -201,7 +230,11 @@ const HeaderUser = ({
 						Settings
 					</a>
 					<Separator />
-					<a href="#" className={`${styles.ProfileMenuItem}`}>
+					<a
+						href="#"
+						className={`${styles.ProfileMenuItem}`}
+						onClick={handleLogout}
+					>
 						<BiLogOut />
 						Logout
 					</a>
@@ -220,21 +253,28 @@ const HeaderUser = ({
 				{/* <div className={styles.Left}>Boost</div> */}
 				<div className={styles.Right}>
 					<a
-						href="#"
+						href="/explore"
 						className={styles.Item}
 						style={{ border: "1px solid #ddd" }}
 					>
 						<BiCompass />
 						Explore Events
 					</a>
-					<a href="#" className={styles.Item}>
+					<div
+						className={`${styles.Item}`}
+						style={{ cursor: "pointer" }}
+						onClick={() => {
+							setPopUpQRState(true);
+							console.log("CLICK OPEN POPUP CHECKIN");
+						}}
+					>
 						<BiQr />
 						QR Check-in
-					</a>
-					<a href="#" className={styles.Item}>
+					</div>
+					{/* <a href="/invitations" className={styles.Item}>
 						<BiNote />
-						Invitation
-					</a>
+						Invitations
+					</a> */}
 					<div
 						className={styles.ProfileIcon}
 						onClick={() => setProfileActive(!isProfileActive)}
@@ -269,7 +309,11 @@ const HeaderUser = ({
 						Settings
 					</a>
 					<div className={styles.Separator}></div>
-					<a href="#" className={`${styles.ProfileMenuItem}`}>
+					<a
+						href="#"
+						className={`${styles.ProfileMenuItem}`}
+						onClick={handleLogout}
+					>
 						<BiLogOut />
 						Logout
 					</a>

@@ -1,448 +1,248 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SidebarUser from "../../partials/SidebarUser";
 import HeaderUser from "../../partials/HeaderUser";
 import styles from "../styles/PersonalEvent.module.css";
 import Toggler from "../../components/Toggler";
 import Event from "../../components/Event";
 import InfoCard from "../../partials/InfoCard";
+import axios from "axios";
+import ErrorPage from "../../partials/ErrorPage";
+import Loading from "../../components/Loading";
+import PopUpPsEventDetail from "../../partials/PopUpPsEventDetail";
+import PopUp from "../../partials/PopUp";
+// import PopUpCheckinUser from "../../partials/PopUpCheckinUserr";
 
-const PersonalEvent = () => {
+const handleSuccess = (res) => {
+	return {
+		data: res.data,
+		status: res.status,
+	};
+};
+
+const handleError = (error) => {
+	console.log(error);
+	if (error.response === undefined) {
+		return {
+			data: { data: [error.message] },
+			status: 500,
+		};
+	} else {
+		return {
+			data: error.response,
+			status: error.response.status,
+		};
+	}
+};
+
+const loadPchs = async () => {
+	try {
+		let res = await axios.get(
+			process.env.REACT_APP_BACKEND_URL + "/api/get-purchases",
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const PersonalEvent = ({
+	isLogin,
+	fnSetLogin = () => {
+		{
+		}
+	},
+}) => {
 	const [viewing, setViewing] = useState("Upcoming");
-	const events = [
-		{
-			id: "9a26cf2f-96bf-434a-aaf1-5494eae26a90",
-			org_id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-			slug: "testing-updated",
-			name: "Australia & UK Top Ranked Universities - Application Day",
-			category: "-",
-			topics: "-",
-			logo: "https://s3-ap-southeast-1.amazonaws.com/loket-production-sg/images/banner/20230922011910.jpg",
-			desc: "-",
-			snk: "-",
-			exe_type: "online",
-			location: "-",
-			province: "-",
-			city: "-",
-			start_date: "2023-09-20",
-			end_date: "2023-09-25",
-			start_time: "08:00:00",
-			end_time: "12:00:00",
-			is_publish: 1,
-			instagram: "-",
-			twitter: "-",
-			website: "-",
-			twn_url: "-",
-			custom_fields: "",
-			seat_map: null,
-			single_trx: 0,
-			deleted: 0,
-			created_at: "2023-09-17T01:39:14.000000Z",
-			updated_at: "2023-09-24T09:26:56.000000Z",
-			available_days: [],
-			org: {
-				id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-				user_id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-				type: "test2",
-				name: "Agendakota",
-				slug: "test-update",
-				photo: "https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg",
-				banner:
-					"/storage/org_banners/Screenshot 2023-09-14 220918_1694914178.png",
-				interest: "-",
-				email: "-",
-				linkedin: "-",
-				instagram: "-",
-				twitter: "-",
-				whatsapp: "-",
-				website: "-",
-				desc: "lorem ipsum dolor sit amet",
-				deleted: 0,
-				created_at: "2023-09-17T01:25:15.000000Z",
-				updated_at: "2023-09-17T01:30:44.000000Z",
-			},
-			tickets: [
-				{
-					id: "9a271fce-b9e8-480e-9efc-70139a1e5633",
-					event_id: "9a26cf2f-96bf-434a-aaf1-5494eae26a90",
-					name: "Ticket 1",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 1,
-					price: 0,
-					quantity: 3,
-					start_date: "2023-09-17",
-					end_date: "2023-09-17",
-					seat_number: 0,
-					max_purchase: 0,
-					deleted: 0,
-					created_at: "2023-09-17T05:24:40.000000Z",
-					updated_at: "2023-09-21T03:19:50.000000Z",
-				},
-				{
-					id: "9a2bde6a-0d61-4791-8155-43dd6ecbab29",
-					event_id: "9a26cf2f-96bf-434a-aaf1-5494eae26a90",
-					name: "Ticket 3",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 3,
-					price: 0,
-					quantity: 7,
-					start_date: "2023-09-17",
-					end_date: "2023-09-19",
-					seat_number: 0,
-					max_purchase: 0,
-					deleted: 0,
-					created_at: "2023-09-19T14:00:57.000000Z",
-					updated_at: "2023-09-21T06:17:23.000000Z",
-				},
-				{
-					id: "9a27205d-cedf-4125-91e4-cb0abf12ec54",
-					event_id: "9a26cf2f-96bf-434a-aaf1-5494eae26a90",
-					name: "Ticket 2",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 2,
-					price: 25000,
-					quantity: 6,
-					start_date: "2023-09-17",
-					end_date: "2023-09-17",
-					seat_number: 0,
-					max_purchase: 0,
-					deleted: 0,
-					created_at: "2023-09-17T05:26:14.000000Z",
-					updated_at: "2023-09-21T06:17:23.000000Z",
-				},
-				{
-					id: "9a2de1ec-8123-43cb-80a0-95d05fb64231",
-					event_id: "9a26cf2f-96bf-434a-aaf1-5494eae26a90",
-					name: "Ticket 4.5",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 2,
-					price: 25000,
-					quantity: 7,
-					start_date: "2023-09-17",
-					end_date: "2023-09-20",
-					seat_number: 0,
-					max_purchase: 0,
-					deleted: 0,
-					created_at: "2023-09-20T14:02:25.000000Z",
-					updated_at: "2023-09-20T14:03:08.000000Z",
-				},
-			],
-		},
-		{
-			id: "9a6a7903-52d5-4abf-9d9a-65ac2fae4878",
-			org_id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-			slug: "testing-attraction-2",
-			name: "[SOLO] MLBB SULTAN CUP RISING STAR",
-			category: "Attraction",
-			topics: "-",
-			logo: "https://s3-ap-southeast-1.amazonaws.com/loket-production-sg/images/banner/20230926120219_651265db31ebb.jpg",
-			desc: "-",
-			snk: "-",
-			exe_type: "offline",
-			location: "-",
-			province: "-",
-			city: "-",
-			start_date: "2023-10-20",
-			end_date: "2024-10-20",
-			start_time: "23:54:34",
-			end_time: "23:54:34",
-			is_publish: 1,
-			instagram: "-",
-			twitter: "-",
-			website: "-",
-			twn_url: "-",
-			custom_fields:
-				"Dapat info dari mana|Kamu tahu dari apa|Kapan kamu sadarnya",
-			seat_map:
-				"/storage/seat_maps/Screenshot 2023-09-18 204658_1697820874.png",
-			single_trx: 1,
-			deleted: 0,
-			created_at: "2023-10-20T16:54:34.000000Z",
-			updated_at: "2023-10-20T16:54:34.000000Z",
-			available_days: [
-				{
-					id: "9a6a7903-5de6-45b2-a8b9-ea7af9202b50",
-					event_id: "9a6a7903-52d5-4abf-9d9a-65ac2fae4878",
-					day: "Tue",
-					max_limit_time: "21:00:00",
-					created_at: "2023-10-20T16:54:34.000000Z",
-					updated_at: "2023-10-20T16:54:34.000000Z",
-				},
-				{
-					id: "9a6a7903-624f-4e42-8b37-09e17906638f",
-					event_id: "9a6a7903-52d5-4abf-9d9a-65ac2fae4878",
-					day: "Wed",
-					max_limit_time: "22:00:00",
-					created_at: "2023-10-20T16:54:34.000000Z",
-					updated_at: "2023-10-20T16:54:34.000000Z",
-				},
-				{
-					id: "9a6a7903-65ac-419c-9fcd-bc8a5b43be35",
-					event_id: "9a6a7903-52d5-4abf-9d9a-65ac2fae4878",
-					day: "Thu",
-					max_limit_time: "17:00:00",
-					created_at: "2023-10-20T16:54:34.000000Z",
-					updated_at: "2023-10-20T16:54:34.000000Z",
-				},
-			],
-			org: {
-				id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-				user_id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-				type: "test2",
-				name: "Agendakoat 2",
-				slug: "test-update",
-				photo: "https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg",
-				banner:
-					"/storage/org_banners/Screenshot 2023-09-14 220918_1694914178.png",
-				interest: "-",
-				email: "-",
-				linkedin: "-",
-				instagram: "-",
-				twitter: "-",
-				whatsapp: "-",
-				website: "-",
-				desc: "lorem ipsum dolor sit amet",
-				deleted: 0,
-				created_at: "2023-09-17T01:25:15.000000Z",
-				updated_at: "2023-09-17T01:30:44.000000Z",
-			},
-			tickets: [
-				{
-					id: "9a6562c2-c65e-4156-88f4-110922e7cc48",
-					event_id: "9a654201-ef5e-487c-be43-2cb7af4281ab",
-					name: "Ticket B",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 3,
-					price: 0,
-					quantity: -1,
-					start_date: "2023-10-21",
-					end_date: "2024-10-21",
-					seat_number: 1,
-					max_purchase: 3,
-					deleted: 0,
-					created_at: "2023-10-18T04:13:13.000000Z",
-					updated_at: "2023-10-20T17:02:10.000000Z",
-				},
-				{
-					id: "9a6562f0-d915-48b8-b147-9cde766bca95",
-					event_id: "9a654201-ef5e-487c-be43-2cb7af4281ab",
-					name: "Ticket C",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 1,
-					price: 0,
-					quantity: -1,
-					start_date: "2023-10-21",
-					end_date: "2024-10-21",
-					seat_number: 1,
-					max_purchase: 2,
-					deleted: 0,
-					created_at: "2023-10-18T04:13:43.000000Z",
-					updated_at: "2023-10-20T17:02:10.000000Z",
-				},
-				{
-					id: "9a656237-31ab-4839-bfb8-56d6a8498955",
-					event_id: "9a654201-ef5e-487c-be43-2cb7af4281ab",
-					name: "Ticket A",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 2,
-					price: 25000,
-					quantity: -1,
-					start_date: "2023-10-21",
-					end_date: "2024-10-21",
-					seat_number: 1,
-					max_purchase: 2,
-					deleted: 0,
-					created_at: "2023-10-18T04:11:41.000000Z",
-					updated_at: "2023-10-20T17:02:10.000000Z",
-				},
-			],
-		},
-		{
-			id: "9a26cf2f-96bf-434a-aaf1-5494eae26a90",
-			org_id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-			slug: "testing-updated",
-			name: "ASPEK DAN PERLINDUNGAN HUKUM ATAS MEREK",
-			category: "-",
-			topics: "-",
-			logo: "https://s3-ap-southeast-1.amazonaws.com/loket-production-sg/images/banner/20231012142401_65279f11e3b17.jpg",
-			desc: "-",
-			snk: "-",
-			exe_type: "online",
-			location: "-",
-			province: "-",
-			city: "-",
-			start_date: "2023-09-20",
-			end_date: "2023-09-25",
-			start_time: "08:00:00",
-			end_time: "12:00:00",
-			is_publish: 1,
-			instagram: "-",
-			twitter: "-",
-			website: "-",
-			twn_url: "-",
-			custom_fields: "",
-			seat_map: null,
-			single_trx: 0,
-			deleted: 0,
-			created_at: "2023-09-17T01:39:14.000000Z",
-			updated_at: "2023-09-24T09:26:56.000000Z",
-			available_days: [],
-			org: {
-				id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-				user_id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-				type: "test2",
-				name: "Agendakota",
-				slug: "test-update",
-				photo: "https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg",
-				banner:
-					"/storage/org_banners/Screenshot 2023-09-14 220918_1694914178.png",
-				interest: "-",
-				email: "-",
-				linkedin: "-",
-				instagram: "-",
-				twitter: "-",
-				whatsapp: "-",
-				website: "-",
-				desc: "lorem ipsum dolor sit amet",
-				deleted: 0,
-				created_at: "2023-09-17T01:25:15.000000Z",
-				updated_at: "2023-09-17T01:30:44.000000Z",
-			},
-			tickets: [],
-		},
-		{
-			id: "9a6a7903-52d5-4abf-9d9a-65ac2fae4878",
-			org_id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-			slug: "testing-attraction-2",
-			name: "Rock in Solo Festival 2023",
-			category: "Attraction",
-			topics: "-",
-			logo: "https://s3-ap-southeast-1.amazonaws.com/loket-production-sg/images/banner/20230905110542_64f6a91690d6f.jpg",
-			desc: "-",
-			snk: "-",
-			exe_type: "offline",
-			location: "-",
-			province: "-",
-			city: "-",
-			start_date: "2023-10-20",
-			end_date: "2024-10-20",
-			start_time: "23:54:34",
-			end_time: "23:54:34",
-			is_publish: 1,
-			instagram: "-",
-			twitter: "-",
-			website: "-",
-			twn_url: "-",
-			custom_fields:
-				"Dapat info dari mana|Kamu tahu dari apa|Kapan kamu sadarnya",
-			seat_map:
-				"/storage/seat_maps/Screenshot 2023-09-18 204658_1697820874.png",
-			single_trx: 1,
-			deleted: 0,
-			created_at: "2023-10-20T16:54:34.000000Z",
-			updated_at: "2023-10-20T16:54:34.000000Z",
-			available_days: [
-				{
-					id: "9a6a7903-5de6-45b2-a8b9-ea7af9202b50",
-					event_id: "9a6a7903-52d5-4abf-9d9a-65ac2fae4878",
-					day: "Tue",
-					max_limit_time: "21:00:00",
-					created_at: "2023-10-20T16:54:34.000000Z",
-					updated_at: "2023-10-20T16:54:34.000000Z",
-				},
-				{
-					id: "9a6a7903-624f-4e42-8b37-09e17906638f",
-					event_id: "9a6a7903-52d5-4abf-9d9a-65ac2fae4878",
-					day: "Wed",
-					max_limit_time: "22:00:00",
-					created_at: "2023-10-20T16:54:34.000000Z",
-					updated_at: "2023-10-20T16:54:34.000000Z",
-				},
-				{
-					id: "9a6a7903-65ac-419c-9fcd-bc8a5b43be35",
-					event_id: "9a6a7903-52d5-4abf-9d9a-65ac2fae4878",
-					day: "Thu",
-					max_limit_time: "17:00:00",
-					created_at: "2023-10-20T16:54:34.000000Z",
-					updated_at: "2023-10-20T16:54:34.000000Z",
-				},
-			],
-			org: {
-				id: "9a26ca30-4579-48fa-99fb-7d487ac702da",
-				user_id: "9a26b9cb-1e74-4cad-a23a-2b9ec5b93aa6",
-				type: "test2",
-				name: "Agendakoat 2",
-				slug: "test-update",
-				photo: "https://i1.sndcdn.com/avatars-000225426854-qk8agf-t500x500.jpg",
-				banner:
-					"/storage/org_banners/Screenshot 2023-09-14 220918_1694914178.png",
-				interest: "-",
-				email: "-",
-				linkedin: "-",
-				instagram: "-",
-				twitter: "-",
-				whatsapp: "-",
-				website: "-",
-				desc: "lorem ipsum dolor sit amet",
-				deleted: 0,
-				created_at: "2023-09-17T01:25:15.000000Z",
-				updated_at: "2023-09-17T01:30:44.000000Z",
-			},
-			tickets: [
-				{
-					id: "9a6562c2-c65e-4156-88f4-110922e7cc48",
-					event_id: "9a654201-ef5e-487c-be43-2cb7af4281ab",
-					name: "Ticket B",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 3,
-					price: 0,
-					quantity: -1,
-					start_date: "2023-10-21",
-					end_date: "2024-10-21",
-					seat_number: 1,
-					max_purchase: 3,
-					deleted: 0,
-					created_at: "2023-10-18T04:13:13.000000Z",
-					updated_at: "2023-10-20T17:02:10.000000Z",
-				},
-				{
-					id: "9a6562f0-d915-48b8-b147-9cde766bca95",
-					event_id: "9a654201-ef5e-487c-be43-2cb7af4281ab",
-					name: "Ticket C",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 1,
-					price: 0,
-					quantity: -1,
-					start_date: "2023-10-21",
-					end_date: "2024-10-21",
-					seat_number: 1,
-					max_purchase: 2,
-					deleted: 0,
-					created_at: "2023-10-18T04:13:43.000000Z",
-					updated_at: "2023-10-20T17:02:10.000000Z",
-				},
-				{
-					id: "9a656237-31ab-4839-bfb8-56d6a8498955",
-					event_id: "9a654201-ef5e-487c-be43-2cb7af4281ab",
-					name: "Ticket A",
-					desc: "Lorem ipsum dolor sit amet",
-					type_price: 2,
-					price: 25000,
-					quantity: -1,
-					start_date: "2023-10-21",
-					end_date: "2024-10-21",
-					seat_number: 1,
-					max_purchase: 2,
-					deleted: 0,
-					created_at: "2023-10-18T04:11:41.000000Z",
-					updated_at: "2023-10-20T17:02:10.000000Z",
-				},
-			],
-		},
-	];
+	const [upcoming, setUpcoming] = useState(null);
+	const [happening, setHappening] = useState(null);
+	const [finished, setFinished] = useState(null);
+	const [popUpActive, setPopUpState] = useState(false);
+	const [popUpContent, setPopUpContent] = useState(<></>);
+	const [loading, setLoading] = useState(true);
+	const [errorState, setErrorState] = useState(false);
+	const [transactions, setTransactions] = useState(null);
+	// const [openCheckin, setOpenCheckin] = useState(false);
+
+	// useEffect(() => {
+	// 	if (
+	// 		transactions !== null &&
+	// 		!waitingPayment &&
+	// 		!finishedPaymentUp &&
+	// 		!finishedPaymentDown
+	// 	) {
+	// 		let pendings = [];
+	// 		let upcomings = [];
+	// 		let endeds = [];
+	// 		transactions.transactions.forEach((trx) => {
+	// 			if (
+	// 				trx.payment.pay_state === "PENDING"
+	// 				// &&
+	// 				// new Date() < new Date(trx.payment.expired)
+	// 			) {
+	// 				pendings.push(trx);
+	// 			} else if (
+	// 				trx.payment.pay_state === "SUCCEEDED" &&
+	// 				trx.purchases.reduce((current, acc) => {
+	// 					// check total checkin in list purchases
+	// 					if (acc.checkin) {
+	// 						return current + 1;
+	// 					} else {
+	// 						return current;
+	// 					}
+	// 				}, 0) < trx.purchases.length &&
+	// 				trx.purchases.reduce((current, acc) => {
+	// 					if (
+	// 						acc.visit_date &&
+	// 						new Date() >
+	// 							new Date(acc.visit_date.visit_date).setHours(23, 59, 0)
+	// 					) {
+	// 						return current + 1;
+	// 					} else {
+	// 						return current;
+	// 					}
+	// 				}, 0) < trx.purchases.length &&
+	// 				new Date(
+	// 					`${trx.purchases[0].ticket.event.end_date} ${trx.purchases[0].ticket.event.end_time}`
+	// 				) >= new Date()
+	// 			) {
+	// 				upcomings.push(trx);
+	// 			} else if (
+	// 				(trx.payment.pay_state === "SUCCEEDED" &&
+	// 					(trx.purchases.reduce((current, acc) => {
+	// 						// check total checkin in list purchases
+	// 						if (acc.checkin) {
+	// 							return current + 1;
+	// 						} else {
+	// 							return current;
+	// 						}
+	// 					}, 0) >= trx.purchases.length ||
+	// 						trx.purchases.reduce((current, acc) => {
+	// 							if (
+	// 								acc.visit_date &&
+	// 								new Date() >
+	// 									new Date(acc.visit_date.visit_date).setHours(23, 59, 0)
+	// 							) {
+	// 								return current + 1;
+	// 							} else {
+	// 								return current;
+	// 							}
+	// 						}, 0) >= trx.purchases.length ||
+	// 						new Date(
+	// 							`${trx.purchases[0].ticket.event.end_date} ${trx.purchases[0].ticket.event.end_time}`
+	// 						) < new Date())) ||
+	// 				trx.payment.pay_state === "EXPIRED" ||
+	// 				new Date() >= new Date(trx.payment.expired)
+	// 			) {
+	// 				endeds.push(trx);
+	// 			}
+	// 		});
+	// 		setWaitingList(pendings);
+	// 		setFinishedListUp(upcomings);
+	// 		setFinishedListDown(endeds);
+	// 		setLoading(false);
+	// 	}
+	// }, [transactions]);
+
+	useEffect(() => {
+		if (transactions !== null && !upcoming && !happening && !finished) {
+			let up = [];
+			let hap = [];
+			let fin = [];
+			transactions.transactions.forEach((trx, index) => {
+				if (trx.payment.pay_state === "SUCCEEDED") {
+					trx.purchases.forEach((pch) => {
+						let start = new Date(
+							pch.visit_date
+								? pch.visit_date.visit_date
+								: pch.ticket.event.start_date
+						).setHours(0, 0, 0, 0);
+						let end = new Date(
+							pch.visit_date
+								? pch.visit_date.visit_date
+								: pch.ticket.event.end_date
+						).setHours(0, 0, 0, 0);
+						let now = new Date().setHours(0, 0, 0, 0);
+						if (now < start) {
+							if (up[pch.ticket.event.id]) {
+								up[pch.ticket.event.id].push(pch);
+							} else {
+								up[pch.ticket.event.id] = [pch];
+							}
+						} else if (now <= start && now >= end) {
+							if (hap[pch.ticket.event.id]) {
+								hap[pch.ticket.event.id].push(pch);
+							} else {
+								hap[pch.ticket.event.id] = [pch];
+							}
+						} else if (now > end) {
+							if (fin[pch.ticket.event.id]) {
+								fin[pch.ticket.event.id].push(pch);
+							} else {
+								fin[pch.ticket.event.id] = [pch];
+							}
+						}
+					});
+				}
+			});
+			setUpcoming(up);
+			setHappening(hap);
+			setFinished(fin);
+			setLoading(false);
+		}
+	}, [transactions]);
+
+	useEffect(() => {
+		if (!transactions && isLogin) {
+			loadPchs().then((res) => {
+				if (res.status === 200) {
+					setTransactions(res.data);
+				} else if (res.status === 401) {
+					fnSetLogin(false);
+				} else if (res.status !== 404) {
+					setErrorState(true);
+					setLoading(false);
+				} else {
+					setTransactions({
+						transactions: [],
+					});
+					setLoading(false);
+				}
+			});
+		}
+	}, [transactions, isLogin]);
 
 	return (
 		<>
+			{popUpActive ? (
+				<PopUp
+					title=""
+					isActive
+					setActiveFn={() => {
+						setPopUpState(false);
+					}}
+					content={
+						<PopUpPsEventDetail
+							fnClose={() => {
+								setPopUpState(false);
+							}}
+							fnSetLogin={fnSetLogin}
+							groupPchEvent={popUpContent}
+						/>
+					}
+				/>
+			) : (
+				<></>
+			)}
 			<div className="content user">
+				<div className={styles.DecorationBox}>
+					<div className={styles.Decoration}></div>
+				</div>
 				<div className={styles.TitleArea}>
 					<h1 className={styles.Title}>Personal Events</h1>
 					<Toggler
@@ -452,63 +252,135 @@ const PersonalEvent = () => {
 					/>
 				</div>
 
-				<div className={styles.Inline} style={{ marginTop: 20 }}>
-					{events.length > 0 ? (
-						events.map((event, e) => (
-							<Event
-								data={event}
-								key={e}
-								config={{
-									coverStyle: {
-										height: 160,
-									},
-								}}
-							/>
-						))
-					) : (
-						<div
-							style={{ display: "flex", alignContent: "center", width: "100%" }}
-						>
-							<img
-								src="/images/Sparkler.png"
-								alt="sparkler"
-								width={"160px"}
-								height={"160px"}
+				{errorState ? (
+					<ErrorPage />
+				) : loading ? (
+					<div
+						style={{
+							margin: "auto",
+							marginTop: "150px",
+							marginBottom: "150px",
+						}}
+					>
+						<Loading />
+					</div>
+				) : (
+					<div className={styles.Inline} style={{ marginTop: 20 }}>
+						{viewing === "Upcoming"
+							? upcoming &&
+							  Object.values(upcoming).map((evtGroup, e) => {
+									console.log(evtGroup, e, "LOG VIEWING");
+									return (
+										<Event
+											data={evtGroup[0].ticket.event}
+											key={e}
+											config={{
+												coverStyle: {
+													height: 160,
+												},
+											}}
+											noPrice={true}
+											customOnClickFn={() => {
+												setPopUpContent(evtGroup);
+												setPopUpState(true);
+											}}
+										/>
+									);
+							  })
+							: viewing === "Happening"
+							? happening &&
+							  Object.values(happening).map((evtGroup, e) => (
+									<Event
+										data={evtGroup[0].ticket.event}
+										key={e}
+										config={{
+											coverStyle: {
+												height: 160,
+											},
+										}}
+										noPrice={true}
+										customOnClickFn={() => {
+											setPopUpContent(evtGroup);
+											setPopUpState(true);
+										}}
+									/>
+							  ))
+							: finished &&
+							  Object.values(finished).map((evtGroup, e) => {
+									console.log(evtGroup, e, "LOG VIEWING");
+									return (
+										<Event
+											data={evtGroup[0].ticket.event}
+											key={e}
+											config={{
+												coverStyle: {
+													height: 160,
+												},
+											}}
+											noPrice={true}
+											customOnClickFn={() => {
+												setPopUpContent(evtGroup);
+												setPopUpState(true);
+											}}
+										/>
+									);
+							  })}
+						{((!upcoming || Object.values(upcoming).length <= 0) &&
+							viewing === "Upcoming") ||
+						((!happening || Object.values(happening).length <= 0) &&
+							viewing === "Happening") ||
+						((!finished || Object.values(finished).length <= 0) &&
+							viewing === "Finished") ? (
+							<div
 								style={{
-									marginBottom: "34px",
-									marginTop: "58px",
-									marginLeft: "auto",
-									marginRight: "auto",
-								}}
-							/>
-							<p
-								style={{
-									fontSize: "24px",
-									fontWeight: "600",
-									fontFamily: "Inter",
-									marginBottom: "16px",
-									marginLeft: "auto",
-									marginRight: "auto",
+									display: "flex",
+									alignContent: "center",
+									width: "100%",
 								}}
 							>
-								Temukan dan Hadiri Event
-							</p>
-							<p
-								style={{
-									fontSize: "16px",
-									fontWeight: "500",
-									fontFamily: "Inter",
-									marginBottom: "72px",
-									marginLeft: "auto",
-									marginRight: "auto",
-								}}
-							>
-								Tap pada tombol Explore events untuk menemukan event yang
-								menarik
-							</p>
-						</div>
-					)}
-				</div>
+								<img
+									src="/images/Sparkler.png"
+									alt="sparkler"
+									width={"160px"}
+									height={"160px"}
+									style={{
+										marginBottom: "34px",
+										marginTop: "58px",
+										marginLeft: "auto",
+										marginRight: "auto",
+									}}
+								/>
+								<p
+									style={{
+										fontSize: "24px",
+										fontWeight: "600",
+										fontFamily: "Inter",
+										marginBottom: "16px",
+										marginLeft: "auto",
+										marginRight: "auto",
+									}}
+								>
+									Temukan dan Hadiri Event
+								</p>
+								<p
+									style={{
+										fontSize: "16px",
+										fontWeight: "500",
+										fontFamily: "Inter",
+										marginBottom: "72px",
+										marginLeft: "auto",
+										marginRight: "auto",
+									}}
+								>
+									Tap pada tombol Explore events untuk menemukan event yang
+									menarik
+								</p>
+							</div>
+						) : (
+							<></>
+						)}
+					</div>
+				)}
 
 				<h3 className={styles.Title} style={{ marginTop: 40 }}>
 					Get the most out of Agendakota
@@ -525,7 +397,7 @@ const PersonalEvent = () => {
 						}
 						action={{
 							text: "Explore",
-							link: "https://agendakota.id",
+							link: "/explore",
 							target: "_blank",
 						}}
 					/>

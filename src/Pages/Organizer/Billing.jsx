@@ -777,7 +777,10 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
 				} else {
 					setContentNotify(
 						<>
-							<div>Pengajuan Withdraw gagal dibuat</div>
+							<div>
+								Pengajuan Withdraw gagal dibuat. Mohon periksa data LEGALITY /
+								LEGALITAS anda. Dan pastikan statusnya sudah disetujui.
+							</div>
 							<div className={styles2.IconPopUp}>
 								<BiError color={"#CA0C64"} fontWeight={"600"} />
 							</div>
@@ -1040,6 +1043,9 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
 				}
 			/>
 			<div className="content organizer">
+				<div className={styles.DecorationBox}>
+					<div className={styles.Decoration}></div>
+				</div>
 				{errorState ? (
 					<ErrorPage />
 				) : (
@@ -1123,7 +1129,9 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
 																{numberFormat.format(dataTable.origin_amount)}
 																,00
 															</td>
-															<td>{parseFloat(dataTable.commision) * 100}%</td>
+															<td>
+																Rp.{numberFormat.format(dataTable.commision)},00
+															</td>
 															<td>{dataTable.admin_fee}</td>
 															<td>
 																Rp. {numberFormat.format(dataTable.amount)},00

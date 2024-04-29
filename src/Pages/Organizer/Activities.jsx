@@ -97,11 +97,11 @@ const OrganizerActivities = ({ organization, fnSetLogin }) => {
 			let endedEvents = [];
 			let upcomingEvents = [];
 			events.forEach((evt) => {
-				let start = new Date(
-					evt.event.start_date + "T" + evt.event.start_time + "Z"
-				);
-				let end = new Date(evt.event.end_date + "T" + evt.event.end_time + "Z");
-
+				let start = new Date(evt.event.start_date + "T" + evt.event.start_time);
+				let end = new Date(evt.event.end_date + "T" + evt.event.end_time);
+				if (evt.event.id === "9b5cacee-4bfb-42ed-8140-96d2b90b2bb2") {
+					console.log(now, start, end, now >= start && now <= end, "NOW START");
+				}
 				if (evt.event.is_publish === 1) {
 					drafts.push({
 						...evt.event,
@@ -143,6 +143,9 @@ const OrganizerActivities = ({ organization, fnSetLogin }) => {
 	return (
 		<>
 			<div className="content organizer">
+				<div className={styles.DecorationBox}>
+					<div className={styles.Decoration}></div>
+				</div>
 				{errorState ? (
 					<ErrorPage />
 				) : (

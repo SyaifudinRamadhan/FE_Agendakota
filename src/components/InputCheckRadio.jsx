@@ -16,6 +16,8 @@ const InputCheckRadio = ({
 	label,
 	onChange,
 	checked = false,
+	radioName = null,
+	disabled = false,
 	onFocus = () => {},
 }) => {
 	const classNames = [styles2.BoxInput, styles2.BoxInputRadio].concat(
@@ -33,19 +35,37 @@ const InputCheckRadio = ({
 
 	return (
 		<div className={classNames.join(" ")} style={style}>
-			<input
-				id={id}
-				type={type === "checkbox" ? type : "radio"}
-				placeholder={placeholder}
-				className={`${styles.InputForm} ${styles2.InputCheckRadio}`}
-				ref={refData}
-				required={required}
-				readOnly={readOnly}
-				onFocus={onFocus}
-				min={min}
-				onChange={onChange}
-				defaultChecked={checked}
-			/>
+			{type === "checkbox" ? (
+				<input
+					id={id}
+					type={type}
+					placeholder={placeholder}
+					className={`${styles.InputForm} ${styles2.InputCheckRadio}`}
+					ref={refData}
+					required={required}
+					readOnly={readOnly}
+					onFocus={onFocus}
+					min={min}
+					onChange={onChange}
+					defaultChecked={checked}
+				/>
+			) : (
+				<input
+					id={id}
+					type={type}
+					placeholder={placeholder}
+					className={`${styles.InputForm} ${styles2.InputCheckRadio}`}
+					ref={refData}
+					required={required}
+					readOnly={readOnly}
+					onFocus={onFocus}
+					min={min}
+					onChange={onChange}
+					defaultChecked={checked}
+					name={radioName}
+					disabled={disabled}
+				/>
+			)}
 			<label ref={labelRef} htmlFor={id} className={styles2.Label}>
 				{iconSvg}
 				<p>{label}</p>

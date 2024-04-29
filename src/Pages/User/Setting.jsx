@@ -9,9 +9,55 @@ import Alert from "../../components/Alert";
 import InputForm from "../../components/InputForm";
 import Loading from "../../components/Loading";
 import PopUp from "../../partials/PopUp";
-import { BiError } from "react-icons/bi";
+import { BiCheckCircle, BiError } from "react-icons/bi";
+import axios from "axios";
 
-const Setting = () => {
+const handleSuccess = (res) => {
+	return {
+		data: res.data,
+		status: res.status,
+	};
+};
+
+const handleError = (error) => {
+	console.log(error);
+	if (error.response === undefined) {
+		return {
+			data: { data: [error.message] },
+			status: 500,
+		};
+	} else {
+		return {
+			data: error.response,
+			status: error.response.status,
+		};
+	}
+};
+
+const updatePassword = async ({ newPass, lastPass, confirmPass }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL + "/api/update-password",
+			{
+				_method: "PUT",
+				last_password: lastPass,
+				new_password: newPass,
+				confirm_password: confirmPass,
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const Setting = ({ isLogin, fnSetLogin = () => {} }) => {
 	const [alertDanger, setAlertDanger] = useState({
 		state: false,
 		content: "Semua field wajib diisi !",
@@ -19,6 +65,7 @@ const Setting = () => {
 	const [isLoading, setLoading] = useState(false);
 	const [popUpActive, setPopUpActive] = useState(false);
 	const [popUpContent, setPopUpContent] = useState(<></>);
+	const [pausedProcess, setPausedProcess] = useState(null);
 
 	const fieldProfile = {
 		lastPass: useRef(null),
@@ -35,12 +82,16 @@ const Setting = () => {
 	};
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
+		if (e) {
+			e.preventDefault();
+		}
 		if (
 			fieldProfile.newPass.current.value === "" ||
 			fieldProfile.confirmPass.current.value === "" ||
 			fieldProfile.newPass.current.value !==
-				fieldProfile.confirmPass.current.value
+				fieldProfile.confirmPass.current.value ||
+			fieldProfile.newPass.current.value.split("").length < 8 ||
+			fieldProfile.confirmPass.current.value.split("").length < 8
 		) {
 			setAlertDanger({
 				state: true,
@@ -58,29 +109,61 @@ const Setting = () => {
 			}, 3000);
 		} else {
 			setLoading(true);
-			dummyLoad().then((res) => {
-				if (!res) {
+			updatePassword({
+				lastPass: fieldProfile.lastPass.current.value,
+				newPass: fieldProfile.newPass.current.value,
+				confirmPass: fieldProfile.confirmPass.current.value,
+			}).then((res) => {
+				if (res.status === 202) {
 					setPopUpContent(
 						<div className={styles3.PopupNotify}>
-							<div>Password gagal diperbarui. Silahkan coba lagi !</div>
 							<div className={styles3.IconPopUp}>
-								<BiError color="#CA0C64" fontWeight={"600"} />
+								<BiCheckCircle color="green" fontWeight={"600"} />
 							</div>
+							<div>Password berhasil diperbarui</div>
+							<Button
+								title={"Ok"}
+								fnOnClick={() => {
+									setPopUpActive(false);
+								}}
+							/>
 						</div>
 					);
 					setPopUpActive(true);
-					setTimeout(() => {
-						setPopUpActive(false);
-						setPopUpContent(<></>);
-					}, 3000);
+					fieldProfile.newPass.current.value = "";
+					fieldProfile.confirmPass.current.value = "";
+					fieldProfile.lastPass.current.value = "";
 					setLoading(false);
+				} else if (res.status === 401) {
+					setPausedProcess("update");
+					fnSetLogin(false);
 				} else {
-					// reload data profile
+					setPopUpContent(
+						<div className={styles3.PopupNotify}>
+							<div className={styles3.IconPopUp}>
+								<BiError color="#CA0C64" fontWeight={"600"} />
+							</div>
+							<div>Password gagal diperbarui. Silahkan coba lagi !</div>
+							<Button
+								title={"Ok"}
+								fnOnClick={() => {
+									setPopUpActive(false);
+								}}
+							/>
+						</div>
+					);
+					setPopUpActive(true);
 					setLoading(false);
 				}
 			});
 		}
 	};
+
+	useEffect(() => {
+		if (pausedProcess && isLogin) {
+			handleSubmit();
+		}
+	}, [pausedProcess, isLogin]);
 
 	return (
 		<>
@@ -92,6 +175,9 @@ const Setting = () => {
 				title="Ubah Password"
 			/>
 			<div className="content user">
+				<div className={styles.DecorationBox}>
+					<div className={styles.Decoration}></div>
+				</div>
 				<div className={styles.Inline} style={{ marginTop: 20 }}>
 					<form
 						onSubmit={handleSubmit}
@@ -154,7 +240,9 @@ const Setting = () => {
 								<InputForm
 									refData={fieldProfile.newPass}
 									type={"password"}
-									placeholder={"Tuliskan password baru yang diinginkan"}
+									placeholder={
+										"Tuliskan password baru yang diinginkan min 8 karakter"
+									}
 								/>
 							</div>
 							<div className={styles2.FormFieldBox}>

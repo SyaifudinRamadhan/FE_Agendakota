@@ -13,11 +13,14 @@ import {
 	BiConversation,
 	BiCopy,
 	BiEdit,
+	BiError,
 	BiFullscreen,
 	BiGroup,
 	BiPaperPlane,
+	BiQuestionMark,
 	BiScreenshot,
 	BiSearch,
+	BiUserCircle,
 	BiZoomIn,
 	BiZoomOut,
 } from "react-icons/bi";
@@ -50,6 +53,17 @@ import {
 	Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import xlsx from "json-as-xlsx";
+import PopUpCheckin from "../../../partials/PopUpCheckin";
+import QRCode from "qrcode.react";
+import ReactPDF, {
+	PDFDownloadLink,
+	renderToFile,
+	usePDF,
+} from "@react-pdf/renderer";
+import QREventPdf from "./QREventPdf";
+import PopUpRefundOrg from "../../../partials/PopUpRefundOrg";
+import InputCheckRadio from "../../../components/InputCheckRadio";
 //   import faker from 'faker';
 
 ChartJS.register(
@@ -76,460 +90,23 @@ export const options = {
 	},
 };
 
-// ChartJS.register(ArcElement, Tooltip, Legend);
-
-const test = [
-	{
-		label: "Series 1",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 83,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 64,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 13,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 31,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 32,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 91,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 53,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 36,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 44,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 5,
-			},
-		],
-	},
-	{
-		label: "Series 2",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 5,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 95,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 44,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 37,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 19,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 6,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 46,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 27,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 5,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 49,
-			},
-		],
-	},
-	{
-		label: "Series 3",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 62,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 24,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 3,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 69,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 44,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 27,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 7,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 49,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 27,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 95,
-			},
-		],
-	},
-	{
-		label: "Series 4",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 59,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 7,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 80,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 12,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 41,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 89,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 98,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 36,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 3,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 89,
-			},
-		],
-	},
-	{
-		label: "Series 5",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 88,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 38,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 12,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 49,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 78,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 56,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 46,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 26,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 60,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 100,
-			},
-		],
-	},
-	{
-		label: "Series 6",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 28,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 24,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 41,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 75,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 22,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 22,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 17,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 53,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 66,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 22,
-			},
-		],
-	},
-	{
-		label: "Series 7",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 16,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 48,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 57,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 47,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 26,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 32,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 94,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 91,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 23,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 76,
-			},
-		],
-	},
-	{
-		label: "Series 8",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 36,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 70,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 5,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 23,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 55,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 24,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 97,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 66,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 69,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 81,
-			},
-		],
-	},
-	{
-		label: "Series 9",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 20,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 55,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 34,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 88,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 39,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 82,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 93,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 65,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 87,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 67,
-			},
-		],
-	},
-	{
-		label: "Series 10",
-		data: [
-			{
-				primary: "2024-02-20T00:00:00.000Z",
-				secondary: 41,
-			},
-			{
-				primary: "2024-02-21T00:00:00.000Z",
-				secondary: 92,
-			},
-			{
-				primary: "2024-02-22T00:00:00.000Z",
-				secondary: 23,
-			},
-			{
-				primary: "2024-02-23T00:00:00.000Z",
-				secondary: 17,
-			},
-			{
-				primary: "2024-02-24T00:00:00.000Z",
-				secondary: 30,
-			},
-			{
-				primary: "2024-02-25T00:00:00.000Z",
-				secondary: 37,
-			},
-			{
-				primary: "2024-02-26T00:00:00.000Z",
-				secondary: 47,
-			},
-			{
-				primary: "2024-02-27T00:00:00.000Z",
-				secondary: 50,
-			},
-			{
-				primary: "2024-02-28T00:00:00.000Z",
-				secondary: 82,
-			},
-			{
-				primary: "2024-02-29T00:00:00.000Z",
-				secondary: 85,
-			},
-		],
-	},
-];
+const waitForElm = (selector) => {
+	return new Promise((resolve) => {
+		if (document.querySelector(selector)) {
+			return resolve(document.querySelector(selector));
+		}
+		const observer = new MutationObserver((mutations) => {
+			if (document.querySelector(selector)) {
+				observer.disconnect();
+				resolve(document.querySelector(selector));
+			}
+		});
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true,
+		});
+	});
+};
 
 const handleSuccess = (res) => {
 	return {
@@ -596,6 +173,114 @@ const loadTickets = async ({ eventId, orgId }) => {
 	}
 };
 
+const loadRefunds = async ({ orgId, eventId }) => {
+	try {
+		let res = await axios.get(
+			process.env.REACT_APP_BACKEND_URL +
+				"/api/org/" +
+				orgId +
+				"/event/" +
+				eventId +
+				"/manage/refunds",
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const refundChange = async ({
+	orgId,
+	eventId,
+	ticketId,
+	refundIds,
+	refundPencetage,
+	approved = true,
+}) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL +
+				"/api/org/" +
+				orgId +
+				"/event/" +
+				eventId +
+				"/manage/refund/change-state",
+			{
+				refund_ids: refundIds,
+				refund_percentage: refundPencetage,
+				ticket_id: ticketId,
+				approved: approved ? 1 : null,
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const checkin = async ({ orgId, eventId, qrStr }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL +
+				"/api/org/" +
+				orgId +
+				"/event/" +
+				eventId +
+				"/manage/checkin",
+			{
+				qr_str: qrStr,
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const checkinRollback = async ({ orgId, eventId, checkinId }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL +
+				"/api/org/" +
+				orgId +
+				"/event/" +
+				eventId +
+				"/manage/checkin/delete",
+			{
+				_method: "DELETE",
+				checkin_id: checkinId,
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
 const setPublish = async ({ orgId, event_id, code_pub_state }) => {
 	try {
 		let res = await axios.post(
@@ -620,6 +305,71 @@ const setPublish = async ({ orgId, event_id, code_pub_state }) => {
 	}
 };
 
+const deleteEvent = async ({ orgId, event_id }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL + "/api/org/" + orgId + "/event/delete",
+			{
+				_method: "DELETE",
+				event_id,
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const loadSurveyData = async ({ orgId, eventId }) => {
+	try {
+		let res = await axios.get(
+			process.env.REACT_APP_BACKEND_URL +
+				"/api/org/" +
+				orgId +
+				"/event/" +
+				eventId +
+				"/manage/user-surveys",
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+const loadQREvent = async ({ orgId, eventId }) => {
+	try {
+		let res = await axios.get(
+			process.env.REACT_APP_BACKEND_URL +
+				"/api/org/" +
+				orgId +
+				"/event/download-qr-event?event_id=" +
+				eventId,
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token"),
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+				responseType: "blob",
+			}
+		);
+		return handleSuccess(res);
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
 const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 	const [title, setTile] = useState(null);
 	const [banner, setBanner] = useState(null);
@@ -633,6 +383,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 	const [firstLoad, setFirstLoadState] = useState(null);
 	const [isPublish, setPubState] = useState(false);
 	const [eventId, setEvtId] = useState(null);
+	const [qrStringEvtId, setQREvtId] = useState(null);
 	const [purchases, setPchsData] = useState(null);
 	const [attendees, setAttendees] = useState([]);
 	const [buyers, setBuyers] = useState([]);
@@ -644,12 +395,19 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 		},
 	});
 	const [goupedSelledTable, setGroupSelledTable] = useState([]);
+	const [refundDatas, setRefundDatas] = useState([]);
+	const [selectedRefund, setSelectedRefund] = useState(null);
+	const [customFields, setCustomFields] = useState(null);
+	const [surveyRes, setSurveyRes] = useState([]);
+	const [lockedIndexSurvey, setLockedIndexSurvey] = useState([]);
+	const [customIndexSurvey, setCsIndexSurvey] = useState([]);
 	// const [selledTicketTable, setSelledTicketTable] = useState([]);
 	// const [organization, setOrganization] = useState(organizer);
 	const [isLoading, setLoading] = useState(true);
 	const [error, setErrorState] = useState(false);
 	const [pausedProcess, setPausedProcess] = useState(null);
 	const [popUpActive, setPopUpActive] = useState(false);
+
 	const [popUpTitle, setPopUpTitle] = useState("");
 	const [popUpContent, setPopUpContent] = useState(<></>);
 	const [contentBody, setContentBody] = useState("General");
@@ -659,6 +417,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 		singleTrxs: null,
 		maxLimitRsc: null,
 		globalSeatMap: null,
+		enableRefundReq: false,
 	});
 	const [orderForm, setOrderForm] = useState([]);
 	const [openEditor, setOpenEditor] = useState(null);
@@ -672,10 +431,12 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 	const [numberFormat, setNumFormat] = useState(Intl.NumberFormat("id-ID"));
 	const [graphNav, setGraphNav] = useState("All time");
 	const [sellTableNav, setSellTable] = useState("All time");
-	const [filterSearch, setFilterSearch] = useState(null);
-	const [filterOrder, setFilterOrder] = useState("Terbaru");
+	const [filterSearch, setFilterSearch] = useState("");
+	const [filterSearchCheckin, setFilterSearchCheckin] = useState("");
+	const [filterSearchRefund, setFilterSearchRefund] = useState("");
 
 	const publishToogle = useRef();
+	const pdfQR = useRef();
 
 	const resetAlert = () => {
 		setTimeout(() => {
@@ -797,6 +558,107 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 		}, 1000);
 	};
 
+	const openAutoCheckin = () => {
+		setPopUpTitle("Checkin");
+		setPopUpActive(true);
+	};
+
+	const openRefundPopUp = (refundData) => {
+		setPopUpTitle("refund");
+		setPopUpActive(true);
+		setSelectedRefund(refundData);
+	};
+
+	const openDeleteEvent = () => {
+		setPopUpTitle("Delete");
+		setPopUpActive(true);
+		setPopUpContent(
+			<div className={styles.PopupNotify}>
+				<div className={styles.IconPopUp} style={{ marginTop: "0px" }}>
+					<BiQuestionMark color={"#ca0c64"} fontWeight={"600"} />
+				</div>
+				<div>Apakah anda ingin menghapus event / acitvity ini ?</div>
+				<div className={styles.Split} style={{ marginTop: "30px" }}>
+					<Button
+						style={{
+							marginLeft: "auto",
+						}}
+						title={"Batal"}
+						bgColor={"white"}
+						borderColor={"black"}
+						textColor={"black"}
+						fnOnClick={() => {
+							setPopUpActive(false);
+						}}
+					/>
+					<Button
+						style={{
+							marginRight: "auto",
+						}}
+						title={"Hapus"}
+						fnOnClick={() => {
+							handleDeleteEvent(eventId);
+						}}
+					/>
+				</div>
+			</div>
+		);
+	};
+
+	const handleDownloadReport = () => {
+		setLoading(true);
+		let content = [];
+		buyers.forEach((buyer) => {
+			let date = new Date(buyer.purchaseData.created_at);
+			content.push({
+				purchase_id: buyer.purchaseData.id,
+				date:
+					date.getDate() +
+					" " +
+					config.months[date.getMonth()] +
+					" " +
+					date.getFullYear(),
+				user_name: buyer.user.name,
+				user_email: buyer.user.email,
+				amount: buyer.purchaseData.amount,
+				pay_state: buyer.purchaseData.payment.pay_state,
+				ticket: tickets.find((ticket) => ticket.id == buyer.ticketId).name,
+				ticket_id: buyer.ticketId,
+				checkin: buyer.checkin ? buyer.checkin.status : "-",
+				visit_date: buyer.visitDate ? buyer.visitDate.visit_date : "-",
+				seat_number: buyer.seatNumber ? buyer.seatNumber.seat_number : "-",
+			});
+		});
+		let data = [
+			{
+				sheet: "Transactions Report",
+				columns: [
+					{ label: "ID Pembelian", value: "purchase_id" },
+					{ label: "Tanggal Beli", value: "date" },
+					{ label: "Username", value: "user_name" },
+					{ label: "User Email", value: "user_email" },
+					{ label: "Nominal", value: "amount" },
+					{ label: "Status Pembayaran", value: "pay_state" },
+					{ label: "Tiket", value: "ticket" },
+					{ label: "ID Tiket", value: "ticket_id" },
+					{ label: "Checkin Status", value: "checkin" },
+					{ label: "Tanggal Kunjungan", value: "visit_date" },
+					{ label: "Nomor Tempat Duduk", value: "seat_number" },
+				],
+				content: content,
+			},
+		];
+		let settings = {
+			fileName: "Laporan_Penjualan", // Name of the resulting spreadsheet
+			extraLength: 10, // A bigger number means that columns will be wider
+			writeMode: "writeFile", // The available parameters are 'WriteFile' and 'write'. This setting is optional. Useful in such cases https://docs.sheetjs.com/docs/solutions/output#example-remote-file
+			writeOptions: {}, // Style options from https://docs.sheetjs.com/docs/api/write-options
+			RTL: false, // Display the columns from right-to-left (the default value is false)
+		};
+		xlsx(data, settings);
+		setLoading(false);
+	};
+
 	const handlePublish = (publishState) => {
 		setLoading(true);
 		setPublish({
@@ -828,6 +690,278 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 		});
 	};
 
+	const handleDeleteEvent = (eventId) => {
+		setPopUpActive(false);
+		setLoading(true);
+		deleteEvent({ event_id: eventId, orgId: organization[0].id }).then(
+			(res) => {
+				if (res.status === 202) {
+					window.location.href = "/organizer/events";
+				} else if (res.status === 401) {
+					fnSetLogin(false);
+					setPausedProcess(`delete-event~!@!~${eventId}`);
+					setLoading(false);
+				} else {
+					setAlert({
+						state: true,
+						type: "danger",
+						content:
+							res.status == 402
+								? "Penghapusan tidak diizinkan. Karena event masih belum berakhir / terlaksana"
+								: "Server Error. Event / Activity gagal dihapus",
+					});
+					setLoading(false);
+					resetAlert();
+				}
+			}
+		);
+	};
+
+	const handleCheckinMain = (qrStr) => {
+		setLoading(true);
+		checkin({ orgId: organization[0].id, eventId: eventId, qrStr: qrStr }).then(
+			(res) => {
+				if (res.status === 201) {
+					let qrKey = qrStr.split("*~^|-|^~*");
+					buyers.forEach((buyer) => {
+						if (buyer.purchaseData.id == qrKey[0]) {
+							buyer.checkin = res.data.checkin;
+						}
+					});
+					setAlert({
+						state: true,
+						type: "success",
+						content: "Checkin berhasil",
+					});
+					resetAlert();
+				} else if (res.status === 401) {
+					fnSetLogin(false);
+					setPausedProcess(`checkin~!@!~${qrStr}`);
+				} else {
+					setAlert({
+						state: true,
+						type: "danger",
+						content:
+							res.status == 404
+								? "Transaksi tidak dapat ditemukan"
+								: res.status == 403
+								? "Tiket sudah tidak berlaku / sudah digunakan"
+								: "Error internal server. Silahkan coba lagi",
+					});
+					resetAlert();
+				}
+				setLoading(false);
+			}
+		);
+	};
+
+	const handleRollbackCheckin = (checkinId) => {
+		setLoading(true);
+		checkinRollback({
+			orgId: organization[0].id,
+			eventId: eventId,
+			checkinId: checkinId,
+		}).then((res) => {
+			if (res.status === 202) {
+				buyers.forEach((buyer) => {
+					if (buyer.checkin && buyer.checkin.id == checkinId) {
+						buyer.checkin = null;
+					}
+				});
+				setAlert({
+					state: true,
+					type: "success",
+					content: "Checkin telah dibatalkan",
+				});
+				resetAlert();
+			} else if (res.status === 401) {
+				fnSetLogin(false);
+				setPausedProcess(`checkinrollback~!@!~${checkinId}`);
+			} else {
+				setAlert({
+					state: true,
+					type: "danger",
+					content:
+						res.status == 404
+							? "Transaksi tidak dapat ditemukan"
+							: "Error internal server. Silahkan coba lagi",
+				});
+				resetAlert();
+			}
+			setLoading(false);
+		});
+	};
+
+	const handleDownloadQR = () => {
+		const canvas = document.getElementById("qr-event");
+		const pngUrl = canvas.toDataURL("image/png");
+		setQREvtId(pngUrl);
+		setTimeout(() => {
+			document.getElementById("download-qr").click();
+			console.log("download clicked");
+			setTimeout(() => {
+				document.getElementById("download-qr").click();
+				console.log("download clicked");
+			}, 100);
+		}, 100);
+	};
+
+	const handleDownloadQR2 = (orgId, eventId) => {
+		setLoading(true);
+		loadQREvent({ orgId: orgId, eventId: eventId }).then((res) => {
+			if (res.status === 200) {
+				let url = window.URL.createObjectURL(
+					new Blob([res.data], { type: "application/pdf" })
+				);
+				console.log(url, new Blob([res.data], { type: "application/pdf" }));
+				let link = document.createElement("a");
+				link.href = url;
+				link.setAttribute("download", "qr_event_scan.pdf");
+				document.body.appendChild(link);
+				link.click();
+				link.remove();
+				setLoading(false);
+			} else if (res.status === 401) {
+				fnSetLogin(false);
+				setPausedProcess(`downloadQREvent~!@!~${orgId}~!@!~${eventId}`);
+			} else {
+				setAlert({
+					state: true,
+					type: "danger",
+					content:
+						"Download data gagal diproses. Terjadi kesalahan server. Silahkan coba lagi !",
+				});
+				setLoading(false);
+				resetAlert();
+			}
+		});
+	};
+
+	const openDetailSurvey = (surveyData) => {
+		setPopUpTitle("Detail Result");
+		setPopUpContent(
+			<div>
+				<div className={styles.InputGroup}>
+					<label> Username</label>
+					<InputForm value={surveyData.user.name} readOnly />
+				</div>
+				{surveyData.question_str.map((qStr, index) => {
+					return qStr.split("~!!!~")[1] === "file" ? (
+						surveyData.survey_datas[index] !== "" &&
+						surveyData.survey_datas[index] !== "-" &&
+						surveyData.survey_datas[index] !== " " ? (
+							<div className={styles.InputGroup}>
+								<label> ID Card / KTP</label>
+								<img
+									src={
+										process.env.REACT_APP_BACKEND_URL +
+										surveyData.survey_datas[index]
+									}
+									alt=""
+								/>
+							</div>
+						) : (
+							<></>
+						)
+					) : qStr.split("~!!!~")[1] === "boolean" ? (
+						<div className={styles.InputGroup}>
+							<label>{qStr.split("~!!!~")[0]}</label>
+							{console.log(
+								surveyData.survey_datas[index] == "0",
+								"BOOLEAN",
+								surveyData.survey_datas[index] == "1"
+							)}
+							<InputCheckRadio
+								type={"radio"}
+								readOnly
+								checked={surveyData.survey_datas[index] == "1"}
+								label={"Ya"}
+								radioName={"ans_q_radio_" + index}
+								disabled
+							/>
+							<InputCheckRadio
+								type={"radio"}
+								readOnly
+								checked={surveyData.survey_datas[index] == "0"}
+								label={"Tidak"}
+								radioName={"ans_q_radio_" + index}
+								disabled
+							/>
+						</div>
+					) : (
+						<div className={styles.InputGroup}>
+							<label> {qStr.split("~!!!~")[0]}</label>
+							<InputForm value={surveyData.survey_datas[index]} readOnly />
+						</div>
+					);
+				})}
+			</div>
+		);
+		setPopUpActive(true);
+	};
+
+	const handleDownlodCsForm = () => {
+		setLoading(true);
+		let content = [];
+		surveyRes.forEach((surveyData) => {
+			let tmpCol = {};
+			surveyData.question_str.forEach((qStr, index) => {
+				qStr.split("~!!!~")[1] === "file"
+					? surveyData.survey_datas[index] !== "" &&
+					  surveyData.survey_datas[index] !== "-" &&
+					  surveyData.survey_datas[index] !== " "
+						? (tmpCol["ID_Card__KTP"] =
+								process.env.REACT_APP_BACKEND_URL +
+								surveyData.survey_datas[index])
+						: (tmpCol["ID_Card__KTP"] = "-")
+					: qStr.split("~!!!~")[1] === "boolean"
+					? (tmpCol[
+							qStr
+								.split("~!!!~")[0]
+								.replaceAll(" ", "_")
+								.replaceAll(".", "_")
+								.replaceAll("/", "_")
+					  ] = surveyData.survey_datas[index] == "1" ? "Ya" : "Tidak")
+					: (tmpCol[
+							qStr
+								.split("~!!!~")[0]
+								.replaceAll(" ", "_")
+								.replaceAll(".", "_")
+								.replaceAll("/", "_")
+					  ] = surveyData.survey_datas[index]);
+			});
+			content.push(tmpCol);
+		});
+
+		let data = [
+			{
+				sheet: "Custom Forms Report",
+				columns: customFields
+					? customFields.map((field) => {
+							return {
+								label: field.split("~!!!~")[0],
+								value: field
+									.split("~!!!~")[0]
+									.replaceAll(" ", "_")
+									.replaceAll(".", "_")
+									.replaceAll("/", "_"),
+							};
+					  })
+					: [],
+				content: content,
+			},
+		];
+		let settings = {
+			fileName: "Laporan_Custom_Form", // Name of the resulting spreadsheet
+			extraLength: 10, // A bigger number means that columns will be wider
+			writeMode: "writeFile", // The available parameters are 'WriteFile' and 'write'. This setting is optional. Useful in such cases https://docs.sheetjs.com/docs/solutions/output#example-remote-file
+			writeOptions: {}, // Style options from https://docs.sheetjs.com/docs/api/write-options
+			RTL: false, // Display the columns from right-to-left (the default value is false)
+		};
+		xlsx(data, settings);
+		setLoading(false);
+	};
+
 	useEffect(() => {
 		if (organization.length > 0 && !firstLoad) {
 			setLoading(true);
@@ -846,7 +980,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 					);
 					setTile(res.data.event.name);
 					setBanner(res.data.event.logo);
-					setUrl(window.location.host + "/" + res.data.event.slug);
+					setUrl(window.location.host + "/event/" + res.data.event.id);
 					setBasicStartEvt(
 						res.data.event.start_date + " " + res.data.event.start_time
 					);
@@ -897,7 +1031,24 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 						? res.data.available_reschedule.limit_time
 						: null;
 					ticketSettings.globalSeatMap = res.data.event.seat_map;
-
+					ticketSettings.enableRefundReq = res.data.event.allow_refund;
+					setCustomFields(res.data.event.custom_fields);
+					let mainIndexMap = [];
+					let secIndexMap = [];
+					res.data.event.custom_fields.forEach((field, index) => {
+						if (
+							field.includes("Nama") ||
+							field.includes("Email") ||
+							field.includes("No. Handphone") ||
+							field.includes("ID Card")
+						) {
+							mainIndexMap.push(index);
+						} else {
+							secIndexMap.push(index);
+						}
+					});
+					setLockedIndexSurvey(mainIndexMap);
+					setCsIndexSurvey(secIndexMap);
 					// setTickets(res.data.event.tickets);
 				} else if (res.status === 401) {
 					fnSetLogin(false);
@@ -930,6 +1081,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 							limit_daily: ticket.limit_daily
 								? ticket.limit_daily.limit_quantity
 								: null,
+							deleted: ticket.deleted,
 						});
 					});
 					setTickets(tickets);
@@ -938,6 +1090,33 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 					fnSetLogin(false);
 					setFirstLoadState(null);
 				} else if (res.status !== 404) {
+					setErrorState(true);
+				}
+			});
+			loadRefunds({
+				eventId: localStorage.getItem("active-event"),
+				orgId: organization[0].id,
+			}).then((res) => {
+				if (res.status === 200) {
+					setRefundDatas(res.data.refund_datas);
+				} else if (res.status === 401) {
+					fnSetLogin(false);
+					setFirstLoadState(null);
+				} else if (res.status !== 404) {
+					setErrorState(true);
+				}
+			});
+			loadSurveyData({
+				eventId: localStorage.getItem("active-event"),
+				orgId: organization[0].id,
+			}).then((res) => {
+				if (res.status === 200) {
+					setSurveyRes(res.data.data);
+					console.log(res.data.data);
+				} else if (res.status === 401) {
+					fnSetLogin(false);
+					setFirstLoadState(null);
+				} else if (res.status != 404) {
 					setErrorState(true);
 				}
 			});
@@ -951,6 +1130,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 				singleTrxs: ticketSettings.singleTrxs,
 				maxLimitRsc: ticketSettings.maxLimitRsc,
 				globalSeatMap: ticketSettings.globalSeatMap,
+				enableRefundReq: ticketSettings.enableRefundReq,
 			});
 		}
 		console.log(tickets);
@@ -960,9 +1140,22 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 		if (isLogin && pausedProcess) {
 			if (pausedProcess.split("~!@!~")[0] === "publish") {
 				handlePublish(pausedProcess.split("~!@!~")[1] == 1 ? true : false);
+			} else if (pausedProcess.split("~!@!~")[0] == "checkin") {
+				handleCheckinMain(pausedProcess.split("~!@!~")[1]);
+			} else if (pausedProcess.split("~!@!~")[0] == "checkinrollback") {
+				handleRollbackCheckin(pausedProcess.split("~!@!~")[1]);
+			} else if (pausedProcess.split("~!@!~")[0] == "delete-event") {
+				handleDeleteEvent(pausedProcess.split("~!@!~")[1]);
+			} else if (pausedProcess.split("~!@!~")[0] == "downloadQREvent") {
+				let dataStr = pausedProcess.split("~!@!~");
+				handleDownloadQR2(dataStr[1], dataStr[2]);
 			}
+			// else if (pausedProcess.split("~!@!~")[0] == "refundconsideration") {
+			// 	handleChangeRefund(JSON.parse(pausedProcess.split("~!@!~")[1]));
+			// }
 			setPausedProcess(null);
 		}
+		console.log(isLogin, pausedProcess);
 	}, [isLogin, pausedProcess]);
 
 	useEffect(() => {
@@ -992,6 +1185,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 				});
 			});
 			setBuyers(buyers);
+			console.log(buyers);
 			setAttendees(attendees);
 			buyers = null;
 			attendees = null;
@@ -1002,12 +1196,23 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 		if (graphNav == "All time" && buyers.length > 0) {
 			let labels = [];
 			let datas = [];
-			let distanceMonth =
-				new Date(basicEndEvt).getMonth() -
-				new Date(buyers[0].purchaseData.created_at).getMonth() +
-				1;
-			for (let i = 0; i < distanceMonth; i++) {
-				labels.push(config.months[i]);
+			let distanceMonth = Math.ceil(
+				new Date(basicEndEvt) - new Date(buyers[0].purchaseData.created_at) > 0
+					? ((new Date() <= new Date(basicEndEvt)
+							? new Date()
+							: new Date(basicEndEvt)) -
+							new Date(buyers[0].purchaseData.created_at)) /
+							2592000000
+					: 0
+			);
+			for (
+				let i = new Date(buyers[0].purchaseData.created_at).getMonth();
+				i <=
+				distanceMonth + new Date(buyers[0].purchaseData.created_at).getMonth();
+				i++
+			) {
+				console.log(i % 12, "MONTH", i);
+				labels.push(config.months[i % 12]);
 				datas.push(
 					buyers.filter(
 						(buyer) => new Date(buyer.purchaseData.created_at).getMonth() == i
@@ -1028,26 +1233,20 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 		} else if (graphNav == "Today" && buyers.length > 0) {
 			let labels = [];
 			let datas = [];
-			let distanceMonth =
-				new Date(basicEndEvt).getMonth() -
-				new Date(buyers[0].purchaseData.created_at).getMonth() +
-				1;
-			for (let i = 0; i < distanceMonth; i++) {
-				labels.push(config.months[i]);
-				datas.push(
-					buyers.filter(
-						(buyer) =>
-							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0) ==
-							new Date().setHours(0, 0, 0)
-					).length
-				);
-			}
+			labels.push(config.months[new Date().getMonth()]);
+			datas.push(
+				buyers.filter(
+					(buyer) =>
+						new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ==
+						new Date().setHours(0, 0, 0, 0)
+				).length
+			);
 			setDataGraph({
 				total: buyers
 					.filter(
 						(buyer) =>
-							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0) ==
-							new Date().setHours(0, 0, 0)
+							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
+							new Date().setHours(0, 0, 0, 0)
 					)
 					.reduce(
 						(currentVal, accumulator) =>
@@ -1060,41 +1259,40 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 				},
 			});
 		} else if (graphNav == "This Week" && buyers.length > 0) {
-			let now = new Date().getDay();
+			let now = new Date();
+			let startWeek = new Date(
+				new Date().setDate(now.getDate() - now.getDay())
+			);
+			let endWeek = new Date(
+				new Date().setDate(now.getDate() + (6 - now.getDay()))
+			);
+
 			let labels = [];
 			let datas = [];
-			let distanceMonth =
-				new Date(basicEndEvt).getMonth() -
-				new Date(buyers[0].purchaseData.created_at).getMonth() +
-				1;
-			for (let i = 0; i < distanceMonth; i++) {
-				labels.push(config.months[i]);
+			for (let i = 0; i < 7; i++) {
+				labels.push(config.days[i]);
 				datas.push(
 					buyers.filter(
 						(buyer) =>
-							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0) >=
-								new Date(
-									new Date().setDate(new Date().getDate() - now)
-								).setHours(0, 0, 0) &&
-							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0) <=
-								new Date(
-									new Date().setDate(new Date().getDate() + (6 - now))
-								).setHours(0, 0, 0)
+							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
+							new Date(new Date().setDate(startWeek.getDate() + i)).setHours(
+								0,
+								0,
+								0,
+								0
+							)
 					).length
 				);
 			}
+
 			setDataGraph({
 				total: buyers
 					.filter(
 						(buyer) =>
-							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0) >=
-								new Date(
-									new Date().setDate(new Date().getDate() - now)
-								).setHours(0, 0, 0) &&
-							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0) <=
-								new Date(
-									new Date().setDate(new Date().getDate() + (6 - now))
-								).setHours(0, 0, 0)
+							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) >=
+								startWeek.setHours(0, 0, 0, 0) &&
+							new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) <=
+								endWeek.setHours(23, 59, 0, 0)
 					)
 					.reduce(
 						(currentVal, accumulator) =>
@@ -1118,7 +1316,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 					return {
 						type: ticket.name,
 						totalSale: `${group[1].length} dari ${
-							ticket.quantity == -1 ? ticket.limit_day : ticket.quantity
+							ticket.quantity == -1 ? ticket.limit_daily : ticket.quantity
 						}`,
 						total: group[1].reduce(
 							(currentVal, accumulator) =>
@@ -1133,8 +1331,8 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 			let grouped = Object.groupBy(
 				buyers.filter(
 					(buyer) =>
-						new Date(buyer.purchaseData.created_at).setHours(0, 0, 0) ===
-						date.setHours(0, 0, 0)
+						new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
+						date.setHours(0, 0, 0, 0)
 				),
 				(buyer) => buyer.ticketId
 			);
@@ -1144,7 +1342,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 					return {
 						type: ticket.name,
 						totalSale: `${group[1].length} dari ${
-							ticket.quantity == -1 ? ticket.limit_day : ticket.quantity
+							ticket.quantity == -1 ? ticket.limit_daily : ticket.quantity
 						}`,
 						total: group[1].reduce(
 							(currentVal, accumulator) =>
@@ -1159,16 +1357,17 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 			let grouped = Object.groupBy(
 				buyers.filter(
 					(buyer) =>
-						new Date(buyer.purchaseData.created_at).setHours(0, 0, 0) >=
+						new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) >=
 							new Date(new Date().setDate(new Date().getDate() - now)).setHours(
+								0,
 								0,
 								0,
 								0
 							) &&
-						new Date(buyer.purchaseData.created_at).setHours(0, 0, 0) <=
+						new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) <=
 							new Date(
 								new Date().setDate(new Date().getDate() + (6 - now))
-							).setHours(0, 0, 0)
+							).setHours(0, 0, 0, 0)
 				),
 				(buyer) => buyer.ticketId
 			);
@@ -1179,7 +1378,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 					return {
 						type: ticket.name,
 						totalSale: `${group[1].length} dari ${
-							ticket.quantity == -1 ? ticket.limit_day : ticket.quantity
+							ticket.quantity == -1 ? ticket.limit_daily : ticket.quantity
 						}`,
 						total: group[1].reduce(
 							(currentVal, accumulator) =>
@@ -1191,6 +1390,12 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 			);
 		}
 	}, [sellTableNav, buyers]);
+
+	useEffect(() => {
+		if (!popUpActive && popUpTitle === "Tickets") {
+			setFirstLoadState(null);
+		}
+	}, [popUpActive, popUpTitle]);
 
 	return openEditor ? (
 		<div className="content organizer">
@@ -1218,7 +1423,12 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 			<div className="content organizer">
 				<PopUp
 					width="45%"
-					isActive={popUpActive && popUpTitle !== "Tickets"}
+					isActive={
+						popUpActive &&
+						popUpTitle !== "Tickets" &&
+						popUpTitle !== "Checkin" &&
+						popUpTitle !== "refund"
+					}
 					setActiveFn={setPopUpActive}
 					title={popUpTitle}
 					content={
@@ -1227,13 +1437,14 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 						</div>
 					}
 				/>
+				{console.log(tickets.filter((ticket) => ticket.deleted === 0))}
 				<PopUpTicket
 					isLogin={isLogin}
 					fnSetLogin={fnSetLogin}
 					isPopActive={popUpActive && popUpTitle === "Tickets"}
 					titlePopUp={popUpTitle}
 					setPopUpActive={setPopUpActive}
-					tickets={tickets}
+					tickets={tickets.filter((ticket) => ticket.deleted === 0)}
 					ticketSetup={ticketSettings}
 					orderForm={orderForm}
 					fnSetOrderForm={setOrderForm}
@@ -1251,21 +1462,54 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 							: "Hybrid Event"
 					}
 					orgId={organization.length > 0 ? organization[0].id : null}
+					fnSetGlobalLoading={setLoading}
+				/>
+				<PopUp
+					width="45%"
+					isActive={popUpActive && popUpTitle === "Checkin"}
+					setActiveFn={() => {}}
+					title={""}
+					content={
+						<PopUpCheckin
+							fnClose={setPopUpActive}
+							buyers={buyers}
+							orgId={organization.length > 0 ? organization[0].id : null}
+							eventId={eventId}
+							isLogin={isLogin}
+							fnSetLogin={fnSetLogin}
+							fnSetGlobalLoding={setLoading}
+						/>
+					}
+				/>
+				<PopUpRefundOrg
+					isActive={popUpActive && popUpTitle === "refund"}
+					fnSetActive={setPopUpActive}
+					orgId={organization.length > 0 ? organization[0].id : null}
+					eventId={localStorage.getItem("active-event")}
+					refundData={selectedRefund}
+					refundDatas={refundDatas}
+					isLogin={isLogin}
+					fnSetLogin={fnSetLogin}
+					fnSetGlobalLoading={setLoading}
 				/>
 
 				<div className={styles.Header}>
 					<div className={styles.Navigator}>
-						<p className={styles.Subtitle}>Personal Event</p>
+						<p
+							className={styles.Subtitle}
+							style={{ cursor: "pointer" }}
+							onClick={() => {
+								window.location.replace("/organizer/events");
+							}}
+						>
+							Personal Event
+						</p>
 						<p>&gt;</p>
 						<p>{title}</p>
 					</div>
 					<div className={styles.ChipBox}>
 						<Chip
-							options={[
-								"General",
-								"Analityc",
-								// "More"
-							]}
+							options={["General", "Analityc", "More"]}
 							value={contentBody}
 							setValue={setContentBody}
 							multiple={false}
@@ -1304,12 +1548,15 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 										/>
 									</div>
 									<div className={styles.Link}>
-										<FieldBox label={url}>
-											<BiCopy
-												onClick={() => {
-													copyHandle(url);
-												}}
-											/>
+										<FieldBox>
+											<div className={`${styles.CopyBox}`}>
+												<p>{url}</p>
+												<BiCopy
+													onClick={() => {
+														copyHandle(url);
+													}}
+												/>
+											</div>
 										</FieldBox>
 									</div>
 								</div>
@@ -1321,7 +1568,9 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 											: address.split("<p>")[1].split("</p>")[0]}
 									</p>
 									<div className={styles.BoxTime}>
-										{availableDays.length === 0 ? (
+										{category !== "Attraction" &&
+										category !== "Daily Activities" &&
+										category !== "Tour Travel (recurring)" ? (
 											<>
 												<div className={styles.Time}>
 													<p className={styles.Date}>{start.split("|")[0]}</p>
@@ -1339,10 +1588,10 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 												</div>
 											</>
 										) : (
-											availableDays.map((avldt) => {
+											availableDays.map((avldt, index) => {
 												// return <p className={styles.Time}>{avldt}</p>;
 												return (
-													<div className={styles.Time}>
+													<div id={index} className={styles.Time}>
 														<p className={styles.Date}>{avldt.split("|")[0]}</p>
 														<p className={styles.Clock}>
 															{" "}
@@ -1392,9 +1641,10 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 								</FieldBox>
 							</div>
 							<div className={styles.FeatureBox}>
-								{cardFeature.map((feature) => {
+								{cardFeature.map((feature, index) => {
 									return (
 										<div
+											id={index}
 											className={`${styles.CardFeature} ${
 												feature.disabled ? styles.Disabled : ""
 											}`}
@@ -1531,7 +1781,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 								style={{ marginBottom: "26px" }}
 							>
 								<div className={styles.Split}>
-									<div className={styles.CardInfoTitle2}>By Type</div>
+									<div className={styles.CardInfoTitle2}>By Ticket</div>
 									<div className={styles.GraphNav}>
 										<Chip
 											options={["All time", "Today", "This Week"]}
@@ -1543,11 +1793,14 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 										/>
 									</div>
 								</div>
-								<div className={styles.BasicTable}>
+								<div
+									className={styles.BasicTable}
+									style={{ maxHeight: "450px" }}
+								>
 									<table>
-										{goupedSelledTable.map((data) => {
+										{goupedSelledTable.map((data, index) => {
 											return (
-												<tr>
+												<tr id={index}>
 													<td width={"60%"}>{data.type}</td>
 													<td>
 														<b>{data.totalSale.split(" dari ")[0]}</b> dari{" "}
@@ -1569,7 +1822,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 									{goupedSelledTable.length === 0 ? (
 										<div
 											className={styles.Subtitle1}
-											style={{ textAlign: "center" }}
+											style={{ textAlign: "center", marginTop: "20px" }}
 										>
 											Data belum tersedia
 										</div>
@@ -1578,28 +1831,39 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 									)}
 								</div>
 							</div>
-							<div className={styles.Split} style={{ marginBottom: "16px" }}>
-								<div className={styles.SearchBox}>
+							<div
+								className={styles.BasicCardInfo}
+								style={{ marginTop: "26px" }}
+							>
+								<div className={styles.CardInfoTitle2}>Transactions</div>
+								<div className={styles.Split} style={{ marginBottom: "16px" }}>
+									<div className={styles.SearchBox}>
+										<FieldBox
+											label={<BiSearch style={{ marginTop: "5px" }} />}
+											style={{ width: "100%" }}
+										>
+											<InputForm
+												placeholder={"Cari Transaksi"}
+												type={"text"}
+												style={{ textAlign: "left", width: "100%" }}
+												onInput={(e) => {
+													setFilterSearch(e.target.value);
+													console.log(e.target.value);
+												}}
+											/>
+										</FieldBox>
+									</div>
+									{/* <div className={styles.SelectBox}>
 									<FieldBox
-										label={<BiSearch style={{ marginTop: "5px" }} />}
-										style={{ width: "100%" }}
-									>
-										<InputForm
-											placeholder={"Cari Transaksi"}
-											type={"text"}
-											style={{ textAlign: "left" }}
-											onInput={(e) => {
-												setFilterSearch(e.value);
-											}}
-										/>
-									</FieldBox>
-								</div>
-								<div className={styles.SelectBox}>
-									<FieldBox
-										label={<div className={styles.Subtitle}>Transaksi:</div>}
+										label={<div className={styles.Subtitle}>Urutan:</div>}
 									>
 										<Select
-											options={["Terbaru", "Terbesar", "Terkecil"]}
+											options={[
+												{ label: "Terbaru", value: "Terbaru" },
+												{ label: "Terlama", value: "Terlama" },
+												{ label: "Terbesar", value: "Terbesar" },
+												{ label: "Terkecil", value: "Terkecil" },
+											]}
 											styles={{
 												option: (basicStyle, state) => ({
 													...basicStyle,
@@ -1622,63 +1886,136 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 												}),
 											}}
 											onChange={(e) => {
-												setFilterOrder(e);
+												setFilterOrder(e.value);
 											}}
 										/>
 									</FieldBox>
+								</div> */}
+
+									<div
+										className={styles.DownloadBox}
+										onClick={handleDownloadReport}
+									>
+										<FieldBox label={<BiArrowToBottom />}>
+											<Button
+												title={"Download XLS"}
+												style={{
+													width: "unset",
+													boxShadow: "none",
+													padding: 0,
+												}}
+												bgColor={"#fff"}
+												borderColor={"#fff"}
+												textColor={"#000"}
+											/>
+										</FieldBox>
+									</div>
 								</div>
-								{console.log(filterOrder, filterSearch)}
-								<div className={styles.DownloadBox}>
-									<FieldBox label={<BiArrowToBottom />}>
-										<Button
-											title={"Download XLS"}
-											style={{ width: "unset", boxShadow: "none", padding: 0 }}
-											bgColor={"#fff"}
-											borderColor={"#fff"}
-											textColor={"#000"}
-										/>
-									</FieldBox>
+								<div
+									className={styles.BasicTable}
+									style={{ maxHeight: "450px" }}
+								>
+									<table>
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>Ticket</th>
+												<th>Buyer</th>
+												<th>Total</th>
+												<th>Payment</th>
+												<th>Date</th>
+											</tr>
+										</thead>
+										<tbody>
+											{tickets.length > 0 && buyers.length > 0 ? (
+												buyers
+													.filter((buyer) => {
+														let date = new Date(buyer.purchaseData.created_at);
+														return (
+															tickets
+																.find((ticket) => ticket.id == buyer.ticketId)
+																.name.toLowerCase()
+																.includes(filterSearch.toLowerCase()) ||
+															buyer.user.email.includes(filterSearch) ||
+															buyer.purchaseData.amount ==
+																parseInt(filterSearch) ||
+															`${date.getDate()} ${
+																config.months[date.getMonth()]
+															} ${date.getFullYear()}`.includes(filterSearch)
+														);
+													})
+													.map((buyer, index) => {
+														let date = new Date(buyer.purchaseData.created_at);
+														return (
+															<tr id={index} className={styles.PTable}>
+																<td>{index + 1}</td>
+																<td>
+																	{
+																		tickets.find(
+																			(ticket) => ticket.id == buyer.ticketId
+																		).name
+																	}
+																</td>
+																<td>{buyer.user.email}</td>
+																<td>
+																	{numberFormat.format(
+																		buyer.purchaseData.amount
+																	)}
+																</td>
+																<td>
+																	{buyer.purchaseData.payment.pay_state ===
+																	"SUCCEEDED" ? (
+																		<Button
+																			center
+																			title={"SUCCEEDED"}
+																			bgColor={"green"}
+																			textColor={"white"}
+																			borderColor={"white"}
+																			style={{ width: "unset", padding: "5px" }}
+																		/>
+																	) : buyer.purchaseData.payment.pay_state ===
+																	  "PENDING" ? (
+																		<Button
+																			center
+																			title={"PENDING"}
+																			bgColor={"yellow"}
+																			textColor={"black"}
+																			borderColor={"white"}
+																			style={{ width: "unset", padding: "5px" }}
+																		/>
+																	) : (
+																		<Button
+																			center
+																			title={"EXPIRED"}
+																			bgColor={"red"}
+																			textColor={"white"}
+																			borderColor={"white"}
+																			style={{ width: "unset", padding: "5px" }}
+																		/>
+																	)}
+																</td>
+																<td>{`${date.getDate()} ${
+																	config.months[date.getMonth()]
+																} ${date.getFullYear()}`}</td>
+															</tr>
+														);
+													})
+											) : (
+												<></>
+											)}
+										</tbody>
+									</table>
+									{tickets.length > 0 && buyers.length > 0 ? (
+										<></>
+									) : (
+										<div
+											className={styles.Subtitle1}
+											style={{ textAlign: "center", marginTop: "20px" }}
+										>
+											Data belum tersedia
+										</div>
+									)}
 								</div>
-							</div>
-							<div className={styles.BasicTable}>
-								<table>
-									<thead>
-										<tr>
-											<th>ID</th>
-											<th>Ticket</th>
-											<th>Buyer</th>
-											<th>Qty</th>
-											<th>Total</th>
-											<th>Date</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr className={styles.PTable}>
-											<td>1</td>
-											<td>VVIP Phoenix</td>
-											<td>Aletia Galdea Vesperitio</td>
-											<td>2</td>
-											<td>100.000</td>
-											<td>23-01-2024</td>
-										</tr>
-										<tr className={styles.PTable}>
-											<td>1</td>
-											<td>VVIP Phoenix</td>
-											<td>Aletia Galdea Vesperitio</td>
-											<td>2</td>
-											<td>100.000</td>
-											<td>23-01-2024</td>
-										</tr>
-										<tr className={styles.PTable}>
-											<td>1</td>
-											<td>VVIP Phoenix</td>
-											<td>Aletia Galdea Vesperitio</td>
-											<td>2</td>
-											<td>100.000</td>
-											<td>23-01-2024</td>
-										</tr>
-									</tbody>
-								</table>
 							</div>
 						</div>
 						<div
@@ -1686,7 +2023,445 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 							className={`${styles.ContentBody} ${
 								contentBody === "More" ? "" : "d-none"
 							}`}
-						></div>
+						>
+							<div className={styles.BasicCardInfo}>
+								<div className={styles.CardInfoTitle2}>Checkin User</div>
+								<div className={styles.Split}>
+									<div className={styles.SearchBox}>
+										<FieldBox
+											label={<BiSearch style={{ marginTop: "5px" }} />}
+											style={{ width: "100%" }}
+										>
+											<InputForm
+												placeholder={"Cari Data"}
+												type={"text"}
+												style={{ textAlign: "left", width: "100%" }}
+												onInput={(e) => {
+													setFilterSearchCheckin(e.target.value);
+													console.log(e.target.value);
+												}}
+											/>
+										</FieldBox>
+									</div>
+
+									<div className={styles.DownloadBox} onClick={openAutoCheckin}>
+										<FieldBox label={<BiCheckCircle />}>
+											<Button
+												title={"Auto Checkin"}
+												style={{
+													width: "unset",
+													boxShadow: "none",
+													padding: 0,
+												}}
+												bgColor={"#fff"}
+												borderColor={"#fff"}
+												textColor={"#000"}
+											/>
+										</FieldBox>
+									</div>
+								</div>
+
+								<div
+									className={styles.BasicTable}
+									style={{ maxHeight: "450px" }}
+								>
+									<table>
+										<thead>
+											<tr>
+												<th>No</th>
+												<th>Username</th>
+												<th>Email</th>
+												<th>Tiket</th>
+												<th>Checkin</th>
+											</tr>
+										</thead>
+										<tbody>
+											{buyers.length > 0 && tickets.length > 0 ? (
+												buyers
+													.filter(
+														(buyer) =>
+															tickets
+																.find((ticket) => ticket.id == buyer.ticketId)
+																.name.toLowerCase()
+																.includes(filterSearchCheckin.toLowerCase()) ||
+															buyer.user.name
+																.toLowerCase()
+																.includes(filterSearchCheckin.toLowerCase()) ||
+															buyer.user.email
+																.toLowerCase()
+																.includes(filterSearchCheckin.toLowerCase())
+													)
+													.map((buyer, index) => {
+														return (
+															<tr id={index}>
+																<td>{index + 1}</td>
+																<td>{buyer.user.name}</td>
+																<td>{buyer.user.email}</td>
+																<td>
+																	{
+																		tickets.find(
+																			(ticket) => ticket.id == buyer.ticketId
+																		).name
+																	}
+																</td>
+																<td>
+																	<InputToogle
+																		checked={
+																			buyer.checkin ? buyer.checkin : false
+																		}
+																		onChange={() => {
+																			buyer.checkin
+																				? handleRollbackCheckin(
+																						buyer.checkin.id
+																				  )
+																				: handleCheckinMain(
+																						`${
+																							buyer.purchaseData.id
+																						}${"*~^|-|^~*"}${buyer.user.id}`
+																				  );
+																		}}
+																	/>
+																</td>
+															</tr>
+														);
+													})
+											) : (
+												<></>
+											)}
+										</tbody>
+									</table>
+									{buyers.length > 0 && tickets.length > 0 ? (
+										<></>
+									) : (
+										<div
+											className={styles.Subtitle1}
+											style={{ textAlign: "center", marginTop: "20px" }}
+										>
+											Data belum tersedia
+										</div>
+									)}
+								</div>
+							</div>
+							<div
+								className={styles.BasicCardInfo}
+								style={{
+									marginTop: "20px",
+									// maxHeight: "600px",
+									// overflowY: "auto",
+								}}
+							>
+								<div className={styles.Split}>
+									<div className={styles.CardInfoTitle2}>
+										QR Event for Self Checkin
+									</div>
+									<PDFDownloadLink
+										id="download-qr"
+										document={
+											<QREventPdf title={title} eventId={qrStringEvtId} />
+										}
+										fileName="movielist.pdf"
+										style={{
+											textDecoration: "none",
+											color: "black",
+											display: "none",
+										}}
+									>
+										Dwo
+									</PDFDownloadLink>
+
+									<div
+										className={styles.DownloadBox}
+										style={{ marginLeft: "auto" }}
+										onClick={() => {
+											handleDownloadQR2(organization[0].id, eventId);
+										}}
+									>
+										<FieldBox label={<BiArrowToBottom />}>
+											<Button
+												title={"Download PDF"}
+												style={{
+													width: "unset",
+													boxShadow: "none",
+													padding: 0,
+												}}
+												bgColor={"#fff"}
+												borderColor={"#fff"}
+												textColor={"#000"}
+											/>
+										</FieldBox>
+									</div>
+								</div>
+								<QRCode
+									id="qr-event"
+									ref={pdfQR}
+									size={256}
+									value={eventId}
+									level="H"
+									includeMargin={true}
+									className={styles.QRBox}
+								/>
+							</div>
+							<div
+								className={styles.BasicCardInfo}
+								style={{ marginTop: "50px" }}
+							>
+								<div className={styles.CardInfoTitle2}>Refunds</div>
+								<div className={styles.SearchBox} style={{ width: "100%" }}>
+									<FieldBox
+										label={<BiSearch style={{ marginTop: "5px" }} />}
+										style={{ width: "100%" }}
+									>
+										<InputForm
+											placeholder={"Cari Data"}
+											type={"text"}
+											style={{ textAlign: "left", width: "100%" }}
+											onInput={(e) => {
+												setFilterSearchRefund(e.target.value);
+												console.log(e.target.value);
+											}}
+										/>
+									</FieldBox>
+								</div>
+								<div
+									className={styles.BasicTable}
+									style={{ maxHeight: "450px" }}
+								>
+									<table>
+										<thead>
+											<tr>
+												{/* user data */}
+												<th>User</th>
+												<th>Email</th>
+												<th>Phone</th>
+												{/* purchase data */}
+												<th>Tikcet</th>
+												<th>Qty</th>
+												<th>Nominal</th>
+												{/* refund data */}
+												<th>Pembelian / Refund</th>
+												<th>Message</th>
+												<th>Status</th>
+												<th>Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											{tickets.length > 0 && refundDatas.length > 0 ? (
+												Object.values(
+													Object.groupBy(
+														refundDatas.filter(
+															(data) =>
+																tickets
+																	.find((ticket) => ticket.id == data.ticket.id)
+																	.name.toLowerCase()
+																	.includes(filterSearchRefund.toLowerCase()) ||
+																data.user.name
+																	.toLowerCase()
+																	.includes(filterSearchRefund.toLowerCase()) ||
+																data.user.email
+																	.toLowerCase()
+																	.includes(filterSearchRefund.toLowerCase()) ||
+																data.phone_number.includes(
+																	filterSearchRefund
+																) ||
+																data.created_at
+																	.split("T")[0]
+																	.includes(filterSearchRefund) ||
+																data.purchase.created_at
+																	.split("T")[0]
+																	.includes(filterSearchRefund)
+														),
+														(data) => [data.user_id, data.ticket_id]
+													)
+												).map((data) => {
+													console.log(data);
+													return (
+														<tr>
+															<td>{data[0].user.name}</td>
+															<td>{data[0].user.email}</td>
+															<td>{data[0].phone_number}</td>
+															<td>
+																{
+																	tickets.find(
+																		(ticket) => ticket.id == data[0].ticket_id
+																	).name
+																}
+															</td>
+															<td>{data.length}</td>
+															<td>
+																{data.reduce(
+																	(currentVal, accumulator) =>
+																		parseInt(accumulator.nominal) + currentVal,
+																	0
+																)}
+															</td>
+															<td>
+																{data[0].purchase.created_at.split("T")[0]} /{" "}
+																{data[0].created_at.split("T")[0]}
+															</td>
+															<td>{data[0].message}</td>
+															<td>
+																<Button
+																	style={{
+																		padding: "5px",
+																		width: "unset",
+																	}}
+																	center
+																	bgColor={
+																		data[0].approve_org ? "green" : "red"
+																	}
+																	title={
+																		data[0].approve_org
+																			? "approved"
+																			: "unapproved"
+																	}
+																	textColor={"white"}
+																	borderColor={"white"}
+																/>
+															</td>
+															<td>
+																<Button
+																	style={{
+																		width: "unset",
+																	}}
+																	center
+																	bgColor={
+																		!data[0].approve_org ? "green" : "red"
+																	}
+																	title={
+																		!data[0].approve_org
+																			? "Approve"
+																			: "un-Approve"
+																	}
+																	textColor={"white"}
+																	borderColor={"white"}
+																	fnOnClick={() => {
+																		openRefundPopUp(data);
+																	}}
+																/>
+															</td>
+														</tr>
+													);
+												})
+											) : (
+												<></>
+											)}
+										</tbody>
+									</table>
+									{tickets.length == 0 && refundDatas.length == 0 ? (
+										<div
+											className={styles.Subtitle1}
+											style={{ textAlign: "center", marginTop: "20px" }}
+										>
+											Data belum tersedia
+										</div>
+									) : (
+										<></>
+									)}
+								</div>
+							</div>
+							{customFields ? (
+								<div
+									className={styles.BasicCardInfo}
+									style={{ marginTop: "40px" }}
+								>
+									<div style={{ flexDirection: "row", gap: "10px" }}>
+										<div className={styles.CardInfoTitle2}>
+											Result of Custom Form
+										</div>
+										<div
+											className={styles.DownloadBox}
+											onClick={handleDownlodCsForm}
+											style={{ marginLeft: "auto" }}
+										>
+											<FieldBox label={<BiArrowToBottom />}>
+												<Button
+													title={"Download XLS"}
+													style={{
+														width: "unset",
+														boxShadow: "none",
+														padding: 0,
+													}}
+													bgColor={"#fff"}
+													borderColor={"#fff"}
+													textColor={"#000"}
+												/>
+											</FieldBox>
+										</div>
+									</div>
+
+									<div
+										className={styles.BasicTable}
+										style={{ maxHeight: "450px" }}
+									>
+										<table>
+											<thead>
+												<tr>
+													<th>No.</th>
+													<th>Username</th>
+													<th>Email</th>
+													<th>Aksi</th>
+												</tr>
+											</thead>
+											<tbody>
+												{surveyRes && surveyRes.length > 0 ? (
+													surveyRes.map((res, index) => {
+														return (
+															<tr>
+																<td>{index + 1}</td>
+																<td>{res.user.name}</td>
+																<td>{res.user.email}</td>
+																<td>
+																	<Button
+																		title={"Lihat Detail"}
+																		center
+																		style={{ width: "unset" }}
+																		fnOnClick={() => {
+																			openDetailSurvey(res);
+																		}}
+																	/>
+																</td>
+															</tr>
+														);
+													})
+												) : (
+													<></>
+												)}
+											</tbody>
+										</table>
+										{surveyRes && surveyRes.length > 0 ? (
+											<></>
+										) : (
+											<div
+												className={styles.Subtitle1}
+												style={{ textAlign: "center", marginTop: "20px" }}
+											>
+												Data belum tersedia
+											</div>
+										)}
+									</div>
+								</div>
+							) : (
+								<></>
+							)}
+							<div
+								className={styles.BasicCardInfo}
+								style={{ marginTop: "50px" }}
+							>
+								<div className={styles.CardInfoTitle2}>Danger Area</div>
+								<div className={styles.DangerZone}>
+									<div className={styles.DangerZoneTitle}>
+										Hapus Event / Activity ?
+									</div>
+									<Button
+										title={"Hapus"}
+										bgColor={"red"}
+										textColor={"white"}
+										borderColor={"red"}
+										fnOnClick={openDeleteEvent}
+									/>
+								</div>
+							</div>
+						</div>
 					</div>
 				)}
 			</div>

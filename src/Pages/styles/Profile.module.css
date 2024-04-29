@@ -1,0 +1,48 @@
+.FormLayout {
+	margin-top: 54px;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.FormFieldBox {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+.FormSplitBox {
+	display: flex;
+	flex-direction: row;
+	gap: 32px;
+	margin-bottom: 32px;
+}
+.GroupInput {
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 0 7px 3px #eaeaea;
+}
+.GroupInput .Divider {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.Divider hr {
+	border-color: #eaeaea7d;
+}
+.GroupInput div {
+	box-shadow: none;
+}
+.SubtitleForm {
+	margin-top: 1.6px;
+	margin-bottom: 1.6px;
+	font-size: 19px;
+	font-weight: bold;
+	color: #8b8b8b;
+}
+@media (max-width: 882px) {
+	.FormSplitBox {
+		flex-direction: column;
+	}
+	.FormPictureArea {
+		max-width: unset;
+		width: 100%;
+	}
+}

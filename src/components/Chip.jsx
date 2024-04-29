@@ -18,7 +18,7 @@ const Chip = ({
 }) => {
 	let index = 0;
 	return (
-		<div className={styles.Container}>
+		<div className={styles.Container} style={containerStyle}>
 			{options.map((option, o) => {
 				let vals = multiple ? [...value] : value;
 				let i = vals.indexOf(option);

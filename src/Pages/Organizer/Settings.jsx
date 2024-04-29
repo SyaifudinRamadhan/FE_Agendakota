@@ -296,6 +296,9 @@ const OrganizerSettings = ({ organization, loginState, fnSetLogin }) => {
 				title="Update Profile"
 			/>
 			<div className="content organizer">
+				<div className={styles.DecorationBox}>
+					<div className={styles.Decoration}></div>
+				</div>
 				<form
 					onSubmit={handleSubmit}
 					className={`${styles2.FormLayout}`}
@@ -361,6 +364,12 @@ const OrganizerSettings = ({ organization, loginState, fnSetLogin }) => {
 									}
 									style={{ height: "unset", aspectRatio: 3.5 }}
 									coverStyle={{ marginLeft: "-20px" }}
+									fnSetAlert={(alert) => {
+										setAlertDanger({
+											state: alert.state,
+											content: alert.content,
+										});
+									}}
 								/>
 								<div className={styles3.Content}>
 									<div className={styles2.FormSplitBox}>
@@ -376,6 +385,12 @@ const OrganizerSettings = ({ organization, loginState, fnSetLogin }) => {
 													aspectRatio: 1,
 													border: "none",
 													boxShadow: "none",
+												}}
+												fnSetAlert={(alert) => {
+													setAlertDanger({
+														state: alert.state,
+														content: alert.content,
+													});
 												}}
 											/>
 										</div>

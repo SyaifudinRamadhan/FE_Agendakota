@@ -15,6 +15,7 @@
 .Logo {
 	height: 30px;
 	width: min-content;
+	aspect-ratio: 2061/421;
 }
 .LogoArea {
 	width: 25%;

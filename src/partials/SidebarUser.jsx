@@ -4,10 +4,13 @@ import Icons from "../icons";
 import Separator from "../components/Separator";
 import AddCircle from "../icons/AddCircle";
 import {
+	BiCertification,
+	BiCheckCircle,
 	BiChevronDown,
 	BiCircle,
 	BiFilter,
 	BiGroup,
+	BiNote,
 	BiPlus,
 	BiPlusCircle,
 } from "react-icons/bi";
@@ -59,6 +62,7 @@ const SidebarUser = ({
 				setOrganizers={setOrganizers}
 				setLogin={setLogin}
 			/>
+			{console.log(active, "ACTIVE PATH")}
 			{width > 992 && show ? (
 				<div id="sidebar" className={styles.Sidebar}>
 					<img
@@ -84,6 +88,15 @@ const SidebarUser = ({
 						>
 							<img src={Icons.Ticket} alt="Tickets" />
 							<div className={styles.MenuText}>My Tickets</div>
+						</a>
+						<a
+							href="/invitations"
+							className={`${styles.MenuItem} ${
+								active === "invitations" ? styles.MenuActive : ""
+							}`}
+						>
+							<BiNote style={{ width: "21px", height: "21px" }} />
+							<div className={styles.MenuText}>Invitations</div>
 						</a>
 						{/* <a href="/connections" className={`${styles.MenuItem} ${active === 'connections' ? styles.MenuActive : ''}`}>
                         <img src={Icons.People} alt="Connections" />
@@ -112,7 +125,7 @@ const SidebarUser = ({
 							<div className={styles.OrganizerBlank}>
 								<div className={styles.OrganizerBlankIcon} />
 								<div className={styles.OrganizerBlankText}>
-									Create Hybrid events attended by Millions
+									Create events attended by Millions
 								</div>
 								<Button title={"Create Organizer"} fnOnClick={openPopUporg} />
 							</div>
@@ -140,16 +153,43 @@ const SidebarUser = ({
 														backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${org.photo}")`,
 													}}
 												></div>
-												<div className={styles.OrganizerName}>{org.name}</div>
+												<div
+													className={styles.OrganizerName}
+													style={{ maxWidth: "calc(100% - 100px)" }}
+												>
+													{org.name}
+												</div>
+												{org.legality && org.legality.status == 1 ? (
+													<img
+														src="/images/verify.png"
+														style={{
+															color: "green",
+															width: "23px",
+															height: "23px",
+														}}
+													/>
+												) : (
+													<></>
+												)}
 												{/* <div className={styles.OrganizerLabel}>Baru</div> */}
 											</a>
 										);
 									})}
 								</div>
 
-								<div className={styles.OrganizerCreate} onClick={openPopUporg}>
+								{/* <div className={styles.OrganizerCreate} onClick={openPopUporg}>
 									<AddCircle />
 									Create Organization
+								</div> */}
+								<div
+									className={styles.OrganizerBlank}
+									style={{ marginTop: "20px" }}
+								>
+									<div className={styles.OrganizerBlankIcon} />
+									<div className={styles.OrganizerBlankText}>
+										Create events attended by Millions
+									</div>
+									<Button title={"Create Organizer"} fnOnClick={openPopUporg} />
 								</div>
 							</>
 						)
@@ -183,6 +223,17 @@ const SidebarUser = ({
 									<div className={styles.MenuText}>My Tickets</div>
 								)}
 							</a>
+							<a
+								href="/invitations"
+								className={`${styles.MenuItem} ${
+									active === "invitations" ? styles.MenuActive : ""
+								}`}
+							>
+								<BiNote style={{ width: "21px", height: "21px" }} />
+								{active === "invitations" && (
+									<div className={styles.MenuText}>Invitations</div>
+								)}
+							</a>
 							{/* <a href="/connections" className={`${styles.MenuItem} ${active === 'connections' ? styles.MenuActive : ''}`}>
                             <img src={Icons.People} alt="Connections" />
                             {
@@ -205,6 +256,7 @@ const SidebarUser = ({
 								style={{
 									backgroundImage: `url("/images/Pattern-31.png")`,
 									borderRadius: 999,
+									position: "relative",
 								}}
 							></div>
 						</div>
@@ -256,11 +308,31 @@ const SidebarUser = ({
 													backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${org.photo}")`,
 												}}
 											></div>
-											<div className={styles.OrganizerName}>{org.name}</div>
+											<div
+												className={styles.OrganizerName}
+												style={{ maxWidth: "calc(100% - 170px)" }}
+											>
+												{org.name}
+											</div>
+											{org.legality && org.legality.status == 1 ? (
+												<img
+													src="/images/verify.png"
+													style={{
+														color: "green",
+														width: "23px",
+														height: "23px",
+													}}
+												/>
+											) : (
+												<></>
+											)}
 											<div
 												className={styles.OrganizerLabel}
 												onClick={() => {
 													handleOpenOrg(org.id);
+												}}
+												style={{
+													marginLeft: "auto",
 												}}
 											>
 												Pilih

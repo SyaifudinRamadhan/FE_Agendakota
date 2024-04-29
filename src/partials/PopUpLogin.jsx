@@ -9,7 +9,13 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import jwtEncode from "jwt-encode";
-import { BiEnvelope, BiKey } from "react-icons/bi";
+import {
+	BiEnvelope,
+	BiInfoCircle,
+	BiKey,
+	BiLock,
+	BiUser,
+} from "react-icons/bi";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const loginDefLoad = async ({ email, password }) => {
@@ -19,6 +25,48 @@ const loginDefLoad = async ({ email, password }) => {
 			{
 				email: email,
 				password: password,
+			},
+			{
+				headers: {
+					"x-api-key": process.env.REACT_APP_BACKEND_KEY,
+				},
+			}
+		);
+		return {
+			data: res.data,
+			status: res.status,
+		};
+	} catch (error) {
+		console.log(error);
+		if (error.response === undefined) {
+			return {
+				data: { data: [error.message] },
+				status: 500,
+			};
+		} else {
+			return {
+				data: error.response,
+				status: error.response.status,
+			};
+		}
+	}
+};
+
+const registerDefLoad = async ({ email, password, name }) => {
+	try {
+		let res = await axios.post(
+			process.env.REACT_APP_BACKEND_URL + "/api/register",
+			{
+				email: email,
+				password: password,
+				f_name: name,
+				l_name: name,
+				name: name,
+				phone: "-",
+				linkedin: "-",
+				instagram: "-",
+				twitter: "-",
+				whatsapp: "-",
 			},
 			{
 				headers: {
@@ -80,28 +128,34 @@ const loginGoogleLoad = async ({ email, credential }) => {
 	}
 };
 
-const PopUpLogin = ({ setLogin }) => {
+const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
+	// state control
 	const [alertDanger, setAlertDanger] = useState({
 		state: false,
 		content: "",
 		variant: "danger",
 	});
 	const [loading, setLoading] = useState(false);
+	const [formMode, setFormMode] = useState("login");
+
+	// field data basic
 	const [inputFocus, setInputFocus] = useState(null);
 	const [captcha, setCaptchaState] = useState(null);
-
-	const navigate = useNavigate();
-
 	const fieldLogin = {
 		email: useRef(null),
 		password: useRef(null),
 	};
+	// field data additional for register
+	const fieldAddtional = {
+		username: useRef(null),
+		confirm: useRef(null),
+	};
 
 	const handleResponse = (res) => {
-		if (res.status === 200) {
+		if (res.status === 200 || res.status === 201) {
 			setAlertDanger({
 				state: true,
-				content: "Login berhasil",
+				content: "Login / Register berhasil",
 				variant: "success",
 			});
 			// Redirect to home
@@ -129,9 +183,9 @@ const PopUpLogin = ({ setLogin }) => {
 	const handleLoginDef = (e) => {
 		e.preventDefault();
 		if (
-			!fieldLogin.email.current.value ||
+			!fieldLogin.email.current ||
 			fieldLogin.email.current.value === "" ||
-			!fieldLogin.password.current.value ||
+			!fieldLogin.password.current ||
 			fieldLogin.password.current.value === "" ||
 			!captcha
 		) {
@@ -152,6 +206,56 @@ const PopUpLogin = ({ setLogin }) => {
 			loginDefLoad({
 				email: fieldLogin.email.current.value,
 				password: fieldLogin.password.current.value,
+			}).then(handleResponse);
+		}
+	};
+
+	const handleRegisterDef = (e) => {
+		e.preventDefault();
+		if (
+			!fieldLogin.email.current ||
+			fieldLogin.email.current.value === "" ||
+			!fieldLogin.password.current ||
+			fieldLogin.password.current.value === "" ||
+			!fieldAddtional.username.current ||
+			fieldAddtional.username.current.value === "" ||
+			!fieldAddtional.confirm.current ||
+			fieldAddtional.confirm.current.value === "" ||
+			!captcha
+		) {
+			setAlertDanger({
+				state: true,
+				content: "Semua field wajib diisi !!!",
+				variant: "danger",
+			});
+			setTimeout(() => {
+				setAlertDanger({
+					state: false,
+					content: "Semua field wajib diisi !!!",
+					variant: "danger",
+				});
+			}, 3000);
+		} else if (
+			fieldAddtional.confirm.current.value !== fieldLogin.password.current.value
+		) {
+			setAlertDanger({
+				state: true,
+				content: "Konfirmasi password tidak sesuai !!!",
+				variant: "danger",
+			});
+			setTimeout(() => {
+				setAlertDanger({
+					state: false,
+					content: "Semua field wajib diisi !!!",
+					variant: "danger",
+				});
+			}, 3000);
+		} else {
+			setLoading(true);
+			registerDefLoad({
+				email: fieldLogin.email.current.value,
+				password: fieldLogin.password.current.value,
+				name: fieldAddtional.username.current.value,
 			}).then(handleResponse);
 		}
 	};
@@ -210,22 +314,34 @@ const PopUpLogin = ({ setLogin }) => {
 
 	useEffect(() => {
 		window.addEventListener("click", (e) => {
-			e.target === fieldLogin.email.current ||
-			e.target === fieldLogin.password.current
-				? e.target === fieldLogin.email.current
-					? setInputFocus("email")
-					: setInputFocus("password")
-				: setInputFocus(null);
+			if (e.target === fieldLogin.email.current) {
+				setInputFocus("email");
+			} else if (e.target === fieldLogin.password.current) {
+				setInputFocus("password");
+			} else if (e.target === fieldAddtional.username.current) {
+				setInputFocus("username");
+			} else if (e.target === fieldAddtional.confirm.current) {
+				setInputFocus("confirm");
+			} else {
+				setInputFocus(null);
+				console.log(e.target);
+			}
 		});
 	});
 
 	return (
-		<div className={styles.Wrapper}>
+		<div className={styles.Wrapper} style={{ ...addtionalStyle }}>
 			<div className={styles.ModalDialog}>
 				<div className={styles.PopUpBox}>
 					<div className={stylesLogin.Content} style={{ marginTop: 0 }}>
 						<div>
-							<form onSubmit={handleLoginDef}>
+							<form
+								onSubmit={(e) => {
+									formMode === "login"
+										? handleLoginDef(e)
+										: handleRegisterDef(e);
+								}}
+							>
 								<div className={styles.AlertBox}>
 									<Alert
 										type={"warning"}
@@ -273,15 +389,28 @@ const PopUpLogin = ({ setLogin }) => {
 									Atau Masuk dengan Email
 								</div>
 								<div>
+									{formMode === "login" ? (
+										<div className={styles.InfoBox}>
+											<BiInfoCircle />
+											<div className={styles.InfoText}>
+												Jika anda baru saja mendaftar / register, pastikan anda
+												sudah melakukan aktivasi akun melaui email verifkasi
+												yang anda peroleh.
+											</div>
+										</div>
+									) : (
+										<></>
+									)}
 									<div
 										className={`${stylesLogin.BoxInput} ${
-											inputFocus === "email"
+											inputFocus === "email" || inputFocus === "username"
 												? stylesLogin.ShadowBoxInput2
-												: inputFocus === "password"
+												: inputFocus === "password" || inputFocus === "confirm"
 												? stylesLogin.ShadowBoxInput1
 												: ""
 										}`}
 									>
+										{console.log(inputFocus, "INPUT FOCUS")}
 										<div className={stylesLogin.FormFieldInput}>
 											<label
 												className={stylesLogin.TitleInput}
@@ -307,6 +436,35 @@ const PopUpLogin = ({ setLogin }) => {
 												placeholder={"Tuliskan alamat email akunmu"}
 											/>
 										</div>
+										{formMode === "register" ? (
+											<div className={stylesLogin.FormFieldInput}>
+												<label
+													className={stylesLogin.TitleInput}
+													style={{
+														color:
+															inputFocus === "username"
+																? "rgb(202, 12, 100)"
+																: "#000",
+													}}
+													htmlFor="username-input"
+													onFocus={() => {
+														setInputFocus("username");
+													}}
+												>
+													<BiUser />
+													<div>Username</div>
+												</label>
+												<InputForm
+													id={"username-input"}
+													className={stylesLogin.FieldInput}
+													refData={fieldAddtional.username}
+													type={"text"}
+													placeholder={"Tuliskan username akunmu"}
+												/>
+											</div>
+										) : (
+											<></>
+										)}
 										<div className={stylesLogin.FormFieldInput}>
 											<label
 												className={stylesLogin.TitleInput}
@@ -333,6 +491,36 @@ const PopUpLogin = ({ setLogin }) => {
 												placeholder={"Tuliskan password akun agendakota"}
 											/>
 										</div>
+										{formMode === "register" ? (
+											<div className={stylesLogin.FormFieldInput}>
+												<label
+													className={stylesLogin.TitleInput}
+													style={{
+														color:
+															inputFocus === "confirm"
+																? "rgb(202, 12, 100)"
+																: "#000",
+													}}
+													htmlFor="confirm-pass-input"
+													onFocus={() => {
+														setInputFocus("confirm");
+													}}
+												>
+													<BiLock />
+													<div>Confirm</div>
+												</label>
+												<InputForm
+													id={"confirm-pass-input"}
+													className={stylesLogin.FieldInput}
+													refData={fieldAddtional.confirm}
+													hidePassBtn={false}
+													type={"password"}
+													placeholder={"Konfirmasi password akun agendakota"}
+												/>
+											</div>
+										) : (
+											<></>
+										)}
 									</div>
 
 									<div className={stylesLogin.CapcthaField}>
@@ -343,6 +531,19 @@ const PopUpLogin = ({ setLogin }) => {
 											}}
 											style={{ margin: "auto" }}
 										/>
+									</div>
+
+									<div
+										className={styles.RegisterButton}
+										onClick={() => {
+											formMode === "login"
+												? setFormMode("register")
+												: setFormMode("login");
+										}}
+									>
+										{formMode === "login"
+											? "Belum Punya Akun ? Daftar"
+											: "Sudah Punya Akun ? Login"}
 									</div>
 
 									<div className={styles.FormFieldBox}>
@@ -363,7 +564,7 @@ const PopUpLogin = ({ setLogin }) => {
 											/>
 										) : (
 											<Button
-												title={"Login"}
+												title={formMode === "login" ? "Login" : "Register"}
 												typeBtn="submit"
 												classes={[styles.FormButton]}
 												style={{ width: "100%", margin: "auto" }}

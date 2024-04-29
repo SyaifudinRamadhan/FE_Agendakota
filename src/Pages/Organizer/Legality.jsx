@@ -551,6 +551,13 @@ const FormLayout = ({
 							defaultFile={defaultValue.ktpImage}
 							hiddenDelete={readOnly}
 							viewOnClick={true}
+							fnSetAlert={(alert) => {
+								setAlertDanger({
+									state: alert.state,
+									variant: "danger",
+									content: alert.content,
+								});
+							}}
 						/>
 					</div>
 					<div className={styles2.FormPictureArea}>
@@ -566,6 +573,13 @@ const FormLayout = ({
 							defaultFile={defaultValue.npwpImage}
 							hiddenDelete={readOnly}
 							viewOnClick={true}
+							fnSetAlert={(alert) => {
+								setAlertDanger({
+									state: alert.state,
+									variant: "danger",
+									content: alert.content,
+								});
+							}}
 						/>
 					</div>
 				</div>
@@ -585,7 +599,7 @@ const OrganizerLegality = ({ organization, fnSetLogin, isLogin }) => {
 	const [popUpActive, setPopUpActive] = useState(false);
 	const [popUpTitle, setPopUpTitle] = useState("");
 	const [popUpContent, setPopUpContent] = useState(<></>);
-	const [isLoading, setLoading] = useState(false);
+	const [isLoading, setLoading] = useState(true);
 	const [legalityData, setData] = useState(null);
 	const [firstLoad, setFirstLoad] = useState(true);
 	const [errorState, setErrorState] = useState(false);
@@ -619,10 +633,9 @@ const OrganizerLegality = ({ organization, fnSetLogin, isLogin }) => {
 
 	useEffect(() => {
 		document.title = "Legality - Agendakota";
-		if (organization.length === 0) {
+		if (organization.length > 0) {
 			setLoading(true);
-		} else if (firstLoad) {
-			setLoading(true);
+			setErrorState(false);
 			loadData({ orgId: organization[0].id }).then((res) => {
 				if (res.status === 200) {
 					console.log(res.data.data.legality_data);
@@ -637,9 +650,8 @@ const OrganizerLegality = ({ organization, fnSetLogin, isLogin }) => {
 			});
 			setOrgSelected(organization[0].id);
 			setPopUpContent(<></>);
-			// setLoop(loop + 1);
 		}
-	}, [organization, firstLoad]);
+	}, [organization]);
 	return (
 		<>
 			<PopUp
@@ -656,6 +668,9 @@ const OrganizerLegality = ({ organization, fnSetLogin, isLogin }) => {
 				width="95%"
 			/>
 			<div className="content organizer">
+				<div className={styles.DecorationBox}>
+					<div className={styles.Decoration}></div>
+				</div>
 				{errorState ? (
 					<ErrorPage />
 				) : (

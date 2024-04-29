@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useLocation } from "react-router-dom";
 import PageRouter from "./Pages";
 import "./App.css";
 import UserRouter from "./Pages/User";
@@ -11,7 +11,6 @@ const changeFitSidebarContent = () => {
 		let sidebar = document.getElementById("sidebar");
 
 		if (sidebar) {
-			console.log(sidebar.offsetWidth, content.offsetLeft);
 			content.style.left = sidebar.offsetWidth + "px";
 		}
 	} catch (error) {
@@ -19,16 +18,31 @@ const changeFitSidebarContent = () => {
 	}
 };
 
+window.addEventListener("load", () => {
+	console.log("load ulang by window");
+});
+
 const App = () => {
 	const [typeRouter, setTypeRouter] = useState(null);
 
 	useEffect(() => {
 		changeFitSidebarContent();
 		window.addEventListener("resize", changeFitSidebarContent);
+
 		if (
 			window.location.pathname === "/" ||
 			window.location.pathname === "/auth-user" ||
-			window.location.pathname === "/register-user"
+			window.location.pathname === "/register-user" ||
+			window.location.pathname === "/create-event" ||
+			(window.location.pathname.indexOf("/event/") === 0 &&
+				window.location.pathname.split("/event/")[1] !== "" &&
+				window.location.pathname.split("/event/")[1] !== undefined) ||
+			window.location.pathname === "/404" ||
+			window.location.pathname === "/explore" ||
+			(window.location.pathname.indexOf("/organization-profile/") === 0 &&
+				window.location.pathname.split("/organization-profile/")[1] !== "" &&
+				window.location.pathname.split("/organization-profile/")[1] !==
+					undefined)
 		) {
 			// basic route
 			// NOTE: This route is in progress, add new path if create new page

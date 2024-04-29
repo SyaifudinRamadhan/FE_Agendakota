@@ -186,17 +186,19 @@ const Home = () => {
 			} else {
 				let cards =
 					popEventSection.current.getElementsByClassName("event-card");
+				let toHidden = 0;
 				for (let i = 0; i < cards.length; i++) {
-					console.log(cards[i]);
 					if (
-						cards[i].getElementsByClassName("city-label")[0].innerHTML ===
-						city.toLowerCase()
+						cards[i]
+							.getElementsByClassName("city-label")[0]
+							.innerHTML.toLowerCase() === city.toLowerCase()
 					) {
 						cards[i].style.display = "flex";
 					} else {
 						cards[i].style.display = "none";
+						toHidden++;
 					}
-					if (i === cards.length - 1) {
+					if (toHidden === cards.length) {
 						popEventSection.current.getElementsByClassName(
 							"pop-content"
 						)[0].style.display = "none";
@@ -234,7 +236,7 @@ const Home = () => {
 						</button>
 						<button
 							className={styles.JumboButton}
-							onClick={() => navigate("/event/create")}
+							onClick={() => navigate("/create-event")}
 						>
 							<AddCircle />
 							Create Event
@@ -364,7 +366,7 @@ const Home = () => {
 										icon={<BiPlusCircle />}
 										classes={[styles.ButtonBasic]}
 										style={{ width: "unset", marginRight: "auto" }}
-										fnOnClick={() => navigate("/event/create")}
+										fnOnClick={() => navigate("/create-event")}
 									/>
 								</div>
 								<div className={styles.CustomSpotEvents}>
@@ -569,7 +571,13 @@ const Home = () => {
 										category.name != "Attraction"
 									) {
 										return (
-											<div key={c} className={styles.CategoryItem}>
+											<div
+												key={c}
+												className={styles.CategoryItem}
+												onClick={() => {
+													window.location.href = `/explore?category=${category.name}`;
+												}}
+											>
 												<img
 													src={
 														process.env.REACT_APP_BACKEND_URL + category.photo
@@ -639,7 +647,13 @@ const Home = () => {
 										category.name == "Attraction"
 									) {
 										return (
-											<div key={c} className={styles.CategoryItem}>
+											<div
+												key={c}
+												className={styles.CategoryItem}
+												onClick={() => {
+													window.location.href = `/explore?category=${category.name}`;
+												}}
+											>
 												<img
 													src={
 														process.env.REACT_APP_BACKEND_URL + category.photo
@@ -771,7 +785,13 @@ const Home = () => {
 								distanceCard={20}
 								widthCard={279}
 								content={cities.map((city) => (
-									<CityCard style={{ maxWidth: "280px" }} data={city} />
+									<CityCard
+										style={{ maxWidth: "280px", cursor: "pointer" }}
+										data={city}
+										fnOnClick={() => {
+											window.location.href = `/explore?city=${city.name}`;
+										}}
+									/>
 								))}
 							/>
 						</>
@@ -814,7 +834,7 @@ const Home = () => {
 								icon={<BiPlusCircle />}
 								classes={[styles.ButtonBasic]}
 								style={{ width: "unset", marginRight: "auto" }}
-								onClick={() => navigate("/event/create")}
+								onClick={() => navigate("/create-event")}
 							/>
 						</div>
 						<div className={styles.JumboSecR}>
@@ -851,7 +871,7 @@ const Home = () => {
 								icon={<BiPlusCircle />}
 								classes={[styles.ButtonBasic]}
 								style={{ width: "unset", marginRight: "auto" }}
-								onClick={() => navigate("/event/create")}
+								onClick={() => navigate("/create-event")}
 							/>
 						</div>
 					</div>

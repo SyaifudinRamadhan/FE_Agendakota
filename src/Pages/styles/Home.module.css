@@ -80,6 +80,9 @@
 	flex-direction: row;
 	align-items: center;
 }
+.CategoryItem {
+	cursor: pointer;
+}
 .CategoryArea {
 	flex-wrap: wrap;
 	gap: 20px;

@@ -38,6 +38,8 @@ const Event = ({
 	fnDelete = (eventId) => {
 		return dummyLoad();
 	},
+	customOnClickFn = null,
+	noPrice = false,
 }) => {
 	const classNames = [styles.Event].concat(className);
 	const [startDate, setStartDate] = useState(null);
@@ -89,6 +91,7 @@ const Event = ({
 		if (startDate === null && nowDate !== null) {
 			if (data.available_days.length > 0) {
 				let stateFill = false;
+				let nowDate = new Date();
 				data.available_days.every((dayData) => {
 					if (nowDate.getDay() === mapDay.indexOf(dayData.day)) {
 						setStartDate(nowDate.toLocaleDateString("en-US"));
@@ -125,7 +128,7 @@ const Event = ({
 	}, [startDate, nowDate]);
 
 	useEffect(() => {
-		if (price == -1 && data.tickets.length > 0) {
+		if (!noPrice && price == -1 && data.tickets.length > 0) {
 			setPrice(parseInt(data.tickets[0].price));
 			// console.log(data.tickets[0].price);
 		}
@@ -151,7 +154,7 @@ const Event = ({
 			localStorage.setItem("active-event", id);
 			navigate("/organizer/event/dashboard");
 		} else {
-			navigate("/event-detail/" + slug);
+			navigate("/event/" + id);
 		}
 	};
 
@@ -172,7 +175,7 @@ const Event = ({
 					</div>
 				}
 			/>
-
+			{console.log(nowDate)}
 			<div className={classNames.join(" ")} style={style}>
 				<div className="city-label" style={{ display: "none" }}>
 					{data.city.toLowerCase()}
@@ -189,7 +192,13 @@ const Event = ({
 							? config.coverStyle
 							: null
 					}
-					onClick={() => openEvent(data.id, data.slug)}
+					onClick={() => {
+						if (customOnClickFn !== null) {
+							customOnClickFn(data);
+						} else {
+							openEvent(data.id, data.slug);
+						}
+					}}
 				/>
 				<div style={{ marginTop: 10 }}>
 					<div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
@@ -210,29 +219,45 @@ const Event = ({
 					</div>
 					<div
 						className={styles.Title}
-						onClick={() => openEvent(data.id, data.slug)}
+						onClick={() => {
+							if (customOnClickFn !== null) {
+								customOnClickFn(data);
+							} else {
+								openEvent(data.id, data.slug);
+							}
+						}}
 					>
 						{data.name}
 					</div>
-					<div className={styles.Price}>
-						<div
-							className={styles.PriceNumber}
-							style={{ flexDirection: "row" }}
-						>
-							{price === -1 ? (
-								<>Tiket Belum Tersedia</>
-							) : price === 0 ? (
-								<>FREE</>
-							) : (
-								<>RP. {numberFormat.format(price)},00</>
-							)}
+					{!noPrice ? (
+						<div className={styles.Price}>
+							<div
+								className={styles.PriceNumber}
+								style={{ flexDirection: "row" }}
+							>
+								{price === -1 ? (
+									<>Tiket Belum Tersedia</>
+								) : price === 0 ? (
+									<>FREE</>
+								) : (
+									<>RP. {numberFormat.format(price)},00</>
+								)}
+							</div>
 						</div>
-					</div>
+					) : (
+						<></>
+					)}
 					<div className={styles.Info}>
 						{data.available_days.length > 0 ? (
 							<>
 								{moment(startDate).format("ddd") ==
-								nowDate.toLocaleDateString("en-US", { weekday: "short" }) ? (
+									new Date().toLocaleDateString("en-US", {
+										weekday: "short",
+									}) &&
+								moment(startDate).format("D-M-Y") ===
+									moment(new Date().toLocaleDateString("en-US")).format(
+										"D-M-Y"
+									) ? (
 									<div style={{ color: "#00964E" }}>Hari Ini</div>
 								) : (
 									<div>
@@ -263,7 +288,13 @@ const Event = ({
 						) : (
 							<>
 								{moment(startDate).format("ddd") ==
-								nowDate.toLocaleDateString("en-US", { weekday: "short" }) ? (
+									new Date().toLocaleDateString("en-US", {
+										weekday: "short",
+									}) &&
+								moment(startDate).format("D-M-Y") ===
+									moment(new Date().toLocaleDateString("en-US")).format(
+										"D-M-Y"
+									) ? (
 									<div style={{ color: "#00964E" }}>Hari Ini</div>
 								) : (
 									<div>
@@ -279,7 +310,13 @@ const Event = ({
 								)}
 								|
 								{moment(endDate).format("ddd") ==
-								nowDate.toLocaleDateString("en-US", { weekday: "short" }) ? (
+									new Date().toLocaleDateString("en-US", {
+										weekday: "short",
+									}) &&
+								moment(startDate).format("D-M-Y") ===
+									moment(new Date().toLocaleDateString("en-US")).format(
+										"D-M-Y"
+									) ? (
 									<div style={{ color: "#00964E" }}>Hari Ini</div>
 								) : (
 									<div>
@@ -305,14 +342,11 @@ const Event = ({
 									<div
 										className={
 											nowDate >=
-												new Date(
-													data.start_date + "T" + data.start_time + "Z"
-												) &&
-											nowDate <=
-												new Date(data.end_date + "T" + data.end_time + "Z")
+												new Date(data.start_date + "T" + data.start_time) &&
+											nowDate <= new Date(data.end_date + "T" + data.end_time)
 												? `${styles.Point} ${styles.PointActive}`
 												: nowDate >
-												  new Date(data.end_date + "T" + data.end_time + "Z")
+												  new Date(data.end_date + "T" + data.end_time)
 												? `${styles.Point} ${styles.PointDisabled}`
 												: `${styles.Point} ${styles.PointEnabled}`
 										}
@@ -321,25 +355,21 @@ const Event = ({
 										style={{
 											color:
 												nowDate >=
-													new Date(
-														data.start_date + "T" + data.start_time + "Z"
-													) &&
-												nowDate <=
-													new Date(data.end_date + "T" + data.end_time + "Z")
+													new Date(data.start_date + "T" + data.start_time) &&
+												nowDate <= new Date(data.end_date + "T" + data.end_time)
 													? "#F20063"
 													: nowDate >
-													  new Date(data.end_date + "T" + data.end_time + "Z")
+													  new Date(data.end_date + "T" + data.end_time)
 													? "#767676"
 													: "green",
 										}}
 									>
+										{" "}
 										{nowDate >=
-											new Date(data.start_date + "T" + data.start_time + "Z") &&
-										nowDate <=
-											new Date(data.end_date + "T" + data.end_time + "Z")
+											new Date(data.start_date + "T" + data.start_time) &&
+										nowDate <= new Date(data.end_date + "T" + data.end_time)
 											? "Happening"
-											: nowDate >
-											  new Date(data.end_date + "T" + data.end_time + "Z")
+											: nowDate > new Date(data.end_date + "T" + data.end_time)
 											? "Finished"
 											: "Upcoming"}
 									</div>
@@ -353,7 +383,7 @@ const Event = ({
 										}}
 										center={true}
 										fnOnClick={() =>
-											copyHandle(window.location.host + "/event/" + data.slug)
+											copyHandle(window.location.host + "/event/" + data.id)
 										}
 									/>
 								</>
@@ -378,9 +408,37 @@ const Event = ({
 							)}
 						</div>
 					) : (
-						<div className={styles.Organizer}>
+						<div
+							className={styles.Organizer}
+							style={{ cursor: "pointer" }}
+							onClick={() => {
+								window.location.href = "/organization-profile/" + data.org.id;
+							}}
+						>
 							<img src={process.env.REACT_APP_BACKEND_URL + data.org.photo} />
-							<b>{data.org.name}</b>
+							<b
+								style={{
+									maxWidth: "calc(100% - 70px)",
+									overflow: "hidden",
+									textOverflow: "ellipsis",
+								}}
+							>
+								{data.org.name}
+							</b>
+							{data.org.legality && data.org.legality.status == 1 ? (
+								<img
+									src="/images/verify.png"
+									style={{
+										width: "23px",
+										height: "23px",
+										color: "green",
+										marginTop: "auto",
+										marginBottom: "auto",
+									}}
+								/>
+							) : (
+								<></>
+							)}
 						</div>
 					)}
 				</div>

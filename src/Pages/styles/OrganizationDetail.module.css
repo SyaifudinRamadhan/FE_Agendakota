@@ -1,0 +1,187 @@
+.MainContainer {
+	padding: 35px 32px 32px 32px;
+}
+.NavPane {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 16.94px;
+}
+.NavItemSecondary {
+	color: #888888 !important;
+}
+.NavItemSecondary a {
+	color: #888888 !important;
+	text-decoration: none;
+}
+.NavItemPrimary {
+	color: #000 !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: inline;
+}
+.NavItemPrimary a {
+	color: #000 !important;
+	text-decoration: none;
+}
+.MainBody {
+	position: relative;
+	width: 100%;
+	margin-top: 30px;
+}
+.BoxBanner {
+	position: absolute;
+	width: 100%;
+	height: 255px;
+	border-radius: 16px;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	z-index: -1;
+}
+.ProfileContent {
+	display: flex;
+	flex-direction: column;
+	margin-top: 193px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+	/* max-width: 980px; */
+	min-width: 370px;
+	gap: 32px;
+	/* height: 100px; */
+	/* background-color: green; */
+}
+.BasicInfoBox {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	padding: 24px 24px 16px 24px;
+	gap: 32px;
+	border-radius: 16px;
+	background-color: #fff;
+	box-shadow: 0px 0px 8px 0px #0000001a;
+}
+.BasicInfoBox img {
+	width: 113px;
+	height: 113px;
+	border-radius: 16px;
+}
+.BasicInfoBoxWrapper {
+	display: none;
+	margin-top: -60px;
+	z-index: -1;
+	padding-top: 52px;
+	background-color: #fcfcfc;
+}
+.TitleBox {
+	font-family: Inter;
+	font-size: 24px;
+	font-weight: 600;
+}
+.DescBox {
+	font-family: Inter;
+	font-size: 16px;
+	font-weight: 400;
+	color: #494949;
+}
+.PrimaryText {
+	color: #000;
+}
+.SecondaryText {
+	color: #8b8b8b;
+}
+.BasicInfoTitle,
+.BasicInfoTitle2 {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: auto;
+	margin-bottom: auto;
+	text-align: center;
+}
+.BasicInfoTitle {
+	width: calc(100% - 450px);
+	align-items: center;
+}
+.BasicInfoTitle div {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	text-align: left;
+}
+.BasicInfoTitle img {
+	width: 24px;
+	height: 24px;
+}
+.OrgName {
+	max-width: calc(100% - 30px);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: inline !important;
+	white-space: nowrap;
+}
+.EventBox {
+	display: flex;
+	flex-direction: row;
+	gap: 16px;
+	margin-top: 20px;
+	width: 100%;
+	flex-wrap: wrap;
+}
+
+@media (min-width: 1600px) {
+	.EventCard {
+		max-width: calc(25% - 12px);
+		flex-basis: 25%;
+	}
+}
+@media (max-width: 1290px) {
+	/* .EventCard {
+		max-width: calc(50% - 8px);
+		flex-basis: 50%;
+	} */
+}
+@media (max-width: 1050px) {
+	/* .EventCard {
+		max-width: 31.4%;
+		flex-basis: 31.8%;
+	} */
+	.EventCard {
+		max-width: calc(50% - 8px);
+		flex-basis: 50%;
+	}
+}
+@media (max-width: 992px) {
+	/* .Banner {
+		padding-left: 40px;
+	} */
+	/* .Content {
+		right: 45px;
+		width: calc(100% - 90px);
+	} */
+	.BasicInfoTitle {
+		width: calc(100% - 145px);
+	}
+	.BasicInfoTitle2Def {
+		display: none;
+	}
+	.BasicInfoBoxWrapper {
+		display: flex;
+	}
+}
+@media (max-width: 896px) {
+	.EventCard {
+		max-width: calc(50% - 8px);
+		flex-basis: 50%;
+	}
+}
+@media (max-width: 744px) {
+	.EventCard {
+		max-width: 100%;
+		flex-basis: 100%;
+	}
+}
