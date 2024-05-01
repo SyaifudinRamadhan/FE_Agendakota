@@ -345,7 +345,9 @@ const Home = () => {
 					</div>
 				</section>
 
-				{spotlightEvent && spotlightEvent.events.length > 0 ? (
+				{spotlightEvent &&
+				spotlightEvent.events &&
+				spotlightEvent.events.length > 0 ? (
 					<section className={styles.CustomSpotlight}>
 						<div>
 							<div
@@ -450,7 +452,9 @@ const Home = () => {
 					</div>
 				)}
 
-				{specialDayEvent && specialDayEvent.events.length > 0 ? (
+				{specialDayEvent &&
+				specialDayEvent.events &&
+				specialDayEvent.events.length > 0 ? (
 					<section>
 						<h3 style={{ marginTop: 0 }}>{specialDayEvent.data.title}</h3>
 						<Slider
@@ -511,7 +515,9 @@ const Home = () => {
 					<></>
 				)}
 
-				{selectedEvent && selectedEvent.events.length > 0 ? (
+				{selectedEvent &&
+				selectedEvent.events &&
+				selectedEvent.events.length > 0 ? (
 					<section>
 						<h3 style={{ marginTop: 0 }}>{selectedEvent.data.title}</h3>
 						<Slider
@@ -712,7 +718,9 @@ const Home = () => {
 					)}
 				</section>
 
-				{selectedActivity && selectedActivity.events.length > 0 ? (
+				{selectedActivity &&
+				selectedActivity.events &&
+				selectedActivity.events.length > 0 ? (
 					<section>
 						<h3 style={{ marginTop: 0 }}>{selectedActivity.data.title}</h3>
 						{/* <Chip
