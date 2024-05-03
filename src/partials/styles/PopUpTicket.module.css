@@ -287,3 +287,18 @@
 		margin-top: 40px;
 	}
 }
+
+@media (max-width: 555px) {
+	.FlatButtonBox {
+		flex-direction: column;
+	}
+	.FlatButtonBox button {
+		width: unset !important;
+	}
+	.SettingLabel {
+		width: 70%;
+	}
+	.SettingField {
+		width: 20%;
+	}
+}

@@ -303,9 +303,11 @@ const Login = ({ isLogin }) => {
 											className={styles.FieldInput}
 											refData={fieldLogin.email}
 											type={"text"}
+											style={{}}
 											placeholder={"Tuliskan alamat email akunmu"}
 										/>
 									</div>
+									<hr />
 									<div className={styles.FormFieldInput}>
 										<label
 											className={styles.TitleInput}

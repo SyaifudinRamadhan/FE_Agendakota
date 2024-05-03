@@ -170,6 +170,7 @@ const Header = ({
 							textColor={colors.primary}
 							fnOnClick={() => {
 								navigate("/register-user");
+								setMenuMobileActive(false);
 							}}
 							style={{ width: "100%", textAlign: "center" }}
 						/>
@@ -177,6 +178,7 @@ const Header = ({
 							title={"Login"}
 							fnOnClick={() => {
 								navigate("/auth-user");
+								setMenuMobileActive(false);
 							}}
 							style={{ width: "100%", marginTop: "10px", textAlign: "center" }}
 						/>

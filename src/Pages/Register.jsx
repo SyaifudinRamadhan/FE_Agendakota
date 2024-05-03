@@ -321,6 +321,7 @@ const Register = ({ isLogin }) => {
 											}}
 										/>
 									</div>
+									<hr />
 									<div className={styles.FormFieldInput}>
 										<label
 											className={styles.TitleInput}
@@ -347,6 +348,7 @@ const Register = ({ isLogin }) => {
 											}}
 										/>
 									</div>
+									<hr />
 									<div className={styles.FormFieldInput}>
 										<label
 											className={styles.TitleInput}
@@ -377,6 +379,7 @@ const Register = ({ isLogin }) => {
 											}}
 										/>
 									</div>
+									<hr />
 									<div className={styles.FormFieldInput}>
 										<label
 											className={styles.TitleInput}

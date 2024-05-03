@@ -1285,7 +1285,11 @@ const PopUpTicket = ({
 									setValue={setContentBody}
 									multiple={false}
 									showLimit={3}
-									itemStyle={{ fontSize: "14px", padding: "5px" }}
+									itemStyle={{
+										fontSize: "14px",
+										padding: "5px",
+										whiteSpace: "nowrap",
+									}}
 								/>
 							</div>
 							<Alert

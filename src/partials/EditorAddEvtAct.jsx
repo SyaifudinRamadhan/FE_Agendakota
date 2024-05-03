@@ -2133,6 +2133,7 @@ const EditorAddEvtAct = ({
 								border: "none",
 								outline: "none",
 								boxShadow: "none",
+								backgroundColor: "#fff0",
 							}}
 							refData={title}
 						/>
@@ -2187,7 +2188,11 @@ const EditorAddEvtAct = ({
 					<div className={styles.Split} style={{ marginTop: "61px" }}>
 						<div className={styles.ColSplit2}>
 							<InputImage4
-								style={{ aspectRatio: "5/2", height: "unset" }}
+								style={{
+									aspectRatio: "5/2",
+									height: "unset",
+									backgroundColor: "#fff",
+								}}
 								textMsg={
 									<div>
 										<div className={styles.TitleInputImage}>
@@ -2212,7 +2217,7 @@ const EditorAddEvtAct = ({
 										? "Kategori dan Topik"
 										: "Topic/ Sub Kategori"
 								}
-								style={{ marginTop: "10px" }}
+								style={{ marginTop: "10px", backgroundColor: "#fff" }}
 							>
 								{forEvtAct === "Onsite Event" ||
 								forEvtAct === "Online Event" ||
@@ -2263,7 +2268,11 @@ const EditorAddEvtAct = ({
 								)}
 							</FieldBox>
 							{console.log(topic.length >= 3)}
-							<FieldBox iconSvg={<BiBookOpen />} label={"Syarat & Ketentuan"}>
+							<FieldBox
+								iconSvg={<BiBookOpen />}
+								label={"Syarat & Ketentuan"}
+								style={{ backgroundColor: "#fff" }}
+							>
 								<div
 									className={styles.CmdField2}
 									onClick={() => {
@@ -2309,7 +2318,11 @@ const EditorAddEvtAct = ({
 													Hari dan Jam Operasional
 												</p>
 											}
-											style={{ boxShadow: "none", outline: "none" }}
+											style={{
+												boxShadow: "none",
+												outline: "none",
+												backgroundColor: "#fff",
+											}}
 										>
 											<div
 												className={styles.CmdField2}
@@ -2342,7 +2355,7 @@ const EditorAddEvtAct = ({
 								label={
 									<p className={styles.TextSecondary}>
 										{address === ""
-											? "Tambahkan Lokasi Event"
+											? "Lokasi Event"
 											: address.split("<p>").length <= 1
 											? address.slice(0, 18)
 											: address.split("<p>")[1].split("</p>")[0].split("")
@@ -2356,6 +2369,7 @@ const EditorAddEvtAct = ({
 											: address.split("<p>")[1].split("</p>")[0]}
 									</p>
 								}
+								style={{ backgroundColor: "#fff" }}
 							>
 								<div
 									className={styles.CmdField2}
@@ -2367,7 +2381,11 @@ const EditorAddEvtAct = ({
 									{address === "" ? "Tambahkan" : "Lihat & Edit"}
 								</div>
 							</FieldBox>
-							<FieldBox iconSvg={<BiLockOpen />} label={"Visibilitas"}>
+							<FieldBox
+								iconSvg={<BiLockOpen />}
+								label={"Visibilitas"}
+								style={{ backgroundColor: "#fff" }}
+							>
 								<Select
 									options={[
 										{ label: "Publik", value: 1 },
@@ -2408,6 +2426,7 @@ const EditorAddEvtAct = ({
 							) : (
 								<FieldBox
 									iconSvg={<BiCard />}
+									style={{ backgroundColor: "#fff" }}
 									label={
 										<p>
 											{forEvtAct === "Onsite Event" ||

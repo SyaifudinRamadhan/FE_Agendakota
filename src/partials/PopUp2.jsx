@@ -27,6 +27,24 @@ const PopUp2 = ({
 						style={{ marginTop: 0, marginBottom: 0 }}
 					>
 						{titleHeader}
+						<div className={styles.BtnAction}>
+							{closeBtnAbs.title !== "" ? (
+								<Button
+									title={closeBtnAbs.title}
+									fnOnClick={closeBtnAbs.fn}
+									bgColor={"#fff"}
+									textColor={"#ca0c64"}
+									borderColor={"#ca0c64"}
+									style={{ marginRight: "10px" }}
+								/>
+							) : (
+								<></>
+							)}
+							<Button title={closeBtnTitle} fnOnClick={closePopUp} />
+						</div>
+					</div>
+					<div className={styles.Content}>{content}</div>
+					<div className={`${styles.BtnActionOver}`}>
 						{closeBtnAbs.title !== "" ? (
 							<Button
 								title={closeBtnAbs.title}
@@ -41,7 +59,6 @@ const PopUp2 = ({
 						)}
 						<Button title={closeBtnTitle} fnOnClick={closePopUp} />
 					</div>
-					<div className={styles.Content}>{content}</div>
 				</div>
 			</div>
 		</div>

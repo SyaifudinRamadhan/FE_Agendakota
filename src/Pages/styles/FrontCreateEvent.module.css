@@ -1,9 +1,15 @@
 .EditorContent {
-	padding: 30px;
+	padding: 30px 100px;
 }
 
+@media (max-width: 772px) {
+	.EditorContent {
+		padding: 30px;
+	}
+}
 @media (max-width: 992px) {
 	.EditorContent {
 		margin-top: -30px;
+		padding: 30px 40px;
 	}
 }

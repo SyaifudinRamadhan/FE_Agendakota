@@ -359,6 +359,7 @@
 	}
 	.JumboTop {
 		padding: 100px 20px;
+		aspect-ratio: unset;
 	}
 	.JumboTitle {
 		font-size: 22px;

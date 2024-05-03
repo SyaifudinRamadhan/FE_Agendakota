@@ -81,13 +81,39 @@
 	padding: 12px;
 	margin: 0px 12px 12px 12px;
 }
-
+.BtnAction {
+	display: flex;
+	flex-direction: row;
+	margin-left: auto;
+}
+.BtnActionOver {
+	display: none;
+	flex-direction: row;
+	margin-left: auto;
+	margin-top: 20px;
+}
 @media (max-width: 992px) {
 	.PopUpBox {
 		width: 95% !important;
+		overflow-y: auto;
 	}
 	.Wrapper {
-		bottom: 70px;
-		height: calc(100% - 141px);
+		/* bottom: 70px;
+		height: calc(100% - 141px); */
+		bottom: 0;
+		height: calc(100% - 68px);
+		padding-bottom: 68px;
+	}
+	.ModalDialog {
+		margin-bottom: 68px;
+		overflow-y: auto;
+	}
+}
+@media (max-width: 550px) {
+	.BtnAction {
+		display: none;
+	}
+	.BtnActionOver {
+		display: flex;
 	}
 }
