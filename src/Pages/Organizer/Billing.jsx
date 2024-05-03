@@ -1113,32 +1113,35 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
 												Rp. {numberFormat.format(availableWds.total_amount)},00
 											</div>
 											{dataTable ? (
-												<Table className={styles3.BorderedHeader} responsive>
-													<thead>
-														<tr>
-															<th>Jumlah Penghasilan</th>
-															<th>Tiket Komisi</th>
-															<th>Admin Fee</th>
-															<th>Pendapatan Bersih</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td>
-																Rp.{" "}
-																{numberFormat.format(dataTable.origin_amount)}
-																,00
-															</td>
-															<td>
-																Rp.{numberFormat.format(dataTable.commision)},00
-															</td>
-															<td>{dataTable.admin_fee}</td>
-															<td>
-																Rp. {numberFormat.format(dataTable.amount)},00
-															</td>
-														</tr>
-													</tbody>
-												</Table>
+												<div style={{ overflow: "auto", width: "100%" }}>
+													<Table className={styles3.BorderedHeader} responsive>
+														<thead>
+															<tr>
+																<th>Jumlah Penghasilan</th>
+																<th>Tiket Komisi</th>
+																<th>Admin Fee</th>
+																<th>Pendapatan Bersih</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td>
+																	Rp.{" "}
+																	{numberFormat.format(dataTable.origin_amount)}
+																	,00
+																</td>
+																<td>
+																	Rp.{numberFormat.format(dataTable.commision)}
+																	,00
+																</td>
+																<td>{dataTable.admin_fee}</td>
+																<td>
+																	Rp. {numberFormat.format(dataTable.amount)},00
+																</td>
+															</tr>
+														</tbody>
+													</Table>
+												</div>
 											) : (
 												<div className={styles2.BlankDataTable}>
 													<div className={styles2.IconPopUp}>

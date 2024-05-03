@@ -400,7 +400,9 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
 	useEffect(() => {
 		document.title = "Settings - Agendakota";
 		if (profileData && isLogin) {
-			let interest = profileData.interest.split("~^|-|^~");
+			let interest = profileData.interest
+				? profileData.interest.split("~^|-|^~")
+				: [""];
 			let defInterest = [];
 			interest.forEach((intr) => {
 				if (intr !== "") {
