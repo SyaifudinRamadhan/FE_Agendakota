@@ -1059,7 +1059,7 @@ const EventDetail = ({ isLogin }) => {
                                       style={{
                                         padding: "5px",
                                         width: "unset",
-                                        whiteSpace: "nowrap",
+                                        // whiteSpace: "nowrap",
                                       }}
                                       fnOnClick={() => {
                                         document
@@ -1908,7 +1908,7 @@ const EventDetail = ({ isLogin }) => {
                                     style={{
                                       padding: "5px",
                                       width: "unset",
-                                      whiteSpace: "nowrap",
+                                      // whiteSpace: "nowrap",
                                     }}
                                     fnOnClick={() => {
                                       document
