@@ -351,6 +351,14 @@
 	font-size: 24px;
 	font-weight: 600;
 	margin-bottom: 12px;
+	flex-direction: row;
+	gap: 5px;
+	width: 100%;
+}
+.CartBoxInner{
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-right: auto;
 }
 .CartBlank {
 	margin: auto;
@@ -445,6 +453,19 @@
 	width: 60%;
 	height: 60%;
 }
+.DateSelectorGroup{
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+.DateSelectorGroup button{
+	margin-left: auto;
+	margin-right: auto;
+	width: 100% !important;
+}
+.DateSelector{
+	margin-right: auto;
+}
 .DateSelector,
 .RenderDates {
 	display: flex;
@@ -498,6 +519,20 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+.PopUpDate{
+	gap: 30px;
+}
+.PopUpDate .AlertContent{
+	font-weight: 600;
+	font-size: 20px;
+}
+.PopUpGroupButton{
+	display: flex;
+	flex-direction: row;
+	margin-left: auto;
+	gap: 10px;
+}
+
 @media (max-width: 992px) {
 	.CollapseInfo {
 		display: unset;
@@ -527,6 +562,16 @@
 		margin-left: unset !important;
 	}
 }
+/* @media (max-width: 450px) {
+	.DateSelectorGroup{
+		flex-direction: column;
+	}
+	.DateSelectorGroup button{
+		margin-left: auto;
+		margin-right: auto;
+		width: 100% !important;
+	}
+} */
 @media (max-width: 420px) {
 	.TicketSplit {
 		flex-direction: column;

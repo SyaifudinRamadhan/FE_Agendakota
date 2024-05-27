@@ -102,6 +102,17 @@ input {
 	width: 20px;
 	height: 20px;
 }
+.TermBox{
+	height: unset;
+	gap: 25px;
+}
+.TermBox label p{
+	white-space: normal;
+	cursor: pointer;
+}
+.TermBox input{
+	cursor: pointer;
+}
 
 @media (max-width: 882px) {
 	.FormSplitBox {

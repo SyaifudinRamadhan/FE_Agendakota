@@ -289,6 +289,53 @@
 	background: lightgray 50% / cover no-repeat;
 	box-shadow: 0px 53px 93px 0px rgba(95, 7, 50, 0.17);
 }
+.SliderContainer{
+	position: relative;
+	margin-top: 20px;
+	width: 100%;
+}
+.SlideBox{
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	overflow: auto;
+	-ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+	padding-bottom: 10px;
+	
+}
+.TopicInfo{
+	width: 100%;
+}
+.TopicName{
+	font-size: 14px;
+	font-weight: 500;
+	text-align: center;
+	white-space: nowrap;
+	width: 100%;
+}
+.ArrowTopic{
+	position: absolute;
+	padding: 8px;
+	border-radius: 6px;
+	background-color: #000;
+	opacity: 0%;
+	cursor: pointer;
+}
+.ArrowTopic svg{
+	font-weight: 600;
+	font-size: 25px;
+	color: #fff;
+}
+.SliderContainer:hover .ArrowTopic{
+	opacity: 50%;
+}
+.ArrowTopicRight{
+	right: 0;
+}
+.ArrowTopicLeft{
+	left: 0;
+}
 
 @media (max-width: 992px) {
 	.CustomSpotBox {
@@ -406,5 +453,8 @@
 	.CategoryItem {
 		flex-basis: 98%;
 		max-width: 98%;
+	}
+	.ArrowTopic{
+		display: none;
 	}
 }

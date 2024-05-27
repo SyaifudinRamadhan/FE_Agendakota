@@ -457,6 +457,15 @@
 	width: 75%;
 	border-radius: 12px;
 }
+.EditorContent {
+	/* padding: 30px 100px; */
+	max-width: 1050px;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
 @media (max-width: 1123px) {
 	.TopInfo {
 		flex-direction: column;
@@ -479,6 +488,10 @@
 	} */
 }
 @media (max-width: 992px) {
+	.EditorContent {
+		margin-top: -30px;
+		padding: 30px 40px;
+	}
 	.TopInfo {
 		flex-direction: row;
 	}
@@ -498,6 +511,9 @@
 	} */
 }
 @media (max-width: 772px) {
+	.EditorContent {
+		padding: 30px;
+	}
 	.TopInfo {
 		flex-direction: column;
 	}

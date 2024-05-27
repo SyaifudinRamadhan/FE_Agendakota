@@ -46,8 +46,13 @@
 .BasicTimeFilter {
 	display: flex;
 	flex-direction: row;
-	margin-left: 18px;
-	margin-right: 18px;
+	/* margin-left: 18px;
+	margin-right: 18px; */
+	margin-left: auto;
+	overflow: auto;
+}
+.BasicTimeFilter::-webkit-scrollbar{
+	display: none;
 }
 .MainBody {
 	display: flex;
@@ -116,6 +121,13 @@
 	cursor: pointer;
 	font-size: 14px;
 	width: calc(100% - 20px);
+	overflow: hidden;
+    text-overflow: ellipsis;
+    /* width: calc(100% - 90px); */
+    /* flex-wrap: nowrap; */
+    display: inline;
+		white-space: nowrap;
+
 }
 .FieldDropDownIcon {
 	margin-top: auto;

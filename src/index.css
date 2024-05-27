@@ -39,6 +39,9 @@ code {
 	background-color: white;
 	border-color: black;
 }
+.pointer{
+	cursor: pointer;
+}
 /* ---------------------= */
 
 /* ------ LAYOUT PRINT PDF -------- */

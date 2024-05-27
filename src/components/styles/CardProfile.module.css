@@ -1,5 +1,6 @@
 /* Card profile 2 */
 .BoxCardProfile {
+	background-color: #fff;
 	box-shadow: 0 0 3px 2px #eaeaea;
 	border-radius: 10px;
 	display: flex;

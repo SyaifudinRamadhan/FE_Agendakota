@@ -251,6 +251,27 @@
 	line-height: normal;
 	margin-bottom: 26px;
 }
+.Info2 {
+	display: flex;
+	flex-direction: row;
+	padding: 12px;
+	gap: 10px;
+	align-self: stretch;
+	align-items: center;
+	background: #f1f1f1;
+	border-radius: 12px;
+	color: #8b8b8b;
+	font-family: Inter;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	margin: 0 12px 12px 12px;
+}
+.Info2 svg {
+	height: 24px;
+	width: 24px;
+}
 .CustomForm {
 	display: flex;
 	flex-direction: row;
