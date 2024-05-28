@@ -126,6 +126,10 @@ const OrganizationDetail = () => {
     }
   }, [organization, upcomings, endeds]);
 
+  useEffect(() => {
+    document.title = "Explore - Agendakota";
+  });
+
   return (
     <div className={`content ${styles.MainContainer}`}>
       {isLoading ? (

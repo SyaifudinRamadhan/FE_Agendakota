@@ -242,6 +242,10 @@ const Home = () => {
     }
   }, [city]);
 
+  useEffect(() => {
+    document.title = "Agendakota";
+  });
+
   return (
     <>
       <div className="content">

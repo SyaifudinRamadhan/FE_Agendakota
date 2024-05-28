@@ -268,6 +268,10 @@ const Register = ({ isLogin }) => {
     }
   });
 
+  useEffect(() => {
+    document.title = "Register - Agendakota";
+  });
+
   return (
     <div className={styles.BgLayout}>
       <div className={styles.BoxContent}>

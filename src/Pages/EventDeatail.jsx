@@ -767,6 +767,10 @@ const EventDetail = ({ isLogin }) => {
     };
   });
 
+  useEffect(() => {
+    document.title = "Agendakota";
+  });
+
   return (
     <div className="content">
       {console.log(cartData)}

@@ -441,6 +441,11 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
       }
     }
   });
+
+  useEffect(() => {
+    document.title = "Profile - Agendakota";
+  });
+
   return (
     <>
       {console.log(categories, profileData)}

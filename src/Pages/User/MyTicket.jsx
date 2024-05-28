@@ -326,6 +326,10 @@ const MyTicket = ({ isLogin, fnSetLogin = () => {} }) => {
     }
   }, [transactions, isLogin]);
 
+  useEffect(() => {
+    document.title = "MyTickets - Agendakota";
+  });
+
   return (
     <>
       {openCheckin ? (

@@ -1,0 +1,10 @@
+.MainContent{
+  height: calc(100% - 80px);
+}
+.MainContent div{
+  margin: auto;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+  font-size: 25px;
+}

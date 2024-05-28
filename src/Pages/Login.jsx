@@ -336,6 +336,10 @@ const Login = ({ isLogin }) => {
     }
   });
 
+  useEffect(() => {
+    document.title = "Login - Agendakota";
+  });
+
   return (
     <div className={styles.BgLayout}>
       <div className={styles.BoxContent}>

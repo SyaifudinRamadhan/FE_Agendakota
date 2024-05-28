@@ -528,6 +528,10 @@ const Explore = () => {
     }
   }, [events]);
 
+  useEffect(() => {
+    document.title = "Explore - Agendakota";
+  });
+
   return (
     <div className="content" style={{ padding: "24px", marginTop: "12px" }}>
       {errorState ? (

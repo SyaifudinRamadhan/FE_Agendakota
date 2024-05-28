@@ -469,7 +469,7 @@ const Invitation = ({ isLogin, fnSetLogin = () => {} }) => {
   }, [invitationsRcv, invitationsSdr, isLogin]);
 
   useEffect(() => {
-    console.log("MASUK PAGE INVITATION");
+    document.title = "Inv - Agendakota";
   });
 
   return (

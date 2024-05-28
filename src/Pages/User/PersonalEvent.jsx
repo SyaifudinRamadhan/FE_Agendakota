@@ -219,6 +219,10 @@ const PersonalEvent = ({
     }
   }, [transactions, isLogin]);
 
+  useEffect(() => {
+    document.title = "MyEvent - Agendakota";
+  });
+
   return (
     <>
       {popUpActive ? (

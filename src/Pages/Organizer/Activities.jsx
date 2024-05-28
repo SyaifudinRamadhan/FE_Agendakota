@@ -109,28 +109,28 @@ const OrganizerActivities = ({ organization, fnSetLogin }) => {
         if (evt.event.is_publish === 1) {
           drafts.push({
             ...evt.event,
-            tickets: evt.tickets ? evt.tickets : [],
+            tickets: evt.event.tickets ? evt.event.tickets : [],
             org: evt.organization,
             available_days: evt.available_days,
           });
         } else if (now >= start && now <= end) {
           happeningEvents.push({
             ...evt.event,
-            tickets: evt.tickets ? evt.tickets : [],
+            tickets: evt.event.tickets ? evt.event.tickets : [],
             org: evt.organization,
             available_days: evt.available_days,
           });
         } else if (now > end) {
           endedEvents.push({
             ...evt.event,
-            tickets: evt.tickets ? evt.tickets : [],
+            tickets: evt.event.tickets ? evt.event.tickets : [],
             org: evt.organization,
             available_days: evt.available_days,
           });
         } else {
           upcomingEvents.push({
             ...evt.event,
-            tickets: evt.tickets ? evt.tickets : [],
+            tickets: evt.event.tickets ? evt.event.tickets : [],
             org: evt.organization,
             available_days: evt.available_days,
           });

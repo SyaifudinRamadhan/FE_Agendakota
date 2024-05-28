@@ -113,6 +113,10 @@ const FrontCreateEvent = ({ isLoginBasic }) => {
     }
   }, [isLoginBasic]);
 
+  useEffect(() => {
+    document.title = "Create Event - Agendakota";
+  });
+
   return (
     <div className="content">
       <div className={styles2.DecorationBox}>

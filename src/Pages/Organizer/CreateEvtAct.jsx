@@ -132,6 +132,10 @@ const CreateEvtAct = ({
     setPopUp(false);
   }, [location]);
 
+  useEffect(() => {
+    document.title = "Create Event - Agendakota";
+  });
+
   return (
     <>
       <div className="content organizer">

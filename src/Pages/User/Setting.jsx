@@ -168,6 +168,10 @@ const Setting = ({ isLogin, fnSetLogin = () => {} }) => {
     }
   }, [pausedProcess, isLogin]);
 
+  useEffect(() => {
+    document.title = "Setting - Agendakota";
+  });
+
   return (
     <>
       <PopUp

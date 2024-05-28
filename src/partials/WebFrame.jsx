@@ -29,6 +29,7 @@ import CreateEvtAct from "../Pages/Organizer/CreateEvtAct";
 import EventDashboard from "../Pages/Organizer/EventManagement/EventDashboard";
 import ErrorPage from "./ErrorPage";
 import { useSelector } from "react-redux";
+import Blank from "../Pages/Blank";
 
 // let firstLoad = true;
 
@@ -492,14 +493,7 @@ const WebFrame = () => {
             />
 
             {/* Catcher router */}
-            <Route
-              path="/404"
-              element={
-                <div className="content">
-                  <h1>404</h1>
-                </div>
-              }
-            />
+            <Route path="/404" element={<Blank />} />
             <Route path="*" element={<Catcher />} />
           </Routes>
         </div>
