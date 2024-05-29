@@ -37,7 +37,7 @@ const isLoginLoad = async ({ accessToken }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -102,7 +102,7 @@ const HeaderUser = ({
   const handleClick = (e) => {
     let target = e.target;
     let classes = target.classList[0]?.split("_");
-    // console.log(classes);
+    // // console.log(classes);
 
     if (window.innerWidth > 480) {
       if (
@@ -127,12 +127,12 @@ const HeaderUser = ({
     // setLogin(false);
     // setUserData(null);
     // setProfileActive(false);
-    // console.log("logout clickedd");
+    // // console.log("logout clickedd");
   };
 
   useEffect(() => {
     hideProfileMenuAuto({ setProfileActive: setProfileActive });
-    console.log("MASUK PAGE HEADER USER");
+    // console.log("MASUK PAGE HEADER USER");
   });
 
   useEffect(() => {
@@ -161,7 +161,6 @@ const HeaderUser = ({
       {isLogin === false ? <PopUpLogin setLogin={setLogin} /> : <></>}
       {/* ================================= */}
       {/* ========= User Checkin Pop Up ========= */}
-      {console.log("HEADER USER ===> ", isLogin)}
       {openPopUpCheckin ? (
         <PopUpCheckinUser
           fnSetLogin={setLogin}
@@ -214,7 +213,7 @@ const HeaderUser = ({
             <div
               onClick={() => {
                 setPopUpQRState(true);
-                console.log("CLICK OPEN POPUP CHECKIN");
+                // console.log("CLICK OPEN POPUP CHECKIN");
               }}
               className={`${styles.MenuMobileItem}`}
               style={{ flexDirection: "row", cursor: "pointer" }}
@@ -314,7 +313,7 @@ const HeaderUser = ({
             style={{ cursor: "pointer" }}
             onClick={() => {
               setPopUpQRState(true);
-              console.log("CLICK OPEN POPUP CHECKIN");
+              // console.log("CLICK OPEN POPUP CHECKIN");
             }}
           >
             <BiQr />

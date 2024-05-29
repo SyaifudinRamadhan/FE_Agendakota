@@ -71,7 +71,7 @@ const HeaderOrganizer = ({
   useEffect(() => {
     if (organizers && organizers.length !== 0 && show) {
       let selected = organizers.find((data) => data.id === appData.activeOrg);
-      console.log("use effect selecct org header");
+      // console.log("use effect selecct org header");
       if (selected) {
         setOrgSelected({
           label: selected.name,

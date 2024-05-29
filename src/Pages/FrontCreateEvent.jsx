@@ -122,7 +122,6 @@ const FrontCreateEvent = ({ isLoginBasic }) => {
       <div className={styles2.DecorationBox}>
         <div className={styles2.Decoration}></div>
       </div>
-      {console.log(isLoginBasic, isLogin)}
       {openEditor ? (
         <div className={styles.EditorContent}>
           <EditorAddEvtAct

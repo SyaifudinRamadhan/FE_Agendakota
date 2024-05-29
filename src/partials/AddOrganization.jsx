@@ -22,7 +22,7 @@ import Loading from "../components/Loading";
 import ErrorPage from "./ErrorPage";
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },

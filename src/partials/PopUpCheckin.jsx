@@ -29,7 +29,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -166,7 +166,7 @@ const PopUpCheckin = ({
 
   useEffect(() => {
     if (isLogin && pausedProcess) {
-      console.log(isLogin, pausedProcess);
+      // console.log(isLogin, pausedProcess);
       handleCheckin(pausedProcess.split("~!@!~")[1]);
       setPausedProcess(null);
     }
@@ -176,7 +176,7 @@ const PopUpCheckin = ({
     if (firstLoad) {
       handleKeydown = (e) => {
         if (e.keyCode === 13) {
-          console.log(e.keyCode);
+          // console.log(e.keyCode);
           codes = "";
           handleCheckin(codes);
           setLastMenu("Laser USB");
@@ -186,7 +186,7 @@ const PopUpCheckin = ({
           codes = codes.slice(0, codes.length - 1);
           setStrCode(codes);
         } else {
-          console.log(e, codes);
+          // console.log(e, codes);
           codes += e.key;
           setStrCode(codes);
         }
@@ -197,12 +197,12 @@ const PopUpCheckin = ({
       document.addEventListener("keydown", handleKeydown);
       load++;
     } else if (menu !== "Laser USB") {
-      console.log("Remove listener");
+      // console.log("Remove listener");
       try {
         document.removeEventListener("keydown", handleKeydown);
         load = 0;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
   }, [menu]);
@@ -269,13 +269,13 @@ const PopUpCheckin = ({
             <div id="qr-scan" className={styles.Center}>
               <QrScanner
                 onDecode={(result) => {
-                  console.log(result);
+                  // console.log(result);
                   handleCheckin(result);
                   setLastMenu(menu);
                   setMenu("Alert");
                 }}
                 onError={(error) => {
-                  console.log(error?.message);
+                  // console.log(error?.message);
                   setLastMenu(menu);
                   setMenu("Alert");
                 }}

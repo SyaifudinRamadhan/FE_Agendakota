@@ -36,7 +36,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -154,7 +154,7 @@ const AddSelectOrgFront = ({
                 ticketDatas: eventDataIn.tickets,
                 token: appData.accessToken,
               }).then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 201) {
                   localStorage.setItem("active-event", savedEventId);
                   localStorage.setItem("active-org", selectedOrg);
@@ -227,7 +227,7 @@ const AddSelectOrgFront = ({
                 ticketDatas: eventDataIn.tickets,
                 token: appData.accessToken,
               }).then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 201) {
                   localStorage.setItem("active-event", eventId);
                   localStorage.setItem("active-org", selectedOrg);
@@ -381,7 +381,7 @@ const AddSelectOrgFront = ({
 
   useEffect(() => {
     if (selectedOrg) {
-      console.log("load create data event ", selectedOrg);
+      // console.log("load create data event ", selectedOrg);
       handleSave(null, null, selectedOrg, eventData);
       setSelectedOpt(null);
     }
@@ -511,7 +511,7 @@ const AddSelectOrgFront = ({
                           }}
                           value={selectedOption}
                           onChange={(e) => {
-                            console.log(e);
+                            // console.log(e);
                             setSelectedOrg(e.value);
                             setSelectedOpt(e);
                           }}

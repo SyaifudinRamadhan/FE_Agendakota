@@ -6,7 +6,7 @@ import { getAppData } from "./actions/appdata";
 import WebFrame from "./partials/WebFrame";
 
 window.addEventListener("load", () => {
-	console.log("load ulang by window");
+	// console.log("load ulang by window");
 });
 
 const App = () => {

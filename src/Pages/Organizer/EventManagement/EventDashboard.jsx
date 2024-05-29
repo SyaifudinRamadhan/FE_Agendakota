@@ -119,7 +119,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -822,10 +822,10 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
     setQREvtId(pngUrl);
     setTimeout(() => {
       document.getElementById("download-qr").click();
-      console.log("download clicked");
+      // console.log("download clicked");
       setTimeout(() => {
         document.getElementById("download-qr").click();
-        console.log("download clicked");
+        // console.log("download clicked");
       }, 100);
     }, 100);
   };
@@ -841,7 +841,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
         let url = window.URL.createObjectURL(
           new Blob([res.data], { type: "application/pdf" })
         );
-        console.log(url, new Blob([res.data], { type: "application/pdf" }));
+        // console.log(url, new Blob([res.data], { type: "application/pdf" }));
         let link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "qr_event_scan.pdf");
@@ -894,11 +894,6 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
           ) : qStr.split("~!!!~")[1] === "boolean" ? (
             <div className={styles.InputGroup}>
               <label>{qStr.split("~!!!~")[0]}</label>
-              {console.log(
-                surveyData.survey_datas[index] == "0",
-                "BOOLEAN",
-                surveyData.survey_datas[index] == "1"
-              )}
               <InputCheckRadio
                 type={"radio"}
                 readOnly
@@ -994,7 +989,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
     if (firstLoad && curentOrg !== appData.activeOrg) {
       navigate("/organizer/events");
     }
-    console.log("RELOAD APP DATA", appData);
+    // console.log("RELOAD APP DATA", appData);
   }, [appData]);
 
   useEffect(() => {
@@ -1008,7 +1003,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
       }).then((res) => {
         if (res.status === 200) {
           setFirstLoadState(true);
-          console.log(res.data.available_reschedule);
+          // console.log(res.data.available_reschedule);
           let start = new Date(
             res.data.event.start_date + " " + res.data.event.start_time
           );
@@ -1152,7 +1147,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
       }).then((res) => {
         if (res.status === 200) {
           setSurveyRes(res.data.data);
-          console.log(res.data.data);
+          // console.log(res.data.data);
         } else if (res.status === 401) {
           fnSetLogin(false);
           setFirstLoadState(null);
@@ -1173,7 +1168,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
         enableRefundReq: ticketSettings.enableRefundReq,
       });
     }
-    console.log(tickets);
+    // console.log(tickets);
   }, [tickets, title]);
 
   useEffect(() => {
@@ -1195,7 +1190,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
       // }
       setPausedProcess(null);
     }
-    console.log(isLogin, pausedProcess);
+    // console.log(isLogin, pausedProcess);
   }, [isLogin, pausedProcess]);
 
   useEffect(() => {
@@ -1225,7 +1220,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
         });
       });
       setBuyers(buyers);
-      console.log(buyers);
+      // console.log(buyers);
       setAttendees(attendees);
       buyers = null;
       attendees = null;
@@ -1251,7 +1246,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
         distanceMonth + new Date(buyers[0].purchaseData.created_at).getMonth();
         i++
       ) {
-        console.log(i % 12, "MONTH", i);
+        // console.log(i % 12, "MONTH", i);
         labels.push(config.months[i % 12]);
         datas.push(
           buyers.filter(
@@ -1453,13 +1448,6 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
       <div className={styles.DecorationBox}>
         <div className={styles.Decoration}></div>
       </div>
-      {console.log(
-        purchases,
-        buyers,
-        attendees,
-        selledDataGraph,
-        goupedSelledTable
-      )}
       <div className="content organizer">
         <PopUp
           width="45%"
@@ -1477,7 +1465,6 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
             </div>
           }
         />
-        {console.log(tickets.filter((ticket) => ticket.deleted === 0))}
         <PopUpTicket
           isLogin={isLogin}
           fnSetLogin={fnSetLogin}
@@ -1684,7 +1671,6 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                     }}
                     refData={publishToogle}
                   />
-                  {console.log("Publish state now ", isPublish)}
                 </FieldBox>
               </div>
               <div className={styles.FeatureBox}>
@@ -1895,7 +1881,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                         style={{ textAlign: "left", width: "100%" }}
                         onInput={(e) => {
                           setFilterSearch(e.target.value);
-                          console.log(e.target.value);
+                          // console.log(e.target.value);
                         }}
                       />
                     </FieldBox>
@@ -2085,7 +2071,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                         style={{ textAlign: "left", width: "100%" }}
                         onInput={(e) => {
                           setFilterSearchCheckin(e.target.value);
-                          console.log(e.target.value);
+                          // console.log(e.target.value);
                         }}
                       />
                     </FieldBox>
@@ -2264,7 +2250,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                       style={{ textAlign: "left", width: "100%" }}
                       onInput={(e) => {
                         setFilterSearchRefund(e.target.value);
-                        console.log(e.target.value);
+                        // console.log(e.target.value);
                       }}
                     />
                   </FieldBox>
@@ -2320,7 +2306,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                             (data) => [data.user_id, data.ticket_id]
                           )
                         ).map((data) => {
-                          console.log(data);
+                          // console.log(data);
                           return (
                             <tr>
                               <td>{data[0].user.name}</td>

@@ -55,7 +55,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -155,7 +155,7 @@ const addData = async ({
   token,
 }) => {
   try {
-    console.log("start - ", daily_limit_times, daily_start_times);
+    // console.log("start - ", daily_limit_times, daily_start_times);
     let res = await axios.post(
       process.env.REACT_APP_BACKEND_URL + "/api/org/" + orgId + "/event/create",
       {
@@ -247,7 +247,7 @@ const updateData = async ({
   token,
 }) => {
   try {
-    console.log("start - ", daily_limit_times, daily_start_times);
+    // console.log("start - ", daily_limit_times, daily_start_times);
     let res = await axios.post(
       process.env.REACT_APP_BACKEND_URL + "/api/org/" + orgId + "/event/update",
       {
@@ -343,7 +343,7 @@ const createTickets = async ({
         },
       }
     );
-    console.log(res);
+    // console.log(res);
     return handleSuccess(res);
   } catch (error) {
     return handleError(error);
@@ -821,7 +821,7 @@ const EditorAddEvtAct = ({
                 })),
                 token: appData.accessToken,
               }).then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 201) {
                   setAlert({
                     state: true,
@@ -1006,7 +1006,7 @@ const EditorAddEvtAct = ({
                 })),
                 token: appData.accessToken,
               }).then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 201) {
                   setAlert({
                     state: true,
@@ -1087,7 +1087,7 @@ const EditorAddEvtAct = ({
       start = startDate.current.value;
       end = endDate.current.value;
     }
-    console.log(forEvtAct);
+    // console.log(forEvtAct);
     if (interuptProcess === "ticket") {
       if (basicValidator()) {
         setLoading(true);
@@ -1203,7 +1203,7 @@ const EditorAddEvtAct = ({
                 })),
                 token: appData.accessToken,
               }).then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 201) {
                   // interupt poin 1 = "publish"
                   setAlert({
@@ -1390,7 +1390,7 @@ const EditorAddEvtAct = ({
                 })),
                 token: appData.accessToken,
               }).then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 201) {
                   setAlert({
                     state: true,
@@ -1471,7 +1471,7 @@ const EditorAddEvtAct = ({
       start = startDate.current.value;
       end = endDate.current.value;
     }
-    console.log(forEvtAct);
+    // console.log(forEvtAct);
     if (basicValidator()) {
       setLoading(true);
       updateData({
@@ -1616,7 +1616,7 @@ const EditorAddEvtAct = ({
   // };
 
   useEffect(() => {
-    console.log("Use effect");
+    // console.log("Use effect");
     if (!categories && !topics && !provinces && !orgTypes) {
       setLoading(true);
       loadCategories().then((res) => {
@@ -1648,13 +1648,6 @@ const EditorAddEvtAct = ({
             : true,
       }).then((res) => {
         if (res.status === 200) {
-          console.log(
-            res.data.topics,
-            forEvtAct,
-            forEvtAct === "Onsite Event" ||
-              forEvtAct === "Online Event" ||
-              forEvtAct === "Hybrid Event"
-          );
           setTopics(
             forEvtAct === "Onsite Event" ||
               forEvtAct === "Online Event" ||
@@ -1739,7 +1732,7 @@ const EditorAddEvtAct = ({
         setAddress(eventData.event.location);
         setSnk(eventData.event.snk);
         setDesc(eventData.event.desc);
-        console.log(eventData.event);
+        // console.log(eventData.event);
         if (
           forEvtAct === "Onsite Event" ||
           forEvtAct === "Online Event" ||
@@ -1778,7 +1771,7 @@ const EditorAddEvtAct = ({
         });
         setOrderForm(eventData.event.custom_fields);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setEditState(true);
       }
     }
@@ -1801,19 +1794,7 @@ const EditorAddEvtAct = ({
       // 	handleSetPublish(savedEventId);
       // }
       setPausedProcess(null);
-      console.log(
-        "Load pauses or interupt process",
-        pausedProcess,
-        interuptProcess,
-        isLogin
-      );
     }
-    console.log(
-      "Load pauses or interupt process",
-      pausedProcess,
-      savedEventId,
-      isLogin
-    );
   }, [isLogin, pausedProcess, savedEventId]);
 
   useEffect(() => {
@@ -2098,7 +2079,6 @@ const EditorAddEvtAct = ({
                     onChange={(e) => setDefCity(e)}
                     value={city}
                   />
-                  {console.log(city)}
                 </div>
                 <div>
                   <label className={styles.BasicLabel} htmlFor="address">
@@ -2420,7 +2400,6 @@ const EditorAddEvtAct = ({
                   />
                 )}
               </FieldBox>
-              {console.log(topic.length >= 3)}
               <FieldBox
                 iconSvg={<BiBookOpen />}
                 label={"Syarat & Ketentuan *"}
@@ -2502,7 +2481,6 @@ const EditorAddEvtAct = ({
                   </div>
                 </div>
               )}
-              {console.log(address)}
               <FieldBox
                 iconSvg={<BiMapPin />}
                 label={

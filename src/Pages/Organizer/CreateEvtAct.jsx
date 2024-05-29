@@ -124,7 +124,7 @@ const CreateEvtAct = ({
   const location = useLocation();
 
   useEffect(() => {
-    console.log("use effect landing create evt act");
+    // console.log("use effect landing create evt act");
   });
 
   useEffect(() => {

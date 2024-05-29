@@ -30,7 +30,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -159,7 +159,7 @@ const PopUpCheckinUser = ({
 
   useEffect(() => {
     if (isLogin && pausedProcess) {
-      console.log(isLogin, pausedProcess);
+      // console.log(isLogin, pausedProcess);
       handleCheckin(pausedProcess.split("~!@!~")[1]);
       setPausedProcess(null);
     }
@@ -196,13 +196,13 @@ const PopUpCheckinUser = ({
                 <div id="qr-scan" className={styles.Center}>
                   <QrScanner
                     onDecode={(result) => {
-                      console.log(result);
+                      // console.log(result);
                       handleCheckin(result);
                       setLastMenu(menu);
                       setMenu("Alert");
                     }}
                     onError={(error) => {
-                      console.log(error?.message);
+                      // console.log(error?.message);
                       setLastMenu(menu);
                       setMenu("Alert");
                     }}

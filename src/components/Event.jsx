@@ -100,7 +100,7 @@ const Event = ({
           if (nowDate.getDay() === mapDay.indexOf(dayData.day)) {
             setStartDate(nowDate.toLocaleDateString("en-US"));
             setStartTime(dayData.max_limit_time);
-            //console.log(dayData.max_limit_time, "set time");
+            // console.log(dayData.max_limit_time, "set time");
             stateFill = true;
             return false;
           } else if (nowDate.getDay() < mapDay.indexOf(dayData.day)) {
@@ -108,7 +108,7 @@ const Event = ({
             nowDate.setDate(nowDate.getDate() + distance);
             setStartDate(nowDate.toLocaleDateString("en-US"));
             setStartTime(dayData.max_limit_time);
-            //console.log(dayData.max_limit_time, "set time 2");
+            // console.log(dayData.max_limit_time, "set time 2");
             stateFill = true;
             return false;
           }
@@ -120,14 +120,14 @@ const Event = ({
           nowDate.setDate(nowDate.getDate() + distance);
           setStartDate(nowDate.toLocaleDateString("en-US"));
           setStartTime(data.available_days[0].max_limit_time);
-          //console.log(data.available_days[0].day, "set time 3");
+          // console.log(data.available_days[0].day, "set time 3");
         }
       } else {
         setStartDate(data.start_date);
         setEndDate(data.end_date);
-        //console.log(data.start_time, "set time 4");
+        // console.log(data.start_time, "set time 4");
       }
-      //console.log(startTime, startDate);
+      // console.log(startTime, startDate);
     }
   }, [startDate, nowDate]);
 
@@ -155,7 +155,7 @@ const Event = ({
         }
       }
       setPrice(lowerPrice);
-      // console.log(data.tickets[0].price);
+      // // console.log(data.tickets[0].price);
     }
   }, [price]);
 
@@ -207,7 +207,6 @@ const Event = ({
           </div>
         }
       />
-      {console.log(nowDate)}
       <div className={classNames.join(" ")} style={style}>
         <div className="city-label" style={{ display: "none" }}>
           {data.city.toLowerCase()}

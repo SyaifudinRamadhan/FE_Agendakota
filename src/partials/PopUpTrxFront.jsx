@@ -54,7 +54,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -222,7 +222,7 @@ const ReviewContent = ({
       voucher_code: null,
     };
     if (!failedIndicator) {
-      console.log(dataTrx, "CART DATA");
+      // console.log(dataTrx, "CART DATA");
       let totalPrice = 0;
       dataTrx.forEach((cart) => {
         for (let i = 0; i < cart.count; i++) {
@@ -272,7 +272,7 @@ const ReviewContent = ({
         trxMethod === "014"
           ? (trxData.mobile_number = refOvoJn.current.value)
           : (trxData.cashtag = refOvoJn.current.value);
-        console.log(answers, trxData, totalPrice);
+        // console.log(answers, trxData, totalPrice);
         fnSetDataTrxSurvey({
           trx: trxData,
           surveyFields: answers,
@@ -306,7 +306,7 @@ const ReviewContent = ({
   }, [dataEvent]);
 
   useEffect(() => {
-    console.log(formFields, formTypeState);
+    // console.log(formFields, formTypeState);
   });
 
   return (
@@ -1040,7 +1040,6 @@ const TrxContent = ({
               >
                 <div className={styles.TextSecondary}>Metode Pembayaran</div>
                 <div style={{ marginLeft: "auto" }}>
-                  {console.log(payMethod)}
                   <div className={styles.PaymentBtn}>
                     <img
                       src={`/icons/${
@@ -1175,7 +1174,7 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
     } else {
       createTrx({ ...trx, token: appData.accessToken }).then((res) => {
         if (res.status === 201) {
-          console.log(res.data);
+          // console.log(res.data);
           setResTrx(res.data);
           if (eventData.custom_fields.length > 0) {
             handleSurvey(surveyData);

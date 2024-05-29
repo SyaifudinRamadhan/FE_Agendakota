@@ -41,7 +41,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -418,7 +418,7 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
       });
       setInterest(defInterest);
       // setLoop(loop + 1);
-      console.log("SET DATA PROFILE");
+      // console.log("SET DATA PROFILE");
     }
   }, [profileData, isLogin]);
 
@@ -448,7 +448,6 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
 
   return (
     <>
-      {console.log(categories, profileData)}
       <PopUp
         width="45%"
         isActive={popUpActive}

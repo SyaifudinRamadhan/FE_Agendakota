@@ -49,7 +49,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -377,7 +377,7 @@ const PopUpTicket = ({
   };
 
   const openTicket = (data, index) => {
-    console.log(data);
+    // console.log(data);
     setDefCover(
       evtActId ||
         forEvtAct === "Onsite Event" ||
@@ -659,7 +659,7 @@ const PopUpTicket = ({
             ? null
             : dailyLimitQty.current.value,
       });
-      console.log(tickets);
+      // console.log(tickets);
       setContentBody("Tickets");
       setTitleState("front");
       resetForm();
@@ -732,7 +732,7 @@ const PopUpTicket = ({
         token: appData.accessToken,
       }).then((res) => {
         if (res.status === 202) {
-          console.log(res.data);
+          // console.log(res.data);
           tickets[selectedTicketIndex].name = title.current.value;
 
           if (coverImg.current && coverImg.current.files.length > 0) {
@@ -1093,7 +1093,7 @@ const PopUpTicket = ({
 
   const handleUpdateCustomForm = () => {
     let fields = [];
-    console.log(fields, customFieldName.current.length);
+    // console.log(fields, customFieldName.current.length);
     fixedField.current.forEach((field, index) => {
       if (field.checked) {
         fields.push(
@@ -1122,13 +1122,13 @@ const PopUpTicket = ({
               customFieldReq.current[index].checked ? "required" : "un-required"
             }`
           );
-          console.log(field, customFieldName.current.length);
+          // console.log(field, customFieldName.current.length);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     });
-    console.log(fields);
+    // console.log(fields);
     fnSetOrderForm(fields);
     setLayoutCustomForm([]);
     customFieldName.current = [];
@@ -1142,7 +1142,7 @@ const PopUpTicket = ({
     // 	// has handled in one function handleUpdateSetting by updatePeripheral
     // } else {
     // 	let fields = [];
-    // 	console.log(fields, customFieldName.current.length);
+    // 	// console.log(fields, customFieldName.current.length);
     // 	fixedField.current.forEach((field, index) => {
     // 		if (field.checked) {
     // 			fields.push(`${listFixFieldName[index]}~!!!~text~!!!~required`);
@@ -1171,13 +1171,13 @@ const PopUpTicket = ({
     // 							: "un-required"
     // 					}`
     // 				);
-    // 				console.log(field, customFieldName.current.length);
+    // 				// console.log(field, customFieldName.current.length);
     // 			}
     // 		} catch (error) {
-    // 			console.log(error);
+    // 			// console.log(error);
     // 		}
     // 	});
-    // 	console.log(fields);
+    // 	// console.log(fields);
     // 	fnSetOrderForm(fields);
     // 	setLayoutCustomForm([]);
     // 	customFieldName.current = [];
@@ -1314,13 +1314,13 @@ const PopUpTicket = ({
           ? process.env.REACT_APP_BACKEND_URL + ticketSetup.globalSeatMap
           : URL.createObjectURL(ticketSetup.globalSeatMap)
       );
-      console.log(ticketSetup, maxLimitRsc.current.value, "ini ticket setup");
+      // console.log(ticketSetup, maxLimitRsc.current.value, "ini ticket setup");
     }
   }, [ticketSetup]);
 
   useEffect(() => {
     if (fixedField.current.length === 4) {
-      console.log("Reset field running");
+      // console.log("Reset field running");
       let customField = [];
       fixedField.current.forEach((field) => {
         field.checked = false;
@@ -1990,7 +1990,6 @@ const PopUpTicket = ({
                           : "d-none"
                       }`}
                     >
-                      {console.log("PRICE STATE", price)}
                       <InputLabeled
                         type={"currency"}
                         id={"price_in"}

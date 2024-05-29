@@ -18,7 +18,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -535,7 +535,6 @@ const Invitation = ({ isLogin, fnSetLogin = () => {} }) => {
       ) : (
         <></>
       )}
-      {/* {console.log(invitationsRcv, invitationsSdr)} */}
       <div className="content user">
         <div className={styles.DecorationBox}>
           <div className={styles.Decoration}></div>

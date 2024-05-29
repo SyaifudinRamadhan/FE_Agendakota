@@ -18,7 +18,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -83,7 +83,7 @@ const CardGroup = ({
 
   const openDetail = (trx) => {
     if (trx.payment.pay_state === "SUCCEEDED") {
-      console.log(trxDatas, "TRXDATAS");
+      // console.log(trxDatas, "TRXDATAS");
       fnSetPopUpContent(
         <PopUpTicketIn
           trx={trx}
@@ -126,7 +126,7 @@ const CardGroup = ({
     <div
       className={styles.TicketBox}
       // onClick={() => {
-      // 	console.log(trxData, "TRX DATA");
+      // 	// console.log(trxData, "TRX DATA");
       // 	openDetail(trxData);
       // }}
     >

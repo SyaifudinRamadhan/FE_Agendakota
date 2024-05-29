@@ -40,7 +40,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -463,14 +463,14 @@ const PopUpPsEventDetail = ({
     setLoading(true);
     downloadTicket({ pchId, token: appData.accessToken }).then((res) => {
       if (res.status === 200) {
-        console.log(res.data);
+        // console.log(res.data);
         // let url = window.URL.createObjectURL(
         // 	new Blob([res.data], { type: "application/pdf" })
         // );
         let url = window.URL.createObjectURL(
           new Blob([res.data], { type: "application/pdf" })
         );
-        console.log(url, new Blob([res.data], { type: "application/pdf" }));
+        // console.log(url, new Blob([res.data], { type: "application/pdf" }));
         let link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "agendakota_ticket.pdf");
@@ -495,7 +495,7 @@ const PopUpPsEventDetail = ({
   };
 
   const handleDownloadTicket2 = (pchData, paymentData) => {
-    console.log(paymentData, "PAY DATA");
+    // console.log(paymentData, "PAY DATA");
     let strDate = "";
     if (pchData.visit_date) {
       let visitDate = new Date(pchData.visit_date.visit_date);
@@ -781,11 +781,11 @@ const PopUpPsEventDetail = ({
 
       // htmlToImage.toCanvas(downloadContentRef.current).then((png) => {
       // 	// let imgData = canvas.toDataURL("image/png");
-      // 	// console.log(imgData, downloadContentRef.current);
+      // 	// // console.log(imgData, downloadContentRef.current);
       // 	// let pdf = new jsPDF();
       // 	// pdf.addImage(imgData, "PNG", 0, 0);
       // 	// pdf.save();
-      // 	console.log(png);
+      // 	// console.log(png);
       // 	setPopUpDownTcState({
       // 		state: false,
       // 		content: <></>,
@@ -839,7 +839,7 @@ const PopUpPsEventDetail = ({
       }).then((res) => {
         if (res.status === 200) {
           if (res.data.ticket.available_seat_numbers) {
-            // console.log(
+            // // console.log(
             // 	res.data.ticket.available_seat_numbers,
             // 	seatNumber,
             // 	"TEST FN CHECK AVL SEAT NUMBER"

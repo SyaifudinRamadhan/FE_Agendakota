@@ -41,7 +41,7 @@ const loginDefLoad = async ({ email, password }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -75,7 +75,7 @@ const loginGoogleLoad = async ({ email, credential }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -140,7 +140,7 @@ const Login = ({ isLogin }) => {
           ? window.location.href.split("org_id=")[1].split("&")[0]
           : null;
       if (invRedirect) {
-        console.log("LOGIN REDIRECT INVITATION");
+        // console.log("LOGIN REDIRECT INVITATION");
         navigate("/invitations");
       } else if (invTeamRedirect) {
         localStorage.setItem("active-org", invTeamRedirect);
@@ -153,7 +153,7 @@ const Login = ({ isLogin }) => {
         );
         navigate("/organizer/events");
       } else {
-        console.log("LOGIN REDIRECT HOME");
+        // console.log("LOGIN REDIRECT HOME");
         navigate("/");
       }
     } else {
@@ -211,7 +211,7 @@ const Login = ({ isLogin }) => {
     let encodedCredential = jwtEncode(data, process.env.REACT_APP_JWT_SECRET, {
       alg: process.env.REACT_APP_JWT_ALG,
     });
-    console.log(encodedCredential);
+    // console.log(encodedCredential);
     loginGoogleLoad({ email: data.email, credential: encodedCredential }).then(
       (res) => {
         if (res.status === 200) {
@@ -244,7 +244,7 @@ const Login = ({ isLogin }) => {
               ? window.location.href.split("org_id=")[1].split("&")[0]
               : null;
           if (invRedirect) {
-            console.log("LOGIN REDIRECT INVITATION");
+            // console.log("LOGIN REDIRECT INVITATION");
             navigate("/invitations");
           } else if (invTeamRedirect) {
             localStorage.setItem("active-org", invTeamRedirect);
@@ -257,7 +257,7 @@ const Login = ({ isLogin }) => {
             );
             navigate("/organizer/events");
           } else {
-            console.log("LOGIN REDIRECT HOME");
+            // console.log("LOGIN REDIRECT HOME");
             navigate("/");
           }
         } else {
@@ -301,7 +301,7 @@ const Login = ({ isLogin }) => {
           : null;
 
       if (isLogin && !customRedirect) {
-        console.log("RUN USE EFFECT LOGIN PAGE", isLogin, customRedirect);
+        // console.log("RUN USE EFFECT LOGIN PAGE", isLogin, customRedirect);
         navigate("/");
       }
       window.addEventListener("click", (e) => {

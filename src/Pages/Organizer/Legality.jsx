@@ -30,7 +30,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -278,7 +278,7 @@ const FormLayout = ({
     if (e) {
       e.preventDefault();
     }
-    console.log(fieldLegality.confirmTrue.current.value);
+    // console.log(fieldLegality.confirmTrue.current.value);
     if (
       !fieldLegality.npwpStr.current ||
       fieldLegality.npwpStr.current.value === "" ||
@@ -760,7 +760,7 @@ const OrganizerLegality = ({ organization, fnSetLogin, isLogin }) => {
       loadData({ orgId: appData.activeOrg, token: appData.accessToken }).then(
         (res) => {
           if (res.status === 200) {
-            console.log(res.data.data.legality_data);
+            // console.log(res.data.data.legality_data);
             setData(res.data.data.legality_data);
             setFirstLoad(false);
           } else if (res.status === 401) {

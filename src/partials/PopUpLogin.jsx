@@ -39,7 +39,7 @@ const loginDefLoad = async ({ email, password }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -81,7 +81,7 @@ const registerDefLoad = async ({ email, password, name }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -115,7 +115,7 @@ const loginGoogleLoad = async ({ email, credential }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -276,7 +276,7 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
     let encodedCredential = jwtEncode(data, process.env.REACT_APP_JWT_SECRET, {
       alg: process.env.REACT_APP_JWT_ALG,
     });
-    console.log(encodedCredential);
+    // console.log(encodedCredential);
     loginGoogleLoad({ email: data.email, credential: encodedCredential }).then(
       (res) => {
         if (res.status === 200) {
@@ -341,7 +341,7 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
         setInputFocus("confirm");
       } else {
         setInputFocus(null);
-        console.log(e.target);
+        // console.log(e.target);
       }
     });
   });
@@ -427,7 +427,6 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
                         : ""
                     }`}
                   >
-                    {console.log(inputFocus, "INPUT FOCUS")}
                     <div className={stylesLogin.FormFieldInput}>
                       <label
                         className={stylesLogin.TitleInput}

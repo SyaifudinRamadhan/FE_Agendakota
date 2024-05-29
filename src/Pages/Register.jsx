@@ -49,7 +49,7 @@ const regDefLoad = async ({ email, name, password }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -83,7 +83,7 @@ const loginGoogleLoad = async ({ email, credential }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -188,7 +188,7 @@ const Register = ({ isLogin }) => {
     let encodedCredential = jwtEncode(data, process.env.REACT_APP_JWT_SECRET, {
       alg: process.env.REACT_APP_JWT_ALG,
     });
-    console.log(encodedCredential);
+    // console.log(encodedCredential);
     loginGoogleLoad({ email: data.email, credential: encodedCredential }).then(
       (res) => {
         if (res.status === 200) {

@@ -74,10 +74,6 @@ const loadUpdate = async ({
   phone,
   token,
 }) => {
-  console.log({
-    photo: photo.files.length === 0 ? undefined : photo.files[0],
-    banner: banner.files.length === 0 ? undefined : banner.files[0],
-  });
   try {
     let res = await axios.post(
       process.env.REACT_APP_BACKEND_URL + "/api/org/update-org",
@@ -108,7 +104,7 @@ const loadUpdate = async ({
     );
     return handleSuccess(res);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return handleError(error);
   }
 };
@@ -125,7 +121,7 @@ const loadCategories = async () => {
     );
     return handleSuccess(res);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return handleError(error);
   }
 };
@@ -249,41 +245,6 @@ const OrganizerSettings = ({ organization, loginState, fnSetLogin }) => {
       }, 3000);
     } else {
       setLoading(true);
-      console.log(
-        fieldProfile.name.current.value,
-        fieldProfile.email.current.value,
-        fieldProfile.interest.current
-          .getValue()
-          .map((val) => val.value)
-          .join("^~!@!~^"),
-        fieldProfile.type.current
-          .getValue()
-          .map((val) => val.value)
-          .join("^~!@!~^"),
-        fieldProfile.phone.current.value,
-        fieldProfile.linkedin.current.value === "" ||
-          fieldProfile.linkedin.current.value.split("linkedin.com/in/").length <
-            2
-          ? "-"
-          : "https://linkedin.com/in/" +
-              fieldProfile.linkedin.current.value.split("linkedin.com/in/")[1],
-        fieldProfile.twitter.current.value === "" ||
-          fieldProfile.twitter.current.value.split("x.com/").length < 2
-          ? "-"
-          : "https://x.com/" +
-              fieldProfile.twitter.current.value.split("x.com/")[1],
-        fieldProfile.website.current.value === "" ||
-          fieldProfile.website.current.value.split("https://").length < 2
-          ? fieldProfile.website.current.value === ""
-            ? "-"
-            : "https://" + fieldProfile.website.current.value
-          : fieldProfile.website.current.value,
-        fieldProfile.whatsapp.current.value,
-        fieldProfile.photo.current.files,
-        fieldProfile.banner.current.files,
-        desc,
-        orgSelected
-      );
       loadUpdate({
         org_id: orgSelected,
         type: fieldProfile.type.current

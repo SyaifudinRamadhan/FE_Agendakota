@@ -21,7 +21,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -275,7 +275,7 @@ const PersonalEvent = ({
             {viewing === "Upcoming"
               ? upcoming &&
                 Object.values(upcoming).map((evtGroup, e) => {
-                  console.log(evtGroup, e, "LOG VIEWING");
+                  // console.log(evtGroup, e, "LOG VIEWING");
                   return (
                     <Event
                       data={evtGroup[0].ticket.event}
@@ -313,7 +313,7 @@ const PersonalEvent = ({
                 ))
               : finished &&
                 Object.values(finished).map((evtGroup, e) => {
-                  console.log(evtGroup, e, "LOG VIEWING");
+                  // console.log(evtGroup, e, "LOG VIEWING");
                   return (
                     <Event
                       data={evtGroup[0].ticket.event}

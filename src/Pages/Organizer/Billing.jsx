@@ -39,7 +39,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -903,7 +903,7 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
         (avl) => avl.event.id === selectedEvent.value
       );
       setDataTable(data);
-      console.log("reload data table");
+      // console.log("reload data table");
     }
   }, [selectedEvent]);
 
@@ -935,7 +935,7 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
           }
         }
       );
-      console.log("reload data event & wd");
+      // console.log("reload data event & wd");
     }
   }, [wds]);
 
@@ -1044,7 +1044,7 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
         handleAddBankRq();
       }
       setFirstLoad(false);
-      console.log("set select event wd");
+      // console.log("set select event wd");
     }
   }, [events, availableWds, banks, banksName, wds]);
 
@@ -1151,7 +1151,6 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
                         Total penghasilan tersedia :{" "}
                       </h5>
                       <div className={styles2.TotalAmount}>
-                        {console.log("AVL WDS", availableWds.total_amount)}
                         Rp. {numberFormat.format(availableWds.total_amount)}
                         ,00
                       </div>

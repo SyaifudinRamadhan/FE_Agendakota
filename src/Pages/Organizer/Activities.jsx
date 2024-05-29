@@ -20,7 +20,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -104,7 +104,7 @@ const OrganizerActivities = ({ organization, fnSetLogin }) => {
         let start = new Date(evt.event.start_date + "T" + evt.event.start_time);
         let end = new Date(evt.event.end_date + "T" + evt.event.end_time);
         if (evt.event.id === "9b5cacee-4bfb-42ed-8140-96d2b90b2bb2") {
-          console.log(now, start, end, now >= start && now <= end, "NOW START");
+          // console.log(now, start, end, now >= start && now <= end, "NOW START");
         }
         if (evt.event.is_publish === 1) {
           drafts.push({

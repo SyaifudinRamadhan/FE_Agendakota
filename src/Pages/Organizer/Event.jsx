@@ -20,7 +20,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -89,7 +89,7 @@ const OrganizerEvent = ({ organization, fnSetLogin }) => {
           }
         }
       );
-      console.log("reset events data");
+      // console.log("reset events data");
     }
   }, [appData]);
 
@@ -211,7 +211,6 @@ const OrganizerEvent = ({ organization, fnSetLogin }) => {
                 )}
                 {happeningEvents.length > 0 && (
                   <div id="Happening">
-                    {console.log(happeningEvents)}
                     <h4 style={{ marginTop: 20 }}>Happening</h4>
                     <div className={styles.Inline} style={{ marginTop: 20 }}>
                       {happeningEvents.map((event, e) => (

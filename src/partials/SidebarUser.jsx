@@ -61,7 +61,7 @@ const SidebarUser = ({
   useEffect(() => {
     window.addEventListener("resize", () => {
       setWidth(window.innerWidth);
-      // console.log(window.innerWidth);
+      // // console.log(window.innerWidth);
     });
   });
 
@@ -74,7 +74,6 @@ const SidebarUser = ({
         setOrganizers={setOrganizers}
         setLogin={setLogin}
       />
-      {console.log(active, "ACTIVE PATH")}
       {width > 992 && show ? (
         <div id="sidebar" className={styles.Sidebar}>
           <img

@@ -21,10 +21,10 @@ const Chip = ({
     <div className={styles.Container} style={containerStyle}>
       {options.map((option, o) => {
         let vals = multiple ? [...value] : value;
-        console.log(option, "CHIP OPTION LOOP");
+        // console.log(option, "CHIP OPTION LOOP");
         let i = vals.indexOf(option);
         let isActive = multiple ? i >= 0 : value === option;
-        // console.log(index);
+        // // console.log(index);
         if (showLimit === null || index < showLimit) {
           index++;
           return (

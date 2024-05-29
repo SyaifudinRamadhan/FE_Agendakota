@@ -108,18 +108,18 @@ const Header = ({
 
   useEffect(() => {
     hideProfileMenuAuto({ setProfileActive: setProfileActive });
-    console.log("MASUK PAGE HEADER");
+    // console.log("MASUK PAGE HEADER");
   });
 
   // single load
   useEffect(() => {
     if (show === true) {
-      console.log("load is login baasic", loopLoad);
+      // console.log("load is login baasic", loopLoad);
       isLoginLoad(appData.accessToken).then((res) => {
         if (res.status === 200) {
           setLogin(true);
           setUserData(res.data);
-          console.log(res, loopLoad);
+          // console.log(res, loopLoad);
         }
       });
       // loopLoad++;

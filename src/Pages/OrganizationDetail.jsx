@@ -24,7 +24,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -104,10 +104,10 @@ const OrganizationDetail = () => {
             let end = new Date(event.end_date + "T" + event.end_time);
             if (end < now && event.visibility == 1) {
               endeds.push(event);
-              console.log("ENDED");
+              // console.log("ENDED");
             } else if (event.is_publish == 2 && event.visibility == 1) {
               upcomings.push(event);
-              console.log("UPCOMING");
+              // console.log("UPCOMING");
             }
           });
           setUpcomings(upcomings);
@@ -164,7 +164,7 @@ const OrganizationDetail = () => {
             <div
               className={styles.BoxBanner}
               style={{
-                backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL}${organization.banner})`,
+                backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${organization.banner}")`,
               }}
             ></div>
             <div className={styles.ProfileContent}>

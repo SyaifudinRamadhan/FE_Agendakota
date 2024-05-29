@@ -37,7 +37,7 @@ const mainGetRequest = async ({ path = "" }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },

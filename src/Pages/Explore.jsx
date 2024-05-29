@@ -30,7 +30,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -156,7 +156,7 @@ const Explore = () => {
   const [showData, setShowData] = useState(6);
 
   const validateSelectInterval = (e) => {
-    console.log(e.length, selectedInterval, "SELECTED DATE");
+    // console.log(e.length, selectedInterval, "SELECTED DATE");
     if (e.length <= 2) {
       setSelectedInterval(e);
     } else if (e.length > 2) {
@@ -289,7 +289,7 @@ const Explore = () => {
   useEffect(() => {
     if (selectedBasicTime !== "") {
       setSelectedInterval([]);
-      console.log(selectedBasicTime, "SELECTED BASIC TIME");
+      // console.log(selectedBasicTime, "SELECTED BASIC TIME");
       if (selectedBasicTime === "Minggu Ini") {
         let start = new Date();
         let until = new Date(
@@ -371,16 +371,6 @@ const Explore = () => {
 
   useEffect(() => {
     if (events) {
-      console.log(
-        "USE EFFECT LOAD EVENTS ",
-        queryParam,
-        // inputCity.current.value,
-        selectedCity,
-        selectedCategories,
-        selectedTopics,
-        fixInterval,
-        selectedPrice
-      );
       handleFilter(
         queryParam,
         // inputCity.current.value,
@@ -419,11 +409,6 @@ const Explore = () => {
                 ...topicsEvt,
                 ...Object.values(res.data.topics).flat(),
               ]);
-              console.log(
-                res.data.topics,
-                ...Object.values(res.data.topics).flat(),
-                topicsEvt
-              );
             } else {
               setErrorState(true);
             }
@@ -505,7 +490,7 @@ const Explore = () => {
             : topicParam
             ? `?topic[]=${topicParam}&&topic_delimiter=~!^!~`
             : null;
-        console.log(strParams, "STR PARAMS");
+        // console.log(strParams, "STR PARAMS");
         setSelectedCategories(catParam ? [catParam] : []);
         setSelectedTopics(topicParam ? [topicParam] : []);
         setSelectedCity(cityParam ? cityParam : "");
@@ -722,12 +707,7 @@ const Explore = () => {
                         className={styles.FieldDropDownIcon}
                       />
                     </FieldBox>
-                    {console.log(
-                      categories && categories.length > 0
-                        ? categories.map((cat) => cat.name.toLowerCase())
-                        : [],
-                      selectedCategories
-                    )}
+
                     {openListCat ? (
                       <div className={styles.BoxChipSelector}>
                         <Chip

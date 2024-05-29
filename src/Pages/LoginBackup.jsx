@@ -225,7 +225,7 @@ const Login = () => {
   // 	}
   // };
   const handleLoginGoogle = (credentialData) => {
-    console.log(credentialData);
+    // console.log(credentialData);
     setLoading(true);
     dummyLoad().then((res) => {
       if (res) {

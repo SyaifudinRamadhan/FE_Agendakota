@@ -36,13 +36,13 @@ import Blank from "../Pages/Blank";
 const changeFitSidebarContent = () => {
   let errState = false;
   do {
-    // console.log("SIDEBAR OFFSET CHANGED");
+    // // console.log("SIDEBAR OFFSET CHANGED");
     try {
       let content = document.getElementsByClassName("content")[0];
       let sidebar = document.getElementById("sidebar");
-      console.log("CHANGE FIT SIDEBAR", sidebar);
+      // console.log("CHANGE FIT SIDEBAR", sidebar);
       if (sidebar) {
-        // console.log(
+        // // console.log(
         //   sidebar.offsetWidth,
         //   content.offsetLeft,
         //   " log offset sidebar"
@@ -72,7 +72,7 @@ const loadOrganizers = async ({ token }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -104,7 +104,7 @@ const isLoginLoad = async ({ accessToken }) => {
       status: res.status,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response === undefined) {
       return {
         data: { data: [error.message] },
@@ -205,7 +205,7 @@ const WebFrame = () => {
       window.location.pathname !== "/register-user"
     ) {
       loadOrganizers({ token: appData.accessToken }).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status === 200) {
           setOrganizers(res.data.organizations);
           setTimeout(() => {
@@ -230,7 +230,7 @@ const WebFrame = () => {
   }, [isLogin, appData]);
 
   // useEffect(() => {
-  //   console.log("USE EFFECT SET LOGIN STATE RUNNING IN FRAME", firstLoad);
+  //   // console.log("USE EFFECT SET LOGIN STATE RUNNING IN FRAME", firstLoad);
   //   if (isLogin === null && appData.accessToken && firstLoad) {
   //     setFirstLoad(false);
   //     isLoginLoad({ accessToken: appData.accessToken }).then((res) => {
@@ -246,7 +246,6 @@ const WebFrame = () => {
 
   return (
     <>
-      {console.log(typeRouter, "WEB FRAME TYPE ROUTER")}
       {typeRouter === "basic" ? (
         <Header
           isLogin={isLogin}

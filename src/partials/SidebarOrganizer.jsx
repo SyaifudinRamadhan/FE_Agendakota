@@ -67,7 +67,7 @@ const SidebarOrganizer = ({
   useEffect(() => {
     if (organizers && organizers.length !== 0) {
       let selected = organizers.find((data) => data.id === appData.activeOrg);
-      console.log("use effect selecct org sidebar");
+      // console.log("use effect selecct org sidebar");
       if (selected) {
         setOrgSelected({
           label: selected.name,
@@ -83,10 +83,10 @@ const SidebarOrganizer = ({
         navigate("/events");
       }
     } else if (organizers && organizers.length === 0 && !waitOrganizerData) {
-      console.log("FORCED NAVIGATE", waitOrganizerData);
+      // console.log("FORCED NAVIGATE", waitOrganizerData);
       navigate("/events");
     }
-    console.log("waitOrganizerData", waitOrganizerData, organizers, appData);
+    // console.log("waitOrganizerData", waitOrganizerData, organizers, appData);
   }, [appData, organizers, waitOrganizerData]);
 
   return (
@@ -95,7 +95,6 @@ const SidebarOrganizer = ({
       setLogin={setLogin}
       setOrganizers={setOrganizers}
     >
-      {/* {console.log(orgSelected)} */}
       <Select
         className={styles2.SelectMenu}
         options={

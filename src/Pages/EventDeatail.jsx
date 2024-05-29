@@ -215,7 +215,7 @@ const handleSuccess = (res) => {
 };
 
 const handleError = (error) => {
-  console.log(error);
+  // console.log(error);
   if (error.response === undefined) {
     return {
       data: { data: [error.message] },
@@ -350,7 +350,7 @@ const EventDetail = ({ isLogin }) => {
   };
 
   const handleSelectDateView = (id, e) => {
-    console.log(e);
+    // console.log(e);
     let temp = ticketsViewData[id].visitDates;
     ticketsViewData[id].visitDates = {};
     e.forEach((dateObj) => {
@@ -488,7 +488,7 @@ const EventDetail = ({ isLogin }) => {
   };
 
   const handleSelectDateCart = (id, e) => {
-    console.log(e);
+    // console.log(e);
     if (
       cartData[id].visitDate.format() !== e.format() &&
       !cartData.find(
@@ -533,12 +533,12 @@ const EventDetail = ({ isLogin }) => {
   };
 
   const handleAddCountCart = (id, type) => {
-    console.log(
-      cartData[id],
-      cartData[id].data.max_purchase,
-      cartData[id].data.quantity,
-      cartData[id].count
-    );
+    // console.log(
+    //   cartData[id],
+    //   cartData[id].data.max_purchase,
+    //   cartData[id].data.quantity,
+    //   cartData[id].count
+    // );
     if (
       type == 1 &&
       cartData[id].count < parseInt(cartData[id].data.quantity) &&
@@ -773,7 +773,6 @@ const EventDetail = ({ isLogin }) => {
 
   return (
     <div className="content">
-      {console.log(cartData)}
       {popUpTrx ? (
         <PopUpTrxFront
           fnSetActive={setPopUpTrx}
