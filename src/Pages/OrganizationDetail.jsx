@@ -178,9 +178,14 @@ const OrganizationDetail = () => {
                     <div className={`${styles.TitleBox} ${styles.OrgName}`}>
                       {organization.name}
                     </div>
-                    <div>
-                      <img src="/images/verify.png" alt="" />
-                    </div>
+                    {organization.legality &&
+                    organization.legality.status == 1 ? (
+                      <div>
+                        <img src="/images/verify.png" alt="" />
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                   <div
                     className={styles.SecondaryText}
