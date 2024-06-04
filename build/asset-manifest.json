@@ -1,0 +1,40 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1e4a01e3.css",
+    "main.js": "/static/js/main.abc04863.js",
+    "static/js/498.850549ec.chunk.js": "/static/js/498.850549ec.chunk.js",
+    "static/js/703.7608887f.chunk.js": "/static/js/703.7608887f.chunk.js",
+    "static/js/513.4d4d06c3.chunk.js": "/static/js/513.4d4d06c3.chunk.js",
+    "static/js/787.e4f6a8ed.chunk.js": "/static/js/787.e4f6a8ed.chunk.js",
+    "static/media/png": "/static/media/f7a5377b9b4ce2366a8b4bd6ca4c291a.25273a441184cf564fb4.png",
+    "static/media/JumboBackground.png": "/static/media/JumboBackground.fb3a8a888a402b2b98f9.png",
+    "static/media/scanner-beep.mp3": "/static/media/scanner-beep.31230d8a06fefd7166d6.mp3",
+    "static/media/seminar.svg": "/static/media/seminar.03790464d65d260ef412c5e300589eb1.svg",
+    "static/media/festival.svg": "/static/media/festival.ab79a66ca9f32c1c2caa6abe4602abc7.svg",
+    "static/media/conference.svg": "/static/media/conference.a12c28f6e80fc0fb8d2a88991fe7192e.svg",
+    "static/media/workshop.svg": "/static/media/workshop.ce0180fa2f1489c3055025c53c092295.svg",
+    "static/media/other.svg": "/static/media/other.a7576f8af5624ed8f95d790186832c40.svg",
+    "static/media/exhibition.svg": "/static/media/exhibition.8474ec0e4342ec0a62fac85ed569f733.svg",
+    "static/media/attraction.svg": "/static/media/attraction.3ba5ab32ee5d220e1c0a93fada3c10b5.svg",
+    "static/media/show_performance.svg": "/static/media/show_performance.117e5e80ccde3f1b23a7e65295a7bb13.svg",
+    "static/media/competition.svg": "/static/media/competition.4dbbd5cca74a2443d396ce7e670a1e13.svg",
+    "static/media/meetup.svg": "/static/media/meetup.da68ea815d978ce3f511e592721e7721.svg",
+    "static/media/concert.svg": "/static/media/concert.ac8b5b63d9ffb3a85127bcf91b963de4.svg",
+    "static/media/accomodation.svg": "/static/media/accomodation.05cc64a475484f3e2f86c02270c9ed31.svg",
+    "static/media/Chat.svg": "/static/media/Chat.e07b4493693bb2fe2e7093c62b9f93fb.svg",
+    "static/media/People.svg": "/static/media/People.69849806e39b017569806c66794f91cb.svg",
+    "index.html": "/index.html",
+    "static/media/Calendar.svg": "/static/media/Calendar.aa35284f3721334184f1811bcf189cb9.svg",
+    "static/media/Ticket.svg": "/static/media/Ticket.90b73959ff7b88a2bce8ee253ac93acd.svg",
+    "main.1e4a01e3.css.map": "/static/css/main.1e4a01e3.css.map",
+    "main.abc04863.js.map": "/static/js/main.abc04863.js.map",
+    "498.850549ec.chunk.js.map": "/static/js/498.850549ec.chunk.js.map",
+    "703.7608887f.chunk.js.map": "/static/js/703.7608887f.chunk.js.map",
+    "513.4d4d06c3.chunk.js.map": "/static/js/513.4d4d06c3.chunk.js.map",
+    "787.e4f6a8ed.chunk.js.map": "/static/js/787.e4f6a8ed.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1e4a01e3.css",
+    "static/js/main.abc04863.js"
+  ]
+}
