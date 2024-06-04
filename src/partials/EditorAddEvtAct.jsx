@@ -17,6 +17,7 @@ import {
   BiMapPin,
   BiNews,
   BiPlusCircle,
+  BiQuestionMark,
   BiSitemap,
   BiSolidCity,
   BiTrash,
@@ -156,6 +157,38 @@ const addData = async ({
 }) => {
   try {
     // console.log("start - ", daily_limit_times, daily_start_times);
+    let finalStartEvent = new Date(start_date + "T" + start_time);
+    let finalEndEvent = new Date(end_date + "T" + end_time);
+    let originDistance = finalEndEvent.getTime() - finalStartEvent.getTime();
+    if (originDistance < 3600000) {
+      originDistance = 3600000;
+    }
+    if (new Date() >= finalStartEvent) {
+      finalStartEvent = new Date().setMinutes(
+        new Date().getMinutes() + 5,
+        0,
+        0
+      );
+      let iso = new Date(
+        finalStartEvent -
+          new Date(finalStartEvent).getTimezoneOffset() * 1000 * 60
+      )
+        .toISOString()
+        .split(":00.")[0];
+      start_date = iso.split("T")[0];
+      start_time = iso.split("T")[1];
+    }
+    if (finalEndEvent - finalStartEvent < 3600000) {
+      finalEndEvent = new Date(finalStartEvent);
+      finalEndEvent.setTime(finalEndEvent.getTime() + originDistance);
+      let iso = new Date(
+        finalEndEvent - new Date(finalEndEvent).getTimezoneOffset() * 1000 * 60
+      )
+        .toISOString()
+        .split(":00.")[0];
+      end_date = iso.split("T")[0];
+      end_time = iso.split("T")[1];
+    }
     let res = await axios.post(
       process.env.REACT_APP_BACKEND_URL + "/api/org/" + orgId + "/event/create",
       {
@@ -205,6 +238,7 @@ const addData = async ({
     );
     return handleSuccess(res);
   } catch (error) {
+    // console.log(error);
     return handleError(error);
   }
 };
@@ -393,6 +427,40 @@ const loadDetail = async ({ orgId, eventId, token }) => {
   }
 };
 
+const ConfirmContent = ({
+  fnHandleOk = () => {},
+  fnHandleCancel = () => {},
+  content = "",
+}) => {
+  return (
+    <div className={styles.AlertBox}>
+      <BiQuestionMark
+        style={{
+          color: "#ca0c64",
+        }}
+      />
+      <div>{content}</div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          margin: "auto",
+          gap: "10px",
+        }}
+      >
+        <Button
+          bgColor={"#fff"}
+          textColor={"#ca0c64"}
+          borderColor={"#ca0c64"}
+          title={"Batal"}
+          fnOnClick={fnHandleCancel}
+        />
+        <Button title={"Ok"} fnOnClick={fnHandleOk} />
+      </div>
+    </div>
+  );
+};
+
 const EditorAddEvtAct = ({
   selectedOrgId,
   forEvtAct,
@@ -415,6 +483,12 @@ const EditorAddEvtAct = ({
     type: "",
     content: "",
   });
+  const [alertConfirm, setAlertConfirm] = useState({
+    state: false,
+    content: <></>,
+    fnHandleOk: () => {},
+    fnHandleCancel: () => {},
+  });
   const [loading, setLoading] = useState(true);
   const [errorLoad, setErrorState] = useState(false);
   const [eventData, setEventData] = useState(null);
@@ -428,8 +502,24 @@ const EditorAddEvtAct = ({
   // const [actionInFrontType, setActionInFrontType] = useState(null);
   const [openOrganizerWindow, setOrganizerWindowState] = useState(false);
   const [finalDataFrontType, setFinalDataFrontType] = useState(null);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [startEvent, setStartEvent] = useState(undefined);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // ================= State Control =======================
+  const [blankTitle, setBlankTitle] = useState(false);
+  const [blankStart, setBlankStart] = useState(false);
+  const [blankEnd, setBlankEnd] = useState(false);
+  const [blankVisibility, setBlankVs] = useState(false);
+  const [blankCat, setBlankCat] = useState(false);
+  const [blankTopic, setBlankTopic] = useState(false);
+  const [blankCitu, setBlankCity] = useState(false);
+  const [blankProv, setBlankProv] = useState(false);
+  const [blankAddres, setBlankAddress] = useState(false);
+  const [blankSnk, setBlankSnk] = useState(false);
+  const [blankDesc, setBlankDesc] = useState(false);
+  // =======================================================
 
   // ***************** form data ****************************
   const title = useRef();
@@ -544,11 +634,63 @@ const EditorAddEvtAct = ({
           category === "" ||
           category === null))
     ) {
+      let content =
+        "Semua field kecuali ticket dan opsi waktu operasional wajib diisi";
+      if (title.current.value === "") {
+        setBlankTitle(true);
+      }
+      if (!eventId && inputCover.current.files.length === 0) {
+        content = "Cover / Gambar Event / Aktivitas wajib diisi";
+      }
+      if (visbibilty === "" || visbibilty === null) {
+        setBlankVs(true);
+      }
+      if (topic.length === 0) {
+        setBlankTopic(true);
+      }
+      if (city === "" || city === null) {
+        setBlankCity(true);
+      }
+      if (province === "" || province === null) {
+        setBlankProv(true);
+      }
+      if (address === "") {
+        setBlankAddress(true);
+      }
+      if (snk === "") {
+        setBlankSnk(true);
+      }
+      if (desc === "") {
+        setBlankDesc(true);
+      }
+      if (
+        (forEvtAct === "Onsite Event" ||
+          forEvtAct === "Online Event" ||
+          forEvtAct === "Hybrid Event") &&
+        startDate.current.value === ""
+      ) {
+        setBlankStart(true);
+      }
+      if (
+        (forEvtAct === "Onsite Event" ||
+          forEvtAct === "Online Event" ||
+          forEvtAct === "Hybrid Event") &&
+        endDate.current.value === ""
+      ) {
+        setBlankEnd(true);
+      }
+      if (
+        (forEvtAct === "Onsite Event" ||
+          forEvtAct === "Online Event" ||
+          forEvtAct === "Hybrid Event") &&
+        (category === "" || category === null)
+      ) {
+        setBlankCat(true);
+      }
       setAlert({
         state: true,
         type: "danger",
-        content:
-          "Semua field kecuali ticket dan opsi waktu operasional wajib diisi",
+        content: content,
       });
       resetAlert(3000);
       return false;
@@ -560,6 +702,8 @@ const EditorAddEvtAct = ({
       (new Date(startDate.current.value) >= new Date(endDate.current.value) ||
         new Date() > new Date(startDate.current.value))
     ) {
+      setBlankStart(true);
+      setBlankEnd(true);
       setAlert({
         state: true,
         type: "danger",
@@ -1590,6 +1734,13 @@ const EditorAddEvtAct = ({
     }
   };
 
+  const selectedSTartEvent = (e) => {
+    setStartEvent(e.target.value);
+    if (new Date(e.target.value) > new Date(endDate.current.value)) {
+      endDate.current.value = "";
+    }
+  };
+
   // const handleSetPublish = (eventId) => {
   // 	setLoading(true);
   // 	setInteruptProcess(null);
@@ -1816,6 +1967,15 @@ const EditorAddEvtAct = ({
     }
   }, [province]);
 
+  useEffect(() => {
+    if (!firtsLoad) {
+      window.addEventListener("resize", () => {
+        setWindowWidth(window.innerWidth);
+      });
+      setFirstLoad(true);
+    }
+  }, [firtsLoad]);
+
   return (
     <>
       {openOrganizerWindow && typeEditor != "inner" ? (
@@ -1889,14 +2049,24 @@ const EditorAddEvtAct = ({
                 style={{ gap: 10 }}
               >
                 <div>
-                  <label className={styles.BasicLabel}>Kategori *</label>
+                  <label
+                    className={styles.BasicLabel}
+                    style={{ color: blankCat ? "red" : "#000" }}
+                  >
+                    Kategori *
+                  </label>
                   {forEvtAct === "Onsite Event" ||
                   forEvtAct === "Online Event" ||
                   forEvtAct === "Hybrid Event" ? (
                     <Select
                       options={categories ? categories : []}
-                      className="basic-multi-select"
+                      className={`basic-multi-select ${
+                        blankCat ? styles.DangerInput : ""
+                      }`}
                       placeholder="Pilih Kaegori Eventmu"
+                      onMenuOpen={() => {
+                        setBlankCat(false);
+                      }}
                       styles={{
                         option: (basicStyle, state) => ({
                           ...basicStyle,
@@ -1930,12 +2100,22 @@ const EditorAddEvtAct = ({
                   )}
                 </div>
                 <div>
-                  <label className={styles.BasicLabel}>Topik *</label>
+                  <label
+                    className={styles.BasicLabel}
+                    style={{ color: blankTopic ? "red" : "#000" }}
+                  >
+                    Topik *
+                  </label>
                   <Select
                     isMulti={true}
                     options={topics ? topics : []}
                     isOptionDisabled={() => topic.length >= 3}
-                    className="basic-multi-select"
+                    className={`basic-multi-select ${
+                      blankTopic ? styles.DangerInput : ""
+                    }`}
+                    onMenuOpen={() => {
+                      setBlankTopic(false);
+                    }}
                     placeholder="Pilih Topik / Sub Kategori"
                     styles={{
                       option: (basicStyle, state) => ({
@@ -1970,123 +2150,14 @@ const EditorAddEvtAct = ({
                   titlePopUp === "Syarat dan Ketentuan" ? "" : "d-none"
                 }`}
               >
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={snk}
-                  onChange={(event, editor) => {
-                    setSnk(editor.getData());
-                  }}
-                  config={{
-                    toolbar: [
-                      "heading",
-                      "|",
-                      "bold",
-                      "italic",
-                      "link",
-                      "bulletedList",
-                      "numberedList",
-                      "blockQuote",
-                    ],
-                    heading: {
-                      options: [
-                        {
-                          model: "paragraph",
-                          title: "Paragraph",
-                          class: "ck-heading_paragraph",
-                        },
-                        {
-                          model: "heading1",
-                          view: "h1",
-                          title: "Heading 1",
-                          class: "ck-heading_heading1",
-                        },
-                        {
-                          model: "heading2",
-                          view: "h2",
-                          title: "Heading 2",
-                          class: "ck-heading_heading2",
-                        },
-                      ],
-                    },
-                  }}
-                />
-              </div>
-
-              <div
-                className={`${titlePopUp === "Lokasi Event" ? "" : "d-none"}`}
-                style={{ gap: 10 }}
-              >
-                <div>
-                  <label className={styles.BasicLabel} htmlFor="province">
-                    Provinsi *
-                  </label>
-                  <Select
-                    options={provinces ? provinces : []}
-                    className="basic-multi-select"
-                    placeholder={"Provinsi"}
-                    styles={{
-                      option: (basicStyle, state) => ({
-                        ...basicStyle,
-                        backgroundColor: state.isFocused ? "#fecadf" : "white",
-                      }),
-                      control: (basicStyle, state) => ({
-                        ...basicStyle,
-                        // width: "100%",
-                        // textAlign: "left",
-                        // margin: "unset",
-                        display: "flex",
-                        flexDirection: "row",
-                      }),
-                      container: (basicStyle, state) => ({
-                        ...basicStyle,
-                        width: "100%",
-                        margin: "unset",
-                        borderRadius: "8px",
-                      }),
-                    }}
-                    onChange={(e) => setDefProvince(e)}
-                    value={province}
-                  />
-                </div>
-                <div>
-                  <label className={styles.BasicLabel} htmlFor="city">
-                    Kota *
-                  </label>
-                  <Select
-                    options={cities ? cities : []}
-                    className="basic-multi-select"
-                    placeholder={"Kota pelaksanaan"}
-                    styles={{
-                      option: (basicStyle, state) => ({
-                        ...basicStyle,
-                        backgroundColor: state.isFocused ? "#fecadf" : "white",
-                      }),
-                      control: (basicStyle, state) => ({
-                        ...basicStyle,
-                        // width: "100%",
-                        // textAlign: "left",
-                        // margin: "unset",
-                        display: "flex",
-                        flexDirection: "row",
-                      }),
-                      container: (basicStyle, state) => ({
-                        ...basicStyle,
-                        width: "100%",
-                        margin: "unset",
-                        borderRadius: "8px",
-                      }),
-                    }}
-                    onChange={(e) => setDefCity(e)}
-                    value={city}
-                  />
-                </div>
-                <div>
-                  <label className={styles.BasicLabel} htmlFor="address">
-                    Alamat Lengkap *
-                  </label>
+                <div className={blankSnk ? styles.DangerInput : ""}>
                   <CKEditor
                     editor={ClassicEditor}
-                    data={address}
+                    data={snk}
+                    onChange={(event, editor) => {
+                      setSnk(editor.getData());
+                      setBlankSnk(false);
+                    }}
                     config={{
                       toolbar: [
                         "heading",
@@ -2120,10 +2191,151 @@ const EditorAddEvtAct = ({
                         ],
                       },
                     }}
-                    onChange={(e, editor) => {
-                      setAddress(editor.getData());
-                    }}
                   />
+                </div>
+              </div>
+
+              <div
+                className={`${titlePopUp === "Lokasi Event" ? "" : "d-none"}`}
+                style={{ gap: 10 }}
+              >
+                <div>
+                  <label
+                    className={styles.BasicLabel}
+                    htmlFor="province"
+                    style={{ color: blankProv ? "red" : "#000" }}
+                  >
+                    Provinsi *
+                  </label>
+                  <Select
+                    options={provinces ? provinces : []}
+                    className={`basic-multi-select ${
+                      blankProv ? styles.DangerInput : ""
+                    }`}
+                    placeholder={"Provinsi"}
+                    styles={{
+                      option: (basicStyle, state) => ({
+                        ...basicStyle,
+                        backgroundColor: state.isFocused ? "#fecadf" : "white",
+                      }),
+                      control: (basicStyle, state) => ({
+                        ...basicStyle,
+                        // width: "100%",
+                        // textAlign: "left",
+                        // margin: "unset",
+                        display: "flex",
+                        flexDirection: "row",
+                      }),
+                      container: (basicStyle, state) => ({
+                        ...basicStyle,
+                        width: "100%",
+                        margin: "unset",
+                        borderRadius: "8px",
+                      }),
+                    }}
+                    onChange={(e) => {
+                      setDefProvince(e);
+                    }}
+                    onMenuOpen={() => {
+                      setBlankProv(false);
+                    }}
+                    value={province}
+                  />
+                </div>
+                <div>
+                  <label
+                    className={styles.BasicLabel}
+                    htmlFor="city"
+                    style={{ color: blankCitu ? "red" : "#000" }}
+                  >
+                    Kota *
+                  </label>
+                  <Select
+                    options={cities ? cities : []}
+                    className={`basic-multi-select ${
+                      blankCitu ? styles.DangerInput : ""
+                    }`}
+                    placeholder={"Kota pelaksanaan"}
+                    styles={{
+                      option: (basicStyle, state) => ({
+                        ...basicStyle,
+                        backgroundColor: state.isFocused ? "#fecadf" : "white",
+                      }),
+                      control: (basicStyle, state) => ({
+                        ...basicStyle,
+                        // width: "100%",
+                        // textAlign: "left",
+                        // margin: "unset",
+                        display: "flex",
+                        flexDirection: "row",
+                      }),
+                      container: (basicStyle, state) => ({
+                        ...basicStyle,
+                        width: "100%",
+                        margin: "unset",
+                        borderRadius: "8px",
+                      }),
+                    }}
+                    onChange={(e) => {
+                      setDefCity(e);
+                    }}
+                    onMenuOpen={() => {
+                      setBlankCity(false);
+                    }}
+                    value={city}
+                  />
+                </div>
+                <div>
+                  <label
+                    className={styles.BasicLabel}
+                    htmlFor="address"
+                    style={{ color: blankAddres ? "red" : "#000" }}
+                  >
+                    Alamat Lengkap *
+                  </label>
+                  <div className={blankAddres ? styles.DangerInput : ""}>
+                    <CKEditor
+                      editor={ClassicEditor}
+                      data={address}
+                      config={{
+                        toolbar: [
+                          "heading",
+                          "|",
+                          "bold",
+                          "italic",
+                          "link",
+                          "bulletedList",
+                          "numberedList",
+                          "blockQuote",
+                        ],
+                        heading: {
+                          options: [
+                            {
+                              model: "paragraph",
+                              title: "Paragraph",
+                              class: "ck-heading_paragraph",
+                            },
+                            {
+                              model: "heading1",
+                              view: "h1",
+                              title: "Heading 1",
+                              class: "ck-heading_heading1",
+                            },
+                            {
+                              model: "heading2",
+                              view: "h2",
+                              title: "Heading 2",
+                              class: "ck-heading_heading2",
+                            },
+                          ],
+                        },
+                      }}
+                      onChange={(e, editor) => {
+                        setAddress(editor.getData());
+                        setBlankAddress(false);
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -2197,32 +2409,40 @@ const EditorAddEvtAct = ({
 				}
 			/> */}
         <PopUp
-          isActive={alert.state}
+          isActive={alert.state || alertConfirm.state}
           title=""
           content={
-            <div className={styles.AlertBox}>
-              <BiError
-                style={{
-                  color:
-                    alert.type === "danger"
-                      ? "#ca0c64"
-                      : alert.type === "warning"
-                      ? "yellow"
-                      : "green",
-                }}
+            alertConfirm.state ? (
+              <ConfirmContent
+                fnHandleOk={alertConfirm.fnHandleOk}
+                fnHandleCancel={alertConfirm.fnHandleCancel}
+                content={alertConfirm.content}
               />
-              <div>{alert.content}</div>
-              <Button
-                title={"Ok"}
-                fnOnClick={() => {
-                  setAlert({
-                    state: false,
-                    type: "danger",
-                    content: "",
-                  });
-                }}
-              />
-            </div>
+            ) : (
+              <div className={styles.AlertBox}>
+                <BiError
+                  style={{
+                    color:
+                      alert.type === "danger"
+                        ? "#ca0c64"
+                        : alert.type === "warning"
+                        ? "yellow"
+                        : "green",
+                  }}
+                />
+                <div>{alert.content}</div>
+                <Button
+                  title={"Ok"}
+                  fnOnClick={() => {
+                    setAlert({
+                      state: false,
+                      type: "danger",
+                      content: "",
+                    });
+                  }}
+                />
+              </div>
+            )
           }
         />
         <div
@@ -2242,24 +2462,18 @@ const EditorAddEvtAct = ({
               }}
               style={{ cursor: "pointer" }}
             />
-            <InputForm
-              type="text"
-              placeholder={
-                forEvtAct === "Onsite Event" ||
-                forEvtAct === "Online Event" ||
-                forEvtAct === "Hybrid Event"
-                  ? "Masukkan Nama Eventmu *"
-                  : "Judul Daily Activity Site *"
-              }
-              className={styles.FormTitle}
-              style={{
-                border: "none",
-                outline: "none",
-                boxShadow: "none",
-                backgroundColor: "#fff0",
+            <h3
+              style={{ marginLeft: "20px", cursor: "pointer" }}
+              onClick={() => {
+                setForEvtAct(null);
               }}
-              refData={title}
-            />
+            >
+              {forEvtAct === "Onsite Event" ||
+              forEvtAct === "Online Event" ||
+              forEvtAct === "Hybrid Event"
+                ? "Buat Event"
+                : "Buat Aktivitas"}
+            </h3>
             <div className={styles.BtnBox}>
               {eventId ? (
                 <Button
@@ -2341,7 +2555,42 @@ const EditorAddEvtAct = ({
                 defaultFile={defImgCover}
                 fnSetAlert={setAlert}
               />
+              {windowWidth <= 772 ? (
+                <div
+                  className={`${styles.TitleInputBox} ${
+                    blankTitle ? styles.DangerInput : ""
+                  }`}
+                  style={{ marginTop: "20px", border: "1px solid red" }}
+                >
+                  <InputForm
+                    type="text"
+                    placeholder={
+                      forEvtAct === "Onsite Event" ||
+                      forEvtAct === "Online Event" ||
+                      forEvtAct === "Hybrid Event"
+                        ? "Judul Event *"
+                        : "Judul Aktivitas *"
+                    }
+                    className={`${styles.FormTitle} ${
+                      blankTitle ? "placeholder-red" : ""
+                    }`}
+                    style={{
+                      border: "none",
+                      outline: "none",
+                      boxShadow: "none",
+                      backgroundColor: "#fff0",
+                    }}
+                    refData={title}
+                    onInput={() => {
+                      setBlankTitle(false);
+                    }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
               <FieldBox
+                className={[blankCat || blankTopic ? styles.DangerInput : ""]}
                 iconSvg={<BiFilter />}
                 label={
                   forEvtAct === "Onsite Event" ||
@@ -2393,6 +2642,7 @@ const EditorAddEvtAct = ({
                         borderRadius: "8px",
                       }),
                     }}
+                    onMenuOpen={() => setBlankTopic(false)}
                     onChange={(e) => {
                       setDefTopic(e);
                     }}
@@ -2404,6 +2654,7 @@ const EditorAddEvtAct = ({
                 iconSvg={<BiBookOpen />}
                 label={"Syarat & Ketentuan *"}
                 style={{ backgroundColor: "#fff" }}
+                className={blankSnk ? styles.DangerInput : ""}
               >
                 <div
                   className={styles.CmdField2}
@@ -2415,29 +2666,168 @@ const EditorAddEvtAct = ({
                   {snk === "" ? "Tambahkan" : "Lihat & Edit"}
                 </div>
               </FieldBox>
+              {!eventId &&
+              forEvtAct !== "Onsite Event" &&
+              forEvtAct !== "Online Event" &&
+              forEvtAct !== "Hybrid Event" ? (
+                <FieldBox
+                  iconSvg={<BiCard />}
+                  style={{ backgroundColor: "#fff" }}
+                  label={<p>Produk/Layanan</p>}
+                >
+                  <div
+                    className={styles.CmdField2}
+                    onClick={() => {
+                      setPopUpActive(true);
+                      setPopUpTitle("Tickets");
+                    }}
+                  >
+                    {tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
+                  </div>
+                </FieldBox>
+              ) : (
+                <></>
+              )}
             </div>
             <div className={styles.ColSplit2}>
+              {windowWidth > 772 ? (
+                <div
+                  className={`${styles.TitleInputBox} ${
+                    blankTitle ? styles.DangerInput : ""
+                  }`}
+                >
+                  <InputForm
+                    type="text"
+                    placeholder={
+                      forEvtAct === "Onsite Event" ||
+                      forEvtAct === "Online Event" ||
+                      forEvtAct === "Hybrid Event"
+                        ? "Judul Event *"
+                        : "Judul Aktivitas *"
+                    }
+                    className={`${styles.FormTitle} ${
+                      blankTitle ? "placeholder-red" : ""
+                    }`}
+                    style={{
+                      border: "none",
+                      outline: "none",
+                      boxShadow: "none",
+                      backgroundColor: "#fff0",
+                    }}
+                    refData={title}
+                    onInput={() => {
+                      setBlankTitle(false);
+                    }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
               {forEvtAct === "Onsite Event" ||
               forEvtAct === "Online Event" ||
               forEvtAct === "Hybrid Event" ? (
-                <div className={styles.DateGroup}>
+                <div
+                  className={`${styles.DateGroup} ${
+                    blankStart || blankEnd ? styles.DangerInput : ""
+                  }`}
+                >
                   <InputLabeled
                     type={"datetime-local"}
                     id={"start_date"}
                     placeholder={"Pilih tanggal & waktu"}
                     iconSvg={<BiCalendar />}
-                    label={<p className={styles.TextSecondary}>Mulai *</p>}
+                    label={
+                      <p
+                        className={styles.TextSecondary}
+                        style={blankStart || blankEnd ? { color: "red" } : {}}
+                      >
+                        Mulai *
+                      </p>
+                    }
                     style={{ boxShadow: "none", outline: "none" }}
                     refData={startDate}
+                    fnOnChange={selectedSTartEvent}
+                    fnOnInput={() => {
+                      setBlankStart(false);
+                    }}
+                    min={
+                      new Date(
+                        new Date(new Date().setSeconds(0, 0)) -
+                          new Date(
+                            new Date().setSeconds(0, 0)
+                          ).getTimezoneOffset() *
+                            1000 *
+                            60
+                      )
+                        .toISOString()
+                        .split(":00.")[0]
+                    }
                   />
                   <InputLabeled
                     type={"datetime-local"}
                     id={"end_date"}
                     placeholder={"Pilih tanggal & waktu"}
                     iconSvg={<BiCalendar />}
-                    label={<p className={styles.TextSecondary}>Berakhir *</p>}
+                    label={
+                      <p
+                        className={styles.TextSecondary}
+                        style={blankEnd || blankStart ? { color: "red" } : {}}
+                      >
+                        Berakhir *
+                      </p>
+                    }
                     style={{ boxShadow: "none", outline: "none" }}
                     refData={endDate}
+                    min={
+                      startEvent
+                        ? new Date(
+                            new Date(
+                              new Date(startEvent).setHours(
+                                new Date(startEvent).getHours() + 1,
+                                0,
+                                0,
+                                0
+                              )
+                            ) -
+                              new Date(
+                                new Date(startEvent).setHours(
+                                  new Date(startEvent).getHours() + 1,
+                                  0,
+                                  0,
+                                  0
+                                )
+                              ).getTimezoneOffset() *
+                                1000 *
+                                60
+                          )
+                            .toISOString()
+                            .split(":00.")[0]
+                        : new Date(
+                            new Date(
+                              new Date().setHours(
+                                new Date().getHours() + 1,
+                                0,
+                                0,
+                                0
+                              )
+                            ) -
+                              new Date(
+                                new Date().setHours(
+                                  new Date().getHours() + 1,
+                                  0,
+                                  0,
+                                  0
+                                )
+                              ).getTimezoneOffset() *
+                                1000 *
+                                60
+                          )
+                            .toISOString()
+                            .split(":00.")[0]
+                    }
+                    fnOnInput={() => {
+                      setBlankEnd(false);
+                    }}
                   />
                 </div>
               ) : (
@@ -2483,8 +2873,20 @@ const EditorAddEvtAct = ({
               )}
               <FieldBox
                 iconSvg={<BiMapPin />}
+                className={[
+                  blankAddres || blankCitu || blankProv
+                    ? styles.DangerInput
+                    : "",
+                ]}
                 label={
-                  <p className={styles.TextSecondary}>
+                  <p
+                    className={styles.TextSecondary}
+                    style={
+                      blankAddres || blankCitu || blankProv
+                        ? { color: "red" }
+                        : {}
+                    }
+                  >
                     {address === ""
                       ? "Lokasi Event *"
                       : address.split("<p>").length <= 1
@@ -2516,6 +2918,7 @@ const EditorAddEvtAct = ({
                 iconSvg={<BiLockOpen />}
                 label={"Visibilitas *"}
                 style={{ backgroundColor: "#fff" }}
+                className={[blankVisibility ? styles.DangerInput : ""]}
               >
                 <Select
                   options={[
@@ -2523,6 +2926,9 @@ const EditorAddEvtAct = ({
                     { label: "Privat", value: "0" },
                   ]}
                   className="basic-multi-select"
+                  onMenuOpen={() => {
+                    setBlankVs(false);
+                  }}
                   styles={{
                     option: (basicStyle, state) => ({
                       ...basicStyle,
@@ -2552,7 +2958,7 @@ const EditorAddEvtAct = ({
                   value={visbibilty}
                 />
               </FieldBox>
-              {eventId ? (
+              {/* {eventId ? (
                 <></>
               ) : (
                 <FieldBox
@@ -2578,53 +2984,108 @@ const EditorAddEvtAct = ({
                     {tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
                   </div>
                 </FieldBox>
+              )} */}
+              {!eventId &&
+              (forEvtAct === "Onsite Event" ||
+                forEvtAct === "Online Event" ||
+                forEvtAct === "Hybrid Event") ? (
+                <FieldBox
+                  iconSvg={<BiCard />}
+                  style={{ backgroundColor: "#fff" }}
+                  label={<p>Ticket</p>}
+                >
+                  <div
+                    className={styles.CmdField2}
+                    onClick={() => {
+                      if (
+                        startDate.current &&
+                        endDate.current &&
+                        startDate.current.value !== "" &&
+                        endDate.current.value !== ""
+                      ) {
+                        setPopUpActive(true);
+                        setPopUpTitle("Tickets");
+                      } else {
+                        if (
+                          !startDate.current ||
+                          startDate.current.value === ""
+                        ) {
+                          setBlankStart(true);
+                        }
+                        if (!endDate.current || endDate.current.value === "") {
+                          setBlankEnd(true);
+                        }
+                        setAlert({
+                          state: true,
+                          type: "danger",
+                          content:
+                            "Field tanggal dan waktu event wajib diisi terlebih dahulu",
+                        });
+                      }
+                    }}
+                  >
+                    {tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
+                  </div>
+                </FieldBox>
+              ) : (
+                <></>
               )}
             </div>
           </div>
           <div style={{ marginTop: "35px" }}>
-            <div className={styles.CmdField1} style={{ marginBottom: "10px" }}>
+            <div
+              className={`${styles.CmdField1}`}
+              style={
+                blankDesc
+                  ? { marginBottom: "10px", color: "red" }
+                  : { marginBottom: "10px" }
+              }
+            >
               Deskripsi Event *
             </div>
-            <CKEditor
-              editor={ClassicEditor}
-              data={desc}
-              config={{
-                toolbar: [
-                  "heading",
-                  "|",
-                  "bold",
-                  "italic",
-                  "link",
-                  "bulletedList",
-                  "numberedList",
-                  "blockQuote",
-                ],
-                heading: {
-                  options: [
-                    {
-                      model: "paragraph",
-                      title: "Paragraph",
-                      class: "ck-heading_paragraph",
-                    },
-                    {
-                      model: "heading1",
-                      view: "h1",
-                      title: "Heading 1",
-                      class: "ck-heading_heading1",
-                    },
-                    {
-                      model: "heading2",
-                      view: "h2",
-                      title: "Heading 2",
-                      class: "ck-heading_heading2",
-                    },
+            <div className={blankDesc ? styles.DangerInput : ""}>
+              <CKEditor
+                editor={ClassicEditor}
+                data={desc}
+                config={{
+                  toolbar: [
+                    "heading",
+                    "|",
+                    "bold",
+                    "italic",
+                    "link",
+                    "bulletedList",
+                    "numberedList",
+                    "blockQuote",
                   ],
-                },
-              }}
-              onChange={(e, editor) => {
-                setDesc(editor.getData());
-              }}
-            />
+                  heading: {
+                    options: [
+                      {
+                        model: "paragraph",
+                        title: "Paragraph",
+                        class: "ck-heading_paragraph",
+                      },
+                      {
+                        model: "heading1",
+                        view: "h1",
+                        title: "Heading 1",
+                        class: "ck-heading_heading1",
+                      },
+                      {
+                        model: "heading2",
+                        view: "h2",
+                        title: "Heading 2",
+                        class: "ck-heading_heading2",
+                      },
+                    ],
+                  },
+                }}
+                onChange={(e, editor) => {
+                  setDesc(editor.getData());
+                  setBlankDesc(false);
+                }}
+              />
+            </div>
           </div>
 
           <div className={styles.BtnBoxWrap} style={{ marginTop: "40px" }}>

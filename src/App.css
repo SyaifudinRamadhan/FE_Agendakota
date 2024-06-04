@@ -90,6 +90,9 @@ input::placeholder{
 	display: block !important;
 	position: absolute !important;
 }
+.placeholder-red::placeholder{
+	color: #d29a9a !important;
+}
 
 /* ============== SELECT2JS FOR BUILD ================ */
 .css-1dyz3mf, .css-1wy0on6{

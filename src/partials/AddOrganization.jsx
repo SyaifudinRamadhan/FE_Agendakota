@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import styles from "./styles/AddSelectOrgFront.module.css";
 import {
   BiChevronDown,
   BiCircle,
@@ -123,6 +124,13 @@ const AddOrganization = ({
   const navigate = useNavigate();
   const appData = useSelector((state) => state.appDataReducer);
 
+  // ================== Sate Control =====================
+  const [blankOrgName, setBlankOrgName] = useState(false);
+  const [blankOrgType, setBlankOrgType] = useState(false);
+  const [blankInterest, setBlankInterrest] = useState(false);
+  const [blankDesc, setBlankDesc] = useState(false);
+  // =====================================================
+
   const resetAlert = () => {
     setShowAlert({
       state: false,
@@ -142,6 +150,18 @@ const AddOrganization = ({
       interestEvt.current.getValue().length === 0 ||
       desc.current.value === ""
     ) {
+      if (!orgName.current || orgName.current.value === "") {
+        setBlankOrgName(true);
+      }
+      if (!orgType.current || orgType.current.getValue().length === 0) {
+        setBlankOrgType(true);
+      }
+      if (!interestEvt.current || interestEvt.current.getValue().length === 0) {
+        setBlankInterrest(true);
+      }
+      if (desc.current.value === "") {
+        setBlankDesc(true);
+      }
       setShowAlert({
         state: true,
         type: "danger",
@@ -268,9 +288,14 @@ const AddOrganization = ({
               refData={orgName}
               label={"Nama Organisasi"}
               iconSvg={<BiGroup />}
+              className={[blankOrgName ? styles.DangerInput : ""]}
+              fnOnInput={() => {
+                setBlankOrgName(false);
+              }}
             />
             <FieldBox
               id={"type_org"}
+              className={[blankOrgType ? styles.DangerInput : ""]}
               iconSvg={<BiFilter />}
               label={"Tipe Organisasi"}
               style={{ marginTop: "10px" }}
@@ -315,10 +340,14 @@ const AddOrganization = ({
                     fontSize: "13px",
                   }),
                 }}
+                onMenuOpen={() => {
+                  setBlankOrgType(false);
+                }}
               />
             </FieldBox>
             <FieldBox
               id={"interest"}
+              className={[blankInterest ? styles.DangerInput : ""]}
               iconSvg={<BiFilter />}
               label={"Tertarik Dengan"}
               style={{ marginTop: "10px" }}
@@ -364,10 +393,14 @@ const AddOrganization = ({
                     fontSize: "13px",
                   }),
                 }}
+                onMenuOpen={() => {
+                  setBlankInterrest(false);
+                }}
               />
             </FieldBox>
             <FieldBox
               id={"org_desc"}
+              className={[blankDesc ? styles.DangerInput : ""]}
               label={""}
               style={{
                 marginTop: "10px",
@@ -386,6 +419,9 @@ const AddOrganization = ({
                   width: "100%",
                 }}
                 className={"no-border-outline-shadow"}
+                fnOnInput={() => {
+                  setBlankDesc(false);
+                }}
               />
             </FieldBox>
             {isLoading ? (

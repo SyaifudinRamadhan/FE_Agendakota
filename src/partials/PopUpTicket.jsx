@@ -297,7 +297,18 @@ const PopUpTicket = ({
   const [pausedProcess, setPausedProcess] = useState(null);
   const [firstLoad, setFirstLoadState] = useState(true);
   const [removeSeatMap, setRemoveSeatMap] = useState(false);
+  const [startSell, setStartSell] = useState(undefined);
   const appData = useSelector((state) => state.appDataReducer);
+
+  // ============== State control =======================
+  const [blankTitle, setBlankTitle] = useState(false);
+  const [blankStart, setBlankStart] = useState(false);
+  const [blankEnd, setBlankEnd] = useState(false);
+  const [blankQty, setBlankQty] = useState(false);
+  const [blankPrice, setBlankPrice] = useState(false);
+  const [blankDesc, setBlankDesc] = useState(false);
+  const [blankDailyLimit, setBlankDailyLimit] = useState(false);
+  // ====================================================
 
   // Ref ticket form
   const coverImg = useRef();
@@ -327,6 +338,16 @@ const PopUpTicket = ({
   const resetCover = useRef();
   const resetSeatMapImg = useRef();
   const resetSeatMapGlobalImg = useRef();
+
+  const selectedStartSell = (e) => {
+    setStartSell(e.target.value);
+    if (
+      new Date(e.target.value).setHours(0, 0, 0, 0) >
+      new Date(end.current.value).setHours(0, 0, 0, 0)
+    ) {
+      end.current.value = "";
+    }
+  };
 
   const resetAlert = () => {
     setTimeout(() => {
@@ -913,27 +934,27 @@ const PopUpTicket = ({
         contentBody !== "View Ticket" &&
         coverImg.current.files.length === 0) ||
       (defaultTypePrice == "2" &&
-        (parseInt(
-          price.current.value
-            .split("Rp.")[1]
-            .split("")
-            .filter(
-              (value) =>
-                value == 0 ||
-                value == 1 ||
-                value == 2 ||
-                value == 3 ||
-                value == 4 ||
-                value == 5 ||
-                value == 6 ||
-                value == 7 ||
-                value == 8 ||
-                value == 9
-            )
-            .join("")
-        ) < 10000 ||
-          price.current.value === "" ||
-          price.current.value === " ")) ||
+        (price.current.value === "" ||
+          price.current.value === " " ||
+          parseInt(
+            price.current.value
+              .split("Rp.")[1]
+              .split("")
+              .filter(
+                (value) =>
+                  value == 0 ||
+                  value == 1 ||
+                  value == 2 ||
+                  value == 3 ||
+                  value == 4 ||
+                  value == 5 ||
+                  value == 6 ||
+                  value == 7 ||
+                  value == 8 ||
+                  value == 9
+              )
+              .join("")
+          ) < 10000)) ||
       desc === "" ||
       (refInpuSeatMap.current.checked === true &&
         (contentBody !== "View Ticket" ||
@@ -941,10 +962,89 @@ const PopUpTicket = ({
             !tickets[selectedTicketIndex].seat_map)) &&
         seatMapImg.current.files.length === 0)
     ) {
+      let msg = "Semua form field wajib diisi";
+      if (title.current.value === "" || title.current.value === " ") {
+        setBlankTitle(true);
+      }
+      if (desc === "") {
+        setBlankDesc(true);
+      }
+      if (
+        forEvtAct === "Onsite Event" ||
+        forEvtAct === "Online Event" ||
+        forEvtAct === "Hybrid Event"
+      ) {
+        if (start.current.value === "" || start.current.value === " ") {
+          setBlankStart(true);
+        }
+        if (end.current.value === "" || end.current.value === " ") {
+          setBlankEnd(true);
+        }
+        if (qty.current.value === "") {
+          setBlankQty(true);
+        }
+      }
+      if (
+        forEvtAct !== "Onsite Event" &&
+        forEvtAct !== "Online Event" &&
+        forEvtAct !== "Hybrid Event" &&
+        (dailyLimitQty.current.value === "" ||
+          dailyLimitQty.current.value === " ")
+      ) {
+        setBlankDailyLimit(true);
+      }
+      if (
+        forEvtAct !== "Onsite Event" &&
+        forEvtAct !== "Online Event" &&
+        forEvtAct !== "Hybrid Event" &&
+        !evtActId &&
+        contentBody !== "View Ticket" &&
+        coverImg.current.files.length === 0
+      ) {
+        msg = "Gambar Cover wjib diisi";
+      }
+      if (
+        defaultTypePrice != "1" &&
+        (price.current.value === "" ||
+          price.current.value === " " ||
+          parseInt(
+            price.current.value
+              .split("Rp.")[1]
+              .split("")
+              .filter(
+                (value) =>
+                  value == 0 ||
+                  value == 1 ||
+                  value == 2 ||
+                  value == 3 ||
+                  value == 4 ||
+                  value == 5 ||
+                  value == 6 ||
+                  value == 7 ||
+                  value == 8 ||
+                  value == 9
+              )
+              .join("")
+          ) < 10000)
+      ) {
+        setBlankPrice(true);
+      }
+      if (
+        refInpuSeatMap.current.checked === true &&
+        (contentBody !== "View Ticket" ||
+          (contentBody === "View Ticket" &&
+            !tickets[selectedTicketIndex].seat_map)) &&
+        seatMapImg.current.files.length === 0
+      ) {
+        msg = "Seat Map Image / Gambar Peta Tempat Duduk wajib diisi !";
+      }
+
       setAlert({
         state: true,
         content:
           defaultTypePrice != "1" &&
+          price.current.value !== "" &&
+          price.current.value !== " " &&
           parseInt(
             price.current.value
               .split("Rp.")[1]
@@ -965,7 +1065,7 @@ const PopUpTicket = ({
               .join("")
           ) < 10000
             ? "Minimal harga tiket Rp. 10000,00"
-            : "Semua form field wajib diisi",
+            : msg,
         type: "danger",
       });
       resetAlert();
@@ -1025,6 +1125,7 @@ const PopUpTicket = ({
       seatMapGlobalImg.current.files.length === 0 &&
       !ticketSetup.globalSeatMap
     ) {
+      setContentBody("Ticket Settings");
       setAlert({
         state: true,
         type: "danger",
@@ -1369,6 +1470,16 @@ const PopUpTicket = ({
     }
   }, [pausedProcess, isLogin, orgId]);
 
+  useEffect(() => {
+    setBlankTitle(false);
+    setBlankStart(false);
+    setBlankEnd(false);
+    setBlankQty(false);
+    setBlankPrice(false);
+    setBlankDesc(false);
+    setBlankDailyLimit(false);
+  }, [contentBody]);
+
   return (
     <PopUp2
       width="928px"
@@ -1403,7 +1514,26 @@ const PopUpTicket = ({
                 handleBack();
               }}
             />
-            <InputForm
+            <h4
+              className={styles2.TitleNav}
+              onClick={() => {
+                handleBack();
+              }}
+            >
+              {forEvtAct === "Onsite Event" ||
+              forEvtAct === "Online Event" ||
+              forEvtAct === "Hybrid Event"
+                ? "Ticket"
+                : "Program"}
+              &nbsp;/{" "}
+              <span>
+                {contentBody.split(" ")[contentBody.split(" ").length - 1] ===
+                "Ticket"
+                  ? "Edit"
+                  : contentBody.split(" ")[contentBody.split(" ").length - 1]}
+              </span>
+            </h4>
+            {/* <InputForm
               type={"text"}
               placeholder={
                 forEvtAct === "Onsite Event" ||
@@ -1415,7 +1545,7 @@ const PopUpTicket = ({
               className={styles2.InputTitle}
               refData={title}
               style={{ border: "none", outline: "none", boxShadow: "none" }}
-            />
+            /> */}
           </div>
         </div>
       }
@@ -1891,7 +2021,8 @@ const PopUpTicket = ({
                         aspectRatio: 1,
                         width: "260px",
                         height: "260px",
-                        margin: "auto",
+                        marginLeft: "auto",
+                        marginRight: "auto",
                       }}
                       src={
                         process.env.REACT_APP_BACKEND_URL +
@@ -1904,7 +2035,8 @@ const PopUpTicket = ({
                         aspectRatio: 1,
                         width: "260px",
                         height: "260px",
-                        margin: "auto",
+                        marginLeft: "auto",
+                        marginRight: "auto",
                       }}
                       refDelBtn={resetCover}
                       refData={coverImg}
@@ -1923,21 +2055,64 @@ const PopUpTicket = ({
                     />
                   )}
                   <div className={styles2.EditorRight}>
+                    <div
+                      className={`${styles2.TitleInputBox} ${
+                        blankTitle ? styles2.DangerInput : ""
+                      }`}
+                    >
+                      <InputForm
+                        type={"text"}
+                        placeholder={
+                          forEvtAct === "Onsite Event" ||
+                          forEvtAct === "Online Event" ||
+                          forEvtAct === "Hybrid Event"
+                            ? "Nama Tiket *"
+                            : "Nama Program *"
+                        }
+                        className={styles2.InputTitle}
+                        refData={title}
+                        style={{
+                          border: "none",
+                          outline: "none",
+                          boxShadow: "none",
+                        }}
+                        onInput={() => {
+                          setBlankTitle(false);
+                        }}
+                      />
+                    </div>
                     {forEvtAct === "Onsite Event" ||
                     forEvtAct === "Online Event" ||
                     forEvtAct === "Hybrid Event" ? (
                       <>
-                        <div className={styles2.DateGroup}>
+                        <div
+                          className={`${styles2.DateGroup} ${
+                            blankStart || blankEnd ? styles2.DangerInput : ""
+                          }`}
+                        >
                           <InputLabeled
                             type={"date"}
                             id={"start_date"}
                             placeholder={"Pilih tanggal & waktu"}
                             iconSvg={<BiCalendar />}
                             label={
-                              <p className={styles2.TextSecondary}>Mulai *</p>
+                              <p
+                                className={styles2.TextSecondary}
+                                style={
+                                  blankStart || blankEnd ? { color: "red" } : {}
+                                }
+                              >
+                                Mulai *
+                              </p>
                             }
                             style={{ boxShadow: "none", outline: "none" }}
                             refData={start}
+                            min={new Date().toISOString().split("T")[0]}
+                            max={endEvent ? endEvent.split("T")[0] : undefined}
+                            fnOnChange={selectedStartSell}
+                            fnOnInput={() => {
+                              setBlankStart(false);
+                            }}
                           />
                           <InputLabeled
                             type={"date"}
@@ -1945,25 +2120,46 @@ const PopUpTicket = ({
                             placeholder={"Pilih tanggal & waktu"}
                             iconSvg={<BiCalendar />}
                             label={
-                              <p className={styles2.TextSecondary}>
+                              <p
+                                className={styles2.TextSecondary}
+                                style={
+                                  blankStart || blankEnd ? { color: "red" } : {}
+                                }
+                              >
                                 Berakhir *
                               </p>
                             }
                             style={{ boxShadow: "none", outline: "none" }}
                             refData={end}
+                            min={
+                              startSell
+                                ? startSell
+                                : new Date().toISOString().split("T")[0]
+                            }
+                            max={endEvent ? endEvent.split("T")[0] : undefined}
+                            fnOnInput={() => {
+                              setBlankEnd(false);
+                            }}
                           />
                         </div>
                         <InputLabeled
                           type={"number"}
                           id={"qty"}
                           placeholder={"0 Tiket"}
+                          className={[blankQty ? styles2.DangerInput : ""]}
                           iconSvg={<BiGrid />}
                           label={
-                            <p className={styles2.TextSecondary}>
+                            <p
+                              className={styles2.TextSecondary}
+                              style={blankQty ? { color: "red" } : {}}
+                            >
                               Ketersediaan *
                             </p>
                           }
                           refData={qty}
+                          fnOnInput={() => {
+                            setBlankQty(false);
+                          }}
                         />
                       </>
                     ) : (
@@ -1971,13 +2167,20 @@ const PopUpTicket = ({
                         type={"number"}
                         id={"qty"}
                         placeholder={"0 Tiket"}
+                        className={[blankDailyLimit ? styles2.DangerInput : ""]}
                         iconSvg={<BiGrid />}
                         label={
-                          <p className={styles2.TextSecondary}>
+                          <p
+                            className={styles2.TextSecondary}
+                            style={blankDailyLimit ? { color: "red" } : {}}
+                          >
                             Ketersediaan / Hari *
                           </p>
                         }
                         refData={dailyLimitQty}
+                        fnOnInput={() => {
+                          setBlankDailyLimit(false);
+                        }}
                       />
                     )}
                     <div
@@ -1995,14 +2198,21 @@ const PopUpTicket = ({
                         id={"price_in"}
                         placeholder={"Rp. 0"}
                         iconSvg={<BiMoney />}
+                        className={[blankPrice ? styles2.DangerInput : ""]}
                         label={
-                          <p className={styles2.TextSecondary}>
+                          <p
+                            className={styles2.TextSecondary}
+                            style={blankPrice ? { color: "red" } : {}}
+                          >
                             {defaultTypePrice == "2"
                               ? "Harga Tiket *"
                               : "Min. Harga"}
                           </p>
                         }
                         refData={price}
+                        fnOnInput={() => {
+                          setBlankPrice(false);
+                        }}
                       />
                     </div>
                     {contentBody === "View Ticket" ? (
@@ -2104,49 +2314,59 @@ const PopUpTicket = ({
                       fnSetAlert={setAlert}
                     />
                   </div>
-                  <label htmlFor="desc" style={{ marginBottom: -19 }}>
+                  <label
+                    htmlFor="desc"
+                    style={
+                      blankDesc
+                        ? { marginBottom: -19, color: "red" }
+                        : { marginBottom: -19 }
+                    }
+                  >
                     <b>Deskripsi *</b>
                   </label>
-                  <CKEditor
-                    data={desc}
-                    onChange={(evt, editor) => {
-                      setDesc(editor.getData());
-                    }}
-                    editor={ClassicEditor}
-                    config={{
-                      toolbar: [
-                        "heading",
-                        "|",
-                        "bold",
-                        "italic",
-                        "link",
-                        "bulletedList",
-                        "numberedList",
-                        "blockQuote",
-                      ],
-                      heading: {
-                        options: [
-                          {
-                            model: "paragraph",
-                            title: "Paragraph",
-                            class: "ck-heading_paragraph",
-                          },
-                          {
-                            model: "heading1",
-                            view: "h1",
-                            title: "Heading 1",
-                            class: "ck-heading_heading1",
-                          },
-                          {
-                            model: "heading2",
-                            view: "h2",
-                            title: "Heading 2",
-                            class: "ck-heading_heading2",
-                          },
+                  <div className={blankDesc ? styles2.DangerInput : ""}>
+                    <CKEditor
+                      data={desc}
+                      onChange={(evt, editor) => {
+                        setDesc(editor.getData());
+                        setBlankDesc(false);
+                      }}
+                      editor={ClassicEditor}
+                      config={{
+                        toolbar: [
+                          "heading",
+                          "|",
+                          "bold",
+                          "italic",
+                          "link",
+                          "bulletedList",
+                          "numberedList",
+                          "blockQuote",
                         ],
-                      },
-                    }}
-                  />
+                        heading: {
+                          options: [
+                            {
+                              model: "paragraph",
+                              title: "Paragraph",
+                              class: "ck-heading_paragraph",
+                            },
+                            {
+                              model: "heading1",
+                              view: "h1",
+                              title: "Heading 1",
+                              class: "ck-heading_heading1",
+                            },
+                            {
+                              model: "heading2",
+                              view: "h2",
+                              title: "Heading 2",
+                              class: "ck-heading_heading2",
+                            },
+                          ],
+                        },
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

@@ -9,6 +9,9 @@ const TextArea = ({
   className = [],
   refData,
   required = false,
+  fnOnInput = () => {},
+  fnOnChange = () => {},
+  fnOnFocus = () => {},
 }) => {
   const classNames = [styles.TextArea].concat(className);
   return (
@@ -20,6 +23,9 @@ const TextArea = ({
       required={required}
       className={classNames.join(" ")}
       defaultValue={content}
+      onInput={fnOnInput}
+      onChange={fnOnChange}
+      onFocus={fnOnFocus}
     ></textarea>
   );
 };

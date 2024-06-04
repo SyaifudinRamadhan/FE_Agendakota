@@ -46,6 +46,7 @@ const InputLabeled = ({
   required = false,
   readOnly = false,
   min = 0,
+  max = undefined,
   iconSvg,
   label,
   value,
@@ -65,7 +66,7 @@ const InputLabeled = ({
   });
 
   return (
-    <div className={classNames} style={style}>
+    <div className={classNames.join(" ")} style={style}>
       <label
         ref={labelRef}
         htmlFor={id}
@@ -84,15 +85,22 @@ const InputLabeled = ({
         required={required}
         readOnly={readOnly}
         onFocus={onFocus}
-        onInput={(e) => {
+        onInput={
           type === "currency"
-            ? formatCurrency(e)
+            ? (e) => {
+                formatCurrency(e);
+                fnOnInput(e);
+              }
             : type === "numeric"
-            ? formatNumeric(e)
-            : fnOnInput(e);
-        }}
+            ? (e) => {
+                formatNumeric(e);
+                fnOnInput(e);
+              }
+            : fnOnInput
+        }
         onChange={fnOnChange}
         min={min}
+        max={max}
         defaultValue={value}
       />
     </div>

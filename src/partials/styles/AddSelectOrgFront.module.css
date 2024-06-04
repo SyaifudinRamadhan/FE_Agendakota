@@ -30,3 +30,10 @@
 .EditorContent {
 	padding: 30px;
 }
+.DangerInput{
+	border: 1px solid red !important;
+	color: red !important;
+}
+.DangerInput > *::placeholder{
+	color: #d29a9a !important;
+}
