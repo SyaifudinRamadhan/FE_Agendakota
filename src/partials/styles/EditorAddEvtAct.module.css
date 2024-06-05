@@ -10,7 +10,7 @@
 .FormTitle {
 	font-size: 24px;
 	font-weight: 700;
-	width: 100%;
+	/* width: 100%; */
 }
 .BtnBox {
 	display: flex;

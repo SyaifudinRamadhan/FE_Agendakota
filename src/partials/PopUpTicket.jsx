@@ -914,6 +914,7 @@ const PopUpTicket = ({
     if (
       title.current.value === "" ||
       title.current.value === " " ||
+      title.current.value.length > 200 ||
       ((forEvtAct === "Onsite Event" ||
         forEvtAct === "Online Event" ||
         forEvtAct === "Hybrid Event") &&
@@ -963,8 +964,15 @@ const PopUpTicket = ({
         seatMapImg.current.files.length === 0)
     ) {
       let msg = "Semua form field wajib diisi";
-      if (title.current.value === "" || title.current.value === " ") {
+      if (
+        title.current.value === "" ||
+        title.current.value === " " ||
+        title.current.value.length > 200
+      ) {
         setBlankTitle(true);
+      }
+      if (title.current.value.length > 200) {
+        msg = "Nama tiket maksimal 200 karkkter termasuk spasi";
       }
       if (desc === "") {
         setBlankDesc(true);

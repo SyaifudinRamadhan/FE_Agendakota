@@ -302,14 +302,23 @@ const AddSelectOrgFront = ({
     if (
       !orgName.current ||
       orgName.current.value === "" ||
+      orgName.current.value.length > 200 ||
       !orgType.current ||
       orgType.current.getValue().length === 0 ||
       !interestEvt.current ||
       interestEvt.current.getValue().length === 0 ||
       desc.current.value === ""
     ) {
-      if (!orgName.current || orgName.current.value === "") {
+      let content = "Semua field wajib diisi";
+      if (
+        !orgName.current ||
+        orgName.current.value === "" ||
+        orgName.current.value.length > 200
+      ) {
         setBlankOrgName(true);
+      }
+      if (orgName.current.value.length > 200) {
+        content = "Nama organisasi maksimal 200 karakter termasuk spasi";
       }
       if (!orgType.current || orgType.current.getValue().length === 0) {
         setBlankOrgType(true);
@@ -323,7 +332,7 @@ const AddSelectOrgFront = ({
       setShowAlert({
         state: true,
         type: "danger",
-        content: "Semua field wajib diisi",
+        content: content,
       });
     } else {
       setLoading(true);

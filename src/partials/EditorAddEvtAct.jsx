@@ -613,6 +613,7 @@ const EditorAddEvtAct = ({
       // required for all (base useRef data)
       title.current.value === "" ||
       (!eventId && inputCover.current.files.length === 0) ||
+      title.current.value.length > 200 ||
       // reuired for all (base useState)
       visbibilty === "" ||
       visbibilty === null ||
@@ -636,8 +637,11 @@ const EditorAddEvtAct = ({
     ) {
       let content =
         "Semua field kecuali ticket dan opsi waktu operasional wajib diisi";
-      if (title.current.value === "") {
+      if (title.current.value === "" || title.current.value.length > 200) {
         setBlankTitle(true);
+      }
+      if (title.current.value.length > 200) {
+        content = "Maksimal judul 200 karakter termasuk spasi";
       }
       if (!eventId && inputCover.current.files.length === 0) {
         content = "Cover / Gambar Event / Aktivitas wajib diisi";
@@ -2471,7 +2475,11 @@ const EditorAddEvtAct = ({
               {forEvtAct === "Onsite Event" ||
               forEvtAct === "Online Event" ||
               forEvtAct === "Hybrid Event"
-                ? "Buat Event"
+                ? eventId
+                  ? "Edit Event"
+                  : "Buat Event"
+                : eventId
+                ? "Edit Aktivitas"
                 : "Buat Aktivitas"}
             </h3>
             <div className={styles.BtnBox}>
