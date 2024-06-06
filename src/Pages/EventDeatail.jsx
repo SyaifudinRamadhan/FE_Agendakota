@@ -6,16 +6,20 @@ import ErrorPage from "../partials/ErrorPage";
 import styles from "./styles/EventDetail.module.css";
 import {
   BiCalendar,
+  BiCalendarWeek,
+  BiCalendarX,
   BiCart,
   BiCheckCircle,
   BiChevronRight,
   BiError,
   BiInfoCircle,
+  BiMap,
   BiMinus,
   BiMoney,
   BiPlus,
   BiPlusCircle,
   BiRightArrow,
+  BiTime,
   BiX,
 } from "react-icons/bi";
 import Chip from "../components/Chip";
@@ -1333,36 +1337,83 @@ const EventDetail = ({ isLogin }) => {
               </div>
               <div className={`${styles.RightInfo} ${styles.CollapseInfo}`}>
                 <h5 className={styles.InfoTitle}>{event.event.name}</h5>
-                <p className={styles.Address}>
+                {/* <p className={styles.Address}>
                   {event.event.location.split("<p>").length === 1
-                    ? event.event.location
-                    : event.event.location.split("<p>")[1].split("</p>")[0]}
-                </p>
+                    ? event.event.location +
+                      ` ${event.event.city}, ${event.event.province}`
+                    : event.event.location.split("<p>")[1].split("</p>")[0] +
+                      ` ${event.event.city}, ${event.event.province}`}
+                </p> */}
+                <div className={styles.BoxAddress}>
+                  <BiMap />
+                  <p className={styles.Address}>
+                    {event.event.location.split("<p>").length === 1
+                      ? event.event.location +
+                        ` ${event.event.city}, ${event.event.province}`
+                      : event.event.location.split("<p>")[1].split("</p>")[0] +
+                        ` ${event.event.city}, ${event.event.province}`}
+                  </p>
+                </div>
                 <div className={styles.BoxTime}>
                   {event.event.category !== "Attraction" &&
                   event.event.category !== "Daily Activities" &&
                   event.event.category !== "Tour Travel (recurring)" ? (
-                    <>
-                      <div className={styles.Time}>
-                        <p className={styles.Date}>{start.split("|")[0]}</p>
-                        <p className={styles.Clock}>
-                          {" "}
-                          |&nbsp; {start.split("|")[1]}
-                        </p>
-                      </div>
-                      <div className={styles.Time}>
-                        <p className={styles.Date}>{end.split("|")[0]}</p>
-                        <p className={styles.Clock}>
-                          {" "}
-                          |&nbsp; {end.split("|")[1]}
-                        </p>
-                      </div>
-                    </>
+                    start.split("|")[0] === end.split("|")[0] ? (
+                      <>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{start.split("|")[0]}</div>
+                          </div>
+                        </div>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiTime />
+                            <div>
+                              {start.split("|")[1]} - {end.split("|")[1]}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{start.split("|")[0]}</div>
+                          </div>
+                          <div className={styles.Clock}>
+                            {/* <BiTime /> */}
+                            <div>&nbsp;|&nbsp;</div>
+                            <div>{start.split("|")[1]}</div>
+                          </div>
+                        </div>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{end.split("|")[0]}</div>
+                          </div>
+                          <div className={styles.Clock}>
+                            {/* <BiTime /> */}
+                            <div>&nbsp;|&nbsp;</div>
+                            <div>{end.split("|")[1]}</div>
+                          </div>
+                        </div>
+                      </>
+                    )
                   ) : (
                     event.available_days.map((avldt, index) => {
                       // return <p className={styles.Time}>{avldt}</p>;
                       return (
                         <div id={index} className={styles.Time}>
+                          <BiCalendarX
+                            style={{
+                              fontSize: "16px",
+                              marginRight: "10px",
+                              marginTop: "auto",
+                              marginBottom: "auto",
+                            }}
+                          />
                           <p className={styles.Date}>
                             {config.dayEnToInd[avldt.day]}
                           </p>
@@ -1698,36 +1749,83 @@ const EventDetail = ({ isLogin }) => {
               {/* ------ INFO ------- */}
               <div className={styles.RightInfo}>
                 <h5 className={styles.InfoTitle}>{event.event.name}</h5>
-                <p className={styles.Address}>
+                {/* <p className={styles.Address}>
                   {event.event.location.split("<p>").length === 1
-                    ? event.event.location
-                    : event.event.location.split("<p>")[1].split("</p>")[0]}
-                </p>
+                    ? event.event.location +
+                      ` ${event.event.city}, ${event.event.province}`
+                    : event.event.location.split("<p>")[1].split("</p>")[0] +
+                      ` ${event.event.city}, ${event.event.province}`}
+                </p> */}
+                <div className={styles.BoxAddress}>
+                  <BiMap />
+                  <p className={styles.Address}>
+                    {event.event.location.split("<p>").length === 1
+                      ? event.event.location +
+                        ` ${event.event.city}, ${event.event.province}`
+                      : event.event.location.split("<p>")[1].split("</p>")[0] +
+                        ` ${event.event.city}, ${event.event.province}`}
+                  </p>
+                </div>
                 <div className={styles.BoxTime}>
                   {event.event.category !== "Attraction" &&
                   event.event.category !== "Daily Activities" &&
                   event.event.category !== "Tour Travel (recurring)" ? (
-                    <>
-                      <div className={styles.Time}>
-                        <p className={styles.Date}>{start.split("|")[0]}</p>
-                        <p className={styles.Clock}>
-                          {" "}
-                          |&nbsp; {start.split("|")[1]}
-                        </p>
-                      </div>
-                      <div className={styles.Time}>
-                        <p className={styles.Date}>{end.split("|")[0]}</p>
-                        <p className={styles.Clock}>
-                          {" "}
-                          |&nbsp; {end.split("|")[1]}
-                        </p>
-                      </div>
-                    </>
+                    start.split("|")[0] === end.split("|")[0] ? (
+                      <>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{start.split("|")[0]}</div>
+                          </div>
+                        </div>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiTime />
+                            <div>
+                              {start.split("|")[1]} - {end.split("|")[1]}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{start.split("|")[0]}</div>
+                          </div>
+                          <div className={styles.Clock}>
+                            {/* <BiTime /> */}
+                            <div>&nbsp;|&nbsp;</div>
+                            <div>{start.split("|")[1]}</div>
+                          </div>
+                        </div>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{end.split("|")[0]}</div>
+                          </div>
+                          <div className={styles.Clock}>
+                            {/* <BiTime /> */}
+                            <div>&nbsp;|&nbsp;</div>
+                            <div>{end.split("|")[1]}</div>
+                          </div>
+                        </div>
+                      </>
+                    )
                   ) : (
                     event.available_days.map((avldt, index) => {
                       // return <p className={styles.Time}>{avldt}</p>;
                       return (
                         <div id={index} className={styles.Time}>
+                          <BiCalendarX
+                            style={{
+                              fontSize: "16px",
+                              marginRight: "10px",
+                              marginTop: "auto",
+                              marginBottom: "auto",
+                            }}
+                          />
                           <p className={styles.Date}>
                             {config.dayEnToInd[avldt.day]}
                           </p>

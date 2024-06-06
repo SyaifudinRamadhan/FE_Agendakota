@@ -118,6 +118,7 @@
 	font-weight: 700;
 }
 .GroupContentData {
+	font-size: 14px;
 }
 .GlobalSeatMap {
 	width: 100%;
@@ -275,7 +276,7 @@
 .Address {
 	font-family: Inter;
 	font-size: 14px;
-	font-weight: 600;
+	font-weight: 500;
 	line-height: 17px;
 	letter-spacing: 0em;
 	text-align: left;
@@ -285,15 +286,17 @@
 }
 .BoxTime {
 	gap: 12px;
+	margin-top: 12px;
+	width: fit-content;
 }
 .Time {
 	font-family: Inter;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 500;
 	line-height: 19px;
 	letter-spacing: 0em;
 	text-align: left;
-	color: #000;
+	color: #888;
 	display: flex;
 	flex-direction: row;
 	grid-area: 10px;
@@ -301,6 +304,29 @@
 }
 .Time .Clock {
 	margin-left: auto;
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+}
+.Time .Date{
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	margin-right: 10px;
+}
+.Time .Clock svg, .Time .Date svg{
+	flex: 0 0 16px;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.Time .Date div{
+	margin-top: auto;
+	margin-bottom: auto;
+	flex: 0 0 calc(100% - 16px);
+}
+.Time .Clock div{
+	margin-top: auto;
+	margin-bottom: auto;
 }
 .FooterInfo {
 	margin-top: 32px;
@@ -532,6 +558,23 @@
 	margin-left: auto;
 	gap: 10px;
 }
+.BoxAddress{
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	margin-top: 12px;
+}
+.BoxAddress svg{
+	margin-top: auto;
+	margin-bottom: auto;
+	font-size: 25px;
+	color: #888;
+	flex: 0 0 16px;
+}
+.BoxAddress p{
+	margin-top: auto;
+	margin-bottom: auto;
+}
 
 @media (max-width: 992px) {
 	.CollapseInfo {
@@ -561,6 +604,14 @@
 	.DateSeatMap button {
 		margin-left: unset !important;
 	}
+	.Navigation{
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		overflow-x: auto; 
+	}
+	.Navigation::-webkit-scrollbar {
+    display: none;
+  }
 }
 /* @media (max-width: 450px) {
 	.DateSelectorGroup{
@@ -582,5 +633,15 @@
 	}
 	.CoverBox img {
 		width: 50%;
+	}
+	/* .Time {
+		flex-direction: column;
+		gap: 5px;
+	}
+	.Time .Clock {
+		margin-left: unset;
+	} */
+	.Time .Clock {
+		margin-left: 5px;
 	}
 }
