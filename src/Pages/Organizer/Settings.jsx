@@ -482,11 +482,6 @@ const OrganizerSettings = ({ organization, loginState, fnSetLogin }) => {
                 style={{ display: isLoading ? "none" : "unset" }}
               >
                 <div className={styles2.AlertBox}>
-                  {alertDanger.state ? (
-                    <Alert variant="danger">{alertDanger.content}</Alert>
-                  ) : (
-                    <></>
-                  )}
                   <Alert
                     type="danger"
                     isShow={alertDanger.state}

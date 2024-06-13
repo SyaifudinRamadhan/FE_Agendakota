@@ -120,15 +120,11 @@ const Register = ({ isLogin }) => {
 
   const handleResponse = (res) => {
     if (res.status === 201) {
-      setAlertDanger(null);
-      setTimeout(() => {
-        setAlertDanger({
-          state: true,
-          content:
-            "Register berhasil. Silahkan cek email untuk aktivasi akunmu",
-          variant: "success",
-        });
-      }, 100);
+      setAlertDanger({
+        state: true,
+        content: "Register berhasil. Silahkan cek email untuk aktivasi akunmu",
+        variant: "success",
+      });
       setLoading(false);
     } else {
       setAlertDanger({

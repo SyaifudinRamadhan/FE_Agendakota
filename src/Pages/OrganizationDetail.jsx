@@ -15,6 +15,7 @@ import Loading from "../components/Loading";
 import ErrorPage from "../partials/ErrorPage";
 import Event from "../components/Event";
 import { Link } from "react-router-dom";
+import Footer from "../partials/Footer";
 
 const handleSuccess = (res) => {
   return {
@@ -358,6 +359,7 @@ const OrganizationDetail = () => {
           </div>
         </>
       )}
+      <Footer />
     </div>
   );
 };

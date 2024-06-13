@@ -80,8 +80,9 @@
 }
 .MainBanner img {
 	width: 100%;
-	aspect-ratio: 5/2;
+	aspect-ratio: 5/3;
 	border-radius: 12px;
+	object-fit: cover;
 }
 .Navigation {
 	display: flex;
@@ -94,7 +95,7 @@
 	padding: 8px 12px 8px 12px;
 	border-radius: 10px;
 	font-family: Inter;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 500;
 	color: #000;
 	background-color: #f1f1f1;
@@ -114,11 +115,11 @@
 }
 .GroupTitle {
 	font-family: Inter;
-	font-size: 24px;
+	font-size: 20px;
 	font-weight: 700;
 }
 .GroupContentData {
-	font-size: 14px;
+	font-size: 15px;
 }
 .GlobalSeatMap {
 	width: 100%;
@@ -195,7 +196,7 @@
 }
 .TicketTitle {
 	font-family: Inter;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 600;
 	line-height: 24px;
 	display: flex;
@@ -215,14 +216,16 @@
 	font-size: 14px;
 	font-weight: 400;
 	width: 100%;
-	white-space: nowrap;
+	max-height: 17px;
+	overflow: hidden;
+	/* white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	display: inline;
+	display: inline; */
 }
 .TicketTime {
 	font-family: Inter;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 500;
 	color: #000;
 }
@@ -267,7 +270,7 @@
 }
 .InfoTitle {
 	font-family: Inter;
-	font-size: 24px;
+	font-size: 20px;
 	font-weight: 600;
 	line-height: 29px;
 	letter-spacing: 0em;
@@ -344,6 +347,8 @@
 	letter-spacing: 0em;
 	text-align: left;
 	color: #a7a7a7;
+	flex-shrink: 0;
+	flex-grow: 0;
 }
 .InfoOrg {
 	display: flex;
@@ -352,12 +357,20 @@
 	margin-left: auto;
 	align-items: center;
 	color: #8a8a8a;
-	max-width: calc(100% - 120px);
+	max-width: calc(100% - 90px);
+	flex-shrink: 0;
+	flex-grow: 0;
 }
 .InfoOrg img {
 	width: 42px;
 	border-radius: 50%;
 	aspect-ratio: 1;
+}
+.InfoOrg p{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	text-wrap: nowrap;
+	max-width: calc(100% - 47px);
 }
 .CartBox {
 	width: 100%;
@@ -374,7 +387,7 @@
 }
 .CartBoxTitle {
 	font-family: Inter;
-	font-size: 24px;
+	font-size: 20px;
 	font-weight: 600;
 	margin-bottom: 12px;
 	flex-direction: row;
@@ -399,7 +412,7 @@
 }
 .CartBlank div {
 	font-family: Inter;
-	font-size: 24px;
+	font-size: 20px;
 	font-weight: 600;
 }
 .CollapseInfo {
@@ -472,6 +485,7 @@
 	color: #ca0c64;
 	display: none;
 	cursor: pointer;
+	z-index: 1;
 	/* animation: hideRight 500ms; */
 }
 .FloatCartIcon svg {
@@ -575,6 +589,30 @@
 	margin-top: auto;
 	margin-bottom: auto;
 }
+.OpenDesc{
+	font-size: 14px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	gap: 5px
+}
+.OpenDesc svg{
+	margin-top: auto;
+	margin-bottom: auto;
+	font-size: 16px;
+}
+.CartSubTotal{
+	margin-top: auto;
+}
+.CartSubTotal div{
+	display: flex;
+	flex-direction: row;
+	margin-top: 10px;
+	gap: 10px;
+}
+.CartSubTotal .SubTotalNum{
+	margin-left: auto;
+}
 
 @media (max-width: 992px) {
 	.CollapseInfo {
@@ -623,7 +661,7 @@
 		width: 100% !important;
 	}
 } */
-@media (max-width: 420px) {
+ @media (max-width: 772px){
 	.TicketSplit {
 		flex-direction: column;
 	}
@@ -634,6 +672,8 @@
 	.CoverBox img {
 		width: 50%;
 	}
+ }
+@media (max-width: 420px) {
 	/* .Time {
 		flex-direction: column;
 		gap: 5px;

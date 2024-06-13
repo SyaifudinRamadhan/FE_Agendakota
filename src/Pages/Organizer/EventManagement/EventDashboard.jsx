@@ -7,6 +7,7 @@ import {
   BiBook,
   BiBox,
   BiCalendar,
+  BiCalendarX,
   BiCameraMovie,
   BiCard,
   BiCheckCircle,
@@ -16,10 +17,12 @@ import {
   BiError,
   BiFullscreen,
   BiGroup,
+  BiMap,
   BiPaperPlane,
   BiQuestionMark,
   BiScreenshot,
   BiSearch,
+  BiTime,
   BiUserCircle,
   BiZoomIn,
   BiZoomOut,
@@ -381,6 +384,8 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
   const [availableDays, setAvlDays] = useState([]);
+  const [city, setCity] = useState(null);
+  const [province, setProvince] = useState(null);
   const [address, setAddress] = useState(null);
   const [exeType, setExeType] = useState(null);
   const [category, setCategory] = useState(null);
@@ -1041,16 +1046,18 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
               .toString()
               .padStart(2, "0")} WIB`
           );
-          let availableDays = [];
+          // let availableDays = [];
 
-          res.data.available_days.forEach((avldt) => {
-            availableDays.push(
-              `${config.dayEnToInd[avldt.day]} | ${avldt.start_time
-                .slice(0, 5)
-                .toString()} WIB - ${avldt.max_limit_time.slice(0, 5)} WIB`
-            );
-          });
-          setAvlDays(availableDays);
+          // res.data.available_days.forEach((avldt) => {
+          //   availableDays.push(
+          //     `${config.dayEnToInd[avldt.day]} | ${avldt.start_time
+          //       .slice(0, 5)
+          //       .toString()} WIB - ${avldt.max_limit_time.slice(0, 5)} WIB`
+          //   );
+          // });
+          setAvlDays(res.data.available_days);
+          setCity(res.data.event.city);
+          setProvince(res.data.event.province);
           setAddress(res.data.event.location);
           setCategory(res.data.event.category);
           setExeType(res.data.event.exe_type);
@@ -1448,7 +1455,10 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
       <div className={styles.DecorationBox}>
         <div className={styles.Decoration}></div>
       </div>
-      <div className="content organizer">
+      <div
+        className="content organizer"
+        style={{ maxWidth: "1050px", marginLeft: "auto", marginRight: "auto" }}
+      >
         <PopUp
           width="45%"
           isActive={
@@ -1548,7 +1558,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
               setValue={setContentBody}
               multiple={false}
               showLimit={3}
-              itemStyle={{ fontSize: "14px", padding: "5px" }}
+              itemStyle={{ fontSize: "13.5px", padding: "5px" }}
             />
           </div>
         </div>
@@ -1595,7 +1605,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                   </div>
                 </div>
                 <div className={styles.RightInfo}>
-                  <h5 className={styles.InfoTitle}>{title}</h5>
+                  {/* <h5 className={styles.InfoTitle}>{title}</h5>
                   <p className={styles.Address}>
                     {address.split("<p>").length === 1
                       ? address
@@ -1650,6 +1660,134 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                           alt=""
                         />
                         <p>{organization[0].name}</p>
+                      </div>
+                    )}
+                  </div> */}
+                  <h5 className={styles.InfoTitle}>{title}</h5>
+                  <div className={styles.BoxAddress}>
+                    <BiMap />
+                    <p className={styles.Address}>
+                      {address.split("<p>").length === 1
+                        ? address + ` ${city}, ${province}`
+                        : address.split("<p>")[1].split("</p>")[0] +
+                          ` ${city}, ${province}`}
+                    </p>
+                  </div>
+                  <div className={styles.BoxTime}>
+                    {category !== "Attraction" &&
+                    category !== "Daily Activities" &&
+                    category !== "Tour Travel (recurring)" ? (
+                      start.split("|")[0] === end.split("|")[0] ? (
+                        <>
+                          <div className={styles.Time}>
+                            <div className={styles.Date}>
+                              <BiCalendar />
+                              <div>{start.split("|")[0]}</div>
+                            </div>
+                          </div>
+                          <div className={styles.Time}>
+                            <div className={styles.Date}>
+                              <BiTime />
+                              <div>
+                                {start.split("|")[1]} - {end.split("|")[1]}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className={styles.Time}>
+                            <div className={styles.Date}>
+                              <BiCalendar />
+                              <div>{start.split("|")[0]}</div>
+                            </div>
+                            <div className={styles.Clock}>
+                              {/* <BiTime /> */}
+                              <div>&nbsp;|&nbsp;</div>
+                              <div>{start.split("|")[1]}</div>
+                            </div>
+                          </div>
+                          <div className={styles.Time}>
+                            <div className={styles.Date}>
+                              <BiCalendar />
+                              <div>{end.split("|")[0]}</div>
+                            </div>
+                            <div className={styles.Clock}>
+                              {/* <BiTime /> */}
+                              <div>&nbsp;|&nbsp;</div>
+                              <div>{end.split("|")[1]}</div>
+                            </div>
+                          </div>
+                        </>
+                      )
+                    ) : (
+                      availableDays.map((avldt, index) => {
+                        // return <p className={styles.Time}>{avldt}</p>;
+                        return (
+                          <div id={index} className={styles.Time}>
+                            <BiCalendarX
+                              style={{
+                                fontSize: "16px",
+                                marginRight: "10px",
+                                marginTop: "auto",
+                                marginBottom: "auto",
+                              }}
+                            />
+                            <p className={styles.Date}>
+                              {config.dayEnToInd[avldt.day]}
+                            </p>
+                            <p className={styles.Clock}>
+                              {avldt.start_time.slice(0, 5).toString()}
+                              {" - "}
+                              {avldt.max_limit_time.slice(0, 5)} WIB
+                            </p>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                  <div className={styles.FooterInfo}>
+                    <div
+                      className={styles.Subtitle}
+                      style={{ fontSize: "13px" }}
+                    >
+                      Organized By
+                    </div>
+                    {organization.length === 0 ? (
+                      <></>
+                    ) : (
+                      <div
+                        className={styles.InfoOrg}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          navigate(
+                            "/organization-profile/" + organization[0].id
+                          );
+                        }}
+                      >
+                        <img
+                          src={
+                            process.env.REACT_APP_BACKEND_URL +
+                            organization[0].photo
+                          }
+                          alt=""
+                        />
+                        <p>{organization[0].name}</p>
+                        {organization[0].legality &&
+                        organization[0].legality.status == 1 ? (
+                          <img
+                            src="/images/verify.png"
+                            style={{
+                              color: "green",
+                              width: "23px",
+                              height: "23px",
+                              marginTop: "auto",
+                              marginBottom: "auto",
+                            }}
+                          />
+                        ) : (
+                          <></>
+                        )}
                       </div>
                     )}
                   </div>

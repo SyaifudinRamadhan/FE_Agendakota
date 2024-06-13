@@ -790,6 +790,7 @@ const config = {
 			"041": ["SAHABAT_SAMPOERNA", "SAMPOERNA"],
 		},
 	},
+	snkBuyer: "<div></div>"
 };
 
 module.exports = config;

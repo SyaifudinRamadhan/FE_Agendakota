@@ -1,27 +1,39 @@
 .Footer {
     background-color: #fff;
-    padding: 70px 50px;
+    padding: 70px 40px;
+    padding-bottom: 0 !important;
+    border-top: 10px solid #eaeaea;
+    margin-top: 50px;
 }
 .Inner {
     flex-direction: row;
-    justify-content: center;
+    /* justify-content: center; */
     gap: 20px;
     display: flex;
 }
 .FooterLeft {
+    display: block;
+    flex-basis: 30%;
+    /* height: 100%; */
+}
+.FooterLeftLink {
     flex-direction: column;
     flex-basis: 40%;
+    height: calc(100% - 62px);
 }
 .Logo {
-    width: 40%;
+    width: 200px;
     margin-bottom: 20px;
     color: #333;
 }
 .Column {
-    flex-basis: 20%;
+    flex-basis: 25%;
 }
+/* .Column {
+    flex-basis: 33%;
+} */
 .Title {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 800;
     margin-bottom: 20px;
 }
@@ -32,6 +44,7 @@
     color: #434343;
     font-size: 14px;
     text-decoration: none;
+    text-align: left;
 }
 .Link:hover {
     text-decoration: underline;
@@ -41,10 +54,11 @@
     border-top: 1px solid #ddd;
     margin-top: 25px;
     padding: 25px 0px;
+    width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 40px;
-    align-items: center;
+    gap: 20px;
+    color: rgb(102, 102, 102);
 }
 .BottomLink {
     font-weight: 700;
@@ -59,12 +73,130 @@
     text-decoration: none;
     margin-bottom: 15px;
 }
+.IconedInfo{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.IconedInfo img{
+    width: 35px;
+    height: 35px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.IconedInfoText{
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+}
+.LinkBox{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 70%;
+}
+.SocmedBox{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* margin-left: auto; */
+    margin-top: auto;
+    padding-right: 70px;
+}
+.SocmedTitle{
+    font-size: 14px;
+    /* font-weight: 700; */
+    color: #777;
+}
+.SocmedList{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.SocmedList svg{
+    width: 25px;
+    height: 25px;
+    color: #777;
+}
+
+/* @media (max-width: 992px) {
+    .FooterLeft{
+        width: 40%;
+    }
+    .LinkBox{
+        width: 60%;
+    }
+    .Column {
+        flex-basis: 33%;
+    }
+} */
 
 @media (max-width: 992px) {
+
     .Footer {
-        padding: 40px 20px;
+        padding: 40px 40px;
+    }
+    .FooterLeft{
+        display: flex;
+        width: 100%;
+    }
+    .LinkBox{
+        width: 100%;
     }
     .Inner {
         flex-direction: column;
+    }
+    .FooterLeftLink{
+        flex-direction: row;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .FooterLeftLink .Inline{
+        width: calc(100% - 10px);
+    }
+
+    .Inline, .SocmedBox{
+        /* flex-basis: 32%; */
+        width: unset !important;
+    }
+    .Bottom{
+        flex-direction: column;
+        gap: 0;
+    }
+    .Bottom div{
+        margin-left: unset !important;
+    }
+}
+
+@media (max-width: 440px){
+    .FooterLeftLink{
+        flex-direction: column;
+        gap: 10px;
+    }
+    .LinkBox{
+        flex-wrap: wrap;
+        /* width: 100%; */
+    }
+    .LinkBox .Column{
+        min-width: calc(50% - 10px);
+    }
+    .LinkBox .Title{
+        font-size: 14px;
+    }
+    .LinkBox .Link{
+        font-size: 13px;
+    }
+    .Bottom{
+        font-size: 14px;
+    }
+    .SocmedList svg{
+        width: 18px;
+        height: 18px;
     }
 }

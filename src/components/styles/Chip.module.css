@@ -1,10 +1,16 @@
+
+.MainChipBox{
+	margin-top: 20px;
+	position: relative;
+}
 .Container {
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
 	/* flex-wrap: wrap; */
-	margin-top: 20px;
 	overflow: auto;
+	-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
 }
 .Item {
 	padding: 10px 20px;
@@ -18,4 +24,43 @@
 }
 .Container::-webkit-scrollbar {
 	display: none;
+}
+.ChipNavLeft
+,.ChipNavRight{
+	position: absolute;
+	padding: 10px;
+	border-radius: 12px;
+	background-color: rgba(0, 0, 0, 0.293);
+	height: 100%;
+	display: flex;
+	cursor: pointer;
+	display: none;
+}
+.ChipNavLeft:hover, .ChipNavRight:hover {
+	border: 1px solid #fff;
+	background-color: #000;
+}
+.ChipNavLeft svg
+,.ChipNavRight svg{
+	margin: auto;
+	color: white;
+	font-size: 25px;
+}
+.ChipNavLeft{
+	left: 0;
+}
+.ChipNavRight{
+	right: 0;
+}
+.MainChipBox:hover{
+	.ChipNavLeft
+,.ChipNavRight{
+	display: flex;
+}
+}
+
+@media (max-width: 772px){
+	.Item{
+		font-size: 13px;
+	}
 }

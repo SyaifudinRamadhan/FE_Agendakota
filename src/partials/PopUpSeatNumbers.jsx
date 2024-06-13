@@ -357,6 +357,13 @@ const PopUpSeatNumbers = ({
       isActive
       setActiveFn={fnSetActive}
       title=""
+      classNames={{
+        wrapper: [styles.PopUpWrapper],
+        modalDialog: [styles.ModalDialog],
+        popUpBox: [styles.PopUpBox],
+        header: [],
+        content: [styles.PopUpContent],
+      }}
       customTitle={
         errorState.state || loading ? (
           <></>

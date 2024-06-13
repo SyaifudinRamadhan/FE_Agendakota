@@ -282,7 +282,7 @@ const OrganizerActivities = ({ organization, fnSetLogin }) => {
                 )}
               </>
             )}
-            <div>
+            {/* <div>
               <h3 className={styles.Title} style={{ marginTop: 40 }}>
                 Up your game as organizer with massive events
               </h3>
@@ -336,7 +336,7 @@ const OrganizerActivities = ({ organization, fnSetLogin }) => {
                   }
                 />
               </div>
-            </div>
+            </div> */}
           </>
         )}
       </div>

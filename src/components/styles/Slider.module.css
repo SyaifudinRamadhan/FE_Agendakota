@@ -1,9 +1,15 @@
+.MainSliderBox{
+    position: relative;
+    width: 100%;
+}
 .SliderBox{
     display: flex;
     flex-direction: row;
     white-space: nowrap;
-    overflow-x: hidden;
+    overflow-x: auto;
     position: relative;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
 }
 .Content{
     display: flex;
@@ -17,7 +23,7 @@
     display: none;
   }
 .Navigator{
-    display: flex;
+    display: none;
     flex-direction: row;
     position: absolute;
     /* margin-top: 20px; */
@@ -26,7 +32,11 @@
     height: 100%;
     /* padding: 50px; */
 }
-
+.MainSliderBox:hover{
+    .Navigator {
+        display: flex;
+    }
+}
 .ButtonNav{
     margin-top: auto;
     margin-bottom: auto;
@@ -39,6 +49,7 @@
     font-size: 30px;
     border-radius: 8px;
     padding: 10px;
+    cursor: pointer;
 }
 
 .ButtonNav:hover{

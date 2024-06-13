@@ -20,12 +20,13 @@
 }
 .Banner {
 	border-radius: 16px;
-	aspect-ratio: 5 / 2;
+	aspect-ratio: 5 / 3;
 	width: 100%;
 }
 .Banner img {
 	border-radius: 16px;
-	aspect-ratio: 5 / 2;
+	aspect-ratio: 5 / 3;
+	object-fit: cover;
 }
 .RightInfo {
 	width: 50%;
@@ -37,7 +38,7 @@
 }
 .InfoTitle {
 	font-family: Inter;
-	font-size: 24px;
+	font-size: 19px;
 	font-weight: 600;
 	line-height: 29px;
 	letter-spacing: 0em;
@@ -56,6 +57,7 @@
 }
 .BoxTime {
 	gap: 12px;
+	margin-bottom: 32px;
 }
 .Time {
 	font-family: Inter;
@@ -74,7 +76,7 @@
 	margin-left: auto;
 }
 .FooterInfo {
-	margin-top: 32px;
+	margin-top: auto;
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
@@ -215,7 +217,7 @@
 }
 .CardFeatureTitle {
 	font-family: Inter;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 600;
 	line-height: 24px;
 	letter-spacing: 0em;
@@ -441,6 +443,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: 14px;
 }
 .InputGroup {
 	gap: 10px;
@@ -459,10 +462,87 @@
 }
 .EditorContent {
 	/* padding: 30px 100px; */
-	max-width: 1050px;
+	max-width: 900px;
 	/* width: 100%; */
 	margin-left: auto;
 	margin-right: auto;
+}
+
+
+
+.BoxAddress{
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	margin-top: 12px;
+	color: #888;
+}
+.BoxAddress svg{
+	margin-top: auto;
+	margin-bottom: auto;
+	font-size: 25px;
+	color: #888;
+	flex: 0 0 16px;
+}
+.BoxAddress p{
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.Address {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 17px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #8b8b8b;
+	margin-bottom: 32px;
+	margin-top: 10px;
+}
+.BoxTime {
+	gap: 12px;
+	margin-top: 12px;
+	width: fit-content;
+}
+.Time {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 19px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #888;
+	display: flex;
+	flex-direction: row;
+	grid-area: 10px;
+	width: 100%;
+}
+.Time .Clock {
+	margin-left: auto;
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+}
+.Time .Date{
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	margin-right: 10px;
+}
+.Time .Clock svg, .Time .Date svg{
+	flex: 0 0 16px;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.Time .Date div{
+	margin-top: auto;
+	margin-bottom: auto;
+	flex: 0 0 calc(100% - 16px);
+}
+.Time .Clock div{
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
 

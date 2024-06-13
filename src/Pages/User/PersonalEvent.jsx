@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SidebarUser from "../../partials/SidebarUser";
 import HeaderUser from "../../partials/HeaderUser";
 import styles from "./styles/PersonalEvent.module.css";
+import stylesPopUpTicketIn from "../../partials/styles/PopUpTicketIn.module.css";
 import Toggler from "../../components/Toggler";
 import Event from "../../components/Event";
 import InfoCard from "../../partials/InfoCard";
@@ -232,6 +233,13 @@ const PersonalEvent = ({
           setActiveFn={() => {
             setPopUpState(false);
           }}
+          classNames={{
+            wrapper: [stylesPopUpTicketIn.PopUpWrapper],
+            modalDialog: [stylesPopUpTicketIn.ModalDialog],
+            popUpBox: [stylesPopUpTicketIn.PopUpBox],
+            header: [stylesPopUpTicketIn.PopUpHeader],
+            content: [stylesPopUpTicketIn.PopUpContent],
+          }}
           content={
             <PopUpPsEventDetail
               fnClose={() => {
@@ -388,11 +396,11 @@ const PersonalEvent = ({
           </div>
         )}
 
-        <h3 className={styles.Title} style={{ marginTop: 40 }}>
+        {/* <h3 className={styles.Title} style={{ marginTop: 40 }}>
           Get the most out of Agendakota
-        </h3>
+        </h3> */}
 
-        <div
+        {/* <div
           className={styles.Inline}
           style={{ marginTop: 20, marginBottom: 20 }}
         >
@@ -407,7 +415,7 @@ const PersonalEvent = ({
               target: "_blank",
             }}
           />
-        </div>
+        </div> */}
       </div>
     </>
   );

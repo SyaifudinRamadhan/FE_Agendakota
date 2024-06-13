@@ -7,6 +7,7 @@ import {
   BiGroup,
   BiPlus,
   BiPlusCircle,
+  BiX,
 } from "react-icons/bi";
 import Button from "../components/Button";
 import PopUp from "./PopUp";
@@ -276,6 +277,30 @@ const AddOrganization = ({
     <PopUp
       isActive={isPopUpAddOrg}
       setActiveFn={setPopUpAddOrg}
+      title=""
+      customTitle={
+        <div className={styles.HeaderBox}>
+          <div className={styles.HeaderTitle}>
+            <div className={styles.Title}>Create Organization</div>
+            <div className={styles.Desc}>Buat organisasi baru</div>
+          </div>
+          <div
+            className={styles.HeaderClose2}
+            onClick={() => {
+              setPopUpAddOrg(false);
+            }}
+          >
+            <BiX />
+          </div>
+        </div>
+      }
+      classNames={{
+        wrapper: [styles.PopUpWrapper],
+        modalDialog: [styles.ModalDialog],
+        popUpBox: [styles.PopUpBox],
+        header: [],
+        content: [styles.PopUpContent],
+      }}
       width="40%"
       content={
         errorState ? (

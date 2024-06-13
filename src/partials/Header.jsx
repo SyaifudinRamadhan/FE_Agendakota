@@ -129,14 +129,13 @@ const Header = ({
   return show ? (
     <>
       <header className={styles.HeaderMobile}>
-        <img
-          onClick={() => {
-            navigate("/");
-          }}
-          src="/images/logo.png"
-          alt="Logo Header"
-          className={`${styles.Logo} pointer`}
-        />
+        <Link to={"/"}>
+          <img
+            src="/images/logo.png"
+            alt="Logo Header"
+            className={`${styles.Logo} pointer`}
+          />
+        </Link>
         <div
           className={styles.Toggler}
           onClick={() => setMenuMobileActive(!isMenuMobileActive)}
@@ -220,14 +219,13 @@ const Header = ({
         )}
       </div>
       <header className={styles.Header}>
-        <img
-          onClick={() => {
-            navigate("/");
-          }}
-          src="/images/logo.png"
-          alt="Logo Header"
-          className={`${styles.Logo} pointer`}
-        />
+        <Link to={"/"}>
+          <img
+            src="/images/logo.png"
+            alt="Logo Header"
+            className={`${styles.Logo} pointer`}
+          />
+        </Link>
         <form className={styles.SearchForm} onSubmit={handleSearch}>
           <Search />
           <input
@@ -243,11 +241,19 @@ const Header = ({
           />
         </form>
         <nav className={styles.Menu}>
-          <Link to="/explore" className={styles.MenuItem}>
+          <Link
+            to="/explore"
+            className={styles.MenuItem}
+            style={{ textWrap: "nowrap" }}
+          >
             <Compass size={80} />
             Explore Events
           </Link>
-          <Link to="/create-event" className={styles.MenuItem}>
+          <Link
+            to="/create-event"
+            className={styles.MenuItem}
+            style={{ textWrap: "nowrap" }}
+          >
             <AddCircle />
             Create Event
           </Link>

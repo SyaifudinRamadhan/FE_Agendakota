@@ -61,7 +61,7 @@
 
 .Banner img {
 	width: 141px;
-	aspect-ratio: 5/2;
+	aspect-ratio: 5/3;
 	border-radius: 8px;
 	margin-bottom: 28px;
 }
@@ -70,7 +70,7 @@
 }
 .InfoTitle {
 	font-family: Inter;
-	font-size: 24px;
+	font-size: 19px;
 	font-weight: 600;
 	line-height: 29px;
 	letter-spacing: 0em;
@@ -93,7 +93,7 @@
 .Form {
 	gap: 27px;
 }
-.BoxTime {
+/* .BoxTime {
 	gap: 12px;
 }
 .Time {
@@ -111,7 +111,7 @@
 }
 .Time .Clock {
 	margin-left: auto;
-}
+} */
 .TitleInputImage {
 	font-weight: bold;
 }
@@ -253,7 +253,7 @@
 }
 .GroupTitle {
 	font-family: Inter;
-	font-size: 24px;
+	font-size: 19px;
 	font-weight: 700;
 }
 .SubTitle {
@@ -442,6 +442,120 @@
 	height: 30px;
 }
 /* ---------- */
+.PopUpWrapper{
+	display: block;
+  height: calc(100% - 71px);
+	padding-top: 30px;
+}
+.BoxAddress{
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	margin-top: 12px;
+	color: #888;
+}
+.BoxAddress svg{
+	margin-top: auto;
+	margin-bottom: auto;
+	font-size: 25px;
+	color: #888;
+	flex: 0 0 16px;
+}
+.BoxAddress p{
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.Address {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 17px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #8b8b8b;
+	margin-bottom: 32px;
+	margin-top: 10px;
+}
+.BoxTime {
+	gap: 12px;
+	margin-top: 12px;
+	width: fit-content;
+}
+.Time {
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 19px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #888;
+	display: flex;
+	flex-direction: row;
+	grid-area: 10px;
+	width: 100%;
+}
+.Time .Clock {
+	margin-left: auto;
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+}
+.Time .Date{
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	margin-right: 10px;
+}
+.Time .Clock svg, .Time .Date svg{
+	flex: 0 0 16px;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.Time .Date div{
+	margin-top: auto;
+	margin-bottom: auto;
+	flex: 0 0 calc(100% - 16px);
+}
+.Time .Clock div{
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+@media (max-width: 992px){
+	.PopUpWrapper{
+		padding: 0;
+	}
+	.ModalDialog{
+		margin: 0;
+		padding: 0;
+	}
+	.PopUpBox{
+		width: 100% !important;
+		height: 100% !important;
+		margin: 0;
+		border-radius: 0;
+	}
+	.PopUpContent{
+		height: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+	.PopUpHeader{
+		display: none;
+	}
+	.MainBox{
+		margin-top: 0;
+		height: 100%;
+	}
+	.CoverMain{
+		height: calc(100% - 105px);
+    overflow-y: auto;
+	}
+}
+
 
 @media (max-width: 768px) {
 	.SplitWrap {
@@ -455,3 +569,17 @@
 		width: 100%;
 	}
 }
+
+@media (max-width: 420px) {
+	/* .Time {
+		flex-direction: column;
+		gap: 5px;
+	}
+	.Time .Clock {
+		margin-left: unset;
+	} */
+	.Time .Clock {
+		margin-left: 5px;
+	}
+}
+

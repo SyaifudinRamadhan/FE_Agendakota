@@ -55,6 +55,8 @@
 .GoogleLoginBtn iframe {
 	margin: auto !important;
 	margin-top: 20px;
+	width: unset !important;
+	height: unset !important;
 }
 .ShadowBoxInput1 {
 	box-shadow: 0px 20px 15px 0px #ff799333;

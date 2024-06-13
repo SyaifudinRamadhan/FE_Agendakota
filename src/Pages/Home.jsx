@@ -54,8 +54,23 @@ const mainGetRequest = async ({ path = "" }) => {
 
 const handleBasicScroll = ({ type = "left", value = 10, idTarget = "" }) => {
   try {
+    let scrollVal = document.getElementById(idTarget).scrollLeft;
+
     document.getElementById(idTarget).scrollLeft +=
       type === "left" ? value : -value;
+
+    if (
+      scrollVal === document.getElementById(idTarget).scrollLeft &&
+      scrollVal > 0
+    ) {
+      document.getElementById(idTarget).scrollLeft = 0;
+    } else if (
+      scrollVal === document.getElementById(idTarget).scrollLeft &&
+      scrollVal === 0
+    ) {
+      document.getElementById(idTarget).scrollLeft =
+        document.getElementById(idTarget).scrollWidth;
+    }
   } catch (error) {}
 };
 
@@ -74,6 +89,7 @@ const Home = () => {
   const [selectedActivity, setSlcActivity] = useState(null);
   const [cities, setCities] = useState(null);
   const [showData, setShow] = useState(true);
+  const [openListCat, setOpenListCat] = useState(false);
 
   const navigate = useNavigate();
 
@@ -290,7 +306,7 @@ const Home = () => {
         </div>
         <section ref={popEventSection}>
           {events ? (
-            <h3 style={{ marginTop: 0 }}>
+            <h3 style={{ marginTop: 0, padding: 0 }}>
               Trending Events and Activities in Various Cities
             </h3>
           ) : (
@@ -303,48 +319,60 @@ const Home = () => {
               value={city}
               setValue={setCity}
               multiple={false}
-              showLimit={9}
+              showNav={true}
+              // showLimit={9}
             />
           ) : (
             <ChipSkeleton />
           )}
           <div className="pop-content">
             {events ? (
-              events.length === 0 ? (
-                <div
-                  style={{
-                    width: "100%",
-                    textAlign: "center",
-                    marginTop: "30px",
-                    fontSize: "20px",
-                    color: "#CA0C64",
-                    fontWeight: "bold",
-                  }}
-                  className="pop-blank"
-                >
-                  Data Event Belum Tersedia
+              <>
+                {events.length === 0 ? (
+                  <div
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: "30px",
+                      fontSize: "20px",
+                      color: "#CA0C64",
+                      fontWeight: "bold",
+                    }}
+                    className="pop-blank"
+                  >
+                    Data Event Belum Tersedia
+                  </div>
+                ) : (
+                  <Slider
+                    style={{
+                      flexDirection: "row",
+                      marginTop: 20,
+                      gap: 20,
+                      display: "flex",
+                    }}
+                    distanceCard={20}
+                    content={[
+                      ...events.map((event, e) => (
+                        <Event
+                          className={["event-card"]}
+                          style={{ maxWidth: "313px", flexBasis: "1000%" }}
+                          data={event}
+                          key={e}
+                        />
+                      )),
+                    ]}
+                  />
+                )}
+                <div className={styles.SelectedEvent}>
+                  <Button
+                    title={<div>Lihat Semuanya</div>}
+                    classes={[styles.ButtonBasic]}
+                    fnOnClick={() => {
+                      navigate("/explore");
+                    }}
+                  />
                 </div>
-              ) : (
-                <Slider
-                  style={{
-                    flexDirection: "row",
-                    marginTop: 20,
-                    gap: 20,
-                    display: "flex",
-                  }}
-                  distanceCard={20}
-                  content={[
-                    ...events.map((event, e) => (
-                      <Event
-                        className={["event-card"]}
-                        style={{ maxWidth: "313px", flexBasis: "1000%" }}
-                        data={event}
-                        key={e}
-                      />
-                    )),
-                  ]}
-                />
-              )
+              </>
             ) : (
               <Slider
                 style={{
@@ -491,7 +519,9 @@ const Home = () => {
         specialDayEvent.events &&
         specialDayEvent.events.length > 0 ? (
           <section>
-            <h3 style={{ marginTop: 0 }}>{specialDayEvent.data.title}</h3>
+            <h3 style={{ marginTop: 0, padding: 0 }}>
+              {specialDayEvent.data.title}
+            </h3>
             <Slider
               style={{
                 flexDirection: "row",
@@ -508,6 +538,9 @@ const Home = () => {
               <Button
                 title={<div>Lihat Semuanya</div>}
                 classes={[styles.ButtonBasic]}
+                fnOnClick={() => {
+                  navigate("/special-day");
+                }}
               />
             </div>
           </section>
@@ -554,7 +587,9 @@ const Home = () => {
         selectedEvent.events &&
         selectedEvent.events.length > 0 ? (
           <section>
-            <h3 style={{ marginTop: 0 }}>{selectedEvent.data.title}</h3>
+            <h3 style={{ marginTop: 0, padding: 0 }}>
+              {selectedEvent.data.title}
+            </h3>
             <Slider
               style={{
                 flexDirection: "row",
@@ -571,6 +606,9 @@ const Home = () => {
               <Button
                 title={<div>Lihat Semuanya</div>}
                 classes={[styles.ButtonBasic]}
+                fnOnClick={() => {
+                  navigate("/selected-events");
+                }}
               />
             </div>
           </section>
@@ -601,10 +639,17 @@ const Home = () => {
         <section>
           {categories && topicsEvents ? (
             <>
-              <h3 style={{ marginTop: 0, marginBottom: "10px" }}>
+              <h3 style={{ marginTop: 0, padding: 0, marginBottom: "10px" }}>
                 Temukan Berbagai Kategori Event
               </h3>
-              <div className={styles.CategoryArea}>
+              <div
+                className={styles.CategoryArea}
+                style={
+                  openListCat
+                    ? { maxHeight: "unset", paddingBottom: "10px" }
+                    : {}
+                }
+              >
                 {categories.map((category, c) => {
                   if (
                     category.name != "Daily Activities" &&
@@ -680,6 +725,18 @@ const Home = () => {
                   })}
                 </div>
               </div>
+
+              <div className={styles.SelectedEvent}>
+                <Button
+                  title={
+                    <div>{openListCat ? "Sembunyikan" : "Lihat Semuanya"}</div>
+                  }
+                  classes={[styles.ButtonBasic]}
+                  fnOnClick={() => {
+                    setOpenListCat(!openListCat);
+                  }}
+                />
+              </div>
             </>
           ) : (
             <>
@@ -720,7 +777,7 @@ const Home = () => {
         <section>
           {categories && topicsAct ? (
             <>
-              <h3 style={{ marginTop: 0, marginBottom: "10px" }}>
+              <h3 style={{ marginTop: 0, padding: 0, marginBottom: "10px" }}>
                 Temukan Berbagai Kategori Aktivitas
               </h3>
               <div className={styles.CategoryArea}>
@@ -806,6 +863,15 @@ const Home = () => {
                   })}
                 </div>
               </div>
+              {/* <div className={styles.SelectedEvent}>
+                <Button
+                  title={<div>Lihat Semuanya</div>}
+                  classes={[styles.ButtonBasic]}
+                  fnOnClick={() => {
+                    navigate("/activity-categories");
+                  }}
+                />
+              </div> */}
             </>
           ) : (
             <>
@@ -847,7 +913,9 @@ const Home = () => {
         selectedActivity.events &&
         selectedActivity.events.length > 0 ? (
           <section>
-            <h3 style={{ marginTop: 0 }}>{selectedActivity.data.title}</h3>
+            <h3 style={{ marginTop: 0, padding: 0 }}>
+              {selectedActivity.data.title}
+            </h3>
             {/* <Chip
 						options={[
 							"Hiburan",
@@ -877,6 +945,9 @@ const Home = () => {
               <Button
                 title={<div>Lihat Semuanya</div>}
                 classes={[styles.ButtonBasic]}
+                fnOnClick={() => {
+                  navigate("/selected-activities");
+                }}
               />
             </div>
           </section>
@@ -907,7 +978,7 @@ const Home = () => {
         <section>
           {cities ? (
             <>
-              <h3 style={{ marginTop: 0 }}>Event di kota lain</h3>
+              <h3 style={{ marginTop: 0, padding: 0 }}>Event di kota lain</h3>
               <Slider
                 style={{
                   flexDirection: "row",
@@ -956,7 +1027,10 @@ const Home = () => {
           <div className={`${styles.JumboTop} ${styles.AbsoluteBg}`} />
           <div className={styles.JumboSec}>
             <div className={styles.JumboSecL}>
-              <div className={styles.JumboTitle}>
+              <div
+                className={styles.JumboTitle}
+                style={{ justifyContent: "left" }}
+              >
                 Atur dan buat event meriahmu sendiri!
               </div>
               <div className={styles.JumboDescription}>
@@ -968,7 +1042,7 @@ const Home = () => {
                 icon={<BiPlusCircle />}
                 classes={[styles.ButtonBasic]}
                 style={{ width: "unset", marginRight: "auto" }}
-                onClick={() => navigate("/create-event")}
+                fnOnClick={() => navigate("/create-event")}
               />
             </div>
             <div className={styles.JumboSecR}>
@@ -993,7 +1067,10 @@ const Home = () => {
               />
             </div>
             <div className={styles.Col2}>
-              <div className={styles.JumboTitle}>
+              <div
+                className={styles.JumboTitle}
+                style={{ justifyContent: "left" }}
+              >
                 Amati penjualan tiket dari eventmu dengan mudah!
               </div>
               <div className={styles.JumboDescription}>
@@ -1005,7 +1082,7 @@ const Home = () => {
                 icon={<BiPlusCircle />}
                 classes={[styles.ButtonBasic]}
                 style={{ width: "unset", marginRight: "auto" }}
-                onClick={() => navigate("/create-event")}
+                fnOnClick={() => navigate("/create-event")}
               />
             </div>
           </div>

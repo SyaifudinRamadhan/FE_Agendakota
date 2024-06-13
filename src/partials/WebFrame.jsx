@@ -30,6 +30,9 @@ import EventDashboard from "../Pages/Organizer/EventManagement/EventDashboard";
 import ErrorPage from "./ErrorPage";
 import { useSelector } from "react-redux";
 import Blank from "../Pages/Blank";
+import Category from "../Pages/Category";
+import SpecialPage from "../Pages/SpecialPage";
+import TermConditions from "../Pages/TermConditions";
 
 // let firstLoad = true;
 
@@ -140,6 +143,10 @@ const WebFrame = () => {
   const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  useEffect(() => {
     changeFitSidebarContent();
 
     if (
@@ -147,6 +154,12 @@ const WebFrame = () => {
       window.location.pathname === "/auth-user" ||
       window.location.pathname === "/register-user" ||
       window.location.pathname === "/create-event" ||
+      window.location.pathname === "/categories" ||
+      window.location.pathname === "/special-day" ||
+      window.location.pathname === "/selected-events" ||
+      window.location.pathname === "/selected-activities" ||
+      window.location.pathname === "/activity-categories" ||
+      window.location.pathname === "/term-conditions" ||
       (window.location.pathname.indexOf("/event/") === 0 &&
         window.location.pathname.split("/event/")[1] !== "" &&
         window.location.pathname.split("/event/")[1] !== undefined) ||
@@ -312,7 +325,25 @@ const WebFrame = () => {
           <Routes>
             {/* Routes basic */}
             <Route path="/" element={<Home />} />
+            <Route path="/categories" element={<Category />} />
+            <Route
+              path="/activity-categories"
+              element={<Category type="activities" />}
+            />
             <Route path="/explore" element={<Explore />} />
+            <Route
+              path="/special-day"
+              element={<SpecialPage type={"special-day"} />}
+            />
+            <Route
+              path="/selected-events"
+              element={<SpecialPage type={"selected-event"} />}
+            />
+            <Route
+              path="/selected-activities"
+              element={<SpecialPage type={"selected-activity"} />}
+            />
+            <Route path="/term-conditions" element={<TermConditions />} />
             <Route
               path="/organization-profile/:id"
               element={<OrganizationDetail />}

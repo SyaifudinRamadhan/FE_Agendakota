@@ -19,6 +19,7 @@
 }
 .LogoArea {
 	width: 25%;
+	flex-direction: row;
 }
 .Right {
 	display: flex;

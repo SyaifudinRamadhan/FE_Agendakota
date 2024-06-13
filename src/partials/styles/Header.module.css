@@ -27,6 +27,10 @@
 	align-items: center;
 	padding: 0px 20px;
 }
+.SearchForm svg{
+	flex-grow: 0;
+	flex-shrink: 0;
+}
 .SearchInput {
 	display: flex;
 	flex-grow: 1;
@@ -34,6 +38,7 @@
 	border: none;
 	outline: none;
 	font-size: 15px;
+	width: 100%;
 }
 .SearchInput:focus {
 	border: none !important;

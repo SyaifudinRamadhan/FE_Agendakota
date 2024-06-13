@@ -37,3 +37,58 @@
 .DangerInput > *::placeholder{
 	color: #d29a9a !important;
 }
+.HeaderBox{
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	padding-left: 19px;
+	padding-right: 19px;
+	width: 100%;
+}
+.HeaderTitle{
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+.Title{
+	font-size: 18px;
+	font-weight: 600;
+}
+.Desc{
+	font-size: 14px;
+	font-weight: 500;
+	color: #888;
+}
+.HeaderClose2{
+	margin-left: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	display: flex;
+	cursor: pointer;
+}
+.HeaderClose2 svg{
+	margin: auto;
+	width: 25px;
+	height: 25px;
+}
+
+@media (max-width: 772px){
+	.PopUpWrapper{
+		padding: 0;
+	}
+	.ModalDialog{
+		margin: 0;
+		padding: 0;
+	}
+	.PopUpBox{
+		width: 100% !important;
+		height: 100% !important;
+		margin: 0;
+		border-radius: 0;
+	}
+	.PopUpContent{
+		height: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+}

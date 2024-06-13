@@ -7,11 +7,15 @@ import InputImage5 from "../components/InputImage5";
 import InputToogle from "../components/InputToogle";
 import FieldBox from "../components/FieldBox";
 import {
+  BiCalendar,
+  BiCalendarX,
   BiCheckCircle,
   BiChevronDown,
   BiCopy,
   BiError,
   BiInfoCircle,
+  BiMap,
+  BiTime,
 } from "react-icons/bi";
 import Button from "../components/Button";
 import Chip from "../components/Chip";
@@ -25,7 +29,7 @@ import QRCode from "qrcode.react";
 import { InputGroup } from "react-bootstrap";
 import InputLabeled from "../components/InputLabeled";
 import InputCheckRadio from "../components/InputCheckRadio";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const basicForm = {
@@ -150,6 +154,7 @@ const ReviewContent = ({
   const [trxMethod, setTrxMethod] = useState("");
   const [showTrxMethods, setShowTrxMethods] = useState(false);
   const [numberFormat, setNumFormat] = useState(Intl.NumberFormat("id-ID"));
+  const accSnk = useRef();
 
   // ref data survey fields
   const formFields = new Array(dataEvent.custom_fields.length)
@@ -161,7 +166,6 @@ const ReviewContent = ({
   const prepareTrxNFormData = () => {
     let failedIndicator = false;
     // create data survey fields
-
     const answers = {
       event_id: dataEvent.id,
       survey_ans: [],
@@ -169,7 +173,16 @@ const ReviewContent = ({
     };
     for (let index = 0; index < formFields.length; index++) {
       let field = formFields[index];
-      if (
+      if (!accSnk.current || !accSnk.current.checked) {
+        setAlert({
+          state: true,
+          type: "danger",
+          content:
+            'Anda wajib mencentang form syarat dan ketentuan, diatas tombol "Lanjutkan Ke Pembayaran"',
+        });
+        failedIndicator = true;
+        index = formFields.length;
+      } else if (
         (formTypeState[index].required &&
           !(formTypeState[index].type === "file"
             ? field.current.files.length
@@ -320,7 +333,7 @@ const ReviewContent = ({
         </div>
         <div className={styles.Info}>
           <h5 className={styles.InfoTitle}>{dataEvent.name}</h5>
-          <div
+          {/* <div
             className={styles.InfoLocation}
             dangerouslySetInnerHTML={{ __html: dataEvent.location }}
           ></div>
@@ -350,6 +363,97 @@ const ReviewContent = ({
                 // return <p className={styles.Time}>{avldt}</p>;
                 return (
                   <div id={index} className={styles.Time}>
+                    <p className={styles.Date}>
+                      {config.dayEnToInd[avldt.day]}
+                    </p>
+                    <p className={styles.Clock}>
+                      {avldt.start_time.slice(0, 5).toString()}
+                      {" - "}
+                      {avldt.max_limit_time.slice(0, 5)} WIB
+                    </p>
+                  </div>
+                );
+              })
+            )}
+          </div> */}
+          <div className={styles.BoxAddress}>
+            <BiMap />
+            <p className={styles.Address}>
+              {dataEvent.location.split("<p>").length === 1
+                ? dataEvent.location +
+                  ` ${dataEvent.city}, ${dataEvent.province}`
+                : dataEvent.location.split("<p>")[1].split("</p>")[0] +
+                  ` ${dataEvent.city}, ${dataEvent.province}`}
+            </p>
+          </div>
+          <div className={styles.BoxTime}>
+            {dataEvent.category !== "Attraction" &&
+            dataEvent.category !== "Daily Activities" &&
+            dataEvent.category !== "Tour Travel (recurring)" ? (
+              <>
+                {start && end ? (
+                  <>
+                    {start.split("|")[0] === end.split("|")[0] ? (
+                      <>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{start.split("|")[0]}</div>
+                          </div>
+                        </div>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiTime />
+                            <div>
+                              {start.split("|")[1]} - {end.split("|")[1]}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{start.split("|")[0]}</div>
+                          </div>
+                          <div className={styles.Clock}>
+                            {/* <BiTime /> */}
+                            <div>&nbsp;|&nbsp;</div>
+                            <div>{start.split("|")[1]}</div>
+                          </div>
+                        </div>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{end.split("|")[0]}</div>
+                          </div>
+                          <div className={styles.Clock}>
+                            {/* <BiTime /> */}
+                            <div>&nbsp;|&nbsp;</div>
+                            <div>{end.split("|")[1]}</div>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </>
+            ) : (
+              dataEvent.available_days.map((avldt, index) => {
+                // return <p className={styles.Time}>{avldt}</p>;
+                return (
+                  <div id={index} className={styles.Time}>
+                    <BiCalendarX
+                      style={{
+                        fontSize: "16px",
+                        marginRight: "10px",
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                      }}
+                    />
                     <p className={styles.Date}>
                       {config.dayEnToInd[avldt.day]}
                     </p>
@@ -634,8 +738,39 @@ const ReviewContent = ({
             <></>
           )}
 
+          <InputCheckRadio
+            id={"checksnk"}
+            type={"checkbox"}
+            refData={accSnk}
+            label={
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "5px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <span>Saya setuju dengan </span>
+                <span>
+                  <Link to={"/term-conditions"} target="_blank">
+                    Syarat & Ketentuan
+                  </Link>
+                </span>{" "}
+                <span>yang berlaku di agendakota.id </span>
+                <span style={{ color: "red" }}>(required)</span>
+              </div>
+            }
+            style={{
+              border: "none",
+              boxShadow: "none",
+              height: "unset",
+              marginTop: "48px",
+            }}
+          />
+
           <Button
-            style={{ marginTop: "48px", width: "100%" }}
+            style={{ marginTop: "10px", width: "100%" }}
             center
             title={"Lanjutkan ke Pembayaran"}
             fnOnClick={prepareTrxNFormData}
@@ -750,7 +885,7 @@ const TrxContent = ({
         </div>
         <div className={styles.Info}>
           <h5 className={styles.InfoTitle}>{dataEvent.name}</h5>
-          <div
+          {/* <div
             className={styles.InfoLocation}
             dangerouslySetInnerHTML={{ __html: dataEvent.location }}
           ></div>
@@ -780,6 +915,97 @@ const TrxContent = ({
                 // return <p className={styles.Time}>{avldt}</p>;
                 return (
                   <div id={index} className={styles.Time}>
+                    <p className={styles.Date}>
+                      {config.dayEnToInd[avldt.day]}
+                    </p>
+                    <p className={styles.Clock}>
+                      {avldt.start_time.slice(0, 5).toString()}
+                      {" - "}
+                      {avldt.max_limit_time.slice(0, 5)} WIB
+                    </p>
+                  </div>
+                );
+              })
+            )}
+          </div> */}
+          <div className={styles.BoxAddress}>
+            <BiMap />
+            <p className={styles.Address}>
+              {dataEvent.location.split("<p>").length === 1
+                ? dataEvent.location +
+                  ` ${dataEvent.city}, ${dataEvent.province}`
+                : dataEvent.location.split("<p>")[1].split("</p>")[0] +
+                  ` ${dataEvent.city}, ${dataEvent.province}`}
+            </p>
+          </div>
+          <div className={styles.BoxTime}>
+            {dataEvent.category !== "Attraction" &&
+            dataEvent.category !== "Daily Activities" &&
+            dataEvent.category !== "Tour Travel (recurring)" ? (
+              <>
+                {start && end ? (
+                  <>
+                    {start.split("|")[0] === end.split("|")[0] ? (
+                      <>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{start.split("|")[0]}</div>
+                          </div>
+                        </div>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiTime />
+                            <div>
+                              {start.split("|")[1]} - {end.split("|")[1]}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{start.split("|")[0]}</div>
+                          </div>
+                          <div className={styles.Clock}>
+                            {/* <BiTime /> */}
+                            <div>&nbsp;|&nbsp;</div>
+                            <div>{start.split("|")[1]}</div>
+                          </div>
+                        </div>
+                        <div className={styles.Time}>
+                          <div className={styles.Date}>
+                            <BiCalendar />
+                            <div>{end.split("|")[0]}</div>
+                          </div>
+                          <div className={styles.Clock}>
+                            {/* <BiTime /> */}
+                            <div>&nbsp;|&nbsp;</div>
+                            <div>{end.split("|")[1]}</div>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </>
+            ) : (
+              dataEvent.available_days.map((avldt, index) => {
+                // return <p className={styles.Time}>{avldt}</p>;
+                return (
+                  <div id={index} className={styles.Time}>
+                    <BiCalendarX
+                      style={{
+                        fontSize: "16px",
+                        marginRight: "10px",
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                      }}
+                    />
                     <p className={styles.Date}>
                       {config.dayEnToInd[avldt.day]}
                     </p>
@@ -1285,11 +1511,17 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
           setActiveFn={() => {
             setAlert({ state: false, type: "", content: "" });
           }}
-          title="Notifikasi Transaksi"
+          title={
+            alert.type === "info"
+              ? "Syarat & Ketentuan"
+              : "Notifikasi Transaksi"
+          }
           customStyleWrapper={{ height: "calc(100% - 71px)", zIndex: "999" }}
           content={
             <div className={styles.PopUpAlert}>
-              {alert.type === "danger" ? (
+              {alert.type === "info" ? (
+                <></>
+              ) : alert.type === "danger" ? (
                 <BiError color="#ca0c64" />
               ) : alert.type === "warning" ? (
                 <BiInfoCircle color="yellow" />
@@ -1297,12 +1529,16 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
                 <BiCheckCircle color="green" />
               )}
               <div className={styles.AlertContent}>{alert.content}</div>
-              <Button
-                title={"Ok"}
-                fnOnClick={() => {
-                  setAlert({ state: false, type: "", content: "" });
-                }}
-              />
+              {alert.type === "info" ? (
+                <></>
+              ) : (
+                <Button
+                  title={"Ok"}
+                  fnOnClick={() => {
+                    setAlert({ state: false, type: "", content: "" });
+                  }}
+                />
+              )}
             </div>
           }
           width="45%"
@@ -1314,7 +1550,13 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
       <PopUp
         isActive={isLogin}
         setActiveFn={fnSetActive}
-        customStyleWrapper={{ height: "calc(100% - 71px)", paddingTop: "30px" }}
+        classNames={{
+          wrapper: [styles.PopUpWrapper],
+          modalDialog: [styles.ModalDialog],
+          popUpBox: [styles.PopUpBox],
+          header: [],
+          content: [styles.PopUpContent],
+        }}
         title=""
         customTitle={<HeaderPopUp />}
         content={

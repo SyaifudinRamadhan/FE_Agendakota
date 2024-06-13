@@ -13,6 +13,7 @@ import { BiEnvelope, BiKey } from "react-icons/bi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch } from "react-redux";
 import { getAppData } from "../actions/appdata";
+import Footer from "../partials/Footer";
 
 const dummyLoad = () => {
   return new Promise((resolve, reject) => {

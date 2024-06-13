@@ -1980,6 +1980,12 @@ const EditorAddEvtAct = ({
     }
   }, [firtsLoad]);
 
+  useEffect(() => {
+    if (openOrganizerWindow && typeEditor != "inner") {
+      window.scrollTo(0, 0);
+    }
+  }, [openOrganizerWindow]);
+
   return (
     <>
       {openOrganizerWindow && typeEditor != "inner" ? (
@@ -2544,7 +2550,7 @@ const EditorAddEvtAct = ({
             <div className={styles.ColSplit2}>
               <InputImage4
                 style={{
-                  aspectRatio: "5/2",
+                  aspectRatio: "5/3",
                   height: "unset",
                   backgroundColor: "#fff",
                 }}
@@ -2554,7 +2560,7 @@ const EditorAddEvtAct = ({
                       Add Cover Picture *
                     </div>
                     <div className={styles.SubTitleInputImage}>
-                      5:2 PNG or JPG Max 2 MB
+                      5:3 PNG or JPG Max 2 MB
                     </div>
                   </div>
                 }
@@ -2674,7 +2680,7 @@ const EditorAddEvtAct = ({
                   {snk === "" ? "Tambahkan" : "Lihat & Edit"}
                 </div>
               </FieldBox>
-              {!eventId &&
+              {/* {!eventId &&
               forEvtAct !== "Onsite Event" &&
               forEvtAct !== "Online Event" &&
               forEvtAct !== "Hybrid Event" ? (
@@ -2695,7 +2701,7 @@ const EditorAddEvtAct = ({
                 </FieldBox>
               ) : (
                 <></>
-              )}
+              )} */}
             </div>
             <div className={styles.ColSplit2}>
               {windowWidth > 772 ? (
@@ -3036,7 +3042,21 @@ const EditorAddEvtAct = ({
                   </div>
                 </FieldBox>
               ) : (
-                <></>
+                <FieldBox
+                  iconSvg={<BiCard />}
+                  style={{ backgroundColor: "#fff" }}
+                  label={<p>Produk/Layanan</p>}
+                >
+                  <div
+                    className={styles.CmdField2}
+                    onClick={() => {
+                      setPopUpActive(true);
+                      setPopUpTitle("Tickets");
+                    }}
+                  >
+                    {tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
+                  </div>
+                </FieldBox>
               )}
             </div>
           </div>

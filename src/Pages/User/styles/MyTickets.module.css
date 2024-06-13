@@ -23,6 +23,7 @@
 	box-shadow: 0 0 18px #eaeaea;
 	width: 100%;
 	max-width: 434.83px;
+	background-color: #fff;
 }
 .TicketDivider {
 	position: relative;
@@ -64,7 +65,7 @@
 	padding: 16px 0px 12px 20px;
 }
 .CoverBox img {
-	aspect-ratio: 5/2;
+	aspect-ratio: 5/3;
 	width: 100%;
 	margin: auto;
 	border-radius: 4px;
@@ -177,4 +178,26 @@
 		)
 		/* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
 	/* radial-gradient(43.61% 43.61% at 50% 50%, color(display-p3 0.792 0.047 0.392 / 0.1) 0%, color(display-p3 0.792 0.047 0.392 / 0) 100%) warning: gradient uses a rotation that is not supported by CSS and may not behave as expected; */
+}
+.NavShowItemBox{
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+.NavShowItem{
+	margin-left: auto;
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	font-size: 14px;
+	margin-top: auto;
+	margin-bottom: auto;
+	cursor: pointer;
+	font-weight: 600;
+}
+.NavShowItem svg{
+	margin-top: auto;
+	margin-bottom: auto;
+	width: 20px;
+	height: 20px;
 }

@@ -1,0 +1,120 @@
+
+h3{
+  padding: 0;
+  margin-top: 20px;
+  font-size: 16px;
+}
+h3 > *{
+  font-size: 16px;
+}
+h2{
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+h2 > *{
+  font-size: 20px;
+}
+ol{
+  margin-left: 30px;
+}
+a{
+  text-decoration: none;
+}
+.NavigationPanel {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 16.94px;
+	/* margin-left: 18px; */
+	/* margin-right: 18px; */
+  margin-bottom: 30px;
+}
+h3{
+  margin-bottom: 20px;
+}
+.NavItemSecondary {
+	color: #888888 !important;
+}
+.NavItemSecondary a {
+	color: #888888 !important;
+	text-decoration: none;
+}
+.NavItemPrimary {
+	color: #000 !important;
+}
+.NavItemPrimary a {
+	color: #000 !important;
+	text-decoration: none;
+}
+.MainBox{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.Sidebar{
+  width: 150px;
+  height: auto;
+}
+.Menu{
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 90px;
+}
+.MenuItem{
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+  text-decoration: none;
+  color: #888;
+}
+.MenuItemActive{
+  font-weight: 600;
+  color: #000;
+  border-left: 2px solid #ca0c64;
+}
+.MainContent{
+  width: calc(100% - 170px);
+}
+.Header{
+  margin-bottom: 30px;
+}
+.MenuCollpase{
+  display: none;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  background-color: #fff;
+}
+.MainBox div{
+  font-size: 14px;
+}
+/* div{
+  font-size: 14px;
+} */
+
+@media(max-width: 560px){
+  .Sidebar{
+    display: none;
+  }
+  .MainContent{
+    width: 100%;
+  }
+  .Header{
+    margin-bottom: 0px;
+  }
+  .MenuCollpase{
+    display: flex;
+    position: sticky;
+    top: 70px;
+    padding-top: 20px;
+    margin-bottom: 20px;
+  }
+  .MenuItemActive{
+    border-left: none;
+    border-bottom: 2px solid #ca0c64;
+  }
+}

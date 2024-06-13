@@ -21,6 +21,7 @@ import axios from "axios";
 import { useLocation, Link } from "react-router-dom";
 import InputToogle from "../components/InputToogle";
 import Select from "react-select";
+import Footer from "../partials/Footer";
 
 const handleSuccess = (res) => {
   return {
@@ -491,7 +492,9 @@ const Explore = () => {
             ? `?topic[]=${topicParam}&&topic_delimiter=~!^!~`
             : null;
         // console.log(strParams, "STR PARAMS");
-        setSelectedCategories(catParam ? [catParam] : []);
+        setSelectedCategories(
+          catParam ? [catParam.replaceAll("%20", " ")] : []
+        );
         setSelectedTopics(topicParam ? [topicParam] : []);
         setSelectedCity(cityParam ? cityParam : "");
       }
@@ -887,6 +890,7 @@ const Explore = () => {
           </div>
         </>
       )}
+      <Footer />
     </div>
   );
 };

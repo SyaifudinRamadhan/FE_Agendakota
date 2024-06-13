@@ -10,7 +10,7 @@
 }
 
 body {
-	font-family: "Inter", sans-serif;
+	font-family: "Inter", sans-serif !important;
 	font-weight: 400;
 	background-color: #fff;
 }
@@ -20,7 +20,7 @@ div {
 	box-sizing: border-box;
 }
 section {
-	padding: 50px;
+	padding: 50px 90px;
 }
 h3 {
 	font-size: 24px;
@@ -200,6 +200,12 @@ table td {
 	display: none !important;
 }
 
+@media (min-width: 1366px) {
+	section {
+		padding: 50px calc(90px + (100% - 1366px) / 2);
+	}
+}
+
 @media (max-width: 992px) {
 	section {
 		padding: 20px;
@@ -218,5 +224,11 @@ table td {
 		left: 0px !important;
 		right: 0px;
 		z-index: 2;
+	}
+}
+
+@media (max-width: 760px){
+	.pop-blank{
+		font-size: 14px !important;
 	}
 }

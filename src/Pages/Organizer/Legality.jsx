@@ -694,7 +694,7 @@ const FormLayout = ({
           type={"checkbox"}
           refData={fieldLegality.confirmTrue}
           label={
-            "Dengan ini saya menyatakan dengan sesungguhnya bahwa semua informasi yang disampaikan dalam seluruh lampiran-lampirannya ini adalah benar adanya. Apabila diketemukan dan/atau dibuktikan adanya kesalahan/penipuan/pemalsuan atas informasi yang saya sampaikan PT. AGENDAKOTA INDONESIA (agendakota) dibebaskan dari setiap akibat dari penggunaan data/dokumen tersebut."
+            "Dengan ini saya menyatakan dengan sesungguhnya bahwa semua informasi yang disampaikan dalam seluruh lampiran-lampirannya ini adalah benar adanya. Apabila diketemukan dan/atau dibuktikan adanya kesalahan/penipuan/pemalsuan atas informasi yang saya sampaikan, PT. AGENDAKOTA INDONESIA (agendakota) dibebaskan dari setiap akibat dari penggunaan data/dokumen tersebut."
           }
           className={[styles2.TermBox]}
         />

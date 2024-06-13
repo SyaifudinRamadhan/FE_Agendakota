@@ -3,6 +3,7 @@ import styles from "./styles/FrontCreateEvent.module.css";
 import styles2 from "./Organizer/styles/CreateEvtAct.module.css";
 import PopUp from "../partials/PopUp";
 import EditorAddEvtAct from "../partials/EditorAddEvtAct";
+import Footer from "../partials/Footer";
 
 const FrontCreateEvent = ({ isLoginBasic }) => {
   const cards = [
@@ -114,6 +115,10 @@ const FrontCreateEvent = ({ isLoginBasic }) => {
   }, [isLoginBasic]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [openEditor]);
+
+  useEffect(() => {
     document.title = "Create Event - Agendakota";
   });
 
@@ -142,79 +147,81 @@ const FrontCreateEvent = ({ isLoginBasic }) => {
             title="Informasi"
             content={infoContent}
           />
-          <div className={styles2.Title}>Create New Event / Activity</div>
-          <div className={styles2.SubTitle}>
-            Choose what type of event do you want to create
-          </div>
-          <div className={styles2.ContentCard}>
-            {cards.map((card) => (
-              <div
-                className={`${styles2.CardBox} ${
-                  card.active === false ? styles2.Disabled : ""
-                }`}
-                onClick={() => {
-                  card.active
-                    ? setOpenEditor(
-                        card.title === "Tour Travel"
-                          ? "Tour Travel (recurring)"
-                          : card.title
-                      )
-                    : setOpenEditor(null);
-                }}
-              >
-                {card.active === false ? (
-                  <div className={styles2.Badge}>Coming Soon</div>
-                ) : (
-                  <></>
-                )}
+          <section style={{ paddingTop: 0 }}>
+            <div className={styles2.Title}>Create New Event / Activity</div>
+            <div className={styles2.SubTitle}>
+              Choose what type of event do you want to create
+            </div>
+            <div className={styles2.ContentCard}>
+              {cards.map((card) => (
                 <div
-                  className={styles2.CardContainer}
-                  style={{ opacity: card.active ? 1 : 0.5 }}
+                  className={`${styles2.CardBox} ${
+                    card.active === false ? styles2.Disabled : ""
+                  }`}
+                  onClick={() => {
+                    card.active
+                      ? setOpenEditor(
+                          card.title === "Tour Travel"
+                            ? "Tour Travel (recurring)"
+                            : card.title
+                        )
+                      : setOpenEditor(null);
+                  }}
                 >
-                  <div className={styles2.IconCard}>
-                    <img src={card.icon} alt="" srcset="" />
+                  {card.active === false ? (
+                    <div className={styles2.Badge}>Coming Soon</div>
+                  ) : (
+                    <></>
+                  )}
+                  <div
+                    className={styles2.CardContainer}
+                    style={{ opacity: card.active ? 1 : 0.5 }}
+                  >
+                    <div className={styles2.IconCard}>
+                      <img src={card.icon} alt="" srcset="" />
+                    </div>
+                    <div className={styles2.TitleCard}>{card.title}</div>
+                    <div className={styles2.Info}>{card.content}</div>
                   </div>
-                  <div className={styles2.TitleCard}>{card.title}</div>
-                  <div className={styles2.Info}>{card.content}</div>
                 </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginTop: "30px", marginBottom: "-10px" }}>OR</div>
-          <div className={styles2.ContentCard}>
-            {cards2.map((card) => (
-              <div
-                className={`${styles2.CardBox} ${
-                  card.active === false ? styles2.Disabled : ""
-                }`}
-                onClick={() => {
-                  card.active
-                    ? setOpenEditor(
-                        card.title === "Tour Travel"
-                          ? "Tour Travel (recurring)"
-                          : card.title
-                      )
-                    : setOpenEditor(null);
-                }}
-              >
-                {card.active === false ? (
-                  <div className={styles2.Badge}>Coming Soon</div>
-                ) : (
-                  <></>
-                )}
+              ))}
+            </div>
+            <div style={{ marginTop: "30px", marginBottom: "-10px" }}>OR</div>
+            <div className={styles2.ContentCard}>
+              {cards2.map((card) => (
                 <div
-                  className={styles2.CardContainer}
-                  style={{ opacity: card.active ? 1 : 0.5 }}
+                  className={`${styles2.CardBox} ${
+                    card.active === false ? styles2.Disabled : ""
+                  }`}
+                  onClick={() => {
+                    card.active
+                      ? setOpenEditor(
+                          card.title === "Tour Travel"
+                            ? "Tour Travel (recurring)"
+                            : card.title
+                        )
+                      : setOpenEditor(null);
+                  }}
                 >
-                  <div className={styles2.IconCard}>
-                    <img src={card.icon} alt="" srcset="" />
+                  {card.active === false ? (
+                    <div className={styles2.Badge}>Coming Soon</div>
+                  ) : (
+                    <></>
+                  )}
+                  <div
+                    className={styles2.CardContainer}
+                    style={{ opacity: card.active ? 1 : 0.5 }}
+                  >
+                    <div className={styles2.IconCard}>
+                      <img src={card.icon} alt="" srcset="" />
+                    </div>
+                    <div className={styles2.TitleCard}>{card.title}</div>
+                    <div className={styles2.Info}>{card.content}</div>
                   </div>
-                  <div className={styles2.TitleCard}>{card.title}</div>
-                  <div className={styles2.Info}>{card.content}</div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </section>
           {/* <div
             className={styles2.OpenNote}
             onClick={() => {
@@ -225,6 +232,7 @@ const FrontCreateEvent = ({ isLoginBasic }) => {
           </div> */}
         </div>
       )}
+      <Footer />
     </div>
   );
 };

@@ -185,6 +185,11 @@
 .DangerInput > *::placeholder{
 	color: #d29a9a !important;
 }
+@media (max-width: 992px){
+	.DFlexRow{
+		margin-top: 20px;
+	}
+}
 @media (max-width: 772px) {
 	.BtnBox {
 		display: none;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles/MyTickets.module.css";
+import stylesPopUpTicketIn from "../../partials/styles/PopUpTicketIn.module.css";
 import Button from "../../components/Button";
 import PopUp from "../../partials/PopUp";
 import PopUpTrxInDetail from "../../partials/PopUpTrxInDetail";
@@ -9,6 +10,7 @@ import ErrorPage from "../../partials/ErrorPage";
 import Loading from "../../components/Loading";
 import PopUpCheckinUser from "../../partials/PopUpCheckinUserr";
 import { useSelector } from "react-redux";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 
 const handleSuccess = (res) => {
   return {
@@ -224,6 +226,7 @@ const MyTicket = ({ isLogin, fnSetLogin = () => {} }) => {
   const [errorState, setErrorState] = useState(false);
   const [transactions, setTransactions] = useState(null);
   const [openCheckin, setOpenCheckin] = useState(false);
+  const [hideInvalidTicket, setHideInvTicket] = useState(true);
   const appData = useSelector((state) => state.appDataReducer);
 
   useEffect(() => {
@@ -347,6 +350,13 @@ const MyTicket = ({ isLogin, fnSetLogin = () => {} }) => {
         setActiveFn={setPopUpState}
         title=""
         content={popUpContent}
+        classNames={{
+          wrapper: [stylesPopUpTicketIn.PopUpWrapper],
+          modalDialog: [stylesPopUpTicketIn.ModalDialog],
+          popUpBox: [stylesPopUpTicketIn.PopUpBox],
+          header: [stylesPopUpTicketIn.PopUpHeader],
+          content: [stylesPopUpTicketIn.PopUpContent],
+        }}
       />
       <div className="content user">
         <div className={styles.DecorationBox}>
@@ -415,25 +425,47 @@ const MyTicket = ({ isLogin, fnSetLogin = () => {} }) => {
             )}
             {finishedPaymentDown && finishedPaymentDown.length > 0 ? (
               <>
-                <div className={styles.Subtitle}>Invalid / Ended Ticket</div>
-                <div className={styles.TicketGroup}>
-                  {finishedPaymentDown.map((trx) => {
-                    if (trx.purchases.length > 0) {
-                      return (
-                        <CardGroup
-                          trxData={trx}
-                          trxDatas={transactions}
-                          fnSetTrxDatas={setTransactions}
-                          fnSetPopUpActive={setPopUpState}
-                          fnSetPopUpContent={SetPopUpContent}
-                          isLogin={isLogin}
-                          fnSetLogin={fnSetLogin}
-                          openCheckIn={setOpenCheckin}
-                        />
-                      );
-                    }
-                  })}
+                <div className={styles.NavShowItemBox}>
+                  <div
+                    className={styles.Subtitle}
+                    onClick={() => {
+                      setHideInvTicket(!hideInvalidTicket);
+                    }}
+                  >
+                    Invalid / Ended Ticket
+                  </div>
+                  <div
+                    className={`${styles.TextPrimary} ${styles.NavShowItem}`}
+                    onClick={() => {
+                      setHideInvTicket(!hideInvalidTicket);
+                    }}
+                  >
+                    <p>{hideInvalidTicket ? "Tampilkan" : "Sembunyikan"}</p>
+                    {hideInvalidTicket ? <BiChevronDown /> : <BiChevronUp />}
+                  </div>
                 </div>
+                {!hideInvalidTicket ? (
+                  <div className={styles.TicketGroup}>
+                    {finishedPaymentDown.map((trx) => {
+                      if (trx.purchases.length > 0) {
+                        return (
+                          <CardGroup
+                            trxData={trx}
+                            trxDatas={transactions}
+                            fnSetTrxDatas={setTransactions}
+                            fnSetPopUpActive={setPopUpState}
+                            fnSetPopUpContent={SetPopUpContent}
+                            isLogin={isLogin}
+                            fnSetLogin={fnSetLogin}
+                            openCheckIn={setOpenCheckin}
+                          />
+                        );
+                      }
+                    })}
+                  </div>
+                ) : (
+                  <></>
+                )}
               </>
             ) : (
               <></>

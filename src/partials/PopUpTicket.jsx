@@ -1501,6 +1501,13 @@ const PopUpTicket = ({
           setPopUpActive(false);
         },
       }}
+      classNames={{
+        wrapper: [!orgId ? styles2.PopUpWrapper2 : styles2.PopUpWrapper],
+        modalDialog: [styles2.ModalDialog],
+        popUpBox: [styles2.PopUpBox],
+        header: [],
+        content: [styles2.PopUpContent],
+      }}
       titleHeader={
         <div className={styles2.PopUpHeader}>
           <div className={`${titleState === "front" ? "" : "d-none"}`}>
@@ -1566,7 +1573,10 @@ const PopUpTicket = ({
           <div
             className={`${styles2.MainContainer} ${loading ? "d-none" : ""}`}
           >
-            <div className={`${titleState === "front" ? "" : "d-none"}`}>
+            <div
+              style={{ height: "100%" }}
+              className={`${titleState === "front" ? "" : "d-none"}`}
+            >
               <div className={styles2.ChipBox}>
                 <Chip
                   options={["Tickets", "Ticket Settings", "Order Form"]}
@@ -1597,7 +1607,9 @@ const PopUpTicket = ({
               />
               <div
                 className={`${contentBody === "Tickets" ? "" : "d-none"} ${
-                  tickets.length > 0 ? styles2.ContentBody : ""
+                  tickets.length > 0
+                    ? styles2.ContentBody
+                    : styles2.ContentBody2
                 }`}
               >
                 {tickets.length === 0 ? (
@@ -1855,7 +1867,9 @@ const PopUpTicket = ({
                   <div className={styles2.SettingLabel}>
                     <span>
                       Maximum Days Reschedule Allowed{" "}
-                      <span style={{ color: "red" }}>(required)</span>
+                      <span style={{ color: "red" }}>
+                        (required min. 1 hari)
+                      </span>
                     </span>
                     <p>Batas waktu ganti jadwal</p>
                   </div>

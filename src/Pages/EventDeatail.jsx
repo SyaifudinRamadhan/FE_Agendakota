@@ -10,7 +10,9 @@ import {
   BiCalendarX,
   BiCart,
   BiCheckCircle,
+  BiChevronDown,
   BiChevronRight,
+  BiChevronUp,
   BiError,
   BiInfoCircle,
   BiMap,
@@ -37,6 +39,8 @@ import InputLabeled from "../components/InputLabeled";
 import InputForm from "../components/InputForm";
 import PopUpTrxFront from "../partials/PopUpTrxFront";
 import { useNavigate } from "react-router-dom";
+import stylesPopUpDate from "../partials/styles/PopUpTrx.module.css";
+import Footer from "../partials/Footer";
 
 const dummyData = [
   {
@@ -323,6 +327,8 @@ const EventDetail = ({ isLogin }) => {
     cartIndex: 0,
   });
   const [popUpTrx, setPopUpTrx] = useState(false);
+  const [pageState, setPageState] = useState(0);
+  const [openDetailDesc, setOpenDesc] = useState("");
   const navigate = useNavigate();
 
   const handleOpenCart = (openWrapper) => {
@@ -819,14 +825,31 @@ const EventDetail = ({ isLogin }) => {
               data: null,
             });
           }}
+          classNames={{
+            wrapper: [stylesPopUpDate.PopUpWrapper],
+            modalDialog: [stylesPopUpDate.ModalDialog],
+            popUpBox: [stylesPopUpDate.PopUpBox],
+            header: [],
+            content: [stylesPopUpDate.PopUpContent],
+          }}
+          customTitle={
+            <div className={stylesPopUpDate.HeaderBox}>
+              <div className={stylesPopUpDate.HeaderTitle}>
+                <div className={stylesPopUpDate.Title}>Tanggal Kunjungan</div>
+                <div className={stylesPopUpDate.Desc}>
+                  Pilih tanggal kunjungan event anda !!!
+                </div>
+              </div>
+            </div>
+          }
           title=""
           customStyleWrapper={{ height: "calc(100% - 71px)" }}
           width="35%"
           content={
-            <div className={styles.PopUpDate}>
-              <div className={styles.AlertContent}>
+            <div className={styles.PopUpDate} style={{ height: "100%" }}>
+              {/* <div className={styles.AlertContent}>
                 Pilih tanggal kunjungan dulu yuk !!!
-              </div>
+              </div> */}
               <Calendar
                 mapDays={filterDateSelector}
                 multiple
@@ -843,12 +866,14 @@ const EventDetail = ({ isLogin }) => {
                 placeholder="Pilih tanggal kunjungan"
                 style={{
                   border: "none",
-                  marginLeft: "auto",
-                  marginRight: "auto",
+                  margin: "auto",
                 }}
                 id={`cal-picker-${popUpSelectDate.ticketId}`}
               />
-              <div className={styles.PopUpGroupButton}>
+              <div
+                className={styles.PopUpGroupButton}
+                style={{ marginTop: "auto" }}
+              >
                 <Button
                   title={"Batal"}
                   bgColor={"#fff"}
@@ -1270,6 +1295,7 @@ const EventDetail = ({ isLogin }) => {
                           }}
                           onClick={() => {
                             handleOpenCart(openWrapper);
+                            setPageState(1);
                           }}
                         >
                           <Button
@@ -1286,6 +1312,33 @@ const EventDetail = ({ isLogin }) => {
                   <img src="/images/blank_events.png" alt="" />
                   <div>Yuk pilih tiket dulu !</div>
                 </div> */}
+                    <div className={styles.CartSubTotal}>
+                      <hr />
+                      <div>
+                        <b>Subtotal</b>
+                        <p className={styles.SubTotalNum}>
+                          Rp.
+                          {numberFormat.format(
+                            cartData.reduce((currentVal, prevVal) => {
+                              if (prevVal.customPrice) {
+                                return (
+                                  currentVal +
+                                  parseInt(prevVal.customPrice) *
+                                    parseInt(prevVal.count)
+                                );
+                              } else {
+                                return (
+                                  currentVal +
+                                  parseInt(prevVal.data.price) *
+                                    parseInt(prevVal.count)
+                                );
+                              }
+                            }, 0)
+                          )}
+                          ,-
+                        </p>
+                      </div>
+                    </div>
                   </div>
                   {/* -------------------------- */}
                   <Button
@@ -1428,7 +1481,9 @@ const EventDetail = ({ isLogin }) => {
                   )}
                 </div>
                 <div className={styles.FooterInfo}>
-                  <div className={styles.Subtitle}>Diadakan oleh</div>
+                  <div className={styles.Subtitle} style={{ fontSize: "13px" }}>
+                    Organized By
+                  </div>
                   <div
                     className={styles.InfoOrg}
                     style={{ cursor: "pointer" }}
@@ -1445,15 +1500,7 @@ const EventDetail = ({ isLogin }) => {
                       }
                       alt=""
                     />
-                    <p
-                      style={{
-                        maxWidth: "calc(100% - 70px)",
-                        textOverflow: "ellipsis",
-                        overflow: "hidden",
-                      }}
-                    >
-                      {event.organization.name}
-                    </p>
+                    <p>{event.organization.name}</p>
                     {event.organization.legality &&
                     event.organization.legality.status == 1 ? (
                       <img
@@ -1473,27 +1520,48 @@ const EventDetail = ({ isLogin }) => {
                 </div>
               </div>
               <div className={styles.Navigation}>
-                <a href="#Desc" style={{ textDecoration: "none" }}>
-                  <div className={`${styles.NavBtn} ${styles.NavBtnActive}`}>
-                    Deskripsi
-                  </div>
-                </a>
-                <a href="#tickets" style={{ textDecoration: "none" }}>
-                  <div className={`${styles.NavBtn}`}>
-                    Tiket &nbsp;
-                    <span style={{ color: "#8B8B8B" }}>
-                      {event.event.tickets ? event.event.tickets.length : 0}
-                    </span>
-                  </div>
-                </a>
+                <div
+                  className={`${styles.NavBtn} ${
+                    pageState === 0 ? styles.NavBtnActive : ""
+                  }`}
+                  onClick={() => {
+                    setPageState(0);
+                  }}
+                >
+                  Deskripsi
+                </div>
+                <div
+                  className={`${styles.NavBtn} ${
+                    pageState === 1 ? styles.NavBtnActive : ""
+                  }`}
+                  onClick={() => {
+                    setPageState(1);
+                  }}
+                >
+                  Tiket &nbsp;
+                  <span style={{ color: "#8B8B8B" }}>
+                    {event.event.tickets ? event.event.tickets.length : 0}
+                  </span>
+                </div>
                 {/* <a href="#rundowns">
 									<div className={`${styles.NavBtn}`}>Rundown</div>
 								</a> */}
-                <a href="#snk" style={{ textDecoration: "none" }}>
-                  <div className={`${styles.NavBtn}`}>Syarat & Ketentuan</div>
-                </a>
+                <div
+                  className={`${styles.NavBtn} ${
+                    pageState === 2 ? styles.NavBtnActive : ""
+                  }`}
+                  onClick={() => {
+                    setPageState(2);
+                  }}
+                >
+                  Syarat & Ketentuan
+                </div>
               </div>
-              <div id="Desc" className={styles.GroupContent}>
+              <div
+                id="Desc"
+                className={styles.GroupContent}
+                style={pageState === 0 ? {} : { display: "none" }}
+              >
                 <div className={styles.GroupTitle}>Deskripsi</div>
                 <div className={styles.GroupContentData}>
                   <div
@@ -1514,14 +1582,22 @@ const EventDetail = ({ isLogin }) => {
               {/* <div id="rundowns" className={styles.GroupContent}>
 								<div className={styles.GroupTitle}>Rundown</div>
 							</div> */}
-              <div id="snk" className={styles.GroupContent}>
+              <div
+                id="snk"
+                className={styles.GroupContent}
+                style={pageState === 2 ? {} : { display: "none" }}
+              >
                 <div className={styles.GroupTitle}>Syarat & Ketentuan</div>
                 <div
                   className={styles.GroupContentData}
                   dangerouslySetInnerHTML={{ __html: event.event.snk }}
                 ></div>
               </div>
-              <div id="tickets" className={styles.GroupContent}>
+              <div
+                id="tickets"
+                className={styles.GroupContent}
+                style={pageState === 1 ? {} : { display: "none" }}
+              >
                 <div className={styles.GroupTitle}>Tiket</div>
                 {/* Ticket */}
                 {event.event.tickets && event.event.tickets.length > 0 ? (
@@ -1549,17 +1625,19 @@ const EventDetail = ({ isLogin }) => {
                             )}
                             <div
                               className={styles.TicketTop}
-                              style={
-                                event.event.category === "Attraction" ||
-                                event.event.category === "Daily Activities" ||
-                                event.event.category ===
-                                  "Tour Travel (recurring)"
-                                  ? { width: "calc(100% - 85px)" }
-                                  : {}
-                              }
+                              // style={
+                              //   event.event.category === "Attraction" ||
+                              //   event.event.category === "Daily Activities" ||
+                              //   event.event.category ===
+                              //     "Tour Travel (recurring)"
+                              //     ? { width: "calc(100% - 85px)" }
+                              //     : {}
+                              // }
                             >
                               <div className={styles.TicketTitle}>
-                                <div style={{ maxWidth: "calc(100% - 90px)" }}>
+                                <div
+                                // style={{ maxWidth: "calc(100% - 90px)" }}
+                                >
                                   {ticket.name}
                                 </div>
                                 {ticket.seat_number == 0 &&
@@ -1638,7 +1716,32 @@ const EventDetail = ({ isLogin }) => {
                                 dangerouslySetInnerHTML={{
                                   __html: ticket.desc,
                                 }}
+                                style={
+                                  openDetailDesc !== ticket.id
+                                    ? {}
+                                    : { maxHeight: "unset" }
+                                }
                               ></div>
+                              <div
+                                className={`${styles.TextPrimary} ${styles.OpenDesc}`}
+                                onClick={() => {
+                                  setOpenDesc(
+                                    openDetailDesc === ticket.id
+                                      ? ""
+                                      : ticket.id
+                                  );
+                                }}
+                              >
+                                {openDetailDesc !== ticket.id ? (
+                                  <>
+                                    Lebih Banyak <BiChevronDown />
+                                  </>
+                                ) : (
+                                  <>
+                                    Lebih Sedikit <BiChevronUp />
+                                  </>
+                                )}
+                              </div>
                             </div>
                           </div>
                           <div>
@@ -1840,7 +1943,9 @@ const EventDetail = ({ isLogin }) => {
                   )}
                 </div>
                 <div className={styles.FooterInfo}>
-                  <div className={styles.Subtitle}>Diadakan oleh</div>
+                  <div className={styles.Subtitle} style={{ fontSize: "12px" }}>
+                    Organized By
+                  </div>
                   <div
                     className={styles.InfoOrg}
                     style={{ cursor: "pointer" }}
@@ -1857,15 +1962,7 @@ const EventDetail = ({ isLogin }) => {
                       }
                       alt=""
                     />
-                    <p
-                      style={{
-                        maxWidth: "calc(100% - 70px)",
-                        textOverflow: "ellipsis",
-                        overflow: "hidden",
-                      }}
-                    >
-                      {event.organization.name}
-                    </p>
+                    <p>{event.organization.name}</p>
                     {event.organization.legality &&
                     event.organization.legality.status == 1 ? (
                       <img
@@ -2204,6 +2301,9 @@ const EventDetail = ({ isLogin }) => {
                           marginLeft: "auto",
                           marginRight: "auto",
                         }}
+                        onClick={() => {
+                          setPageState(1);
+                        }}
                       >
                         <Button
                           title={"Pilih Tiket"}
@@ -2214,6 +2314,33 @@ const EventDetail = ({ isLogin }) => {
                       </a>
                     </>
                   )}
+                </div>
+                <div className={styles.CartSubTotal}>
+                  <hr />
+                  <div>
+                    <b>Subtotal</b>
+                    <p className={styles.SubTotalNum}>
+                      Rp.
+                      {numberFormat.format(
+                        cartData.reduce((currentVal, prevVal) => {
+                          if (prevVal.customPrice) {
+                            return (
+                              currentVal +
+                              parseInt(prevVal.customPrice) *
+                                parseInt(prevVal.count)
+                            );
+                          } else {
+                            return (
+                              currentVal +
+                              parseInt(prevVal.data.price) *
+                                parseInt(prevVal.count)
+                            );
+                          }
+                        }, 0)
+                      )}
+                      ,-
+                    </p>
+                  </div>
                 </div>
                 {/* Blank tickets */}
                 {/* <div className={styles.CartBlank}>
@@ -2232,6 +2359,7 @@ const EventDetail = ({ isLogin }) => {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 };

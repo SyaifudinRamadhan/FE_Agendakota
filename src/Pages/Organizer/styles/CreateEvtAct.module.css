@@ -7,7 +7,7 @@
 .Title {
 	color: #2c2c2c;
 	font-family: Inter;
-	font-size: 24px;
+	font-size: 20px;
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
@@ -16,7 +16,7 @@
 .SubTitle {
 	color: #2c2c2c;
 	font-family: Inter;
-	font-size: 16px;
+	font-size: 14px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
@@ -36,6 +36,7 @@
 	cursor: pointer;
 	box-shadow: 0 0 4px #63636394;
 	border-radius: 8px;
+	background-color: #fff;
 }
 .Disabled {
 	cursor: unset !important;
@@ -66,7 +67,7 @@
 	text-align: center;
 	color: #000;
 	font-family: Inter;
-	font-size: 16px;
+	font-size: 14px;
 	font-style: normal;
 	font-weight: 600;
 	line-height: normal;
@@ -110,13 +111,13 @@
 .Info{
 	text-align: left;
 	margin-top: 20px;
-	font-size: 14px;
+	font-size: 13px;
 	color: #383838;
 }
 
 .EditorContent {
 	/* padding: 30px 100px; */
-	max-width: 1050px;
+	max-width: 900px;
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;

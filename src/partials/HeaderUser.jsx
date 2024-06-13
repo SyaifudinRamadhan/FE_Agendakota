@@ -173,14 +173,13 @@ const HeaderUser = ({
       {/* ======================================= */}
       <div className={styles.HeaderMobile}>
         <div className={styles.LogoArea}>
-          <img
-            onClick={() => {
-              navigate("/");
-            }}
-            src="/images/logo.png"
-            alt="Logo Agendakota"
-            className={`${styles.Logo} pointer`}
-          />
+          <Link to={"/"}>
+            <img
+              src="/images/logo.png"
+              alt="Logo Agendakota"
+              className={`${styles.Logo} pointer`}
+            />
+          </Link>
         </div>
         <div
           className={styles.Toggler}
@@ -288,14 +287,13 @@ const HeaderUser = ({
       <div className={styles.Header} style={{ left: expand ? "0%" : "20%" }}>
         {expand && (
           <div className={styles.LogoArea}>
-            <img
-              onClick={() => {
-                navigate("/");
-              }}
-              src="/images/logo.png"
-              alt="Logo Agendakota"
-              className={`${styles.Logo} pointer`}
-            />
+            <Link to={"/"}>
+              <img
+                src="/images/logo.png"
+                alt="Logo Agendakota"
+                className={`${styles.Logo} pointer`}
+              />
+            </Link>
           </div>
         )}
         {/* <div className={styles.Left}>Boost</div> */}

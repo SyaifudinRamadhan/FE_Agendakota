@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles/PopUpTicketIn.module.css";
 import {
+  BiCalendar,
   BiCalendarEvent,
+  BiCalendarX,
   BiCheckCircle,
   BiChevronLeft,
   BiEnvelope,
@@ -12,8 +14,10 @@ import {
   BiLogoInstagram,
   BiLogoTwitter,
   BiLogoYoutube,
+  BiMap,
   BiMapPin,
   BiPhone,
+  BiTime,
   BiX,
 } from "react-icons/bi";
 import config from "../config";
@@ -1058,7 +1062,7 @@ const PopUpTicketIn = ({
               )}
             </div>
             <div className={styles.SubTitle}>
-              Manage information abaout your ticket
+              Detail informasi terkait tiket anda
             </div>
           </div>
           <BiX
@@ -1070,553 +1074,662 @@ const PopUpTicketIn = ({
           />
         </div>
 
-        {loading ? (
-          <div style={{ marginTop: "100px", marginBottom: "100px" }}>
-            <Loading />
-          </div>
-        ) : (
-          <div className={styles.SplitWrap}>
-            <div className={styles.SplitLeft}>
-              {page === 0 ? (
-                <>
-                  <div className={styles.Banner}>
-                    <img
-                      src={
-                        process.env.REACT_APP_BACKEND_URL +
-                        trx.purchases[0].ticket.event.logo
-                      }
-                      alt=""
-                    />
-                  </div>
-                  <div className={styles.Info}>
-                    <h5 className={styles.InfoTitle}>
-                      {trx.purchases[0].ticket.event.name}
-                    </h5>
-                    <div
-                      className={styles.InfoLocation}
-                      dangerouslySetInnerHTML={{
-                        __html: trx.purchases[0].ticket.event.location,
-                      }}
-                    ></div>
-                    <div className={styles.InfoTime}>
-                      {trx.purchases[0].ticket.event.category !==
-                        "Attraction" &&
-                      trx.purchases[0].ticket.event.category !==
-                        "Daily Activities" &&
-                      trx.purchases[0].ticket.event.category !==
-                        "Tour Travel (recurring)" ? (
-                        start && end ? (
+        <div className={styles.CoverMain}>
+          {loading ? (
+            <div style={{ marginTop: "100px", marginBottom: "100px" }}>
+              <Loading />
+            </div>
+          ) : (
+            <div className={styles.SplitWrap}>
+              <div className={styles.SplitLeft}>
+                {page === 0 ? (
+                  <>
+                    <div className={styles.Banner}>
+                      <img
+                        src={
+                          process.env.REACT_APP_BACKEND_URL +
+                          trx.purchases[0].ticket.event.logo
+                        }
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.Info}>
+                      <h5 className={styles.InfoTitle}>
+                        {trx.purchases[0].ticket.event.name}
+                      </h5>
+                      {/* <div
+                        className={styles.InfoLocation}
+                        dangerouslySetInnerHTML={{
+                          __html: trx.purchases[0].ticket.event.location,
+                        }}
+                      ></div>
+                      <div className={styles.InfoTime}>
+                        {trx.purchases[0].ticket.event.category !==
+                          "Attraction" &&
+                        trx.purchases[0].ticket.event.category !==
+                          "Daily Activities" &&
+                        trx.purchases[0].ticket.event.category !==
+                          "Tour Travel (recurring)" ? (
+                          start && end ? (
+                            <>
+                              <div className={styles.Time}>
+                                <p className={styles.Date}>
+                                  {start.split("|")[0]}
+                                </p>
+                                <p className={styles.Clock}>
+                                  {" "}
+                                  |&nbsp; {start.split("|")[1]}
+                                </p>
+                              </div>
+                              <div className={styles.Time}>
+                                <p className={styles.Date}>
+                                  {end.split("|")[0]}
+                                </p>
+                                <p className={styles.Clock}>
+                                  {" "}
+                                  |&nbsp; {end.split("|")[1]}
+                                </p>
+                              </div>
+                            </>
+                          ) : (
+                            <></>
+                          )
+                        ) : (
+                          <></>
+                        )}
+                      </div> */}
+                      <div className={styles.BoxAddress}>
+                        <BiMap />
+                        <p className={styles.Address}>
+                          {trx.purchases[0].ticket.event.location.split("<p>")
+                            .length === 1
+                            ? trx.purchases[0].ticket.event.location +
+                              ` ${trx.purchases[0].ticket.event.city}, ${trx.purchases[0].ticket.event.province}`
+                            : trx.purchases[0].ticket.event.location
+                                .split("<p>")[1]
+                                .split("</p>")[0] +
+                              ` ${trx.purchases[0].ticket.event.city}, ${trx.purchases[0].ticket.event.province}`}
+                        </p>
+                      </div>
+                      <div className={styles.BoxTime}>
+                        {trx.purchases[0].ticket.event.category !==
+                          "Attraction" &&
+                        trx.purchases[0].ticket.event.category !==
+                          "Daily Activities" &&
+                        trx.purchases[0].ticket.event.category !==
+                          "Tour Travel (recurring)" ? (
                           <>
-                            <div className={styles.Time}>
-                              <p className={styles.Date}>
-                                {start.split("|")[0]}
-                              </p>
-                              <p className={styles.Clock}>
-                                {" "}
-                                |&nbsp; {start.split("|")[1]}
-                              </p>
+                            {start && end ? (
+                              <>
+                                {start.split("|")[0] === end.split("|")[0] ? (
+                                  <>
+                                    <div className={styles.Time}>
+                                      <div className={styles.Date}>
+                                        <BiCalendar />
+                                        <div>{start.split("|")[0]}</div>
+                                      </div>
+                                    </div>
+                                    <div className={styles.Time}>
+                                      <div className={styles.Date}>
+                                        <BiTime />
+                                        <div>
+                                          {start.split("|")[1]} -{" "}
+                                          {end.split("|")[1]}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div className={styles.Time}>
+                                      <div className={styles.Date}>
+                                        <BiCalendar />
+                                        <div>{start.split("|")[0]}</div>
+                                      </div>
+                                      <div className={styles.Clock}>
+                                        {/* <BiTime /> */}
+                                        <div>&nbsp;|&nbsp;</div>
+                                        <div>{start.split("|")[1]}</div>
+                                      </div>
+                                    </div>
+                                    <div className={styles.Time}>
+                                      <div className={styles.Date}>
+                                        <BiCalendar />
+                                        <div>{end.split("|")[0]}</div>
+                                      </div>
+                                      <div className={styles.Clock}>
+                                        {/* <BiTime /> */}
+                                        <div>&nbsp;|&nbsp;</div>
+                                        <div>{end.split("|")[1]}</div>
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                              </>
+                            ) : (
+                              <></>
+                            )}
+                          </>
+                        ) : (
+                          trx.purchases[0].ticket.event.available_days.map(
+                            (avldt, index) => {
+                              // return <p className={styles.Time}>{avldt}</p>;
+                              return (
+                                <div id={index} className={styles.Time}>
+                                  <BiCalendarX
+                                    style={{
+                                      fontSize: "16px",
+                                      marginRight: "10px",
+                                      marginTop: "auto",
+                                      marginBottom: "auto",
+                                    }}
+                                  />
+                                  <p className={styles.Date}>
+                                    {config.dayEnToInd[avldt.day]}
+                                  </p>
+                                  <p className={styles.Clock}>
+                                    {avldt.start_time.slice(0, 5).toString()}
+                                    {" - "}
+                                    {avldt.max_limit_time.slice(0, 5)} WIB
+                                  </p>
+                                </div>
+                              );
+                            }
+                          )
+                        )}
+                      </div>
+                    </div>
+                    <div className={styles.Separation}></div>
+                    <div>
+                      <div
+                        style={{ marginBottom: "24px" }}
+                        className={styles.TextSecondary}
+                      >
+                        Rincian Pembayaran
+                      </div>
+
+                      {Object.values(pchsGroup).map((group) => (
+                        <div style={{ gap: "8px", marginBottom: "10px" }}>
+                          <div className={styles.TextPrimary}>
+                            {group[0].ticket.name}
+                            {group[0].visit_date
+                              ? ` - ${new Date(
+                                  group[0].visit_date.visit_date
+                                ).toLocaleDateString(new Intl.Locale("id-ID"))}`
+                              : ""}
+                          </div>
+                          <div className={styles.FlexRow}>
+                            <div className={styles.InvoiceDesc}>
+                              {group.length} x {group[0].amount}
                             </div>
-                            <div className={styles.Time}>
-                              <p className={styles.Date}>{end.split("|")[0]}</p>
-                              <p className={styles.Clock}>
-                                {" "}
-                                |&nbsp; {end.split("|")[1]}
-                              </p>
+                            <div
+                              style={{ marginLeft: "auto" }}
+                              className={styles.TextPrimary}
+                            >
+                              Rp.
+                              {numberFormat.format(
+                                group.reduce((current, acc) => {
+                                  return current + acc.amount;
+                                }, 0)
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className={styles.Separation}></div>
+                    <div className={styles.FlexRow}>
+                      <div className={styles.TextPrimary}>Subtotal</div>
+                      <div
+                        style={{ marginLeft: "auto" }}
+                        className={styles.TextPrimary}
+                      >
+                        Rp.
+                        {numberFormat.format(parseInt(trx.payment.price))}
+                      </div>
+                    </div>
+
+                    {trx.payment.price == 0 ? (
+                      <></>
+                    ) : (
+                      <>
+                        <div className={styles.Separation}></div>
+                        <div
+                          className={styles.FlexRow}
+                          style={{ gap: "5px", marginTop: "10px" }}
+                        >
+                          <div className={styles.TextSecondary}>
+                            Metode Pembayaran
+                          </div>
+                          <div style={{ marginLeft: "auto" }}>
+                            <div className={styles.PaymentBtn}>
+                              <img
+                                src={`/icons/${
+                                  config.payMethods[
+                                    parseInt(trx.payment.code_method) >= 11 &&
+                                    parseInt(trx.payment.code_method) <= 15
+                                      ? "e-wallet"
+                                      : parseInt(trx.payment.code_method) ===
+                                          21 ||
+                                        parseInt(trx.payment.code_method) === 22
+                                      ? "qris"
+                                      : "VA"
+                                  ][trx.payment.code_method][0]
+                                }.png`}
+                                alt=""
+                              />
+                              <div>
+                                {
+                                  config.payMethods[
+                                    parseInt(trx.payment.code_method) >= 11 &&
+                                    parseInt(trx.payment.code_method) <= 15
+                                      ? "e-wallet"
+                                      : parseInt(trx.payment.code_method) ===
+                                          21 ||
+                                        parseInt(trx.payment.code_method) === 22
+                                      ? "qris"
+                                      : "VA"
+                                  ][trx.payment.code_method][1]
+                                }
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    <div
+                      className={styles.FlexRow}
+                      style={{ gap: "5px", marginTop: "10px" }}
+                    >
+                      <div
+                        className={styles.TextSecondary}
+                        style={{ minWidth: "120px", whiteSpace: "nowrap" }}
+                      >
+                        Transaction ID
+                      </div>
+                      <div
+                        style={{
+                          marginLeft: "auto",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          display: "inline",
+                        }}
+                        className={styles.TextPrimary}
+                      >
+                        {trx.payment.id}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.GroupForm}>
+                      <div className={styles.GroupTitle}>Invitation </div>
+                      <div className={styles.SubTitle}>
+                        Transfer kepemilikan atau undang teman untuk menggunakan
+                        tiket ini
+                      </div>
+                      {ticketData.is_mine === 1 ? (
+                        <>
+                          <label htmlFor="inv">Email of Invitee</label>
+                          <div className={styles.Split}>
+                            <InputForm
+                              id={"inv"}
+                              placeholder={"email aktif"}
+                              style={{ width: "calc(100% - 71px)" }}
+                              refData={emailDest}
+                            />
+                            <Button
+                              style={{ width: "unset" }}
+                              center
+                              title={"Invite"}
+                              fnOnClick={() => {
+                                handleInvitation(ticketData.id);
+                              }}
+                            />
+                          </div>
+                        </>
+                      ) : (
+                        <div>
+                          <Button
+                            style={{ width: "unset", marginTop: "20px" }}
+                            center
+                            bgColor={"yellow"}
+                            textColor={"black"}
+                            borderColor={"yellow"}
+                            title={"Get Back"}
+                            fnOnClick={() => {
+                              handleGetBack(ticketData.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    {enableRsc ? (
+                      <div className={styles.GroupForm}>
+                        <div className={styles.GroupTitle}>Reschedule</div>
+                        <div className={styles.SubTitle}>
+                          Ubah tanggal kedatangan anda{" "}
+                          {`(Dapat dilakukan jika selisih hari yang dipilih sebelumnya adalah ${
+                            avlRsc.limit_time == 0
+                              ? "24 jam"
+                              : avlRsc.limit_time + " hari"
+                          } atau lebih dari hari ini)`}
+                        </div>
+                        <label htmlFor="dt-pick">Select date</label>
+                        <DatePicker
+                          id="dt-pick"
+                          placeholder="Pilih tanggal"
+                          style={{
+                            height: "35px",
+                            width: "98%",
+                          }}
+                          mapDays={({ date }) =>
+                            filterDateSelectorCart(date, avlDays)
+                          }
+                          value={visitDate}
+                          onChange={(e) => {
+                            setVisitDate(e.format());
+                          }}
+                          disabled={
+                            new Date(visitDate).setHours(0, 0, 0, 0) <
+                            new Date().setHours(0, 0, 0, 0)
+                          }
+                        />
+                        {seatNumber.length > 0 ? (
+                          <>
+                            <label htmlFor="seat-num">Change Seats</label>
+                            <div
+                              className={styles.DummyForm}
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                setPopUpSeatNumberState(true);
+                              }}
+                            >
+                              <div>{seatNumber[0]}</div>
                             </div>
                           </>
                         ) : (
                           <></>
-                        )
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </div>
-                  <div className={styles.Separation}></div>
-                  <div>
-                    <div
-                      style={{ marginBottom: "24px" }}
-                      className={styles.TextSecondary}
-                    >
-                      Rincian Pembayaran
-                    </div>
+                        )}
 
-                    {Object.values(pchsGroup).map((group) => (
-                      <div style={{ gap: "8px", marginBottom: "10px" }}>
-                        <div className={styles.TextPrimary}>
-                          {group[0].ticket.name}
-                          {group[0].visit_date
-                            ? ` - ${new Date(
-                                group[0].visit_date.visit_date
-                              ).toLocaleDateString(new Intl.Locale("id-ID"))}`
-                            : ""}
-                        </div>
-                        <div className={styles.FlexRow}>
-                          <div className={styles.InvoiceDesc}>
-                            {group.length} x {group[0].amount}
-                          </div>
-                          <div
-                            style={{ marginLeft: "auto" }}
-                            className={styles.TextPrimary}
-                          >
-                            Rp.
-                            {numberFormat.format(
-                              group.reduce((current, acc) => {
-                                return current + acc.amount;
-                              }, 0)
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className={styles.Separation}></div>
-                  <div className={styles.FlexRow}>
-                    <div className={styles.TextPrimary}>Subtotal</div>
-                    <div
-                      style={{ marginLeft: "auto" }}
-                      className={styles.TextPrimary}
-                    >
-                      Rp.
-                      {numberFormat.format(parseInt(trx.payment.price))}
-                    </div>
-                  </div>
-
-                  {trx.payment.price == 0 ? (
-                    <></>
-                  ) : (
-                    <>
-                      <div className={styles.Separation}></div>
-                      <div
-                        className={styles.FlexRow}
-                        style={{ gap: "5px", marginTop: "10px" }}
-                      >
-                        <div className={styles.TextSecondary}>
-                          Metode Pembayaran
-                        </div>
-                        <div style={{ marginLeft: "auto" }}>
-                          <div className={styles.PaymentBtn}>
-                            <img
-                              src={`/icons/${
-                                config.payMethods[
-                                  parseInt(trx.payment.code_method) >= 11 &&
-                                  parseInt(trx.payment.code_method) <= 15
-                                    ? "e-wallet"
-                                    : parseInt(trx.payment.code_method) ===
-                                        21 ||
-                                      parseInt(trx.payment.code_method) === 22
-                                    ? "qris"
-                                    : "VA"
-                                ][trx.payment.code_method][0]
-                              }.png`}
-                              alt=""
-                            />
-                            <div>
-                              {
-                                config.payMethods[
-                                  parseInt(trx.payment.code_method) >= 11 &&
-                                  parseInt(trx.payment.code_method) <= 15
-                                    ? "e-wallet"
-                                    : parseInt(trx.payment.code_method) ===
-                                        21 ||
-                                      parseInt(trx.payment.code_method) === 22
-                                    ? "qris"
-                                    : "VA"
-                                ][trx.payment.code_method][1]
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                  <div
-                    className={styles.FlexRow}
-                    style={{ gap: "5px", marginTop: "10px" }}
-                  >
-                    <div
-                      className={styles.TextSecondary}
-                      style={{ minWidth: "120px", whiteSpace: "nowrap" }}
-                    >
-                      Transaction ID
-                    </div>
-                    <div
-                      style={{
-                        marginLeft: "auto",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        display: "inline",
-                      }}
-                      className={styles.TextPrimary}
-                    >
-                      {trx.payment.id}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className={styles.GroupForm}>
-                    <div className={styles.GroupTitle}>Invitation </div>
-                    <div className={styles.SubTitle}>
-                      Transfer ownerships or invite friends to use this ticket
-                    </div>
-                    {ticketData.is_mine === 1 ? (
-                      <>
-                        <label htmlFor="inv">Email of Invitee</label>
-                        <div className={styles.Split}>
-                          <InputForm
-                            id={"inv"}
-                            placeholder={"email aktif"}
-                            style={{ width: "calc(100% - 71px)" }}
-                            refData={emailDest}
-                          />
-                          <Button
-                            style={{ width: "unset" }}
-                            center
-                            title={"Invite"}
-                            fnOnClick={() => {
-                              handleInvitation(ticketData.id);
-                            }}
-                          />
-                        </div>
-                      </>
-                    ) : (
-                      <div>
                         <Button
                           style={{ width: "unset", marginTop: "20px" }}
                           center
-                          bgColor={"yellow"}
-                          textColor={"black"}
-                          borderColor={"yellow"}
-                          title={"Get Back"}
+                          title={"Reschedule"}
                           fnOnClick={() => {
-                            handleGetBack(ticketData.id);
+                            handleReschedule(ticketData, visitDate, seatNumber);
                           }}
                         />
                       </div>
+                    ) : (
+                      <></>
                     )}
-                  </div>
-                  {enableRsc ? (
-                    <div className={styles.GroupForm}>
-                      <div className={styles.GroupTitle}>Reschedule</div>
-                      <div className={styles.SubTitle}>
-                        Change the date of your arrival{" "}
-                        {`(Can be done if the difference between the previously selected days is ${
-                          avlRsc.limit_time == 0
-                            ? "24 hours"
-                            : avlRsc.limit_time + " days"
-                        } or more from today)`}
+                    {ticketData.ticket.event.allow_refund == 1 ? (
+                      <div className={styles.GroupForm}>
+                        <div className={styles.GroupTitle}>Refund Request </div>
+                        <div className={styles.SubTitle}>
+                          Tulis masalah anda dan isi form berikut ini untuk
+                          mengajukan pengembalian dana. Pengajuan dana akan di
+                          konfirmasi melalui email.
+                        </div>
+                        <label htmlFor="phone">Phone Number</label>
+                        <InputForm
+                          id={"phone"}
+                          type={"number"}
+                          placeholder={"Nomor ponsel / WA aktif"}
+                          refData={phone}
+                        />
+                        <label htmlFor="bank">Bank</label>
+                        <Select
+                          placeholder={"Pilih Bank"}
+                          options={Object.entries(banks).map((bank) => {
+                            return {
+                              label: bank[1],
+                              value: bank[0],
+                            };
+                          })}
+                          styles={{
+                            option: (basicStyle, state) => ({
+                              ...basicStyle,
+                              backgroundColor: state.isFocused
+                                ? "#fecadf"
+                                : "white",
+                            }),
+                          }}
+                          ref={bankCode}
+                        />
+                        <label htmlFor="bank_acc">Bank Account Number</label>
+                        <InputForm
+                          id={"bank_acc"}
+                          type={"text"}
+                          placeholder={"Nomor rekening aktif"}
+                          refData={accNum}
+                        />
+                        <label htmlFor="bank_acc_name">Bank Account Name</label>
+                        <InputForm
+                          id={"bank_acc_name"}
+                          type={"text"}
+                          placeholder={"Pemilik rekening aktif"}
+                          refData={accName}
+                        />
+                        <label htmlFor="msg">Message / Problem</label>
+                        <TextArea
+                          id={"msg"}
+                          placehorder="Tuliskan pesan atau masalah mu"
+                          refData={message}
+                        />
+                        <Button
+                          style={{ width: "unset", marginTop: "20px" }}
+                          center
+                          title={"Refund"}
+                          fnOnClick={() => {
+                            handleRefund(ticketData.id);
+                          }}
+                        />
                       </div>
-                      <label htmlFor="dt-pick">Select date</label>
-                      <DatePicker
-                        id="dt-pick"
-                        placeholder="Pilih tanggal"
-                        style={{
-                          height: "35px",
-                          width: "98%",
-                        }}
-                        mapDays={({ date }) =>
-                          filterDateSelectorCart(date, avlDays)
-                        }
-                        value={visitDate}
-                        onChange={(e) => {
-                          setVisitDate(e.format());
-                        }}
-                        disabled={
-                          new Date(visitDate).setHours(0, 0, 0, 0) <
-                          new Date().setHours(0, 0, 0, 0)
-                        }
-                      />
-                      {seatNumber.length > 0 ? (
-                        <>
-                          <label htmlFor="seat-num">Change Seats</label>
-                          <div
-                            className={styles.DummyForm}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => {
-                              setPopUpSeatNumberState(true);
-                            }}
-                          >
-                            <div>{seatNumber[0]}</div>
+                    ) : (
+                      <></>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className={styles.SplitRight}>
+                {page === 0 ? (
+                  <>
+                    <div className={styles.HeaderTitle}>Tickets</div>
+                    <div style={{ marginTop: "30px" }}>
+                      {trx.purchases.map((pch) => (
+                        // Disabled has show if ticket has invalid / expired
+                        <div
+                          className={`${styles.TicketBox} ${
+                            !(
+                              new Date(
+                                pch.ticket.event.end_date +
+                                  " " +
+                                  pch.ticket.event.end_time
+                              ) < new Date() ||
+                              (pch.visit_date &&
+                                new Date().setHours(0, 0, 0, 0) >
+                                  new Date(pch.visit_date.visit_date).setHours(
+                                    0,
+                                    0,
+                                    0,
+                                    0
+                                  ))
+                            )
+                              ? ""
+                              : styles.Disabled
+                          }`}
+                        >
+                          <div className={styles.TicketItem}>
+                            {pch.is_mine === 0 ? (
+                              <div className={styles.Bagde}>
+                                Waiting Accepted
+                              </div>
+                            ) : (
+                              <></>
+                            )}
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKEND_URL +
+                                pch.ticket.cover
+                              }
+                              alt=""
+                              srcset=""
+                            />
+                            <div style={{ width: "calc(100% - 68px)" }}>
+                              <div className={styles.TicketTitle}>
+                                {pch.ticket.name}
+                              </div>
+                              <div className={styles.TextSecondary}>x1</div>
+                            </div>
                           </div>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-
-                      <Button
-                        style={{ width: "unset", marginTop: "20px" }}
-                        center
-                        title={"Reschedule"}
-                        fnOnClick={() => {
-                          handleReschedule(ticketData, visitDate, seatNumber);
-                        }}
-                      />
+                          <Button
+                            center
+                            title={"See Ticket"}
+                            style={{
+                              width: "unset",
+                              padding: "8px 12px 8px 12px",
+                              marginLeft: "auto",
+                            }}
+                            bgColor={"#CA0C6414"}
+                            borderColor={"#CA0C6414"}
+                            textColor={"#ca0c64"}
+                            fnOnClick={() => {
+                              // check valid status ticket
+                              if (
+                                !(
+                                  new Date(
+                                    pch.ticket.event.end_date +
+                                      " " +
+                                      pch.ticket.event.end_time
+                                  ) < new Date() ||
+                                  (pch.visit_date &&
+                                    new Date().setHours(0, 0, 0, 0) >
+                                      new Date(
+                                        pch.visit_date.visit_date
+                                      ).setHours(0, 0, 0, 0))
+                                )
+                              ) {
+                                setTicketData(pch);
+                                setPage(1);
+                              }
+                            }}
+                          />
+                        </div>
+                      ))}
                     </div>
-                  ) : (
-                    <></>
-                  )}
-                  {ticketData.ticket.event.allow_refund == 1 ? (
-                    <div className={styles.GroupForm}>
-                      <div className={styles.GroupTitle}>Refund Request </div>
-                      <div className={styles.SubTitle}>
-                        Write your problem and fill this forms to apply for a
-                        refund
-                      </div>
-                      <label htmlFor="phone">Phone Number</label>
-                      <InputForm
-                        id={"phone"}
-                        type={"number"}
-                        placeholder={"Nomor ponsel / WA aktif"}
-                        refData={phone}
-                      />
-                      <label htmlFor="bank">Bank</label>
-                      <Select
-                        placeholder={"Pilih Bank"}
-                        options={Object.entries(banks).map((bank) => {
-                          return {
-                            label: bank[1],
-                            value: bank[0],
-                          };
-                        })}
-                        styles={{
-                          option: (basicStyle, state) => ({
-                            ...basicStyle,
-                            backgroundColor: state.isFocused
-                              ? "#fecadf"
-                              : "white",
-                          }),
-                        }}
-                        ref={bankCode}
-                      />
-                      <label htmlFor="bank_acc">Bank Account Number</label>
-                      <InputForm
-                        id={"bank_acc"}
-                        type={"text"}
-                        placeholder={"Nomor rekening aktif"}
-                        refData={accNum}
-                      />
-                      <label htmlFor="bank_acc_name">Bank Account Name</label>
-                      <InputForm
-                        id={"bank_acc_name"}
-                        type={"text"}
-                        placeholder={"Pemilik rekening aktif"}
-                        refData={accName}
-                      />
-                      <label htmlFor="msg">Message / Problem</label>
-                      <TextArea
-                        id={"msg"}
-                        placehorder="Tuliskan pesan atau masalah mu"
-                        refData={message}
-                      />
-                      <Button
-                        style={{ width: "unset", marginTop: "20px" }}
-                        center
-                        title={"Refund"}
-                        fnOnClick={() => {
-                          handleRefund(ticketData.id);
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                </>
-              )}
-            </div>
-            <div className={styles.SplitRight}>
-              {page === 0 ? (
-                <>
-                  <div className={styles.HeaderTitle}>Tickets</div>
-                  <div style={{ marginTop: "30px" }}>
-                    {trx.purchases.map((pch) => (
-                      // Disabled has show if ticket has invalid / expired
-                      <div
-                        className={`${styles.TicketBox} ${
-                          !(
-                            new Date(
-                              pch.ticket.event.end_date +
-                                " " +
-                                pch.ticket.event.end_time
-                            ) < new Date() ||
-                            (pch.visit_date &&
-                              new Date().setHours(0, 0, 0, 0) >
-                                new Date(pch.visit_date.visit_date).setHours(
-                                  0,
-                                  0,
-                                  0,
-                                  0
-                                ))
-                          )
-                            ? ""
-                            : styles.Disabled
-                        }`}
-                      >
-                        <div className={styles.TicketItem}>
-                          {pch.is_mine === 0 ? (
-                            <div className={styles.Bagde}>Waiting Accepted</div>
-                          ) : (
-                            <></>
-                          )}
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.InfoTicket}>
+                      <div className={styles.TicketBox}>
+                        <div
+                          className={styles.TicketItem}
+                          style={{ width: "100%" }}
+                        >
                           <img
                             src={
                               process.env.REACT_APP_BACKEND_URL +
-                              pch.ticket.cover
+                              ticketData.ticket.cover
                             }
                             alt=""
                             srcset=""
                           />
-                          <div style={{ width: "calc(100% - 68px)" }}>
+                          <div style={{ width: "calc(100% - 70px)" }}>
                             <div className={styles.TicketTitle}>
-                              {pch.ticket.name}
+                              {ticketData.ticket.name}
                             </div>
                             <div className={styles.TextSecondary}>x1</div>
                           </div>
                         </div>
-                        <Button
-                          center
-                          title={"See Ticket"}
-                          style={{
-                            width: "unset",
-                            padding: "8px 12px 8px 12px",
-                            marginLeft: "auto",
-                          }}
-                          bgColor={"#CA0C6414"}
-                          borderColor={"#CA0C6414"}
-                          textColor={"#ca0c64"}
-                          fnOnClick={() => {
-                            // check valid status ticket
-                            if (
-                              !(
-                                new Date(
-                                  pch.ticket.event.end_date +
-                                    " " +
-                                    pch.ticket.event.end_time
-                                ) < new Date() ||
-                                (pch.visit_date &&
-                                  new Date().setHours(0, 0, 0, 0) >
-                                    new Date(
-                                      pch.visit_date.visit_date
-                                    ).setHours(0, 0, 0, 0))
-                              )
-                            ) {
-                              setTicketData(pch);
-                              setPage(1);
-                            }
-                          }}
-                        />
                       </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className={styles.InfoTicket}>
-                    <div className={styles.TicketBox}>
-                      <div
-                        className={styles.TicketItem}
-                        style={{ width: "100%" }}
-                      >
-                        <img
-                          src={
-                            process.env.REACT_APP_BACKEND_URL +
-                            ticketData.ticket.cover
-                          }
-                          alt=""
-                          srcset=""
-                        />
-                        <div style={{ width: "calc(100% - 70px)" }}>
-                          <div className={styles.TicketTitle}>
-                            {ticketData.ticket.name}
-                          </div>
-                          <div className={styles.TextSecondary}>x1</div>
+                      <div>
+                        {visitDate ? (
+                          <span style={{ marginBottom: "20px" }}>
+                            <b>Tanggal Kunjungan : </b>
+                            {moment(visitDate)
+                              .locale("id-ID")
+                              .format("DD MMMM Y")}
+                          </span>
+                        ) : (
+                          <></>
+                        )}
+                        {seatNumber && seatNumber != "" ? (
+                          <span style={{ marginBottom: "20px" }}>
+                            <b>Nomor Tempat Duduk : </b>
+                            {seatNumber}
+                          </span>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                      <div className={styles.QRBox}>
+                        <div className={styles.SubTitle}>
+                          Scan QR Code to Check In
                         </div>
+                        <QRCode
+                          width={256}
+                          height={256}
+                          value={ticketData.qr_str}
+                        />
                       </div>
-                    </div>
-                    <div>
-                      {visitDate ? (
-                        <span style={{ marginBottom: "20px" }}>
-                          <b>Tanggal Kunjungan : </b>
-                          {moment(visitDate)
-                            .locale("id-ID")
-                            .format("DD MMMM Y")}
-                        </span>
-                      ) : (
-                        <></>
-                      )}
-                      {seatNumber && seatNumber != "" ? (
-                        <span style={{ marginBottom: "20px" }}>
-                          <b>Nomor Tempat Duduk : </b>
-                          {seatNumber}
-                        </span>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                    <div className={styles.QRBox}>
-                      <div className={styles.SubTitle}>
-                        Scan QR Code to Check In
-                      </div>
-                      <QRCode
-                        width={256}
-                        height={256}
-                        value={ticketData.qr_str}
+                      <add-to-calendar-button
+                        id="btn-add-calendar"
+                        style={{ margin: "auto", marginTop: "24px" }}
+                        buttonStyle="round"
+                        name={
+                          ticketData.ticket.event.name +
+                          " - " +
+                          ticketData.ticket.name
+                        }
+                        options="'Apple','Google'"
+                        location={
+                          ticketData.ticket.event.location.split("<p>").length >
+                          1
+                            ? ticketData.ticket.event.location
+                                .split("<p>")[1]
+                                .split("</p>")[0]
+                            : ticketData.ticket.event.location
+                        }
+                        startDate={
+                          ticketData.visit_date
+                            ? ticketData.visit_date.visit_date
+                            : ticketData.ticket.event.start_date
+                        }
+                        endDate={
+                          ticketData.visit_date
+                            ? ticketData.visit_date.visit_date
+                            : ticketData.ticket.event.end_date
+                        }
+                        startTime={
+                          ticketData.visit_date
+                            ? "07:00"
+                            : ticketData.ticket.event.start_time
+                        }
+                        endTime={
+                          ticketData.visit_date
+                            ? "23:59"
+                            : ticketData.ticket.event.end_time
+                        }
+                        timeZone="Asia/Jakarta"
+                      ></add-to-calendar-button>
+                      <Button
+                        style={{ width: "unset" }}
+                        center
+                        title={"Download E-Ticket"}
+                        fnOnClick={() => {
+                          handleDownloadTicket(ticketData.id);
+                        }}
                       />
                     </div>
-                    <add-to-calendar-button
-                      id="btn-add-calendar"
-                      style={{ margin: "auto", marginTop: "24px" }}
-                      buttonStyle="round"
-                      name={
-                        ticketData.ticket.event.name +
-                        " - " +
-                        ticketData.ticket.name
-                      }
-                      options="'Apple','Google'"
-                      location={
-                        ticketData.ticket.event.location.split("<p>").length > 1
-                          ? ticketData.ticket.event.location
-                              .split("<p>")[1]
-                              .split("</p>")[0]
-                          : ticketData.ticket.event.location
-                      }
-                      startDate={
-                        ticketData.visit_date
-                          ? ticketData.visit_date.visit_date
-                          : ticketData.ticket.event.start_date
-                      }
-                      endDate={
-                        ticketData.visit_date
-                          ? ticketData.visit_date.visit_date
-                          : ticketData.ticket.event.end_date
-                      }
-                      startTime={
-                        ticketData.visit_date
-                          ? "07:00"
-                          : ticketData.ticket.event.start_time
-                      }
-                      endTime={
-                        ticketData.visit_date
-                          ? "23:59"
-                          : ticketData.ticket.event.end_time
-                      }
-                      timeZone="Asia/Jakarta"
-                    ></add-to-calendar-button>
-                    <Button
-                      style={{ width: "unset" }}
-                      center
-                      title={"Download E-Ticket"}
-                      fnOnClick={() => {
-                        handleDownloadTicket(ticketData.id);
-                      }}
-                    />
-                  </div>
-                </>
-              )}
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );
