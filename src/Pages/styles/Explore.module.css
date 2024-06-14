@@ -226,6 +226,9 @@
 .EventCard {
 	height: fit-content;
 }
+.Content{
+	padding-top: 30px;
+}
 
 @media (min-width: 1600px) {
 	.EventCard {
@@ -260,6 +263,9 @@
 	.EventCard {
 		max-width: 31.4%;
 		flex-basis: 31.8%;
+	}
+	.Content{
+		padding-top: 0;
 	}
 }
 @media (max-width: 896px) {

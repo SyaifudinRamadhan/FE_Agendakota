@@ -2355,6 +2355,16 @@ const EditorAddEvtAct = ({
                 }`}
                 style={{ gap: 10 }}
               >
+                <div
+                  className={styles.Info}
+                  style={{ margin: 0, color: "red" }}
+                >
+                  <div className={styles2.CmdField}>
+                    <BiInfoCircle />
+                  </div>
+
+                  <p>Gunakan standar zona Waktu Indonesia Barat (WIB)</p>
+                </div>
                 <div className={styles.AvailableDays}>
                   {Object.entries(availableDayTime).map((refData) => (
                     <div className={styles.AvailableDaysCol}>
@@ -2745,6 +2755,20 @@ const EditorAddEvtAct = ({
                     blankStart || blankEnd ? styles.DangerInput : ""
                   }`}
                 >
+                  <div
+                    className={styles.Info}
+                    style={{
+                      marginTop: "10px",
+                      marginBottom: "0",
+                      color: "red",
+                    }}
+                  >
+                    <div className={styles2.CmdField}>
+                      <BiInfoCircle />
+                    </div>
+
+                    <p>Gunakan standar zona Waktu Indonesia Barat (WIB)</p>
+                  </div>
                   <InputLabeled
                     type={"datetime-local"}
                     id={"start_date"}

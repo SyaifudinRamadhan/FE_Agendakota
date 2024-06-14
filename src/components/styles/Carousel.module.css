@@ -44,7 +44,7 @@
 	left: 0;
 	width: 100%;
 	height: 312px;
-	padding: 50px;
+	padding: 50px 115px;
 }
 
 .ButtonNav {
@@ -83,6 +83,12 @@
 
 .ButtonNavRight svg {
 	transform: rotate(180deg);
+}
+
+@media (min-width: 1366px){
+	.Navigator{
+		padding: 50px calc(100px + (100% - 1366px) / 2);
+	}
 }
 
 @media (max-width: 760px) {

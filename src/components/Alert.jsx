@@ -42,13 +42,17 @@ const Alert = ({
         display: "block",
       });
       hanldeAutoClose({ isShow: isShow });
-    } else {
+    }
+  });
+
+  useEffect(() => {
+    if (!isShow) {
       setBasicStyle({
         ...basicStyle,
         display: "none",
       });
     }
-  });
+  }, [isShow]);
 
   return (
     <div className={classNames.join(" ")} style={{ ...basicStyle, ...style }}>

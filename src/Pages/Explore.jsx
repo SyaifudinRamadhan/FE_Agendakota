@@ -521,7 +521,10 @@ const Explore = () => {
   });
 
   return (
-    <div className="content" style={{ padding: "24px", marginTop: "12px" }}>
+    <div
+      className={`content ${styles.Content}`}
+      style={{ padding: "24px", marginTop: "12px" }}
+    >
       {errorState ? (
         <ErrorPage />
       ) : (

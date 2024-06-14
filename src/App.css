@@ -202,7 +202,7 @@ table td {
 
 @media (min-width: 1366px) {
 	section {
-		padding: 50px calc(90px + (100% - 1366px) / 2);
+		padding: 50px calc(100px + (100% - 1366px) / 2);
 	}
 }
 
