@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.df7262b6.css",
-    "main.js": "/static/js/main.17dae16c.js",
+    "main.css": "/static/css/main.643174ec.css",
+    "main.js": "/static/js/main.5211fb2e.js",
     "static/js/498.850549ec.chunk.js": "/static/js/498.850549ec.chunk.js",
     "static/js/703.7608887f.chunk.js": "/static/js/703.7608887f.chunk.js",
     "static/js/513.4d4d06c3.chunk.js": "/static/js/513.4d4d06c3.chunk.js",
@@ -26,15 +26,15 @@
     "index.html": "/index.html",
     "static/media/Calendar.svg": "/static/media/Calendar.aa35284f3721334184f1811bcf189cb9.svg",
     "static/media/Ticket.svg": "/static/media/Ticket.90b73959ff7b88a2bce8ee253ac93acd.svg",
-    "main.df7262b6.css.map": "/static/css/main.df7262b6.css.map",
-    "main.17dae16c.js.map": "/static/js/main.17dae16c.js.map",
+    "main.643174ec.css.map": "/static/css/main.643174ec.css.map",
+    "main.5211fb2e.js.map": "/static/js/main.5211fb2e.js.map",
     "498.850549ec.chunk.js.map": "/static/js/498.850549ec.chunk.js.map",
     "703.7608887f.chunk.js.map": "/static/js/703.7608887f.chunk.js.map",
     "513.4d4d06c3.chunk.js.map": "/static/js/513.4d4d06c3.chunk.js.map",
     "787.e4f6a8ed.chunk.js.map": "/static/js/787.e4f6a8ed.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.df7262b6.css",
-    "static/js/main.17dae16c.js"
+    "static/css/main.643174ec.css",
+    "static/js/main.5211fb2e.js"
   ]
 }
