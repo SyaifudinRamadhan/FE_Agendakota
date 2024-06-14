@@ -173,16 +173,7 @@ const ReviewContent = ({
     };
     for (let index = 0; index < formFields.length; index++) {
       let field = formFields[index];
-      if (!accSnk.current || !accSnk.current.checked) {
-        setAlert({
-          state: true,
-          type: "danger",
-          content:
-            'Anda wajib mencentang form syarat dan ketentuan, diatas tombol "Lanjutkan Ke Pembayaran"',
-        });
-        failedIndicator = true;
-        index = formFields.length;
-      } else if (
+      if (
         (formTypeState[index].required &&
           !(formTypeState[index].type === "file"
             ? field.current.files.length
@@ -268,7 +259,15 @@ const ReviewContent = ({
           }
         }
       });
-      if (
+
+      if (!accSnk.current || !accSnk.current.checked) {
+        setAlert({
+          state: true,
+          type: "danger",
+          content:
+            'Anda wajib mencentang form syarat dan ketentuan, diatas tombol "Lanjutkan Ke Pembayaran"',
+        });
+      } else if (
         (trxMethod === "" ||
           ((trxMethod === "014" || trxMethod === "015") &&
             !refOvoJn.current.value)) &&

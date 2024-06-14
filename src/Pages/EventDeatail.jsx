@@ -766,6 +766,12 @@ const EventDetail = ({ isLogin }) => {
   }, [windowsSize]);
 
   useEffect(() => {
+    if (!loading) {
+      window.location.href = "#cartbox";
+    }
+  }, [loading]);
+
+  useEffect(() => {
     const handleChangeWindowSize = () => {
       setWindowSize(getWindowSize());
     };
@@ -1983,7 +1989,7 @@ const EventDetail = ({ isLogin }) => {
               </div>
               {/* --------------- */}
               {/* ------- CHART BOX -------- */}
-              <div className={styles.CartBox}>
+              <div id="cartbox" className={styles.CartBox}>
                 <div className={styles.CartBoxTitle}>
                   <div className={styles.CartBoxInner}>Keranjang Tiket </div>
                   <Button
