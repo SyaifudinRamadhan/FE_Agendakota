@@ -2570,7 +2570,7 @@ const EditorAddEvtAct = ({
                       Add Cover Picture *
                     </div>
                     <div className={styles.SubTitleInputImage}>
-                      5:3 PNG or JPG Max 2 MB
+                      5:3 or Max. 1500 x 900 px PNG, JPG Max File 2 MB
                     </div>
                   </div>
                 }

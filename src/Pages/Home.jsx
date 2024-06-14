@@ -274,7 +274,7 @@ const Home = () => {
           <div className={styles.JumboDescription}>
             Nonton konser idolamu hingga belajar skill baru{" "}
             <div className={styles.DesktopEOL}></div> kini bisa kamu lakukan
-            hanya dari rumah
+            dimana saja
           </div>
 
           <div className={styles.JumboButtonArea}>

@@ -8,9 +8,13 @@ const Carousel = ({
   navigatorStyle = {},
   contentStyle = {},
   contentClasses = [],
+  showNav = false,
+  autoScroll = true,
+  delayScroll = 1000,
 }) => {
   const [position, setPosition] = useState(0);
   const [pxTranslate, setTranslate] = useState(0);
+  const [firstLoad, setFirstLoad] = useState(false);
   const box = useRef(null);
   const classsNamesNav = [styles.Navigator].concat(navigatorClasses);
 
@@ -43,6 +47,11 @@ const Carousel = ({
       setTranslate(-(box.current.clientWidth * position));
     } catch (error) {
       // console.log(error);
+    }
+    if (autoScroll) {
+      setTimeout(() => {
+        handleNext();
+      }, delayScroll);
     }
   }, [position]);
 
@@ -83,7 +92,10 @@ const Carousel = ({
           );
         })}
       </ul>
-      <div className={classsNamesNav.join(" ")} style={navigatorStyle}>
+      <div
+        className={classsNamesNav.join(" ")}
+        style={showNav ? navigatorStyle : { display: "none" }}
+      >
         <div
           className={`${styles.ButtonNav} ${styles.ButtonNavLeft}`}
           onClick={handlePrev}

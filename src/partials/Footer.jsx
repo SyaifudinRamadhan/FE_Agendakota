@@ -9,6 +9,7 @@ import {
   BiLogoLinkedin,
   BiLogoTiktok,
   BiLogoTwitter,
+  BiLogoYoutube,
   BiPhone,
   BiX,
 } from "react-icons/bi";
@@ -53,14 +54,20 @@ const Footer = () => {
             <div className={styles.SocmedBox}>
               <div className={styles.SocmedTitle}>Ikuti Kami</div>
               <div className={styles.SocmedList}>
-                <a href="#">
+                <a href="https://facebook.com/agendakota">
                   <BiLogoFacebookCircle />
                 </a>
-                <a href="#">
+                <a href="https://x.com/AgendaKotaID">
                   <BiX />
                 </a>
-                <a href="#">
+                <a href="https://instagram.com/agendakota">
                   <BiLogoInstagram />
+                </a>
+                <a href="https://www.linkedin.com/company/agendakotaid">
+                  <BiLogoLinkedin />
+                </a>
+                <a href="https://youtube.com/agendakotaTV">
+                  <BiLogoYoutube />
                 </a>
               </div>
             </div>
