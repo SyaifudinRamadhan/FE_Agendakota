@@ -32,17 +32,13 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import PopUp2 from "./PopUp2";
 
-import Chip from "../components/Chip";
-import FlatButton from "../components/FlatButton";
 import PopUpTicket from "./PopUpTicket";
 import InputCheckRadio from "../components/InputCheckRadio";
 import axios from "axios";
 import Loading from "../components/Loading";
-import Alert from "../components/Alert";
 import PopUp from "./PopUp";
 import ErrorPage from "./ErrorPage";
 import config from "../config";
-import { log } from "util";
 import { useNavigate } from "react-router-dom";
 import AddSelectOrgFront from "./AddSelectOrgFront";
 import { useDispatch, useSelector } from "react-redux";

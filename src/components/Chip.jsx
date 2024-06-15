@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./styles/Chip.module.css";
 import config from "../config";
-import { isArray } from "util";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
 const Chip = ({
