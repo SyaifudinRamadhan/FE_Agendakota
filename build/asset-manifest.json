@@ -1,10 +1,10 @@
 {
   "files": {
     "main.css": "/static/css/main.f9652a9d.css",
-    "main.js": "/static/js/main.7a3164e1.js",
+    "main.js": "/static/js/main.dfe68742.js",
     "static/js/498.850549ec.chunk.js": "/static/js/498.850549ec.chunk.js",
     "static/js/703.7608887f.chunk.js": "/static/js/703.7608887f.chunk.js",
-    "static/js/513.4d4d06c3.chunk.js": "/static/js/513.4d4d06c3.chunk.js",
+    "static/js/513.a81bb04a.chunk.js": "/static/js/513.a81bb04a.chunk.js",
     "static/js/787.e4f6a8ed.chunk.js": "/static/js/787.e4f6a8ed.chunk.js",
     "static/media/png": "/static/media/f7a5377b9b4ce2366a8b4bd6ca4c291a.25273a441184cf564fb4.png",
     "static/media/JumboBackground.png": "/static/media/JumboBackground.fb3a8a888a402b2b98f9.png",
@@ -27,14 +27,14 @@
     "static/media/Calendar.svg": "/static/media/Calendar.aa35284f3721334184f1811bcf189cb9.svg",
     "static/media/Ticket.svg": "/static/media/Ticket.90b73959ff7b88a2bce8ee253ac93acd.svg",
     "main.f9652a9d.css.map": "/static/css/main.f9652a9d.css.map",
-    "main.7a3164e1.js.map": "/static/js/main.7a3164e1.js.map",
+    "main.dfe68742.js.map": "/static/js/main.dfe68742.js.map",
     "498.850549ec.chunk.js.map": "/static/js/498.850549ec.chunk.js.map",
     "703.7608887f.chunk.js.map": "/static/js/703.7608887f.chunk.js.map",
-    "513.4d4d06c3.chunk.js.map": "/static/js/513.4d4d06c3.chunk.js.map",
+    "513.a81bb04a.chunk.js.map": "/static/js/513.a81bb04a.chunk.js.map",
     "787.e4f6a8ed.chunk.js.map": "/static/js/787.e4f6a8ed.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f9652a9d.css",
-    "static/js/main.7a3164e1.js"
+    "static/js/main.dfe68742.js"
   ]
 }
