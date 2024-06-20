@@ -1675,6 +1675,7 @@ const PopUpTicketIn = ({
                           value={ticketData.qr_str}
                         />
                       </div>
+
                       <add-to-calendar-button
                         id="btn-add-calendar"
                         style={{ margin: "auto", marginTop: "24px" }}
@@ -1715,6 +1716,21 @@ const PopUpTicketIn = ({
                         }
                         timeZone="Asia/Jakarta"
                       ></add-to-calendar-button>
+                      {ticketData.secret_info ? (
+                        <Button
+                          style={{ width: "unset" }}
+                          bgColor={"blue"}
+                          textColor={"white"}
+                          borderColor={"blue"}
+                          center
+                          title={"Join Meet/Zoom"}
+                          fnOnClick={() => {
+                            window.open(ticketData.secret_info.meet_link);
+                          }}
+                        />
+                      ) : (
+                        <></>
+                      )}
                       <Button
                         style={{ width: "unset" }}
                         center

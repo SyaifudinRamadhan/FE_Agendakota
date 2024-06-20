@@ -32,6 +32,10 @@ const Footer = () => {
             alt="Logo Agendakota"
             className={styles.Logo}
           />
+          <div className={styles.Inline}>
+            Koridor Co-Working Space, Gedung Siola lt.3 Jl. Tunjungan No. 1
+            Surabaya
+          </div>
           <div className={styles.FooterLeftLink}>
             <a href="https://wa.me/+6288990079999" className={styles.Inline}>
               <div className={styles.IconedInfo}>
@@ -135,7 +139,7 @@ const Footer = () => {
           </div>
           <div className={styles.Column}>
             <div className={styles.Title}>Produk</div>
-            <a href="#" className={styles.Link} target="_blank">
+            {/* <a href="#" className={styles.Link} target="_blank">
               Virtual Event
             </a>
             <a href="#" className={styles.Link} target="_blank">
@@ -170,6 +174,62 @@ const Footer = () => {
             </a>
             <a href="#" className={styles.Link} target="_blank">
               Man Power Event
+            </a> */}
+            <a
+              href="/explore?category=Attraction"
+              className={styles.Link}
+              target="_blank"
+            >
+              Hiburan Atraksi
+            </a>
+            <a
+              href="/explore?topic=Waterpark"
+              className={styles.Link}
+              target="_blank"
+            >
+              Waterpark
+            </a>
+            <a
+              href="/explore?topic=Wisata"
+              className={styles.Link}
+              target="_blank"
+            >
+              Wisata & Travel
+            </a>
+            <a
+              href="/explore?topic=Wisata%20Medis"
+              className={styles.Link}
+              target="_blank"
+            >
+              Wisata Medis
+            </a>
+            <a
+              href="/explore?topic=Wisata%20Kebugaran"
+              className={styles.Link}
+              target="_blank"
+            >
+              Wisata Kebugaran
+            </a>
+            <a
+              href="/explore?topic=Kecantikan"
+              className={styles.Link}
+              target="_blank"
+            >
+              Kecantikan
+            </a>
+            <a
+              href="/explore?topic=Spa%20~~^~~%20Relaksasi"
+              className={styles.Link}
+              target="_blank"
+            >
+              Spa & Relaksasi
+            </a>
+            <a
+              href="/explore?topic=Akomodasi"
+              className={styles.Link}
+              target="_blank"
+            >
+              Akomodasi
             </a>
           </div>
           <div className={styles.Column}>
@@ -311,7 +371,7 @@ const Footer = () => {
             href="/term-conditions"
             className={`${styles.Link} ${styles.BottomLink}`}
           >
-            Term & Conditions
+            Syarat & Ketentuan
           </a>
         </div>
       </div>

@@ -493,9 +493,15 @@ const Explore = () => {
             : null;
         // console.log(strParams, "STR PARAMS");
         setSelectedCategories(
-          catParam ? [catParam.replaceAll("%20", " ")] : []
+          catParam
+            ? [catParam.replaceAll("%20", " ").replaceAll("~~^~~", "&")]
+            : []
         );
-        setSelectedTopics(topicParam ? [topicParam] : []);
+        setSelectedTopics(
+          topicParam
+            ? [topicParam.replaceAll("%20", " ").replaceAll("~~^~~", "&")]
+            : []
+        );
         setSelectedCity(cityParam ? cityParam : "");
       }
       setQueryParam(nameParam);

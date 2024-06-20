@@ -19,7 +19,7 @@
 .FooterLeftLink {
     flex-direction: column;
     flex-basis: 40%;
-    height: calc(100% - 62px);
+    height: calc(100% - 122px);
 }
 .Logo {
     width: 200px;

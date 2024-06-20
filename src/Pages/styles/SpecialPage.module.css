@@ -40,18 +40,18 @@ h3{
   color: #ca0c64;
   text-align: center;
 }
-section{
+.Section{
   padding: 50px 115px;
 }
 
 @media (min-width: 1366px) {
-  section {
+  .Section {
       padding: 50px calc(150px + (100% - 1366px) / 2);
   }
 }
 
 @media (max-width: 992px) {
-	section {
+	.Section {
 		padding: 20px;
 	}
 }

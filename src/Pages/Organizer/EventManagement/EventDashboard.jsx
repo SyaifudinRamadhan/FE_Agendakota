@@ -1122,6 +1122,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                 ? ticket.limit_daily.limit_quantity
                 : null,
               deleted: ticket.deleted,
+              meet_link: ticket.secretInfo ? ticket.secretInfo.meet_link : "",
             });
           });
           setTickets(tickets);
@@ -1486,7 +1487,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
           orderForm={orderForm}
           fnSetOrderForm={setOrderForm}
           evtActId={eventId}
-          endEvent={basicEndEvt}
+          endEvent={basicEndEvt ? basicEndEvt.replaceAll(" ", "T") : null}
           forEvtAct={
             category === "Attraction" ||
             category === "Daily Activities" ||
@@ -1498,6 +1499,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
               ? "Onsite Event"
               : "Hybrid Event"
           }
+          evtCategory={category ? { label: category, value: category } : null}
           orgId={curentOrg}
           fnSetGlobalLoading={setLoading}
         />

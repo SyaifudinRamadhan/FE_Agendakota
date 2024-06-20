@@ -1325,14 +1325,17 @@ const TrxContent = ({
                     : "Selesai"
                 }
                 fnOnClick={() => {
-                  parseInt(payMethod) >= 11 && parseInt(payMethod) <= 13
-                    ? (window.location.href = resTrx.payment.actions
-                        .desktop_web_checkout_url
-                        ? resTrx.payment.actions.desktop_web_checkout_url
-                        : resTrx.payment.actions.mobile_web_checkout_url
-                        ? resTrx.payment.actions.mobile_web_checkout_url
-                        : resTrx.payment.actions.mobile_deeplink_checkout_url)
-                    : navigate("/my-tickets");
+                  if (parseInt(payMethod) >= 11 && parseInt(payMethod) <= 13) {
+                    localStorage.setItem("new-trx", resTrx.local_pay_id);
+                    window.location.href = resTrx.payment.actions
+                      .desktop_web_checkout_url
+                      ? resTrx.payment.actions.desktop_web_checkout_url
+                      : resTrx.payment.actions.mobile_web_checkout_url
+                      ? resTrx.payment.actions.mobile_web_checkout_url
+                      : resTrx.payment.actions.mobile_deeplink_checkout_url;
+                  } else {
+                    navigate(`/my-tickets?trx_id=${resTrx.local_pay_id}`);
+                  }
                 }}
               />
             </>
@@ -1357,14 +1360,16 @@ const TrxContent = ({
                   }}
                   className={styles.TextPrimary}
                 >
-                  {resTrx.payment.id}
+                  {resTrx.local_pay_id}
                 </div>
               </div>
               <Button
                 style={{ marginTop: "48px", width: "100%" }}
                 center
                 title={"Selesai"}
-                fnOnClick={() => navigate("/my-tickets")}
+                fnOnClick={() =>
+                  navigate(`/my-tickets?trx_id=${resTrx.payment.id}`)
+                }
               />
             </>
           )}

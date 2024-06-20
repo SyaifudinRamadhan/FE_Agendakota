@@ -329,6 +329,7 @@ const EventDetail = ({ isLogin }) => {
   const [popUpTrx, setPopUpTrx] = useState(false);
   const [pageState, setPageState] = useState(0);
   const [openDetailDesc, setOpenDesc] = useState("");
+  const [firstLoad, setFirstLoadState] = useState(false);
   const navigate = useNavigate();
 
   const handleOpenCart = (openWrapper) => {
@@ -339,10 +340,12 @@ const EventDetail = ({ isLogin }) => {
   };
 
   const DOMReload = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 50);
+    // setLoading(true);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 50);
+    setCartData(cartData.map((data) => data));
+    window.location.href = "#cartbox";
   };
 
   const handleAddCountView = (type, qty, id) => {
@@ -440,7 +443,7 @@ const EventDetail = ({ isLogin }) => {
           });
           setLengthAddCart(tmp.length);
           setCartData(cartData.concat(tmp));
-          window.scrollTo(0, 0);
+          // window.scrollTo(0, 0);
         }
       } else {
         if (cartData.length === 0) {
@@ -476,7 +479,7 @@ const EventDetail = ({ isLogin }) => {
             ])
           );
         }
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
       }
 
       // if (!cartData) {
@@ -494,11 +497,11 @@ const EventDetail = ({ isLogin }) => {
         data: data,
       };
       setWrapperState(true);
+      window.location.href = "#cartbox";
     }
   };
 
   const handleSelectDateCart = (id, e) => {
-    // console.log(e);
     if (
       cartData[id].visitDate.format() !== e.format() &&
       !cartData.find(
@@ -507,38 +510,16 @@ const EventDetail = ({ isLogin }) => {
           cart.visitDate.format() === e.format()
       )
     ) {
-      // setCartData(cartData.map((data) => data));
-      setLoading(true);
-      loadAvlDayQty({ ticket_id: cartData[id].data.id, date: e.format() }).then(
-        (res) => {
-          if (res.status === 200) {
-            cartData[id].data.quantity = res.data.quantity;
-            let tmp = {
-              count:
-                cartData[id].data.seat_number == 0
-                  ? cartData[id].count > res.data.quantity
-                    ? res.data.quantity
-                    : cartData[id].count
-                  : 0,
-              visitDate: e,
-              seatNumbers: [],
-              customPrice: cartData[id].customPrice,
-              data: cartData[id].data,
-            };
-            cartData[id] = tmp;
-            tmp = null;
-          } else {
-            setPopUpAlert({
-              state: true,
-              type: "danger",
-              content:
-                "Mohon maaf. Terjadi kesalahan server saat menambahkan keranjang. Mohon coba lagi !",
-            });
-            resetAlert();
-          }
-          setLoading(false);
-        }
-      );
+      let tmp = {
+        count: cartData[id].data.seat_number == 0 ? cartData[id].count : 0,
+        visitDate: e,
+        seatNumbers: [],
+        customPrice: cartData[id].customPrice,
+        data: cartData[id].data,
+      };
+      cartData[id] = tmp;
+      tmp = null;
+      DOMReload();
     }
   };
 
@@ -665,12 +646,12 @@ const EventDetail = ({ isLogin }) => {
         event.event.category === "Daily Activities" ||
         event.event.category === "Tour Travel (recurring)")
     ) {
-      setLoading(true);
       loadAvlDayQtys({
         ticketIds: cartData.map((cart) => cart.data.id),
         dates: cartData.map((cart) => cart.visitDate.format()),
       }).then((res) => {
         if (res.status === 200) {
+          let nullDate = "";
           for (let i = 0; i < cartData.length; i++) {
             if (
               cartData[i].data.quantity > res.data.tickets[i].quantity &&
@@ -678,7 +659,30 @@ const EventDetail = ({ isLogin }) => {
             ) {
               cartData[i].count = res.data.tickets[i].quantity;
             }
+            if (res.data.tickets[i].quantity === 0) {
+              if (nullDate === "") {
+                nullDate = `"${cartData[i].data.name}" tanggal (${cartData[
+                  i
+                ].visitDate.format("dd-MM-YYYY")}`;
+              } else {
+                nullDate += `${
+                  cartData[i - 1].data.name != cartData[i].data.name
+                    ? `), "${cartData[i].data.name}" tanggal (`
+                    : ", "
+                }${cartData[i].visitDate.format("dd-MM-YYYY")}${
+                  i === cartData.length - 1 ? ")" : ""
+                }`;
+              }
+              cartData[i].seatNumbers = [];
+            }
             cartData[i].data.quantity = res.data.tickets[i].quantity;
+          }
+          if (nullDate !== "") {
+            setPopUpAlert({
+              state: true,
+              type: "danger",
+              content: `Mohon maaf. Ketersediaan tiket ${nullDate} sudah habis !`,
+            });
           }
         } else {
           cartData.splice(cartData.length - lengthAddCart, lengthAddCart);
@@ -686,18 +690,14 @@ const EventDetail = ({ isLogin }) => {
             state: true,
             type: "danger",
             content:
-              "Mohon maaf. Terjadi kesalahan server saat menambahkan keranjang. Mohon coba lagi !",
+              res.status === 404
+                ? "Mohon maaf, tiket ini sudah tidak aktif atau sudah dihapus oleh penyelenggara !"
+                : "Mohon maaf. Terjadi kesalahan server saat menambahkan keranjang. Mohon coba lagi !",
           });
-          resetAlert();
         }
-        setLoading(false);
       });
-    } else {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 50);
     }
+    window.location.href = "#cartbox";
   }, [cartData]);
 
   useEffect(() => {
@@ -764,12 +764,6 @@ const EventDetail = ({ isLogin }) => {
       document.getElementsByTagName("body")[0].style.overflow = "hidden";
     }
   }, [windowsSize]);
-
-  useEffect(() => {
-    if (!loading) {
-      window.location.href = "#cartbox";
-    }
-  }, [loading]);
 
   useEffect(() => {
     const handleChangeWindowSize = () => {
@@ -959,14 +953,29 @@ const EventDetail = ({ isLogin }) => {
       ) : (
         <div className={styles.MainContainer}>
           {!openWrapper ? (
-            <div
-              className={styles.FloatCartIcon}
-              onClick={() => {
-                handleOpenCart(openWrapper);
-              }}
-            >
-              <BiCart />
-            </div>
+            cartData.length === 0 ? (
+              <a href="#tickets">
+                <div
+                  className={styles.FloatCartIcon}
+                  onClick={() => {
+                    setPageState(1);
+                  }}
+                >
+                  <BiCart />
+                  <div>Beli Tiket</div>
+                </div>
+              </a>
+            ) : (
+              <div
+                className={styles.FloatCartIcon}
+                onClick={() => {
+                  handleOpenCart(openWrapper);
+                }}
+              >
+                <BiCart />
+                <div>Beli Tiket</div>
+              </div>
+            )
           ) : (
             <></>
           )}
@@ -1487,9 +1496,6 @@ const EventDetail = ({ isLogin }) => {
                   )}
                 </div>
                 <div className={styles.FooterInfo}>
-                  <div className={styles.Subtitle} style={{ fontSize: "13px" }}>
-                    Organized By
-                  </div>
                   <div
                     className={styles.InfoOrg}
                     style={{ cursor: "pointer" }}
@@ -1526,42 +1532,48 @@ const EventDetail = ({ isLogin }) => {
                 </div>
               </div>
               <div className={styles.Navigation}>
-                <div
-                  className={`${styles.NavBtn} ${
-                    pageState === 0 ? styles.NavBtnActive : ""
-                  }`}
-                  onClick={() => {
-                    setPageState(0);
-                  }}
-                >
-                  Deskripsi
-                </div>
-                <div
-                  className={`${styles.NavBtn} ${
-                    pageState === 1 ? styles.NavBtnActive : ""
-                  }`}
-                  onClick={() => {
-                    setPageState(1);
-                  }}
-                >
-                  Tiket &nbsp;
-                  <span style={{ color: "#8B8B8B" }}>
-                    {event.event.tickets ? event.event.tickets.length : 0}
-                  </span>
-                </div>
+                <a href="#Desc">
+                  <div
+                    className={`${styles.NavBtn} ${
+                      pageState === 0 ? styles.NavBtnActive : ""
+                    }`}
+                    onClick={() => {
+                      setPageState(0);
+                    }}
+                  >
+                    Deskripsi
+                  </div>
+                </a>
+                <a href="#tickets">
+                  <div
+                    className={`${styles.NavBtn} ${
+                      pageState === 1 ? styles.NavBtnActive : ""
+                    }`}
+                    onClick={() => {
+                      setPageState(1);
+                    }}
+                  >
+                    Tiket &nbsp;
+                    <span style={{ color: "#8B8B8B" }}>
+                      {event.event.tickets ? event.event.tickets.length : 0}
+                    </span>
+                  </div>
+                </a>
                 {/* <a href="#rundowns">
 									<div className={`${styles.NavBtn}`}>Rundown</div>
 								</a> */}
-                <div
-                  className={`${styles.NavBtn} ${
-                    pageState === 2 ? styles.NavBtnActive : ""
-                  }`}
-                  onClick={() => {
-                    setPageState(2);
-                  }}
-                >
-                  Syarat & Ketentuan
-                </div>
+                <a href="#snk">
+                  <div
+                    className={`${styles.NavBtn} ${
+                      pageState === 2 ? styles.NavBtnActive : ""
+                    }`}
+                    onClick={() => {
+                      setPageState(2);
+                    }}
+                  >
+                    Syarat & Ketentuan
+                  </div>
+                </a>
               </div>
               <div
                 id="Desc"
@@ -1949,9 +1961,6 @@ const EventDetail = ({ isLogin }) => {
                   )}
                 </div>
                 <div className={styles.FooterInfo}>
-                  <div className={styles.Subtitle} style={{ fontSize: "12px" }}>
-                    Organized By
-                  </div>
                   <div
                     className={styles.InfoOrg}
                     style={{ cursor: "pointer" }}

@@ -10,7 +10,7 @@ import ErrorPage from "../../partials/ErrorPage";
 import Loading from "../../components/Loading";
 import PopUpCheckinUser from "../../partials/PopUpCheckinUserr";
 import { useSelector } from "react-redux";
-import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { BiChevronDown, BiChevronUp, BiInfoCircle } from "react-icons/bi";
 
 const handleSuccess = (res) => {
   return {
@@ -54,6 +54,7 @@ const loadPchs = async ({ token }) => {
 const CardGroup = ({
   trxData,
   trxDatas,
+  newTrx,
   fnSetTrxDatas = () => {},
   fnSetPopUpContent = () => {},
   fnSetPopUpActive = () => {},
@@ -120,12 +121,14 @@ const CardGroup = ({
           }
         }, 1000);
       }
+
       setFirstLoaad(false);
     }
   }, [firstLoad]);
 
   return (
     <div
+      id={trxData.payment.id}
       className={styles.TicketBox}
       // onClick={() => {
       // 	// console.log(trxData, "TRX DATA");
@@ -133,6 +136,11 @@ const CardGroup = ({
       // }}
     >
       <div className={styles.TicketCard}>
+        {newTrx === trxData.payment.id ? (
+          <div className={styles.Badge}>New Transaction</div>
+        ) : (
+          <></>
+        )}
         <div className={styles.CoverBox}>
           <img
             src={
@@ -228,6 +236,12 @@ const MyTicket = ({ isLogin, fnSetLogin = () => {} }) => {
   const [openCheckin, setOpenCheckin] = useState(false);
   const [hideInvalidTicket, setHideInvTicket] = useState(true);
   const appData = useSelector((state) => state.appDataReducer);
+  const [firstLoad, setFirstLoaad] = useState(false);
+  const [newTicket, setNewTicket] = useState({
+    state: false,
+    trxId: "",
+    content: <></>,
+  });
 
   useEffect(() => {
     if (
@@ -330,6 +344,48 @@ const MyTicket = ({ isLogin, fnSetLogin = () => {} }) => {
   }, [transactions, isLogin]);
 
   useEffect(() => {
+    if (!firstLoad) {
+      let trxIdStr = localStorage.getItem("new-trx");
+      let trxIdPrm = window.location.search.split("trx_id=");
+      if (
+        trxIdStr ||
+        (trxIdPrm.length > 1 && trxIdPrm[1].split("&")[0] !== "")
+      ) {
+        setNewTicket({
+          state: true,
+          trxId: trxIdStr ? trxIdStr : trxIdPrm[1].split("&")[0],
+          content: (
+            <div className={styles.NewTicketPopUp}>
+              <BiInfoCircle />
+              <span className={styles.NewTicketInfo}>
+                Selamat datang di halaman <b>MyTickets</b>. Temukan hasil
+                transaksi tiket anda disini. Klik <b>E-Ticket</b> untuk melihat
+                detail pembelian tiket !
+              </span>
+              <a href={`#${trxIdStr ? trxIdStr : trxIdPrm[1].split("&")[0]}`}>
+                <Button
+                  title={"Ok"}
+                  fnOnClick={() => {
+                    setNewTicket({
+                      state: false,
+                      trxId: trxIdStr ? trxIdStr : trxIdPrm[1].split("&")[0],
+                      content: <></>,
+                    });
+                  }}
+                />
+              </a>
+            </div>
+          ),
+        });
+        if (trxIdStr) {
+          localStorage.removeItem("new-trx");
+        }
+      }
+      setFirstLoaad(true);
+    }
+  }, [firstLoad]);
+
+  useEffect(() => {
     document.title = "MyTickets - Agendakota";
   });
 
@@ -358,6 +414,13 @@ const MyTicket = ({ isLogin, fnSetLogin = () => {} }) => {
           content: [stylesPopUpTicketIn.PopUpContent],
         }}
       />
+      <PopUp
+        width="45%"
+        isActive={newTicket.state}
+        setActiveFn={() => {}}
+        title=""
+        content={newTicket.content}
+      />
       <div className="content user">
         <div className={styles.DecorationBox}>
           <div className={styles.Decoration}></div>
@@ -383,6 +446,7 @@ const MyTicket = ({ isLogin, fnSetLogin = () => {} }) => {
                         <CardGroup
                           trxData={trx}
                           trxDatas={transactions}
+                          newTrx={newTicket.trxId}
                           fnSetTrxDatas={setTransactions}
                           fnSetPopUpActive={setPopUpState}
                           fnSetPopUpContent={SetPopUpContent}
@@ -408,6 +472,7 @@ const MyTicket = ({ isLogin, fnSetLogin = () => {} }) => {
                         <CardGroup
                           trxData={trx}
                           trxDatas={transactions}
+                          newTrx={newTicket.trxId}
                           fnSetTrxDatas={setTransactions}
                           fnSetPopUpActive={setPopUpState}
                           fnSetPopUpContent={SetPopUpContent}

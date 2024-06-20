@@ -350,6 +350,7 @@ const createTickets = async ({
       // required field for type activities
       cover: null,
       daily_limit_qty: null,
+      meet_link: null,
     },
   ],
   token,
@@ -834,6 +835,7 @@ const EditorAddEvtAct = ({
           end_date: ticket.end_date,
           cover: ticket.cover,
           daily_limit_qty: ticket.limit_daily,
+          meet_link: ticket.meet_link,
         })),
       });
     }
@@ -962,6 +964,7 @@ const EditorAddEvtAct = ({
                   end_date: ticket.end_date,
                   cover: ticket.cover,
                   daily_limit_qty: ticket.limit_daily,
+                  meet_link: ticket.meet_link,
                 })),
                 token: appData.accessToken,
               }).then((res) => {
@@ -1147,6 +1150,7 @@ const EditorAddEvtAct = ({
                   end_date: ticket.end_date,
                   cover: ticket.cover,
                   daily_limit_qty: ticket.limit_daily,
+                  meet_link: ticket.meet_link,
                 })),
                 token: appData.accessToken,
               }).then((res) => {
@@ -1344,6 +1348,7 @@ const EditorAddEvtAct = ({
                   end_date: ticket.end_date,
                   cover: ticket.cover,
                   daily_limit_qty: ticket.limit_daily,
+                  meet_link: ticket.meet_link,
                 })),
                 token: appData.accessToken,
               }).then((res) => {
@@ -1531,6 +1536,7 @@ const EditorAddEvtAct = ({
                   end_date: ticket.end_date,
                   cover: ticket.cover,
                   daily_limit_qty: ticket.limit_daily,
+                  meet_link: ticket.meet_link,
                 })),
                 token: appData.accessToken,
               }).then((res) => {
@@ -2028,6 +2034,7 @@ const EditorAddEvtAct = ({
           orderForm={orderForm}
           fnSetOrderForm={setOrderForm}
           forEvtAct={forEvtAct}
+          evtCategory={category}
           endEvent={endDate.current ? endDate.current.value : null}
         />
         <PopUp2
@@ -2686,28 +2693,6 @@ const EditorAddEvtAct = ({
                   {snk === "" ? "Tambahkan" : "Lihat & Edit"}
                 </div>
               </FieldBox>
-              {/* {!eventId &&
-              forEvtAct !== "Onsite Event" &&
-              forEvtAct !== "Online Event" &&
-              forEvtAct !== "Hybrid Event" ? (
-                <FieldBox
-                  iconSvg={<BiCard />}
-                  style={{ backgroundColor: "#fff" }}
-                  label={<p>Produk/Layanan</p>}
-                >
-                  <div
-                    className={styles.CmdField2}
-                    onClick={() => {
-                      setPopUpActive(true);
-                      setPopUpTitle("Tickets");
-                    }}
-                  >
-                    {tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
-                  </div>
-                </FieldBox>
-              ) : (
-                <></>
-              )} */}
             </div>
             <div className={styles.ColSplit2}>
               {windowWidth > 772 ? (
@@ -2992,33 +2977,7 @@ const EditorAddEvtAct = ({
                   value={visbibilty}
                 />
               </FieldBox>
-              {/* {eventId ? (
-                <></>
-              ) : (
-                <FieldBox
-                  iconSvg={<BiCard />}
-                  style={{ backgroundColor: "#fff" }}
-                  label={
-                    <p>
-                      {forEvtAct === "Onsite Event" ||
-                      forEvtAct === "Online Event" ||
-                      forEvtAct === "Hybrid Event"
-                        ? "Ticket *"
-                        : "Produk/Layanan *"}
-                    </p>
-                  }
-                >
-                  <div
-                    className={styles.CmdField2}
-                    onClick={() => {
-                      setPopUpActive(true);
-                      setPopUpTitle("Tickets");
-                    }}
-                  >
-                    {tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
-                  </div>
-                </FieldBox>
-              )} */}
+
               {!eventId &&
               (forEvtAct === "Onsite Event" ||
                 forEvtAct === "Online Event" ||
@@ -3035,7 +2994,8 @@ const EditorAddEvtAct = ({
                         startDate.current &&
                         endDate.current &&
                         startDate.current.value !== "" &&
-                        endDate.current.value !== ""
+                        endDate.current.value !== "" &&
+                        category
                       ) {
                         setPopUpActive(true);
                         setPopUpTitle("Tickets");
@@ -3049,11 +3009,14 @@ const EditorAddEvtAct = ({
                         if (!endDate.current || endDate.current.value === "") {
                           setBlankEnd(true);
                         }
+                        if (!category) {
+                          setBlankCat(true);
+                        }
                         setAlert({
                           state: true,
                           type: "danger",
                           content:
-                            "Field tanggal dan waktu event wajib diisi terlebih dahulu",
+                            "Field tanggal dan waktu serta kategori event wajib diisi terlebih dahulu",
                         });
                       }
                     }}
@@ -3061,7 +3024,7 @@ const EditorAddEvtAct = ({
                     {tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
                   </div>
                 </FieldBox>
-              ) : (
+              ) : !eventId ? (
                 <FieldBox
                   iconSvg={<BiCard />}
                   style={{ backgroundColor: "#fff" }}
@@ -3077,6 +3040,8 @@ const EditorAddEvtAct = ({
                     {tickets.length === 0 ? "Tambahkan" : "Lihat & Edit"}
                   </div>
                 </FieldBox>
+              ) : (
+                <></>
               )}
             </div>
           </div>

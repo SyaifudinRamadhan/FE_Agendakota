@@ -315,6 +315,9 @@
 .DangerInput > *::placeholder{
 	color: #d29a9a !important;
 }
+.MeetLink input{
+	text-align: left;
+}
 
 @media (max-width: 992px) {
 	.TicketCard,

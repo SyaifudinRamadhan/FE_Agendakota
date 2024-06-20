@@ -267,7 +267,7 @@ const Home = () => {
       <div className="content">
         <div className={styles.JumboTop}>
           <div className={styles.JumboTitle}>
-            Platform Management
+            Agendakota.id | Platform Management
             <span className={styles.JumboTitleSpecial}>event,</span>
             Ticketing, & Reservation
           </div>
@@ -573,6 +573,7 @@ const Home = () => {
             <Carousel
               contents={frontBanners}
               navigatorClasses={[styles.CustomNavCarousel]}
+              delayScroll={4000}
             />
           </section>
         ) : !frontBanners ? (

@@ -11,6 +11,7 @@ import {
   BiInfinite,
   BiInfoCircle,
   BiLeftArrow,
+  BiLink,
   BiLocationPlus,
   BiLockOpen,
   BiMap,
@@ -63,6 +64,19 @@ const handleError = (error) => {
   }
 };
 
+const isValidUrl = (urlString) => {
+  var urlPattern = new RegExp(
+    "^(https?:\\/\\/)?" + // validate protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // validate domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // validate OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // validate fragment locator
+  return !!urlPattern.test(urlString);
+};
+
 const addTicketEnd = async ({
   orgId,
   eventId,
@@ -78,6 +92,7 @@ const addTicketEnd = async ({
   end_date,
   quantity,
   daily_limit_qty,
+  meet_link,
   token,
 }) => {
   try {
@@ -101,6 +116,7 @@ const addTicketEnd = async ({
         end_date,
         quantity,
         daily_limit_qty,
+        meet_link,
       },
       {
         headers: {
@@ -132,6 +148,7 @@ const updateTicketEnd = async ({
   end_date,
   quantity,
   daily_limit_qty,
+  meet_link,
   token,
 }) => {
   try {
@@ -156,6 +173,7 @@ const updateTicketEnd = async ({
         end_date,
         quantity,
         daily_limit_qty,
+        meet_link,
         _method: "PUT",
       },
       {
@@ -251,6 +269,7 @@ const PopUpTicket = ({
   fnSetLogin,
   // parameter state activity / event process
   forEvtAct,
+  evtCategory,
   evtActId = null,
   orgId,
   // references array data state (pointer array / object variabel)
@@ -308,6 +327,7 @@ const PopUpTicket = ({
   const [blankPrice, setBlankPrice] = useState(false);
   const [blankDesc, setBlankDesc] = useState(false);
   const [blankDailyLimit, setBlankDailyLimit] = useState(false);
+  const [blankMeetLink, setBlankMeetLink] = useState(false);
   // ====================================================
 
   // Ref ticket form
@@ -320,6 +340,7 @@ const PopUpTicket = ({
   const refInpuSeatMap = useRef();
   const seatMapImg = useRef();
   const dailyLimitQty = useRef();
+  const meetLink = useRef();
 
   // Ref ticket settings
   const maxPurchaseRef = useRef();
@@ -380,6 +401,17 @@ const PopUpTicket = ({
     }
     price.current.value = "";
     resetSeatMapImg.current.click();
+    if (meetLink.current) {
+      meetLink.current.value = "";
+    }
+    setBlankTitle(false);
+    setBlankStart(false);
+    setBlankQty(false);
+    setBlankPrice(false);
+    setBlankMeetLink(false);
+    setBlankEnd(false);
+    setBlankDesc(false);
+    setBlankDailyLimit(false);
   };
 
   const clearSavedGlobalMap = () => {
@@ -435,6 +467,9 @@ const PopUpTicket = ({
       dailyLimitQty.current.value = data.limit_daily;
     }
     price.current.value = "Rp." + numberFormat.format(data.price);
+    if (evtCategory && evtCategory.value === "Webinar" && meetLink.current) {
+      meetLink.current.value = data.meet_link;
+    }
     setTitleState("editor");
     setContentBody("View Ticket");
     setTicketIndex(index);
@@ -474,6 +509,7 @@ const PopUpTicket = ({
     }
   };
 
+  // Partial function of handle submit ticket
   const addTicket = () => {
     if (evtActId) {
       // Execute to create ticket
@@ -537,6 +573,7 @@ const PopUpTicket = ({
           forEvtAct === "Hybrid Event"
             ? null
             : dailyLimitQty.current.value,
+        meet_link: meetLink.current ? meetLink.current.value : "",
         token: appData.accessToken,
       }).then((res) => {
         if (res.status === 201) {
@@ -596,6 +633,7 @@ const PopUpTicket = ({
               forEvtAct === "Hybrid Event"
                 ? null
                 : dailyLimitQty.current.value,
+            meet_link: meetLink.current ? meetLink.current.value : "",
           });
           setContentBody("Tickets");
           setTitleState("front");
@@ -679,6 +717,7 @@ const PopUpTicket = ({
           forEvtAct === "Hybrid Event"
             ? null
             : dailyLimitQty.current.value,
+        meet_link: meetLink.current ? meetLink.current.value : "",
       });
       // console.log(tickets);
       setContentBody("Tickets");
@@ -686,6 +725,7 @@ const PopUpTicket = ({
       resetForm();
     }
   };
+  // Partial function of handle submit ticket
   const updateTicket = () => {
     if (evtActId) {
       // Execute to update ticket
@@ -750,6 +790,7 @@ const PopUpTicket = ({
           forEvtAct === "Hybrid Event"
             ? null
             : dailyLimitQty.current.value,
+        meet_link: meetLink.current ? meetLink.current.value : "",
         token: appData.accessToken,
       }).then((res) => {
         if (res.status === 202) {
@@ -815,6 +856,9 @@ const PopUpTicket = ({
             forEvtAct === "Hybrid Event"
               ? null
               : dailyLimitQty.current.value;
+          tickets[selectedTicketIndex].meet_link = meetLink.current
+            ? meetLink.current.value
+            : "";
           setContentBody("Tickets");
           setTitleState("front");
           resetForm();
@@ -903,6 +947,9 @@ const PopUpTicket = ({
         forEvtAct === "Hybrid Event"
           ? null
           : dailyLimitQty.current.value;
+      tickets[selectedTicketIndex].meet_link = meetLink.current
+        ? meetLink.current.value
+        : "";
 
       setContentBody("Tickets");
       setTitleState("front");
@@ -910,6 +957,7 @@ const PopUpTicket = ({
     }
   };
 
+  // Main function for handle submit ticket
   const handleSubmitTicket = () => {
     if (
       title.current.value === "" ||
@@ -961,7 +1009,12 @@ const PopUpTicket = ({
         (contentBody !== "View Ticket" ||
           (contentBody === "View Ticket" &&
             !tickets[selectedTicketIndex].seat_map)) &&
-        seatMapImg.current.files.length === 0)
+        seatMapImg.current.files.length === 0) ||
+      (evtCategory &&
+        evtCategory.value === "Webinar" &&
+        (!meetLink.current ||
+          meetLink.current.value === "" ||
+          isValidUrl(meetLink.current.value) === false))
     ) {
       let msg = "Semua form field wajib diisi";
       if (
@@ -1010,6 +1063,19 @@ const PopUpTicket = ({
         coverImg.current.files.length === 0
       ) {
         msg = "Gambar Cover wjib diisi";
+      }
+      if (
+        evtCategory &&
+        evtCategory.value === "Webinar" &&
+        (!meetLink.current ||
+          meetLink.current.value === "" ||
+          isValidUrl(meetLink.current.value) === false)
+      ) {
+        setBlankMeetLink(true);
+        msg =
+          !meetLink.current || meetLink.current.value === ""
+            ? "Meet / Zoom URL wajib diisi untuk kategori event Webinar"
+            : "Format URL Meet / Zoom tidak tepat (Contoh: https://us04web.zoom.us/...)";
       }
       if (
         defaultTypePrice != "1" &&
@@ -1113,6 +1179,7 @@ const PopUpTicket = ({
       // 	limit_quantity: 5,
       // },
       // ++++++++++++++++++++++++++++++++++++++++++
+
       if (contentBody === "View Ticket") {
         updateTicket();
       } else {
@@ -1164,15 +1231,16 @@ const PopUpTicket = ({
       }).then((res) => {
         setLoading(false);
         if (res.status === 202) {
-          setAlert({
-            state: true,
-            type: "success",
-            content: "Data berhasil diperbarui",
-          });
-          resetAlert();
-          setTimeout(() => {
-            setPopUpActive(false);
-          }, 2000);
+          // setAlert({
+          //   state: true,
+          //   type: "success",
+          //   content: "Data berhasil diperbarui",
+          // });
+          // resetAlert();
+          // setTimeout(() => {
+          //   setPopUpActive(false);
+          // }, 2000);
+          setPopUpActive(false);
         } else if (res.status === 401) {
           fnSetLogin(false);
           setPausedProcess("submit");
@@ -2286,6 +2354,33 @@ const PopUpTicket = ({
                   </div>
                 </div>
                 <div className={styles2.BottomContainer}>
+                  {console.log(evtCategory)}
+                  {evtCategory && evtCategory.value === "Webinar" ? (
+                    <InputLabeled
+                      type={"text"}
+                      id={"meet_link"}
+                      placeholder={"https://"}
+                      iconSvg={<BiLink />}
+                      className={[
+                        blankMeetLink ? styles2.DangerInput : "",
+                        styles2.MeetLink,
+                      ]}
+                      label={
+                        <p
+                          className={styles2.TextSecondary}
+                          style={blankMeetLink ? { color: "red" } : {}}
+                        >
+                          URL Meet / Zoom
+                        </p>
+                      }
+                      refData={meetLink}
+                      fnOnInput={(e) => {
+                        setBlankMeetLink(!isValidUrl(e.target.value));
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )}
                   <InputCheckRadio
                     id={"check-set-map"}
                     type={"checkbox"}

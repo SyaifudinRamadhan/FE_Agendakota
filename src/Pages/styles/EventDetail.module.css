@@ -354,15 +354,16 @@
 	display: flex;
 	flex-direction: row;
 	gap: 5px;
-	margin-left: auto;
+	/* margin-left: auto; */
 	align-items: center;
 	color: #8a8a8a;
-	max-width: calc(100% - 90px);
+	/* max-width: calc(100% - 90px); */
+	width: 100%;
 	flex-shrink: 0;
 	flex-grow: 0;
 }
 .InfoOrg img {
-	width: 42px;
+	width: 32px;
 	border-radius: 50%;
 	aspect-ratio: 1;
 }
@@ -371,6 +372,7 @@
 	overflow: hidden;
 	text-wrap: nowrap;
 	max-width: calc(100% - 47px);
+	font-size: 13px;
 }
 .CartBox {
 	width: 100%;
@@ -473,25 +475,33 @@
 .CloseSidebar .CartBox {
 	animation: fade 500ms;
 }
+.FloatCartIconLink{
+	text-decoration: none;
+}
 .FloatCartIcon {
 	position: fixed;
 	bottom: 30px;
 	right: 30px;
-	width: 50px;
+	width: 140px;
 	height: 50px;
 	background-color: white;
-	border-radius: 25%;
+	border-radius: 15px;
 	border: 2px solid #ca0c64;
 	color: #ca0c64;
 	display: none;
 	cursor: pointer;
 	z-index: 1;
+	flex-direction: row;
 	/* animation: hideRight 500ms; */
 }
 .FloatCartIcon svg {
-	margin: auto;
-	width: 60%;
+	margin: auto 10px;
+	width: 30px;
 	height: 60%;
+}
+.FloatCartIcon div{
+	margin-top: auto;
+	margin-bottom: auto;
 }
 .DateSelectorGroup{
 	display: flex;

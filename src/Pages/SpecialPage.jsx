@@ -80,7 +80,7 @@ const SpecialPage = ({ type }) => {
 
   return (
     <div className="content">
-      <section>
+      <section className={styles.Section}>
         <div className={styles.NavigationPanel}>
           <div className={styles.NavItemSecondary}>
             <Link to="/">Home</Link>
