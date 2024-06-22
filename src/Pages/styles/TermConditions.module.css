@@ -1,4 +1,6 @@
-
+h5 {
+  font-size: 14px;
+}
 h3{
   padding: 0;
   margin-top: 20px;
@@ -13,6 +15,10 @@ h2{
 }
 h2 > *{
   font-size: 20px;
+}
+ul{
+  margin-left: 20px;
+  list-style: square;
 }
 ol{
   margin-left: 30px;
@@ -88,6 +94,16 @@ h3{
   gap: 10px;
   width: 100%;
   background-color: #fff;
+  overflow-x: auto;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-x: auto; 
+}
+.MenuCollpase::-webkit-scrollbar {
+  display: none;
+}
+.MenuCollpase a{
+  white-space: nowrap;
 }
 .MainBox div{
   font-size: 14px;
@@ -95,6 +111,31 @@ h3{
 /* div{
   font-size: 14px;
 } */
+ .TableBox, .TableBox tr, .TableBox td{
+  border: 1px solid
+ }
+ .TableBox h3{
+  margin: 0;
+ }
+ .TableBox .SubTitle1{
+  color: blue;
+ }
+ .TableBox .SubTitle2{
+  color: rgb(255, 183, 0);
+ }
+ .TableBox .Content{
+  text-align: center;
+ }
+ .TableBox .ContentTitle{
+  font-weight: 600;
+ }
+ .TableBox .ContentMain{
+  font-size: 35px;
+ }
+ .TableBox .ContentDesc{
+  font-weight: 600;
+ }
+ 
 
 @media(max-width: 560px){
   .Sidebar{

@@ -11,6 +11,7 @@ import {
   BiLogoTwitter,
   BiLogoYoutube,
   BiPhone,
+  BiSolidCircle,
   BiX,
 } from "react-icons/bi";
 import config from "../config";
@@ -32,9 +33,12 @@ const Footer = () => {
             alt="Logo Agendakota"
             className={styles.Logo}
           />
-          <div className={styles.Inline}>
-            Koridor Co-Working Space, Gedung Siola lt.3 Jl. Tunjungan No. 1
-            Surabaya
+          <div className={styles.Inline} style={{ marginBottom: "30px" }}>
+            {/* <img src="/images/location.png" style={{ width: "35px" }} alt="" /> */}
+            <span>
+              Koridor Co-Working Space, Gedung Siola lt.3 Jl. Tunjungan No. 1
+              Surabaya
+            </span>
           </div>
           <div className={styles.FooterLeftLink}>
             <a href="https://wa.me/+6288990079999" className={styles.Inline}>
@@ -347,13 +351,7 @@ const Footer = () => {
       </div>
       <div className={styles.Bottom}>
         {/* <BiCopyright />  */}
-        <div
-          style={{
-            marginTop: "auto",
-            marginBottom: "auto",
-            flexDirection: "row",
-          }}
-        >
+        <div className={styles.BottomBrand}>
           <div style={{ marginTop: "auto", marginBottom: "auto" }}>
             Agendakota
           </div>{" "}
@@ -366,7 +364,55 @@ const Footer = () => {
             2024 All rights reserved.
           </div>
         </div>
-        <div style={{ marginLeft: "auto" }}>
+        <div className={styles.BottomLinks}>
+          <a
+            className={`${styles.Link} ${styles.BottomLink}`}
+            href="/refund-cancel-event"
+          >
+            Refund & Cancel Event
+          </a>
+          <div
+            style={{
+              marginLeft: "5px",
+              marginRight: "5px",
+              marginTop: "auto",
+              marginBottom: "auto",
+            }}
+          >
+            <BiSolidCircle style={{ width: "5px", height: "5px" }} />
+          </div>
+          <a
+            className={`${styles.Link} ${styles.BottomLink}`}
+            href="/trx-price"
+          >
+            Harga
+          </a>
+          <div
+            style={{
+              marginLeft: "5px",
+              marginRight: "5px",
+              marginTop: "auto",
+              marginBottom: "auto",
+            }}
+          >
+            <BiSolidCircle style={{ width: "5px", height: "5px" }} />
+          </div>
+          <a
+            className={`${styles.Link} ${styles.BottomLink}`}
+            href="/privacy-policy"
+          >
+            Kebijakan Privasi
+          </a>
+          <div
+            style={{
+              marginLeft: "5px",
+              marginRight: "5px",
+              marginTop: "auto",
+              marginBottom: "auto",
+            }}
+          >
+            <BiSolidCircle style={{ width: "5px", height: "5px" }} />
+          </div>
           <a
             href="/term-conditions"
             className={`${styles.Link} ${styles.BottomLink}`}

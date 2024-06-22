@@ -33,6 +33,9 @@ import Blank from "../Pages/Blank";
 import Category from "../Pages/Category";
 import SpecialPage from "../Pages/SpecialPage";
 import TermConditions from "../Pages/TermConditions";
+import PrivacyPolicy from "../Pages/PrivacyPolicy";
+import RefundCancelEvent from "../Pages/RefundCancelEvent";
+import Price from "../Pages/Price";
 
 // let firstLoad = true;
 
@@ -160,6 +163,9 @@ const WebFrame = () => {
       window.location.pathname === "/selected-activities" ||
       window.location.pathname === "/activity-categories" ||
       window.location.pathname === "/term-conditions" ||
+      window.location.pathname === "/privacy-policy" ||
+      window.location.pathname === "/refund-cancel-event" ||
+      window.location.pathname === "/trx-price" ||
       (window.location.pathname.indexOf("/event/") === 0 &&
         window.location.pathname.split("/event/")[1] !== "" &&
         window.location.pathname.split("/event/")[1] !== undefined) ||
@@ -344,6 +350,12 @@ const WebFrame = () => {
               element={<SpecialPage type={"selected-activity"} />}
             />
             <Route path="/term-conditions" element={<TermConditions />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route
+              path="/refund-cancel-event"
+              element={<RefundCancelEvent />}
+            />
+            <Route path="/trx-price" element={<Price />} />
             <Route
               path="/organization-profile/:id"
               element={<OrganizationDetail />}

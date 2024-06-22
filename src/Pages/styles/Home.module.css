@@ -460,6 +460,7 @@
 		font-size: 19px;
 		gap: 10px;
 		flex-direction: row;
+		text-align: center;
 	}
 .JumboDescription {
 		font-size: 14px;

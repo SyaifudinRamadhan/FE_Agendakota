@@ -19,7 +19,7 @@
 .FooterLeftLink {
     flex-direction: column;
     flex-basis: 40%;
-    height: calc(100% - 122px);
+    height: calc(100% - 132px);
 }
 .Logo {
     width: 200px;
@@ -62,6 +62,7 @@
 }
 .BottomLink {
     font-weight: 700;
+    white-space: nowrap;
     color: #777;
 }
 .Inline {
@@ -123,6 +124,16 @@
     height: 25px;
     color: #777;
 }
+.BottomLinks{
+    margin-left: auto; 
+    display: flex; 
+    flex-direction: row
+}
+.BottomBrand{
+    margin-top: auto;
+    margin-bottom: auto;
+    flex-direction: row;
+}
 
 /* @media (max-width: 992px) {
     .FooterLeft{
@@ -169,8 +180,17 @@
         flex-direction: column;
         gap: 0;
     }
-    .Bottom div{
-        margin-left: unset !important;
+    .BottomBrand{
+        justify-content: center;
+    }
+    .BottomLinks{
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .BottomLinks .BottomLink{
+        height: unset;
     }
 }
 

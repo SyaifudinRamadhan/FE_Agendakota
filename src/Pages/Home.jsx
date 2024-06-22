@@ -1032,11 +1032,12 @@ const Home = () => {
                 className={styles.JumboTitle}
                 style={{ justifyContent: "left" }}
               >
-                Atur dan buat event meriahmu sendiri!
+                Satu Platform untuk Semua Kebutuhan Eventmu!
               </div>
               <div className={styles.JumboDescription}>
-                Agenda kota juga merupakan platform dimana kamu bisa membuat
-                eventmu mulai dari gratis hingga berbayar loh!{" "}
+                Agendakota.id memberikan solusi lengkap untuk membuat,
+                mengelola, dan mempromosikan acara. Dari acara gratis hingga
+                berbayar, semua bisa dilakukan di sini.{" "}
               </div>
               <Button
                 title={"Create Event"}
@@ -1063,6 +1064,8 @@ const Home = () => {
                   maxWidth: "530px",
                   marginLeft: "auto",
                   marginRight: "auto",
+                  boxShadow: "unset",
+                  background: "unset",
                 }}
                 src="/images/FrontCover2.png"
               />
@@ -1072,11 +1075,12 @@ const Home = () => {
                 className={styles.JumboTitle}
                 style={{ justifyContent: "left" }}
               >
-                Amati penjualan tiket dari eventmu dengan mudah!
+                Amati Penjualan Tiket dan Data Pengunjung dengan Mudah!
               </div>
               <div className={styles.JumboDescription}>
-                Agenda kota juga merupakan platform dimana kamu bisa membuat
-                eventmu mulai dari gratis hingga berbayar loh!
+                Dapatkan laporan lengkap dengan mudah, termasuk analitik pasca
+                event, hasil penjualan tiket, dan data pengunjung hanya di
+                Agendakota.id.
               </div>
               <Button
                 title={"Create Event"}
