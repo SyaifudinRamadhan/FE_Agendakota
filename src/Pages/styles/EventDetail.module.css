@@ -286,6 +286,13 @@
 	color: #8b8b8b;
 	margin-bottom: 32px;
 	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.Address *{
+	color: #888 !important;
+	text-decoration: none !important;
 }
 .BoxTime {
 	gap: 12px;
@@ -683,6 +690,26 @@
 		width: 50%;
 	}
  }
+@media (max-width: 450px){
+	.MainBanner{
+		margin-left: -40px;
+    margin-right: -40px;
+    border-radius: 0px;
+		width: unset;
+	}
+	.MainBanner img{
+		border-radius: 0px;
+	}
+	.RightInfo{
+		margin-left: -40px;
+    margin-right: -40px;
+    width: unset;
+    box-shadow: unset;
+		padding-bottom: 24px;
+    border-bottom: 10px solid #f7f7f7;
+    border-radius: 0px;
+	}
+}
 @media (max-width: 420px) {
 	/* .Time {
 		flex-direction: column;

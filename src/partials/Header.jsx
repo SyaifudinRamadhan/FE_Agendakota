@@ -102,7 +102,10 @@ const Header = ({
   const handleSearch = (e) => {
     e.preventDefault();
     let searchParam = searchForm.current.value;
-    navigate("/explore?name=" + searchParam);
+    navigate(
+      "/explore?name=" +
+        searchParam.replaceAll(" ", "%20").replaceAll("&", "%26")
+    );
     // window.location.href = "/explore?name=" + searchParam;
   };
 

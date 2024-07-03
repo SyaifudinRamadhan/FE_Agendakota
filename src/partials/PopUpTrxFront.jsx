@@ -130,6 +130,22 @@ const createTrx = async ({
   }
 };
 
+const loadCommData = async () => {
+  try {
+    let res = await axios.get(
+      process.env.REACT_APP_BACKEND_URL + "/api/commision-price",
+      {
+        headers: {
+          "x-api-key": process.env.REACT_APP_BACKEND_KEY,
+        },
+      }
+    );
+    return handleSuccess(res);
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
 const HeaderPopUp = () => {
   return (
     <div className={styles.HeaderBox}>
@@ -148,12 +164,27 @@ const ReviewContent = ({
   alert,
   setAlert,
   fnSetActive,
+  commisionData,
 }) => {
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
   const [trxMethod, setTrxMethod] = useState("");
   const [showTrxMethods, setShowTrxMethods] = useState(false);
+  const [basicPrice, setBasicPrice] = useState(
+    dataTrx.reduce((currentVal, prevVal) => {
+      if (prevVal.customPrice) {
+        return (
+          currentVal + parseInt(prevVal.customPrice) * parseInt(prevVal.count)
+        );
+      } else {
+        return (
+          currentVal + parseInt(prevVal.data.price) * parseInt(prevVal.count)
+        );
+      }
+    }, 0)
+  );
   const [numberFormat, setNumFormat] = useState(Intl.NumberFormat("id-ID"));
+
   const accSnk = useRef();
 
   // ref data survey fields
@@ -377,13 +408,21 @@ const ReviewContent = ({
           </div> */}
           <div className={styles.BoxAddress}>
             <BiMap />
-            <p className={styles.Address}>
+            {/* <p className={styles.Address}>
               {dataEvent.location.split("<p>").length === 1
                 ? dataEvent.location +
                   ` ${dataEvent.city}, ${dataEvent.province}`
                 : dataEvent.location.split("<p>")[1].split("</p>")[0] +
                   ` ${dataEvent.city}, ${dataEvent.province}`}
-            </p>
+            </p> */}
+            <p
+              className={styles.Address}
+              dangerouslySetInnerHTML={{
+                __html:
+                  dataEvent.location +
+                  `, ${dataEvent.city}, ${dataEvent.province}`,
+              }}
+            ></p>
           </div>
           <div className={styles.BoxTime}>
             {dataEvent.category !== "Attraction" &&
@@ -565,21 +604,20 @@ const ReviewContent = ({
             <p>Total</p>
             <div>
               Rp.
-              {numberFormat.format(
-                dataTrx.reduce((currentVal, prevVal) => {
-                  if (prevVal.customPrice) {
-                    return (
-                      currentVal +
-                      parseInt(prevVal.customPrice) * parseInt(prevVal.count)
-                    );
-                  } else {
-                    return (
-                      currentVal +
-                      parseInt(prevVal.data.price) * parseInt(prevVal.count)
-                    );
-                  }
-                }, 0)
-              )}
+              {/* {numberFormat.format(
+                basicPrice +
+                  commisionData.admin_fee_trx +
+                  basicPrice * commisionData.tax_fee +
+                  (commisionData.mul_pay_gate_fee *
+                  config.payMethods["VA"][trxMethod]
+                    ? config.payMethods["VA"][trxMethod][2]
+                    : config.payMethods["e-wallet"][trxMethod]
+                    ? config.payMethods["e-wallet"][trxMethod][2]
+                    : config.payMethods["qris"][trxMethod]
+                    ? config.payMethods["qris"][trxMethod][2]
+                    : 0)
+              )} */}
+              {numberFormat.format(basicPrice)}
             </div>
           </div>
           <div className={styles.Separation}></div>
@@ -621,41 +659,78 @@ const ReviewContent = ({
               </div>
             ))}
           </div>
+
           <div className={styles.Separation}></div>
+          {basicPrice === 0 ? (
+            <></>
+          ) : (
+            <>
+              <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+                <div className={styles.TextSecondary}>
+                  PPN {commisionData.tax_fee * 100}%
+                </div>
+                <div
+                  style={{ marginLeft: "auto" }}
+                  className={styles.TextPrimary}
+                >
+                  Rp.
+                  {numberFormat.format(basicPrice * commisionData.tax_fee)}
+                </div>
+              </div>
+              <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+                <div className={styles.TextSecondary}>Biaya Admin</div>
+                <div
+                  style={{ marginLeft: "auto" }}
+                  className={styles.TextPrimary}
+                >
+                  Rp.
+                  {numberFormat.format(
+                    basicPrice === 0 ? 0 : commisionData.admin_fee_trx
+                  )}
+                </div>
+              </div>
+              <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+                <div className={styles.TextSecondary}>Biaya Platform</div>
+                <div
+                  style={{ marginLeft: "auto" }}
+                  className={styles.TextPrimary}
+                >
+                  Rp.
+                  {numberFormat.format(
+                    commisionData.mul_pay_gate_fee *
+                      (config.payMethods["VA"][trxMethod]
+                        ? config.payMethods["VA"][trxMethod][2]
+                        : config.payMethods["e-wallet"][trxMethod]
+                        ? config.payMethods["e-wallet"][trxMethod][2] *
+                          basicPrice
+                        : config.payMethods["qris"][trxMethod]
+                        ? config.payMethods["qris"][trxMethod][2] * basicPrice
+                        : 0)
+                  )}
+                </div>
+              </div>
+            </>
+          )}
           <div className={styles.FlexRow}>
             <div className={styles.TextPrimary}>Subtotal</div>
             <div style={{ marginLeft: "auto" }} className={styles.TextPrimary}>
               Rp.
               {numberFormat.format(
-                dataTrx.reduce((currentVal, prevVal) => {
-                  if (prevVal.customPrice) {
-                    return (
-                      currentVal +
-                      parseInt(prevVal.customPrice) * parseInt(prevVal.count)
-                    );
-                  } else {
-                    return (
-                      currentVal +
-                      parseInt(prevVal.data.price) * parseInt(prevVal.count)
-                    );
-                  }
-                }, 0)
+                basicPrice +
+                  (basicPrice === 0 ? 0 : commisionData.admin_fee_trx) +
+                  basicPrice * commisionData.tax_fee +
+                  commisionData.mul_pay_gate_fee *
+                    (config.payMethods["VA"][trxMethod]
+                      ? config.payMethods["VA"][trxMethod][2]
+                      : config.payMethods["e-wallet"][trxMethod]
+                      ? config.payMethods["e-wallet"][trxMethod][2] * basicPrice
+                      : config.payMethods["qris"][trxMethod]
+                      ? config.payMethods["qris"][trxMethod][2] * basicPrice
+                      : 0)
               )}
             </div>
           </div>
-          {dataTrx.reduce((currentVal, prevVal) => {
-            if (prevVal.customPrice) {
-              return (
-                currentVal +
-                parseInt(prevVal.customPrice) * parseInt(prevVal.count)
-              );
-            } else {
-              return (
-                currentVal +
-                parseInt(prevVal.data.price) * parseInt(prevVal.count)
-              );
-            }
-          }, 0) === 0 ? (
+          {basicPrice === 0 ? (
             <></>
           ) : (
             <>
@@ -674,7 +749,13 @@ const ReviewContent = ({
               >
                 <FieldBox>
                   <div className={styles.InvoiceDesc}>
-                    Pilih Metode Pembayaran
+                    {trxMethod === ""
+                      ? "Pilih Metode Pembayaran"
+                      : config.payMethods.VA[trxMethod]
+                      ? config.payMethods.VA[trxMethod][1]
+                      : config.payMethods["e-wallet"][trxMethod]
+                      ? config.payMethods["e-wallet"][trxMethod][1]
+                      : config.payMethods.qris[trxMethod][1]}
                   </div>
                   <BiChevronDown style={{ marginLeft: "auto" }} />
                 </FieldBox>
@@ -875,6 +956,7 @@ const TrxContent = ({
 
   return (
     <div className={styles.MainContent}>
+      {/* Kiri */}
       <div className={styles.Split2}>
         <div className={styles.Banner}>
           <img
@@ -929,13 +1011,21 @@ const TrxContent = ({
           </div> */}
           <div className={styles.BoxAddress}>
             <BiMap />
-            <p className={styles.Address}>
+            {/* <p className={styles.Address}>
               {dataEvent.location.split("<p>").length === 1
                 ? dataEvent.location +
                   ` ${dataEvent.city}, ${dataEvent.province}`
                 : dataEvent.location.split("<p>")[1].split("</p>")[0] +
                   ` ${dataEvent.city}, ${dataEvent.province}`}
-            </p>
+            </p> */}
+            <p
+              className={styles.Address}
+              dangerouslySetInnerHTML={{
+                __html:
+                  dataEvent.location +
+                  `, ${dataEvent.city}, ${dataEvent.province}`,
+              }}
+            ></p>
           </div>
           <div className={styles.BoxTime}>
             {dataEvent.category !== "Attraction" &&
@@ -1059,28 +1149,53 @@ const TrxContent = ({
           ))}
         </div>
         <div className={styles.Separation}></div>
+
+        {resTrx.total === 0 ? (
+          <></>
+        ) : (
+          <>
+            <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+              <div className={styles.TextSecondary}>PPN</div>
+              <div
+                style={{ marginLeft: "auto" }}
+                className={styles.TextPrimary}
+              >
+                Rp.
+                {numberFormat.format(resTrx.taxTotal)}
+              </div>
+            </div>
+            <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+              <div className={styles.TextSecondary}>Biaya Admin</div>
+              <div
+                style={{ marginLeft: "auto" }}
+                className={styles.TextPrimary}
+              >
+                Rp.
+                {numberFormat.format(resTrx.adminFeeTrx)}
+              </div>
+            </div>
+            <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+              <div className={styles.TextSecondary}>Biaya Platform</div>
+              <div
+                style={{ marginLeft: "auto" }}
+                className={styles.TextPrimary}
+              >
+                Rp.
+                {numberFormat.format(resTrx.platformFee)}
+              </div>
+            </div>
+          </>
+        )}
+
         <div className={styles.FlexRow}>
           <div className={styles.TextPrimary}>Subtotal</div>
           <div style={{ marginLeft: "auto" }} className={styles.TextPrimary}>
             Rp.
-            {numberFormat.format(
-              dataTrx.reduce((currentVal, prevVal) => {
-                if (prevVal.customPrice) {
-                  return (
-                    currentVal +
-                    parseInt(prevVal.customPrice) * parseInt(prevVal.count)
-                  );
-                } else {
-                  return (
-                    currentVal +
-                    parseInt(prevVal.data.price) * parseInt(prevVal.count)
-                  );
-                }
-              }, 0)
-            )}
+            {numberFormat.format(resTrx.total)}
           </div>
         </div>
       </div>
+      {/* kanan */}
       <div className={`${styles.Split2} ${styles.Right}`}>
         <div className={styles.Invoice}>
           <div className={styles.Total}>
@@ -1382,7 +1497,8 @@ const TrxContent = ({
 const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
   const [viewState, setViewState] = useState("review");
   const [resTrx, setResTrx] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [commisionData, setCommisionData] = useState(null);
   const [finalData, setFinalData] = useState({
     trx: null,
     surveyFields: null,
@@ -1394,6 +1510,9 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
     state: false,
     type: "",
     content: "",
+  });
+  const [alertFn, setAlertFn] = useState({
+    function: () => {},
   });
   const appData = useSelector((state) => state.appDataReducer);
 
@@ -1496,6 +1615,36 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
     }
   }, [pausedProcess, isLogin]);
 
+  useEffect(() => {
+    if (!commisionData) {
+      setLoading(true);
+      loadCommData().then((res) => {
+        if (res.status === 200) {
+          setCommisionData(res.data.profit_setting);
+        } else {
+          setCommisionData({
+            ticket_commision: 0,
+            admin_fee_trx: 0,
+            admin_fee_wd: 0,
+            mul_pay_gate_fee: 0,
+            tax_fee: 0,
+          });
+          setAlertFn({
+            function: () => {
+              setCommisionData(null);
+            },
+          });
+          setAlert({
+            state: true,
+            type: "danger",
+            content: "Terjadi Kesalahan Saat Memuat ",
+          });
+        }
+        setLoading(false);
+      });
+    }
+  }, [commisionData]);
+
   return (
     <>
       <div className={`${isLogin ? "d-none" : ""}`}>
@@ -1540,6 +1689,7 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
                   title={"Ok"}
                   fnOnClick={() => {
                     setAlert({ state: false, type: "", content: "" });
+                    alertFn.function();
                   }}
                 />
               )}
@@ -1580,6 +1730,17 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
                   alert={alert}
                   setAlert={setAlert}
                   fnSetActive={fnSetActive}
+                  commisionData={
+                    commisionData
+                      ? commisionData
+                      : {
+                          ticket_commision: 0,
+                          admin_fee_trx: 0,
+                          admin_fee_wd: 0,
+                          mul_pay_gate_fee: 0,
+                          tax_fee: 0,
+                        }
+                  }
                 />
               ) : (
                 <TrxContent

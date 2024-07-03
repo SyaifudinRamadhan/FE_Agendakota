@@ -85,56 +85,56 @@ const Footer = () => {
           <div className={styles.Column}>
             <div className={styles.Title}>Perusahaan</div>
             <a
-              href="https://media.agendakota.id/tentang-agendakota"
+              href="https://web.agendakota.id/tentang-agendakota"
               className={styles.Link}
               target="_blank"
             >
               Tentang Agendakota
             </a>
             <a
-              href="https://media.agendakota.id/"
+              href="https://web.agendakota.id/"
               className={styles.Link}
               target="_blank"
             >
               Jadi Patner Kami
             </a>
             <a
-              href="https://media.agendakota.id/fitur"
+              href="https://web.agendakota.id/fitur"
               className={styles.Link}
               target="_blank"
             >
               Fitur
             </a>
             <a
-              href="https://media.agendakota.id/press-kit"
+              href="https://web.agendakota.id/press-kit"
               className={styles.Link}
               target="_blank"
             >
               Harga
             </a>
             <a
-              href="https://media.agendakota.id/"
+              href="https://web.agendakota.id/"
               className={styles.Link}
               target="_blank"
             >
               Media
             </a>
             <a
-              href="https://media.agendakota.id/hubungi-kami"
+              href="https://web.agendakota.id/hubungi-kami"
               className={styles.Link}
               target="_blank"
             >
               Hubungi Kami
             </a>
             <a
-              href="https://media.agendakota.id/panduan"
+              href="https://web.agendakota.id/panduan"
               className={styles.Link}
               target="_blank"
             >
               Panduan
             </a>
             <a
-              href="https://media.agendakota.id/karir"
+              href="https://web.agendakota.id/karir"
               className={styles.Link}
               target="_blank"
             >
@@ -222,7 +222,7 @@ const Footer = () => {
               Kecantikan
             </a>
             <a
-              href="/explore?topic=Spa%20~~^~~%20Relaksasi"
+              href="/explore?topic=Spa%20%26%20Relaksasi"
               className={styles.Link}
               target="_blank"
             >
@@ -319,7 +319,7 @@ const Footer = () => {
               Workshop
             </a>
             <a
-              href="/explore?category=Pameran, Expo"
+              href="/explore?category=Pameran,%20Expo"
               className={styles.Link}
               target="_blank"
             >

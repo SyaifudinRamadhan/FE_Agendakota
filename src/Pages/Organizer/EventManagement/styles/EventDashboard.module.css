@@ -112,6 +112,17 @@
 	color: #ca0c64;
 	cursor: pointer;
 }
+.LinkWrap{
+	display: none;
+	margin-bottom: 50px;
+}
+.LinkWrap svg{
+	margin-left: auto;
+	width: 19.84px;
+	height: 19.84px;
+	color: #ca0c64;
+	cursor: pointer;
+}
 .PopupNotify {
 	display: flex;
 	text-align: center;
@@ -499,6 +510,13 @@
 	color: #8b8b8b;
 	margin-bottom: 32px;
 	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.Address *{
+	color: #888 !important;
+	text-decoration: none !important;
 }
 .BoxTime {
 	gap: 12px;
@@ -618,5 +636,31 @@
 	}
 	.CardFeature {
 		width: 100%;
+	}
+	.Link{
+		display: none;
+	}
+	.LinkWrap{
+		display: unset;
+	}
+	.Banner{
+		margin-left: -20px;
+    margin-right: -20px;
+    border-radius: 0px;
+		width: unset;
+	}
+	.Banner img{
+		border-radius: 0px;
+	}
+	.RightInfo{
+		margin-left: -20px;
+    margin-right: -20px;
+    width: unset;
+    box-shadow: unset;
+		padding-left: 30px;
+		padding-right: 30px;
+		padding-bottom: 24px;
+    border-bottom: 10px solid #f7f7f7;
+    border-radius: 0px;
 	}
 }

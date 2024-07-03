@@ -175,7 +175,7 @@ const getBackInvite = async ({ pchId, token }) => {
 };
 
 const refund = async ({
-  purchaseIds,
+  purchaseId,
   message,
   phoneNumber,
   accountNumber,
@@ -187,7 +187,7 @@ const refund = async ({
     let res = await axios.post(
       process.env.REACT_APP_BACKEND_URL + "/api/request-refund",
       {
-        purchase_ids: purchaseIds, //Array
+        purchase_id: purchaseId, //Singular ID
         message: message,
         phone_number: phoneNumber,
         account_number: accountNumber,
@@ -449,7 +449,7 @@ const PopUpTicketIn = ({
     } else {
       setLoading(true);
       refund({
-        purchaseIds: [pchId],
+        purchaseId: pchId,
         message: message.current.value,
         phoneNumber: phone.current.value,
         accountNumber: accNum.current.value,
@@ -1140,16 +1140,14 @@ const PopUpTicketIn = ({
                       </div> */}
                       <div className={styles.BoxAddress}>
                         <BiMap />
-                        <p className={styles.Address}>
-                          {trx.purchases[0].ticket.event.location.split("<p>")
-                            .length === 1
-                            ? trx.purchases[0].ticket.event.location +
-                              ` ${trx.purchases[0].ticket.event.city}, ${trx.purchases[0].ticket.event.province}`
-                            : trx.purchases[0].ticket.event.location
-                                .split("<p>")[1]
-                                .split("</p>")[0] +
-                              ` ${trx.purchases[0].ticket.event.city}, ${trx.purchases[0].ticket.event.province}`}
-                        </p>
+                        <p
+                          className={styles.Address}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              trx.purchases[0].ticket.event.location +
+                              `, ${trx.purchases[0].ticket.event.city}, ${trx.purchases[0].ticket.event.province}`,
+                          }}
+                        ></p>
                       </div>
                       <div className={styles.BoxTime}>
                         {trx.purchases[0].ticket.event.category !==
@@ -1278,6 +1276,59 @@ const PopUpTicketIn = ({
                       ))}
                     </div>
                     <div className={styles.Separation}></div>
+                    {trx.payment.price == 0 ? (
+                      <></>
+                    ) : (
+                      <>
+                        <div
+                          className={styles.FlexRow}
+                          style={{ marginBottom: "5px" }}
+                        >
+                          <div className={styles.TextSecondary}>PPN</div>
+                          <div
+                            style={{ marginLeft: "auto" }}
+                            className={styles.TextPrimary}
+                          >
+                            Rp.
+                            {numberFormat.format(
+                              trx.purchases.reduce((current, prev) => {
+                                return current + prev.tax_amount;
+                              }, 0)
+                            )}
+                          </div>
+                        </div>
+                        <div
+                          className={styles.FlexRow}
+                          style={{ marginBottom: "5px" }}
+                        >
+                          <div className={styles.TextSecondary}>
+                            Biaya Admin
+                          </div>
+                          <div
+                            style={{ marginLeft: "auto" }}
+                            className={styles.TextPrimary}
+                          >
+                            Rp.
+                            {numberFormat.format(trx.payment.admin_fee)}
+                          </div>
+                        </div>
+                        <div
+                          className={styles.FlexRow}
+                          style={{ marginBottom: "5px" }}
+                        >
+                          <div className={styles.TextSecondary}>
+                            Biaya Platform
+                          </div>
+                          <div
+                            style={{ marginLeft: "auto" }}
+                            className={styles.TextPrimary}
+                          >
+                            Rp.
+                            {numberFormat.format(trx.payment.platform_fee)}
+                          </div>
+                        </div>
+                      </>
+                    )}
                     <div className={styles.FlexRow}>
                       <div className={styles.TextPrimary}>Subtotal</div>
                       <div

@@ -175,7 +175,7 @@ const getBackInvite = async ({ pchId, token }) => {
 };
 
 const refund = async ({
-  purchaseIds,
+  purchaseId,
   message,
   phoneNumber,
   accountNumber,
@@ -187,7 +187,7 @@ const refund = async ({
     let res = await axios.post(
       process.env.REACT_APP_BACKEND_URL + "/api/request-refund",
       {
-        purchase_ids: purchaseIds, //Array
+        purchase_id: purchaseId, //Singular ID
         message: message,
         phone_number: phoneNumber,
         account_number: accountNumber,
@@ -429,7 +429,7 @@ const PopUpPsEventDetail = ({
     } else {
       setLoading(true);
       refund({
-        purchaseIds: [pchId],
+        purchaseId: pchId,
         message: message.current.value,
         phoneNumber: phone.current.value,
         accountNumber: accNum.current.value,
@@ -1102,16 +1102,14 @@ const PopUpPsEventDetail = ({
                       ></div> */}
                       <div className={styles.BoxAddress}>
                         <BiMap />
-                        <p className={styles.Address}>
-                          {groupPchEvent[0].ticket.event.location.split("<p>")
-                            .length === 1
-                            ? groupPchEvent[0].ticket.event.location +
-                              ` ${groupPchEvent[0].ticket.event.city}, ${groupPchEvent[0].ticket.event.province}`
-                            : groupPchEvent[0].ticket.event.location
-                                .split("<p>")[1]
-                                .split("</p>")[0] +
-                              ` ${groupPchEvent[0].ticket.event.city}, ${groupPchEvent[0].ticket.event.province}`}
-                        </p>
+                        <p
+                          className={styles.Address}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              groupPchEvent[0].ticket.event.location +
+                              `, ${groupPchEvent[0].ticket.event.city}, ${groupPchEvent[0].ticket.event.province}`,
+                          }}
+                        ></p>
                       </div>
                       <div className={styles.BoxTime}>
                         {groupPchEvent[0].ticket.event.category !==

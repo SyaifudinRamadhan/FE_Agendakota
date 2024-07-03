@@ -6,7 +6,12 @@ import Loading from "../components/Loading";
 import InputForm from "../components/InputForm";
 import InputLabeled from "../components/InputLabeled";
 import Button from "../components/Button";
-import { BiCheckCircle, BiError, BiQuestionMark } from "react-icons/bi";
+import {
+  BiCheckCircle,
+  BiError,
+  BiInfoCircle,
+  BiQuestionMark,
+} from "react-icons/bi";
 import { useSelector } from "react-redux";
 
 const handleSuccess = (res) => {
@@ -34,9 +39,7 @@ const handleError = (error) => {
 const refundChange = async ({
   orgId,
   eventId,
-  ticketId,
-  refundIds,
-  refundPencetage,
+  refundId,
   approved = true,
   token,
 }) => {
@@ -49,9 +52,7 @@ const refundChange = async ({
         eventId +
         "/manage/refund/change-state",
       {
-        refund_ids: refundIds,
-        refund_percentage: refundPencetage,
-        ticket_id: ticketId,
+        id: refundId,
         approved: approved ? 1 : null,
       },
       {
@@ -78,8 +79,6 @@ const PopUpRefundOrg = ({
   fnSetLogin,
   fnSetGlobalLoading,
 }) => {
-  const percentage = useRef();
-
   const [pausedProcess, setPausedProcess] = useState(null);
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({
@@ -107,19 +106,12 @@ const PopUpRefundOrg = ({
     }, 200);
   };
 
-  const handleChangeRefund = (
-    ticketId,
-    refundIds,
-    refundPercentage,
-    approved
-  ) => {
+  const handleChangeRefund = (refundId, approved) => {
     setLoading(true);
     refundChange({
       orgId: orgId,
       eventId: eventId,
-      ticketId: ticketId,
-      refundIds: refundIds,
-      refundPencetage: refundPercentage,
+      refundId: refundId,
       approved: approved,
       token: appData.accessToken,
     }).then((res) => {
@@ -131,7 +123,7 @@ const PopUpRefundOrg = ({
         });
         resetAlert();
         refundDatas.forEach((refund, index) => {
-          if (refundIds.find((rfId) => rfId == refund.id)) {
+          if (refundId == refund.id) {
             refund.approve_org = approved ? 1 : 0;
           }
         });
@@ -142,9 +134,7 @@ const PopUpRefundOrg = ({
         fnSetLogin(false);
         setPausedProcess(
           `refundconsideration~!@!~${JSON.stringify({
-            ticketId,
-            refundIds,
-            refundPercentage,
+            refundId,
             approved,
           })}`
         );
@@ -168,21 +158,10 @@ const PopUpRefundOrg = ({
   useEffect(() => {
     if (isLogin && pausedProcess) {
       let dataParam = JSON.parse(pausedProcess.split("~!@!~")[1]);
-      handleChangeRefund(
-        dataParam.ticketId,
-        dataParam.refundIds,
-        dataParam.refundPercentage,
-        dataParam.approved
-      );
+      handleChangeRefund(dataParam.refundId, dataParam.approved);
       setPausedProcess(null);
     }
   }, [pausedProcess, isLogin]);
-
-  useEffect(() => {
-    if (percentage.current && refundData) {
-      percentage.current.value = refundData[0].percentage;
-    }
-  }, [refundData]);
 
   return (
     <PopUp
@@ -223,7 +202,9 @@ const PopUpRefundOrg = ({
           <div className={`${alert.state ? "d-none" : ""}`}>
             {loading ? (
               <Loading />
-            ) : refundData && refundData[0].approve_org ? (
+            ) : refundData &&
+              refundData.approve_org &&
+              !refundData.approve_admin ? (
               <div className={styles.AlertBox}>
                 <BiQuestionMark />
                 <p>Apakah anda yakin ingin menolaknya ?</p>
@@ -246,29 +227,18 @@ const PopUpRefundOrg = ({
                     title={"UnApprove"}
                     fnOnClick={() => {
                       if (refundData) {
-                        handleChangeRefund(
-                          refundData[0].ticket_id,
-                          refundData.map((refund) => refund.id),
-                          refundData[0].percentage,
-                          0
-                        );
+                        handleChangeRefund(refundData.id, 0);
                       }
                     }}
                   />
                 </div>
               </div>
-            ) : (
-              <div>
-                <div>
-                  <InputLabeled
-                    id={"percentage"}
-                    label={"Persentase Refund"}
-                    type={"number"}
-                    placeholder={"Percentase refund"}
-                    refData={percentage}
-                    value={refundData ? refundData[0].percentage : null}
-                  />
-                </div>
+            ) : refundData &&
+              !refundData.approve_org &&
+              !refundData.approve_admin ? (
+              <div className={styles.AlertBox}>
+                <BiQuestionMark />
+                <p>Approve pengajuan Refund ini ?</p>
                 <div className={styles.Split}>
                   <Button
                     style={{
@@ -287,28 +257,30 @@ const PopUpRefundOrg = ({
                     title={"Approve"}
                     fnOnClick={() => {
                       if (refundData) {
-                        if (
-                          !percentage.current ||
-                          percentage.current.value > 100 ||
-                          percentage.current.value < 0
-                        ) {
-                          setAlert({
-                            state: true,
-                            type: "danger",
-                            content:
-                              "Persentase minimal 0 dan mmaksimalnya 100",
-                          });
-                          resetAlert();
-                        } else {
-                          handleChangeRefund(
-                            refundData[0].ticket_id,
-                            refundData.map((refund) => refund.id),
-                            percentage.current.value,
-                            1
-                          );
-                        }
+                        handleChangeRefund(refundData.id, 1);
                       }
                     }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className={styles.AlertBox}>
+                <BiInfoCircle />
+                <p>
+                  Data Refund ini sudah diapprove oleh admin. Anda tidak dapat
+                  mengubahnya kembali !
+                </p>
+                <div className={styles.Split}>
+                  <Button
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }}
+                    title={"Ok"}
+                    bgColor={"white"}
+                    borderColor={"black"}
+                    textColor={"black"}
+                    fnOnClick={close}
                   />
                 </div>
               </div>

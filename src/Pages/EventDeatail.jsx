@@ -754,6 +754,15 @@ const EventDetail = ({ isLogin }) => {
         };
       });
       setTicketsViewData(ticketsCount);
+
+      document.title = "Agendakota | " + event.event.name;
+      // change favicon
+      document.getElementsByTagName("link")[0].href =
+        process.env.REACT_APP_BACKEND_URL + event.event.logo;
+      document.getElementsByTagName("link")[2].href =
+        process.env.REACT_APP_BACKEND_URL + event.event.logo;
+      // change meta description content
+      document.getElementsByTagName("meta")[2].content = event.event.desc;
     }
   }, [event]);
 
@@ -775,10 +784,6 @@ const EventDetail = ({ isLogin }) => {
     return () => {
       window.removeEventListener("resize", handleChangeWindowSize);
     };
-  });
-
-  useEffect(() => {
-    document.title = "Agendakota";
   });
 
   return (
@@ -1414,13 +1419,21 @@ const EventDetail = ({ isLogin }) => {
                 </p> */}
                 <div className={styles.BoxAddress}>
                   <BiMap />
-                  <p className={styles.Address}>
+                  {/* <p className={styles.Address}>
                     {event.event.location.split("<p>").length === 1
                       ? event.event.location +
                         ` ${event.event.city}, ${event.event.province}`
                       : event.event.location.split("<p>")[1].split("</p>")[0] +
                         ` ${event.event.city}, ${event.event.province}`}
-                  </p>
+                  </p> */}
+                  <p
+                    className={styles.Address}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        event.event.location +
+                        `, ${event.event.city}, ${event.event.province}`,
+                    }}
+                  ></p>
                 </div>
                 <div className={styles.BoxTime}>
                   {event.event.category !== "Attraction" &&
@@ -1879,13 +1892,21 @@ const EventDetail = ({ isLogin }) => {
                 </p> */}
                 <div className={styles.BoxAddress}>
                   <BiMap />
-                  <p className={styles.Address}>
+                  {/* <p className={styles.Address}>
                     {event.event.location.split("<p>").length === 1
                       ? event.event.location +
                         ` ${event.event.city}, ${event.event.province}`
                       : event.event.location.split("<p>")[1].split("</p>")[0] +
                         ` ${event.event.city}, ${event.event.province}`}
-                  </p>
+                  </p> */}
+                  <p
+                    className={styles.Address}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        event.event.location +
+                        `, ${event.event.city}, ${event.event.province}`,
+                    }}
+                  ></p>
                 </div>
                 <div className={styles.BoxTime}>
                   {event.event.category !== "Attraction" &&

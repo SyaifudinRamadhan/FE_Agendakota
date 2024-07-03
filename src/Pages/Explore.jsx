@@ -176,10 +176,15 @@ const Explore = () => {
     let strParams = "";
     if (name) {
       strParams +=
-        strParams === "" ? "?event_name=" + name : "&event_name=" + name;
+        strParams === ""
+          ? "?event_name=" + name.replaceAll(" ", "%20").replaceAll("&", "%26")
+          : "&event_name=" + name.replaceAll(" ", "%20").replaceAll("&", "%26");
     }
     if (city) {
-      strParams += strParams === "" ? "?city=" + city : "&city=" + city;
+      strParams +=
+        strParams === ""
+          ? "?city=" + city.replaceAll(" ", "%20").replaceAll("&", "%26")
+          : "&city=" + city.replaceAll(" ", "%20").replaceAll("&", "%26");
     }
     if (categories && categories.length > 0) {
       let catParams = "";
@@ -188,7 +193,10 @@ const Explore = () => {
           ? (catParams += `category[]=${cat}`)
           : (catParams += `&category[]=${cat}`);
       });
-      strParams += strParams === "" ? "?" + catParams : "&" + catParams;
+      strParams +=
+        strParams === ""
+          ? "?" + catParams.replaceAll(" ", "%20").replaceAll("&", "%26")
+          : "&" + catParams.replaceAll(" ", "%20").replaceAll("&", "%26");
     }
     if (topics && topics.length > 0) {
       let topicParams = "";
@@ -199,8 +207,12 @@ const Explore = () => {
       });
       strParams +=
         strParams === ""
-          ? "?" + topicParams + "&topic_delimiter=~!^!~"
-          : "&" + topicParams + "&topic_delimiter=~!^!~";
+          ? "?" +
+            topicParams.replaceAll(" ", "%20").replaceAll("&", "%26") +
+            "&topic_delimiter=~!^!~"
+          : "&" +
+            topicParams.replaceAll(" ", "%20").replaceAll("&", "%26") +
+            "&topic_delimiter=~!^!~";
     }
     // interval format default start - end
     if (interval) {
@@ -392,6 +404,20 @@ const Explore = () => {
   ]);
 
   useEffect(() => {
+    if (events) {
+      let pathSplit = window.location.href.split("?");
+      let nameParam = null;
+      if (pathSplit.length > 1) {
+        nameParam =
+          pathSplit[1].split("name=").length < 2
+            ? null
+            : pathSplit[1].split("name=")[1].split("&")[0];
+        setQueryParam(nameParam);
+      }
+    }
+  }, [location]);
+
+  useEffect(() => {
     if (!categories && !topics && !cities) {
       setLoadingFilterVar(true);
       loadCategories().then((res) => {
@@ -494,17 +520,18 @@ const Explore = () => {
         // console.log(strParams, "STR PARAMS");
         setSelectedCategories(
           catParam
-            ? [catParam.replaceAll("%20", " ").replaceAll("~~^~~", "&")]
+            ? [catParam.replaceAll("%20", " ").replaceAll("%26", "&")]
             : []
         );
         setSelectedTopics(
           topicParam
-            ? [topicParam.replaceAll("%20", " ").replaceAll("~~^~~", "&")]
+            ? [topicParam.replaceAll("%20", " ").replaceAll("%26", "&")]
             : []
         );
         setSelectedCity(cityParam ? cityParam : "");
+        setQueryParam(nameParam);
       }
-      setQueryParam(nameParam);
+
       loadEvents({
         filterStr: strParams,
       }).then((res) => {

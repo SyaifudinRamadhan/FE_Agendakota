@@ -343,7 +343,9 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
           ? "-"
           : "https://x.com/" +
               fieldProfile.twitter.current.value.split("x.com/")[1],
-        fieldProfile.whatsapp.current.value,
+        fieldProfile.whatsapp.current.value === ""
+          ? "-"
+          : fieldProfile.whatsapp.current.value,
         selectedInterest.map((intr) => {
           return intr.value;
         })
@@ -543,6 +545,7 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
                             placeholder={"Tuliskan username mu"}
                             refData={fieldProfile.name}
                             value={profileData.name}
+                            required
                           />
                           <div className={styles4.Divider}>
                             <hr />
@@ -554,6 +557,7 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
                             value={profileData.f_name}
                             type={"text"}
                             placeholder={"Tuliskan nama depanmu"}
+                            required
                           />
                           <div className={styles4.Divider}>
                             <hr />
@@ -565,6 +569,7 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
                             value={profileData.l_name}
                             type={"text"}
                             placeholder={"Tuliskan belakangmu"}
+                            required
                           />
                         </div>
                         <InputLabeled
@@ -576,6 +581,7 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
                           type={"text"}
                           placeholder={"Tuliskan alamat emailmu"}
                           style={{ backgroundColor: "white" }}
+                          required
                         />
                         <InputLabeled
                           id={"phone"}
@@ -586,6 +592,7 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
                           type={"numeric"}
                           placeholder={"Tuliskan nomor ponselmu yang aktif"}
                           style={{ backgroundColor: "white" }}
+                          required
                         />
                       </div>
                     </div>
@@ -606,6 +613,7 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
                       id="interest"
                       placeholder={"Pilih yang menarik"}
                       isMulti
+                      required
                       options={
                         categories
                           ? categories.map((cat) => ({
@@ -674,7 +682,12 @@ const UserProfile = ({ isLogin, fnSetLogin = () => {} }) => {
                       label={"WhatsApp"}
                       iconSvg={<BiLogoWhatsapp />}
                       refData={fieldProfile.whatsapp}
-                      value={profileData.whatsapp}
+                      value={
+                        profileData.whatsapp === "" ||
+                        profileData.whatsapp === "-"
+                          ? null
+                          : profileData.whatsapp
+                      }
                       type={"numeric"}
                       placeholder={"08xxxxxxxxxx"}
                     />

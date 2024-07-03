@@ -61,7 +61,7 @@
     color: rgb(102, 102, 102);
 }
 .BottomLink {
-    font-weight: 700;
+    font-weight: normal;
     white-space: nowrap;
     color: #777;
 }

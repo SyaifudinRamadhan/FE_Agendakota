@@ -21,6 +21,7 @@ import HeaderSkeleton from "../components/skeleton/HeaderBox";
 import EventSkeleton from "../components/skeleton/Event";
 import CarouselSkeleton from "../components/skeleton/Carousel";
 import CityCardSkeleton from "../components/skeleton/CityCard";
+import Search from "../icons/Search";
 
 const mainGetRequest = async ({ path = "" }) => {
   try {
@@ -94,6 +95,17 @@ const Home = () => {
   const navigate = useNavigate();
 
   const popEventSection = useRef();
+  const searchForm = useRef();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    let searchParam = searchForm.current.value;
+    navigate(
+      "/explore?name=" +
+        searchParam.replaceAll(" ", "%20").replaceAll("&", "%26")
+    );
+    // window.location.href = "/explore?name=" + searchParam;
+  };
 
   useEffect(() => {
     if (
@@ -259,7 +271,8 @@ const Home = () => {
   }, [city]);
 
   useEffect(() => {
-    document.title = "Agendakota";
+    document.title =
+      "Agendakota.id | Platform Management Event, Ticketing, & Reservation";
   });
 
   return (
@@ -267,7 +280,7 @@ const Home = () => {
       <div className="content">
         <div className={styles.JumboTop}>
           <div className={styles.JumboTitle}>
-            Agendakota.id | Platform Management
+            Platform Management
             <span className={styles.JumboTitleSpecial}>event,</span>
             Ticketing, & Reservation
           </div>
@@ -291,6 +304,32 @@ const Home = () => {
             >
               <AddCircle />
               Create Event
+            </button>
+          </div>
+
+          <div
+            className={`${styles.JumboButtonArea} ${styles.JumboButtonAreaMobile}`}
+          >
+            <form className={styles.SearchForm} onSubmit={handleSearch}>
+              <Search />
+              <input
+                type="text"
+                className={styles.SearchInput}
+                placeholder="Cari event atau atraksi lainnya"
+                ref={searchForm}
+                defaultValue={
+                  window.location.href.split("name=").length > 1
+                    ? window.location.href.split("name=")[1].split("&")[0]
+                    : ""
+                }
+              />
+            </form>
+            <button
+              className={styles.JumboButton}
+              onClick={() => navigate("/explore")}
+            >
+              <Compass />
+              Explore Event
             </button>
           </div>
 
@@ -662,7 +701,11 @@ const Home = () => {
                         key={c}
                         className={styles.CategoryItem}
                         onClick={() => {
-                          navigate(`/explore?category=${category.name}`);
+                          navigate(
+                            `/explore?category=${category.name
+                              .replaceAll(" ", "%20")
+                              .replaceAll("&", "%26")}`
+                          );
                         }}
                       >
                         <img
@@ -714,7 +757,11 @@ const Home = () => {
                       <div
                         key={index}
                         onClick={() => {
-                          navigate(`/explore?topic=${topic.name}`);
+                          navigate(
+                            `/explore?topic=${topic.name
+                              .replaceAll(" ", "%20")
+                              .replaceAll("&", "%26")}`
+                          );
                         }}
                         className={styles.CategoryItem}
                       >
@@ -793,7 +840,11 @@ const Home = () => {
                         key={c}
                         className={styles.CategoryItem}
                         onClick={() => {
-                          navigate(`/explore?category=${category.name}`);
+                          navigate(
+                            `/explore?category=${category.name
+                              .replaceAll(" ", "%20")
+                              .replaceAll("&", "%26")}`
+                          );
                         }}
                       >
                         <img
@@ -851,7 +902,11 @@ const Home = () => {
                         <div
                           key={index}
                           onClick={() => {
-                            navigate(`/explore?topic=${topic.name}`);
+                            navigate(
+                              `/explore?topic=${topic.name
+                                .replaceAll(" ", "%20")
+                                .replaceAll("&", "%26")}`
+                            );
                           }}
                           className={styles.CategoryItem}
                         >
@@ -995,7 +1050,11 @@ const Home = () => {
                     style={{ maxWidth: "140px", cursor: "pointer" }}
                     data={city}
                     fnOnClick={() => {
-                      navigate(`/explore?city=${city.name}`);
+                      navigate(
+                        `/explore?city=${city.name
+                          .replaceAll(" ", "%20")
+                          .replaceAll("&", "%26")}`
+                      );
                     }}
                   />
                 ))}
@@ -1048,7 +1107,7 @@ const Home = () => {
               />
             </div>
             <div className={styles.JumboSecR}>
-              <img src="/images/FrontCover1.png" alt="" srcset="" />
+              <img src="/images/FrontCover2.png" alt="" srcset="" />
             </div>
           </div>
         </section>
@@ -1067,7 +1126,7 @@ const Home = () => {
                   boxShadow: "unset",
                   background: "unset",
                 }}
-                src="/images/FrontCover2.png"
+                src="/images/FrontCover1.png"
               />
             </div>
             <div className={styles.Col2}>

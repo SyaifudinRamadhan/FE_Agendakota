@@ -17,6 +17,7 @@ import {
   BiError,
   BiFullscreen,
   BiGroup,
+  BiInfoCircle,
   BiMap,
   BiPaperPlane,
   BiQuestionMark,
@@ -584,39 +585,84 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
     setSelectedRefund(refundData);
   };
 
-  const openDeleteEvent = () => {
-    setPopUpTitle("Delete");
+  const openDeleteEvent = (eventStatus) => {
+    setPopUpTitle("");
     setPopUpActive(true);
     setPopUpContent(
-      <div className={styles.PopupNotify}>
-        <div className={styles.IconPopUp} style={{ marginTop: "0px" }}>
-          <BiQuestionMark color={"#ca0c64"} fontWeight={"600"} />
+      eventStatus ? (
+        <div className={styles.PopupNotify}>
+          <div className={styles.IconPopUp} style={{ marginTop: "0px" }}>
+            <BiQuestionMark color={"#ca0c64"} fontWeight={"600"} />
+          </div>
+          <div>Apakah anda ingin menghapus event / acitvity ini ?</div>
+          <div className={styles.Split} style={{ marginTop: "30px" }}>
+            <Button
+              style={{
+                marginLeft: "auto",
+              }}
+              title={"Batal"}
+              bgColor={"white"}
+              borderColor={"black"}
+              textColor={"black"}
+              fnOnClick={() => {
+                setPopUpActive(false);
+              }}
+            />
+            <Button
+              style={{
+                marginRight: "auto",
+              }}
+              title={"Hapus"}
+              fnOnClick={() => {
+                handleDeleteEvent(eventId);
+              }}
+            />
+          </div>
         </div>
-        <div>Apakah anda ingin menghapus event / acitvity ini ?</div>
-        <div className={styles.Split} style={{ marginTop: "30px" }}>
-          <Button
-            style={{
-              marginLeft: "auto",
-            }}
-            title={"Batal"}
-            bgColor={"white"}
-            borderColor={"black"}
-            textColor={"black"}
-            fnOnClick={() => {
-              setPopUpActive(false);
-            }}
-          />
-          <Button
-            style={{
-              marginRight: "auto",
-            }}
-            title={"Hapus"}
-            fnOnClick={() => {
-              handleDeleteEvent(eventId);
-            }}
-          />
+      ) : (
+        <div className={styles.PopupNotify} style={{ marginTop: "-30px" }}>
+          <div className={styles.IconPopUp} style={{ marginTop: "0px" }}>
+            <BiInfoCircle color={"#ca0c64"} fontWeight={"600"} />
+          </div>
+          <div>
+            Mohon maaf. Untuk menghapus event yang sedang berjalan atau sudah
+            memiliki data penjualan, hanya boleh dilakukan oleh admin
+            Agendakota.id. Oleh karena itu, jika anda ingin menghapus event ini
+            dikarenakan kebutuhan medesak, Mohon kirimkan email ke admin
+            Agendakota.id (halo@agendakota.id). Dengan data yang dikirimkan
+            sebagai berikut :
+          </div>
+          <div style={{ textAlign: "left", marginTop: "20px" }}>
+            <ol>
+              <li>Email subjek "Pembatalan Event"</li>
+              <li>Nama Event</li>
+              <li>
+                URL preview detail Event (https://agendakota.id/event/{eventId})
+              </li>
+              <li>
+                PDF surat pembatalan Event berisikan detail event dan alasan
+                pembatalannya. Dan bertanda tangan penyelenggara / penanngung
+                jawab Event.
+              </li>
+            </ol>
+          </div>
+          <div className={styles.Split} style={{ marginTop: "30px" }}>
+            <Button
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+              title={"Ok"}
+              bgColor={"white"}
+              borderColor={"black"}
+              textColor={"black"}
+              fnOnClick={() => {
+                setPopUpActive(false);
+              }}
+            />
+          </div>
         </div>
-      </div>
+      )
     );
   };
 
@@ -1607,73 +1653,21 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                   </div>
                 </div>
                 <div className={styles.RightInfo}>
-                  {/* <h5 className={styles.InfoTitle}>{title}</h5>
-                  <p className={styles.Address}>
-                    {address.split("<p>").length === 1
-                      ? address
-                      : address.split("<p>")[1].split("</p>")[0]}
-                  </p>
-                  <div className={styles.BoxTime}>
-                    {category !== "Attraction" &&
-                    category !== "Daily Activities" &&
-                    category !== "Tour Travel (recurring)" ? (
-                      <>
-                        <div className={styles.Time}>
-                          <p className={styles.Date}>{start.split("|")[0]}</p>
-                          <p className={styles.Clock}>
-                            {" "}
-                            |&nbsp; {start.split("|")[1]}
-                          </p>
-                        </div>
-                        <div className={styles.Time}>
-                          <p className={styles.Date}>{end.split("|")[0]}</p>
-                          <p className={styles.Clock}>
-                            {" "}
-                            |&nbsp; {end.split("|")[1]}
-                          </p>
-                        </div>
-                      </>
-                    ) : (
-                      availableDays.map((avldt, index) => {
-                        // return <p className={styles.Time}>{avldt}</p>;
-                        return (
-                          <div id={index} className={styles.Time}>
-                            <p className={styles.Date}>{avldt.split("|")[0]}</p>
-                            <p className={styles.Clock}>
-                              {" "}
-                              |&nbsp; {avldt.split("|")[1]}
-                            </p>
-                          </div>
-                        );
-                      })
-                    )}
-                  </div>
-                  <div className={styles.FooterInfo}>
-                    <div className={styles.Subtitle}>Diadakan oleh</div>
-                    {organization.length === 0 ? (
-                      <></>
-                    ) : (
-                      <div className={styles.InfoOrg}>
-                        <img
-                          src={
-                            process.env.REACT_APP_BACKEND_URL +
-                            organization[0].photo
-                          }
-                          alt=""
-                        />
-                        <p>{organization[0].name}</p>
-                      </div>
-                    )}
-                  </div> */}
                   <h5 className={styles.InfoTitle}>{title}</h5>
                   <div className={styles.BoxAddress}>
                     <BiMap />
-                    <p className={styles.Address}>
+                    {/* <p className={styles.Address}>
                       {address.split("<p>").length === 1
                         ? address + ` ${city}, ${province}`
                         : address.split("<p>")[1].split("</p>")[0] +
                           ` ${city}, ${province}`}
-                    </p>
+                    </p> */}
+                    <p
+                      className={styles.Address}
+                      dangerouslySetInnerHTML={{
+                        __html: address + `, ${city}, ${province}`,
+                      }}
+                    ></p>
                   </div>
                   <div className={styles.BoxTime}>
                     {category !== "Attraction" &&
@@ -1794,6 +1788,18 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                     )}
                   </div>
                 </div>
+              </div>
+              <div className={styles.LinkWrap}>
+                <FieldBox>
+                  <div className={`${styles.CopyBox}`}>
+                    <p>{url}</p>
+                    <BiCopy
+                      onClick={() => {
+                        copyHandle(url);
+                      }}
+                    />
+                  </div>
+                </FieldBox>
               </div>
               <div className={styles.PartialTitle}>Pamper your event</div>
               <div className={styles.PublishBanner}>
@@ -2403,75 +2409,57 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                     <thead>
                       <tr>
                         {/* user data */}
-                        <th>User</th>
+                        <th>Username</th>
                         <th>Email</th>
-                        <th>Phone</th>
+                        <th>Telepon</th>
+                        <th>TRX ID</th>
                         {/* purchase data */}
-                        <th>Tikcet</th>
-                        <th>Qty</th>
+                        <th>Tiket</th>
+                        <th>Harga</th>
+                        <th>Persentase</th>
                         <th>Nominal</th>
                         {/* refund data */}
                         <th>Pembelian / Refund</th>
-                        <th>Message</th>
+                        <th>Permasalahan</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th>Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
                       {tickets.length > 0 && refundDatas.length > 0 ? (
-                        Object.values(
-                          Object.groupBy(
-                            refundDatas.filter(
-                              (data) =>
-                                tickets
-                                  .find((ticket) => ticket.id == data.ticket.id)
-                                  .name.toLowerCase()
-                                  .includes(filterSearchRefund.toLowerCase()) ||
-                                data.user.name
-                                  .toLowerCase()
-                                  .includes(filterSearchRefund.toLowerCase()) ||
-                                data.user.email
-                                  .toLowerCase()
-                                  .includes(filterSearchRefund.toLowerCase()) ||
-                                data.phone_number.includes(
-                                  filterSearchRefund
-                                ) ||
-                                data.created_at
-                                  .split("T")[0]
-                                  .includes(filterSearchRefund) ||
-                                data.purchase.created_at
-                                  .split("T")[0]
-                                  .includes(filterSearchRefund)
-                            ),
-                            (data) => [data.user_id, data.ticket_id]
-                          )
-                        ).map((data) => {
+                        refundDatas.map((data) => {
                           // console.log(data);
                           return (
                             <tr>
-                              <td>{data[0].user.name}</td>
-                              <td>{data[0].user.email}</td>
-                              <td>{data[0].phone_number}</td>
-                              <td>
+                              <td style={{ whiteSpace: "normal" }}>
+                                {data.user.name}
+                              </td>
+                              <td>{data.user.email}</td>
+                              <td>{data.phone_number}</td>
+                              <td style={{ whiteSpace: "normal" }}>
+                                {data.purchase
+                                  ? data.purchase.pay_id
+                                  : "Transfered"}
+                              </td>
+                              <td style={{ whiteSpace: "normal" }}>
                                 {
                                   tickets.find(
-                                    (ticket) => ticket.id == data[0].ticket_id
+                                    (ticket) => ticket.id == data.ticket_id
                                   ).name
                                 }
                               </td>
-                              <td>{data.length}</td>
                               <td>
-                                {data.reduce(
-                                  (currentVal, accumulator) =>
-                                    parseInt(accumulator.nominal) + currentVal,
-                                  0
-                                )}
+                                Rp. {numberFormat.format(data.basic_nominal)},-
                               </td>
+                              <td>{data.percentage * 100}%</td>
+                              <td>Rp. {numberFormat.format(data.nominal)},-</td>
                               <td>
-                                {data[0].purchase.created_at.split("T")[0]} /{" "}
-                                {data[0].created_at.split("T")[0]}
+                                {data.purchase.created_at.split("T")[0]} /{" "}
+                                {data.created_at.split("T")[0]}
                               </td>
-                              <td>{data[0].message}</td>
+                              <td style={{ whiteSpace: "normal" }}>
+                                {data.message}
+                              </td>
                               <td>
                                 <Button
                                   style={{
@@ -2479,13 +2467,9 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                                     width: "unset",
                                   }}
                                   center
-                                  bgColor={
-                                    data[0].approve_org ? "green" : "red"
-                                  }
+                                  bgColor={data.approve_org ? "green" : "red"}
                                   title={
-                                    data[0].approve_org
-                                      ? "approved"
-                                      : "unapproved"
+                                    data.approve_org ? "approved" : "unapproved"
                                   }
                                   textColor={"white"}
                                   borderColor={"white"}
@@ -2497,13 +2481,9 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                                     width: "unset",
                                   }}
                                   center
-                                  bgColor={
-                                    !data[0].approve_org ? "green" : "red"
-                                  }
+                                  bgColor={!data.approve_org ? "green" : "red"}
                                   title={
-                                    !data[0].approve_org
-                                      ? "Approve"
-                                      : "un-Approve"
+                                    !data.approve_org ? "Approve" : "un-Approve"
                                   }
                                   textColor={"white"}
                                   borderColor={"white"}
@@ -2630,7 +2610,9 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                     bgColor={"red"}
                     textColor={"white"}
                     borderColor={"red"}
-                    fnOnClick={openDeleteEvent}
+                    fnOnClick={() => {
+                      openDeleteEvent(buyers.length > 0 ? false : true);
+                    }}
                   />
                 </div>
               </div>

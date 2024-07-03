@@ -128,6 +128,15 @@ const isLoginLoad = async ({ accessToken }) => {
 window.addEventListener("click", changeFitSidebarContent);
 window.addEventListener("resize", changeFitSidebarContent);
 
+const resetMetaData = () => {
+  // change favicon
+  document.getElementsByTagName("link")[0].href = "/logoApp.png";
+  document.getElementsByTagName("link")[2].href = "/logoApp.png";
+  // change meta description content
+  document.getElementsByTagName("meta")[2].content =
+    "Agendakota.id memberikan solusi lengkap untuk membuat, mengelola, dan mempromosikan acara. Dari acara gratis hingga berbayar, semua bisa dilakukan disini.";
+};
+
 const WebFrame = () => {
   // From pages routers
   const [isLogin, setLogin] = useState(null);
@@ -206,6 +215,12 @@ const WebFrame = () => {
       try {
         document.getElementsByClassName("content")[0].style.left = "0";
       } catch (error) {}
+    }
+    if (
+      typeRouter === "basic" &&
+      window.location.pathname.split("/")[1] !== "event"
+    ) {
+      resetMetaData();
     }
   }, [location, typeRouter]);
 
