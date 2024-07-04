@@ -3070,6 +3070,7 @@ const EditorAddEvtAct = ({
                     "bulletedList",
                     "numberedList",
                     "blockQuote",
+                    "mediaEmbed",
                   ],
                   heading: {
                     options: [

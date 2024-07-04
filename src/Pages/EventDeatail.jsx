@@ -215,6 +215,13 @@ const dummyData = [
   },
 ];
 
+const getViedeoId = (url) => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+
+  return match && match[2].length === 11 ? match[2] : null;
+};
+
 const handleSuccess = (res) => {
   return {
     data: res.data,
@@ -743,6 +750,21 @@ const EventDetail = ({ isLogin }) => {
   }, [event, errorState]);
 
   useEffect(() => {
+    if (event) {
+      let oms = document.getElementsByTagName("oembed");
+      let medias = document.getElementsByClassName("media");
+      for (let index = 0; index < oms.length; index++) {
+        let url =
+          "https://www.youtube.com/embed/" +
+          getViedeoId(oms[index].getAttribute("url"));
+        setTimeout(() => {
+          medias[
+            index
+          ].innerHTML = `<iframe style="width: 100%; aspect-ratio: 5 / 3;" src="${url}" />`;
+        }, 50);
+        console.log(url);
+      }
+    }
     if (event && event.event.tickets) {
       let ticketsCount = {};
       event.event.tickets.forEach((ticket) => {
@@ -757,12 +779,12 @@ const EventDetail = ({ isLogin }) => {
 
       document.title = "Agendakota | " + event.event.name;
       // change favicon
-      document.getElementsByTagName("link")[0].href =
-        process.env.REACT_APP_BACKEND_URL + event.event.logo;
-      document.getElementsByTagName("link")[2].href =
-        process.env.REACT_APP_BACKEND_URL + event.event.logo;
-      // change meta description content
-      document.getElementsByTagName("meta")[2].content = event.event.desc;
+      // document.getElementsByTagName("link")[0].href =
+      //   process.env.REACT_APP_BACKEND_URL + event.event.logo;
+      // document.getElementsByTagName("link")[2].href =
+      //   process.env.REACT_APP_BACKEND_URL + event.event.logo;
+      // // change meta description content
+      // document.getElementsByTagName("meta")[2].content = event.event.desc;
     }
   }, [event]);
 

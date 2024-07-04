@@ -491,10 +491,10 @@
 	right: 30px;
 	width: 140px;
 	height: 50px;
-	background-color: white;
+	background-color: #ca0c64;
 	border-radius: 15px;
-	border: 2px solid #ca0c64;
-	color: #ca0c64;
+	border: none;
+	color: #fff;
 	display: none;
 	cursor: pointer;
 	z-index: 1;
