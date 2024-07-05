@@ -714,9 +714,9 @@ const EditorAddEvtAct = ({
         .map((avldt) => avldt[1].startTime.current.value);
 
       if (
-        (forEvtAct !== "Onsite Event" ||
-          forEvtAct !== "Online Event" ||
-          forEvtAct !== "Hybrid Event") &&
+        forEvtAct !== "Onsite Event" &&
+        forEvtAct !== "Online Event" &&
+        forEvtAct !== "Hybrid Event" &&
         (avlDays.length === 0 ||
           avlDaysEnd.length === 0 ||
           avlDayStart.length === 0)
