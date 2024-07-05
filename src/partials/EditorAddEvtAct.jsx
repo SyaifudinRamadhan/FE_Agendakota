@@ -632,8 +632,7 @@ const EditorAddEvtAct = ({
           category === "" ||
           category === null))
     ) {
-      let content =
-        "Semua field kecuali ticket dan opsi waktu operasional wajib diisi";
+      let content = "Semua field kecuali ticket";
       if (title.current.value === "" || title.current.value.length > 200) {
         setBlankTitle(true);
       }
@@ -723,6 +722,7 @@ const EditorAddEvtAct = ({
           avlDayStart.length === 0)
       ) {
         setBlankStart(true);
+        content = "Field waktu opsional wajib diisi !";
       }
 
       setAlert({
