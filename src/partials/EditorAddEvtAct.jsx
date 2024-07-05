@@ -688,6 +688,43 @@ const EditorAddEvtAct = ({
       ) {
         setBlankCat(true);
       }
+
+      let avlDays = Object.entries(availableDayTime)
+        .filter(
+          (avldt) =>
+            avldt[1].day.current.checked === true &&
+            avldt[1].startTime.current.value !== "" &&
+            avldt[1].endTime.current.value !== ""
+        )
+        .map((avldt) => config.dayIndToEn[avldt[0]]);
+      let avlDaysEnd = Object.entries(availableDayTime)
+        .filter(
+          (avldt) =>
+            avldt[1].day.current.checked === true &&
+            avldt[1].startTime.current.value !== "" &&
+            avldt[1].endTime.current.value !== ""
+        )
+        .map((avldt) => avldt[1].endTime.current.value);
+      let avlDayStart = Object.entries(availableDayTime)
+        .filter(
+          (avldt) =>
+            avldt[1].day.current.checked === true &&
+            avldt[1].startTime.current.value !== "" &&
+            avldt[1].endTime.current.value !== ""
+        )
+        .map((avldt) => avldt[1].startTime.current.value);
+
+      if (
+        (forEvtAct !== "Onsite Event" ||
+          forEvtAct !== "Online Event" ||
+          forEvtAct !== "Hybrid Event") &&
+        (avlDays.length === 0 ||
+          avlDaysEnd.length === 0 ||
+          avlDayStart.length === 0)
+      ) {
+        setBlankStart(true);
+      }
+
       setAlert({
         state: true,
         type: "danger",
@@ -2375,6 +2412,9 @@ const EditorAddEvtAct = ({
                         refData={refData[1].day}
                         type={"checkbox"}
                         label={refData[0]}
+                        onChange={() => {
+                          setBlankStart(false);
+                        }}
                       />
                       <InputForm
                         style={{ marginLeft: "auto" }}
@@ -2850,7 +2890,11 @@ const EditorAddEvtAct = ({
                   />
                 </div>
               ) : (
-                <div className={styles.AvailableDays}>
+                <div
+                  className={`${styles.AvailableDays} ${
+                    blankStart || blankEnd ? styles.DangerInput : ""
+                  }`}
+                >
                   <div className={styles.DateGroup}>
                     <FieldBox
                       iconSvg={<BiCalendar />}
