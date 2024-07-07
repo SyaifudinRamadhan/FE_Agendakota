@@ -780,38 +780,40 @@ const ReviewContent = ({
           {showTrxMethods ? (
             <div className={styles.PaymentMethods}>
               {Object.entries(config.payMethods).map((payMethod) => {
-                return (
-                  <div className={styles.GroupMethod}>
-                    <div
-                      style={{ fontSize: "14px" }}
-                      className={styles.TextSecondary}
-                    >
-                      {payMethod[0] === "e-wallet"
-                        ? "E-Wallet"
-                        : payMethod[0] === "qris"
-                        ? "QRIS"
-                        : "Virtual Account / BANK"}
+                if (payMethod[0] !== "qris") {
+                  return (
+                    <div className={styles.GroupMethod}>
+                      <div
+                        style={{ fontSize: "14px" }}
+                        className={styles.TextSecondary}
+                      >
+                        {payMethod[0] === "e-wallet"
+                          ? "E-Wallet"
+                          : payMethod[0] === "qris"
+                          ? "QRIS"
+                          : "Virtual Account / BANK"}
+                      </div>
+                      <Chip
+                        options={Object.entries(payMethod[1]).map(
+                          (value, index) => value[0].toString()
+                        )}
+                        value={trxMethod}
+                        setValue={setTrxMethod}
+                        labelItem={Object.entries(payMethod[1]).map(
+                          (value, index) => (
+                            <div className={styles.PaymentBtn}>
+                              <img src={`/icons/${value[1][0]}.png`} alt="" />
+                              <div>{value[1][1]}</div>
+                            </div>
+                          )
+                        )}
+                        multiple={false}
+                        itemStyle={{ padding: "10px 10px" }}
+                        containerStyle={{ flexWrap: "wrap" }}
+                      />
                     </div>
-                    <Chip
-                      options={Object.entries(payMethod[1]).map(
-                        (value, index) => value[0].toString()
-                      )}
-                      value={trxMethod}
-                      setValue={setTrxMethod}
-                      labelItem={Object.entries(payMethod[1]).map(
-                        (value, index) => (
-                          <div className={styles.PaymentBtn}>
-                            <img src={`/icons/${value[1][0]}.png`} alt="" />
-                            <div>{value[1][1]}</div>
-                          </div>
-                        )
-                      )}
-                      multiple={false}
-                      itemStyle={{ padding: "10px 10px" }}
-                      containerStyle={{ flexWrap: "wrap" }}
-                    />
-                  </div>
-                );
+                  );
+                }
               })}
             </div>
           ) : (

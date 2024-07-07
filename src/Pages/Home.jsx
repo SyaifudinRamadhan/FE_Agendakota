@@ -285,9 +285,9 @@ const Home = () => {
             Ticketing, & Reservation
           </div>
           <div className={styles.JumboDescription}>
-            Nonton konser idolamu hingga belajar skill baru{" "}
-            <div className={styles.DesktopEOL}></div> kini bisa kamu lakukan
-            dimana saja
+            Udah Gak jaman Bikin Event dan Sistem Reservasi itu Ribet!
+            <div className={styles.DesktopEOL}></div> Kini Kamu bisa lakukan
+            sambil rebahan
           </div>
 
           <div className={styles.JumboButtonArea}>
