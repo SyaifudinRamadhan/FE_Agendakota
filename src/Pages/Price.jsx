@@ -104,7 +104,12 @@ const Price = () => {
                 tersebut meliputi :
               </p>
               <ol>
-                <li> PPN 11% dari total harga tiket</li>
+                <li>
+                  {" "}
+                  PPN 11% dari total harga tiket (Untuk saat ini sampai kondisi
+                  tertentu bedasar hukum pajak, agendakota tidak akan menarik
+                  pajak sebesar 11% dari setiap transaksi)
+                </li>
                 <li>Biaya Admin (Rp. 3000,-)</li>
                 <li>
                   Biaya platform ( Dinamis sesuai dengan metode pembayaran yang
@@ -117,8 +122,10 @@ const Price = () => {
                 pembayaran yang dipilih oleh customer. Untuk metode pembayaran
                 via VA Bank, admin fee tertinggi berkisar pada Rp. 5000,- .
                 Sedangkan untuk pembayaran via E-Wallet dan QRIS, admin fee
-                tertinggi berkisar pada 2% dari total pemebelian tiket + PPN
-                11%.
+                tertinggi berkisar pada 2% dari total pemebelian tiket + PPN 11%
+                (Untuk saat ini sampai kondisi tertentu bedasar hukum pajak,
+                agendakota tidak akan menarik pajak sebesar 11% dari setiap
+                transaksi).
               </p>
               <br />
               <b>Perlu Diingat : </b>
@@ -127,8 +134,10 @@ const Price = () => {
                   {" "}
                   Apabila terjadi refund pada suatu transaksi, maka biaya yang
                   dapat dikembalikan kepada customer adalah harga pokok dari
-                  tiket dan PPN 11%. Sedangkan untuk biaya platform tidak dapat
-                  dikembalikan
+                  tiket dan PPN 11% (Untuk saat ini sampai kondisi tertentu
+                  bedasar hukum pajak, agendakota tidak akan menarik pajak
+                  sebesar 11% dari setiap transaksi). Sedangkan untuk biaya
+                  platform tidak dapat dikembalikan
                 </li>
                 <li>
                   Biaya platform di bebankan pada customer tergantung motode

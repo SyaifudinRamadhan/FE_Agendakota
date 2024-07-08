@@ -1280,23 +1280,30 @@ const PopUpTicketIn = ({
                       <></>
                     ) : (
                       <>
-                        <div
-                          className={styles.FlexRow}
-                          style={{ marginBottom: "5px" }}
-                        >
-                          <div className={styles.TextSecondary}>PPN</div>
+                        {trx.purchases.reduce((current, prev) => {
+                          return current + prev.tax_amount;
+                        }, 0) == 0 ? (
+                          <></>
+                        ) : (
                           <div
-                            style={{ marginLeft: "auto" }}
-                            className={styles.TextPrimary}
+                            className={styles.FlexRow}
+                            style={{ marginBottom: "5px" }}
                           >
-                            Rp.
-                            {numberFormat.format(
-                              trx.purchases.reduce((current, prev) => {
-                                return current + prev.tax_amount;
-                              }, 0)
-                            )}
+                            <div className={styles.TextSecondary}>PPN</div>
+                            <div
+                              style={{ marginLeft: "auto" }}
+                              className={styles.TextPrimary}
+                            >
+                              Rp.
+                              {numberFormat.format(
+                                trx.purchases.reduce((current, prev) => {
+                                  return current + prev.tax_amount;
+                                }, 0)
+                              )}
+                            </div>
                           </div>
-                        </div>
+                        )}
+
                         <div
                           className={styles.FlexRow}
                           style={{ marginBottom: "5px" }}

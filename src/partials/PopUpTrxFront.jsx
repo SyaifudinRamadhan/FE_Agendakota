@@ -665,18 +665,23 @@ const ReviewContent = ({
             <></>
           ) : (
             <>
-              <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
-                <div className={styles.TextSecondary}>
-                  PPN {commisionData.tax_fee * 100}%
+              {commisionData.tax_fee == 0 ? (
+                <></>
+              ) : (
+                <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+                  <div className={styles.TextSecondary}>
+                    PPN {commisionData.tax_fee * 100}%
+                  </div>
+                  <div
+                    style={{ marginLeft: "auto" }}
+                    className={styles.TextPrimary}
+                  >
+                    Rp.
+                    {numberFormat.format(basicPrice * commisionData.tax_fee)}
+                  </div>
                 </div>
-                <div
-                  style={{ marginLeft: "auto" }}
-                  className={styles.TextPrimary}
-                >
-                  Rp.
-                  {numberFormat.format(basicPrice * commisionData.tax_fee)}
-                </div>
-              </div>
+              )}
+
               <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
                 <div className={styles.TextSecondary}>Biaya Admin</div>
                 <div
@@ -1156,16 +1161,21 @@ const TrxContent = ({
           <></>
         ) : (
           <>
-            <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
-              <div className={styles.TextSecondary}>PPN</div>
-              <div
-                style={{ marginLeft: "auto" }}
-                className={styles.TextPrimary}
-              >
-                Rp.
-                {numberFormat.format(resTrx.taxTotal)}
+            {resTrx.taxTotal == 0 ? (
+              <></>
+            ) : (
+              <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+                <div className={styles.TextSecondary}>PPN</div>
+                <div
+                  style={{ marginLeft: "auto" }}
+                  className={styles.TextPrimary}
+                >
+                  Rp.
+                  {numberFormat.format(resTrx.taxTotal)}
+                </div>
               </div>
-            </div>
+            )}
+
             <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
               <div className={styles.TextSecondary}>Biaya Admin</div>
               <div

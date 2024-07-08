@@ -718,8 +718,10 @@ const TermConditions = () => {
                   Pembayaran atas penjualan Tiket Event yang diberikan kepada
                   Event Creator berdasarkan laporan penjualan yang tercantum
                   dalam sistem AGENDAKOTA, akan dibayarkan setelah dipotong
-                  dengan Biaya Jasa kami, termasuk pajak pertambahan nilai
-                  (PPN).
+                  dengan Biaya Jasa kami, termasuk pajak pertambahan nilai (PPN)
+                  (Untuk saat ini sampai kondisi tertentu bedasar hukum pajak,
+                  agendakota tidak akan menarik pajak sebesar 11% dari setiap
+                  transaksi).
                 </li>
                 <li>
                   Kecuali ditentukan lain dalam perjanjian ini, semua jenis
