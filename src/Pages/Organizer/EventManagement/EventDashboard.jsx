@@ -60,11 +60,7 @@ import { Line } from "react-chartjs-2";
 import xlsx from "json-as-xlsx";
 import PopUpCheckin from "../../../partials/PopUpCheckin";
 import QRCode from "qrcode.react";
-import ReactPDF, {
-  PDFDownloadLink,
-  renderToFile,
-  usePDF,
-} from "@react-pdf/renderer";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import QREventPdf from "./QREventPdf";
 import PopUpRefundOrg from "../../../partials/PopUpRefundOrg";
 import InputCheckRadio from "../../../components/InputCheckRadio";
@@ -1398,7 +1394,15 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
 
   useEffect(() => {
     if (sellTableNav == "All time") {
-      let grouped = Object.groupBy(buyers, (buyer) => buyer.ticketId);
+      // let grouped = Object.groupBy(buyers, (buyer) => buyer.ticketId);
+      let grouped = buyers.reduce((current, acc) => {
+        if (current.ticketId) {
+          current[acc.ticketId].push(acc);
+        } else {
+          current[acc.ticketId] = [acc];
+        }
+        return current;
+      }, {});
       setGroupSelledTable(
         Object.entries(grouped).map((group) => {
           let ticket = tickets.find((ticket) => ticket.id == group[0]);
@@ -1417,14 +1421,28 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
       );
     } else if (sellTableNav == "Today") {
       let date = new Date();
-      let grouped = Object.groupBy(
-        buyers.filter(
+      // let grouped = Object.groupBy(
+      //   buyers.filter(
+      //     (buyer) =>
+      //       new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
+      //       date.setHours(0, 0, 0, 0)
+      //   ),
+      //   (buyer) => buyer.ticketId
+      // );
+      let grouped = buyers
+        .filter(
           (buyer) =>
             new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
             date.setHours(0, 0, 0, 0)
-        ),
-        (buyer) => buyer.ticketId
-      );
+        )
+        .reduce((current, acc) => {
+          if (current.ticketId) {
+            current[acc.ticketId].push(acc);
+          } else {
+            current[acc.ticketId] = [acc];
+          }
+          return current;
+        }, {});
       setGroupSelledTable(
         Object.entries(grouped).map((group) => {
           let ticket = tickets.find((ticket) => ticket.id == group[0]);
@@ -1443,8 +1461,25 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
       );
     } else if (sellTableNav == "This Week") {
       let now = new Date().getDay();
-      let grouped = Object.groupBy(
-        buyers.filter(
+      // let grouped = Object.groupBy(
+      //   buyers.filter(
+      //     (buyer) =>
+      //       new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) >=
+      //         new Date(new Date().setDate(new Date().getDate() - now)).setHours(
+      //           0,
+      //           0,
+      //           0,
+      //           0
+      //         ) &&
+      //       new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) <=
+      //         new Date(
+      //           new Date().setDate(new Date().getDate() + (6 - now))
+      //         ).setHours(0, 0, 0, 0)
+      //   ),
+      //   (buyer) => buyer.ticketId
+      // );
+      let grouped = buyers
+        .filter(
           (buyer) =>
             new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) >=
               new Date(new Date().setDate(new Date().getDate() - now)).setHours(
@@ -1457,9 +1492,15 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
               new Date(
                 new Date().setDate(new Date().getDate() + (6 - now))
               ).setHours(0, 0, 0, 0)
-        ),
-        (buyer) => buyer.ticketId
-      );
+        )
+        .reduce((current, acc) => {
+          if (current.ticketId) {
+            current[acc.ticketId].push(acc);
+          } else {
+            current[acc.ticketId] = [acc];
+          }
+          return current;
+        }, {});
 
       setGroupSelledTable(
         Object.entries(grouped).map((group) => {
@@ -2333,20 +2374,6 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                   <div className={styles.CardInfoTitle2}>
                     QR Event for Self Checkin
                   </div>
-                  <PDFDownloadLink
-                    id="download-qr"
-                    document={
-                      <QREventPdf title={title} eventId={qrStringEvtId} />
-                    }
-                    fileName="movielist.pdf"
-                    style={{
-                      textDecoration: "none",
-                      color: "black",
-                      display: "none",
-                    }}
-                  >
-                    Dwo
-                  </PDFDownloadLink>
 
                   <div
                     className={styles.DownloadBox}
@@ -2374,7 +2401,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                   id="qr-event"
                   ref={pdfQR}
                   size={256}
-                  value={eventId}
+                  value={window.location.origin + "/self-checkin/" + eventId}
                   level="H"
                   includeMargin={true}
                   className={styles.QRBox}

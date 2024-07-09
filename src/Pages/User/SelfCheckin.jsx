@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./styles/PopUpCheckin.module.css";
+import styles from "../../partials/styles/PopUpCheckin.module.css";
 import {
   BiArrowBack,
   BiBarcodeReader,
@@ -8,19 +8,18 @@ import {
   BiQrScan,
   BiX,
 } from "react-icons/bi";
-import { QrScanner } from "@yudiel/react-qr-scanner";
-import Button from "../components/Button";
-import InputForm from "../components/InputForm";
+import Button from "../../components/Button";
 import axios from "axios";
-import Loading from "../components/Loading";
+import Loading from "../../components/Loading";
 import moment, { locale } from "moment";
-import PopUp from "./PopUp";
+import PopUp from "../../partials/PopUp";
 import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 
 // let codes = "";
 // let load = 0;
 
-let handleKeydown = null;
+// let handleKeydown = null;
 
 const handleSuccess = (res) => {
   return {
@@ -64,20 +63,10 @@ const checkin = async ({ eventId, token }) => {
   }
 };
 
-const PopUpCheckinUser = ({
-  fnClose = () => {},
-
-  isLogin,
-  fnSetLogin = () => {},
-  fnSetGlobalLoding = () => {},
-}) => {
-  const [menu, setMenu] = useState("QR Scan");
-  // const [menu, setMenu] = useState("Alert");
-  const [lastMenu, setLastMenu] = useState("");
-  // const [strCode, setStrCode] = useState(null);
-  // const [enterCLick, setEnterClick] = useState(false);
-  // const [firstLoad, setFirstLoadState] = useState(true);
-  const [isLoading, setLoading] = useState(false);
+const SelfCheckin = ({ isLogin, fnSetLogin = () => {} }) => {
+  // ================== State control ============================
+  const [firstLoad, setFirstLoad] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [alert, setAlert] = useState({
     state: false,
     type: "",
@@ -85,15 +74,17 @@ const PopUpCheckinUser = ({
   });
   const [pausedProcess, setPausedProcess] = useState(null);
   const [numberFormat, setNumFormat] = useState(Intl.NumberFormat("id-ID"));
+
+  // ================= Data =====================================
   const appData = useSelector((state) => state.appDataReducer);
+  const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const handleCheckin = (qrStr) => {
     setLoading(true);
     checkin({
-      eventId:
-        qrStr.split(window.location.origin + "/self-checkin/").length > 1
-          ? qrStr.split(window.location.origin + "/self-checkin/")[1]
-          : "",
+      eventId: qrStr,
       token: appData.accessToken,
     }).then((res) => {
       if (res.status === 201) {
@@ -165,56 +156,36 @@ const PopUpCheckinUser = ({
 
   useEffect(() => {
     if (isLogin && pausedProcess) {
-      // console.log(isLogin, pausedProcess);
       handleCheckin(pausedProcess.split("~!@!~")[1]);
+      console.log("Run paused process");
       setPausedProcess(null);
     }
   }, [pausedProcess, isLogin]);
 
+  useEffect(() => {
+    if (!firstLoad) {
+      handleCheckin(id);
+      console.log("First load");
+      setFirstLoad(true);
+    }
+  }, [firstLoad]);
+
   return (
-    <PopUp
-      isActive
-      title=""
-      width="45%"
-      content={
-        <div className={styles.MainContainer}>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <>
-              <div className={styles.Header}>
-                <div>User Checkin</div>
-                <BiX
-                  className={styles.Right}
-                  onClick={() => {
-                    fnClose(false);
-                    setMenu("QR Scan");
-                    // codes = "";
-                    // document.removeEventListener("keydown", handleKeydown);
-                    fnSetGlobalLoding(true);
-                    setTimeout(() => {
-                      fnSetGlobalLoding(false);
-                    }, 100);
-                  }}
-                />
-              </div>
-              {menu === "QR Scan" ? (
-                <div id="qr-scan" className={styles.Center}>
-                  <QrScanner
-                    onDecode={(result) => {
-                      // console.log(result);
-                      handleCheckin(result);
-                      setLastMenu(menu);
-                      setMenu("Alert");
-                    }}
-                    onError={(error) => {
-                      // console.log(error?.message);
-                      setLastMenu(menu);
-                      setMenu("Alert");
-                    }}
-                  />
+    <>
+      <PopUp
+        isActive
+        title=""
+        width="45%"
+        content={
+          <div className={styles.MainContainer}>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <>
+                <div className={styles.Header}>
+                  <div>User Checkin</div>
                 </div>
-              ) : (
+
                 <div id="alert" className={`${styles.Center} ${styles.Alert}`}>
                   {alert.type == "danger" ? <BiError /> : <></>}
                   <div>
@@ -225,17 +196,18 @@ const PopUpCheckinUser = ({
                   <Button
                     title={"Ok"}
                     fnOnClick={() => {
-                      setMenu(lastMenu);
+                      navigate("/my-tickets");
                     }}
                   />
                 </div>
-              )}
-            </>
-          )}
-        </div>
-      }
-    />
+              </>
+            )}
+          </div>
+        }
+      />
+      <div className="content user"></div>
+    </>
   );
 };
 
-export default PopUpCheckinUser;
+export default SelfCheckin;

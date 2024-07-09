@@ -36,6 +36,7 @@ import TermConditions from "../Pages/TermConditions";
 import PrivacyPolicy from "../Pages/PrivacyPolicy";
 import RefundCancelEvent from "../Pages/RefundCancelEvent";
 import Price from "../Pages/Price";
+import SelfCheckin from "../Pages/User/SelfCheckin";
 
 // let firstLoad = true;
 
@@ -130,8 +131,8 @@ window.addEventListener("resize", changeFitSidebarContent);
 
 const resetMetaData = () => {
   // change favicon
-  document.getElementsByTagName("link")[0].href = "/logoApp.png";
-  document.getElementsByTagName("link")[2].href = "/logoApp.png";
+  // document.getElementsByTagName("link")[0].href = "/logoApp.png";
+  // document.getElementsByTagName("link")[2].href = "/logoApp.png";
   // change meta description content
   document.getElementsByTagName("meta")[2].content =
     "Agendakota.id memberikan solusi lengkap untuk membuat, mengelola, dan mempromosikan acara. Dari acara gratis hingga berbayar, semua bisa dilakukan disini.";
@@ -410,6 +411,10 @@ const WebFrame = () => {
             <Route
               path="/my-tickets"
               element={<MyTicket isLogin={isLogin} fnSetLogin={setLogin} />}
+            />
+            <Route
+              path="/self-checkin/:id"
+              element={<SelfCheckin isLogin={isLogin} fnSetLogin={setLogin} />}
             />
             <Route
               path="/invitations"
