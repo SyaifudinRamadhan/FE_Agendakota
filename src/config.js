@@ -769,7 +769,7 @@ const config = {
 			"011": ["ID_DANA", "DANA", 0.015],
 			"012": ["ID_LINKAJA", "LinkAja", 0.027],
 			// "013": ["ID_SHOPEEPAY", "ShopeePay", 0.04],
-			"014": ["ID_OVO", "OVO", 0.0273],
+			// "014": ["ID_OVO", "OVO", 0.0273],
 			// "015": ["ID_JENIUSPAY", "JeniusPay", 0.02],
 		},
 		qris: {
