@@ -139,6 +139,7 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
   });
   const [loading, setLoading] = useState(false);
   const [formMode, setFormMode] = useState("login");
+  const [showHint, setShowHint] = useState(false);
   const dispatch = useDispatch();
 
   // field data basic
@@ -407,14 +408,37 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
                 </div>
                 <div>
                   {formMode === "login" ? (
-                    <div className={styles.InfoBox}>
-                      <BiInfoCircle />
-                      <div className={styles.InfoText}>
-                        Jika anda baru saja mendaftar / register, pastikan anda
-                        sudah melakukan aktivasi akun melaui email verifkasi
-                        yang anda peroleh.
+                    <>
+                      <div className={styles.InfoBox}>
+                        <BiInfoCircle />
+                        <div className={styles.InfoText}>
+                          Jika anda baru saja mendaftar / register, pastikan
+                          anda sudah melakukan aktivasi akun melaui email
+                          verifkasi yang anda peroleh.
+                        </div>
                       </div>
-                    </div>
+                      <div
+                        className={styles.InfoBox}
+                        style={
+                          showHint
+                            ? { marginBottom: "20px", textAlign: "center" }
+                            : { display: "none" }
+                        }
+                      >
+                        <div className={styles.InfoText}>
+                          Jika anda saat login / register pertama kali
+                          menggunakkan fitur "Login With Google". Maka login
+                          berikutnnya hanya bisa login menggunakan fitur login
+                          yanng sama (Login With Google). Kecuali anda sudah
+                          melakukan pengubahan password di halaman setting
+                          (pojok kanan icon profil). <br /> <br />
+                          Namun jika anda saat login / register pertama kali
+                          tidak menggunakkan fitur "Login With Google". Maka
+                          login selanjutnya anda tidak akan bisa menggunakan
+                          fitur "Login With Google" pada akun anda tersebut.
+                        </div>
+                      </div>
+                    </>
                   ) : (
                     <></>
                   )}
@@ -560,6 +584,15 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
                     {formMode === "login"
                       ? "Belum Punya Akun ? Daftar"
                       : "Sudah Punya Akun ? Login"}
+                  </div>
+                  <div
+                    className={styles.RegisterButton}
+                    style={{ marginTop: "0px" }}
+                    onClick={() => {
+                      setShowHint(!showHint);
+                    }}
+                  >
+                    Login gagal terus ? Tampilkan Petunjuk
                   </div>
 
                   <div className={styles.FormFieldBox}>

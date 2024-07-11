@@ -779,6 +779,7 @@ const ReviewContent = ({
                 trxMethod === "014" ? "Nomor HP OVO" : "$Cashtag"
               }`}
               refData={refOvoJn}
+              type={"numeric"}
             />
           </div>
 
@@ -1305,6 +1306,12 @@ const TrxContent = ({
                       <p>
                         3. Anda akan diarahkan ke halaman pembayaran E-Wallet
                         dari Xendit. Silahkan isi form yang disediakan.
+                        <b>
+                          {" "}
+                          Khusus untuk OVO, anda wajib menginstall aplikasi OVO
+                          di smartphone terlebih dahulu. Dikarenakan proses
+                          pembayaran akan masuk melalui aplikasi OVO anda.
+                        </b>
                       </p>
                       <p>
                         4. Setelah pembayaran selesai, silahkan tunggu, anda

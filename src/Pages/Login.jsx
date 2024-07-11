@@ -101,6 +101,7 @@ const Login = ({ isLogin }) => {
   const [inputFocus, setInputFocus] = useState(null);
   const [captcha, setCaptchaState] = useState(null);
   const [firtsLoad, setFirstLoad] = useState(false);
+  const [showHint, setShowHint] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -495,6 +496,42 @@ const Login = ({ isLogin }) => {
                       Daftar
                     </Link>
                   </div>
+                  <div
+                    style={{
+                      flexDirection: "row",
+                      margin: "auto",
+                      gap: "10px",
+                    }}
+                  >
+                    <div>Login gagal terus ? </div>
+                    <div
+                      style={{
+                        textDecoration: "none",
+                        color: "blue",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        setShowHint(!showHint);
+                      }}
+                    >
+                      Tampilkan Petunjuk
+                    </div>
+                  </div>
+                  <p
+                    className={styles.SubTitle}
+                    style={showHint ? {} : { display: "none" }}
+                  >
+                    PETUNJUK <br /> <br />
+                    Jika anda saat login / register pertama kali menggunakkan
+                    fitur "Login With Google". Maka login berikutnnya hanya bisa
+                    login menggunakan fitur login yanng sama (Login With
+                    Google). Kecuali anda sudah melakukan pengubahan password di
+                    halaman setting (pojok kanan icon profil). <br /> <br />
+                    Namun jika anda saat login / register pertama kali tidak
+                    menggunakkan fitur "Login With Google". Maka login
+                    selanjutnya anda tidak akan bisa menggunakan fitur "Login
+                    With Google" pada akun anda tersebut.
+                  </p>
                 </div>
               </div>
             </form>
