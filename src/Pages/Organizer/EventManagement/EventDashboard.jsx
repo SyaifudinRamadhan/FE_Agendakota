@@ -414,6 +414,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
   const [error, setErrorState] = useState(false);
   const [pausedProcess, setPausedProcess] = useState(null);
   const [popUpActive, setPopUpActive] = useState(false);
+  const [succeededBuyerIds, setSuccededBuyerId] = useState([]);
 
   const [popUpTitle, setPopUpTitle] = useState("");
   const [popUpContent, setPopUpContent] = useState(<></>);
@@ -973,35 +974,37 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
   const handleDownlodCsForm = () => {
     setLoading(true);
     let content = [];
-    surveyRes.forEach((surveyData) => {
-      let tmpCol = {};
-      surveyData.question_str.forEach((qStr, index) => {
-        qStr.split("~!!!~")[1] === "file"
-          ? surveyData.survey_datas[index] !== "" &&
-            surveyData.survey_datas[index] !== "-" &&
-            surveyData.survey_datas[index] !== " "
-            ? (tmpCol["ID_Card__KTP"] =
-                process.env.REACT_APP_BACKEND_URL +
-                surveyData.survey_datas[index])
-            : (tmpCol["ID_Card__KTP"] = "-")
-          : qStr.split("~!!!~")[1] === "boolean"
-          ? (tmpCol[
-              qStr
-                .split("~!!!~")[0]
-                .replaceAll(" ", "_")
-                .replaceAll(".", "_")
-                .replaceAll("/", "_")
-            ] = surveyData.survey_datas[index] == "1" ? "Ya" : "Tidak")
-          : (tmpCol[
-              qStr
-                .split("~!!!~")[0]
-                .replaceAll(" ", "_")
-                .replaceAll(".", "_")
-                .replaceAll("/", "_")
-            ] = surveyData.survey_datas[index]);
+    surveyRes
+      .filter((survey) => succeededBuyerIds.includes(survey.user_id))
+      .forEach((surveyData) => {
+        let tmpCol = {};
+        surveyData.question_str.forEach((qStr, index) => {
+          qStr.split("~!!!~")[1] === "file"
+            ? surveyData.survey_datas[index] !== "" &&
+              surveyData.survey_datas[index] !== "-" &&
+              surveyData.survey_datas[index] !== " "
+              ? (tmpCol["ID_Card__KTP"] =
+                  process.env.REACT_APP_BACKEND_URL +
+                  surveyData.survey_datas[index])
+              : (tmpCol["ID_Card__KTP"] = "-")
+            : qStr.split("~!!!~")[1] === "boolean"
+            ? (tmpCol[
+                qStr
+                  .split("~!!!~")[0]
+                  .replaceAll(" ", "_")
+                  .replaceAll(".", "_")
+                  .replaceAll("/", "_")
+              ] = surveyData.survey_datas[index] == "1" ? "Ya" : "Tidak")
+            : (tmpCol[
+                qStr
+                  .split("~!!!~")[0]
+                  .replaceAll(" ", "_")
+                  .replaceAll(".", "_")
+                  .replaceAll("/", "_")
+              ] = surveyData.survey_datas[index]);
+        });
+        content.push(tmpCol);
       });
-      content.push(tmpCol);
-    });
 
     let data = [
       {
@@ -1270,6 +1273,13 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
         });
       });
       setBuyers(buyers);
+      setSuccededBuyerId(
+        buyers
+          .filter(
+            (buyer) => buyer.purchaseData.payment.pay_state === "SUCCEEDED"
+          )
+          .map((buyer) => buyer.purchaseData.user_id)
+      );
       // console.log(buyers);
       setAttendees(attendees);
       buyers = null;
@@ -1300,16 +1310,22 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
         labels.push(config.months[i % 12]);
         datas.push(
           buyers.filter(
-            (buyer) => new Date(buyer.purchaseData.created_at).getMonth() == i
+            (buyer) =>
+              new Date(buyer.purchaseData.created_at).getMonth() == i &&
+              buyer.purchaseData.payment.pay_state === "SUCCEEDED"
           ).length
         );
       }
       setDataGraph({
-        total: buyers.reduce(
-          (currentVal, accumulator) =>
-            currentVal + accumulator.purchaseData.amount,
-          0
-        ),
+        total: buyers
+          .filter(
+            (buyer) => buyer.purchaseData.payment.pay_state === "SUCCEEDED"
+          )
+          .reduce(
+            (currentVal, accumulator) =>
+              currentVal + accumulator.purchaseData.amount,
+            0
+          ),
         graph: {
           label: labels,
           data: datas,
@@ -1323,7 +1339,8 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
         buyers.filter(
           (buyer) =>
             new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ==
-            new Date().setHours(0, 0, 0, 0)
+              new Date().setHours(0, 0, 0, 0) &&
+            buyer.purchaseData.payment.pay_state === "SUCCEEDED"
         ).length
       );
       setDataGraph({
@@ -1331,7 +1348,8 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
           .filter(
             (buyer) =>
               new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
-              new Date().setHours(0, 0, 0, 0)
+                new Date().setHours(0, 0, 0, 0) &&
+              buyer.purchaseData.payment.pay_state === "SUCCEEDED"
           )
           .reduce(
             (currentVal, accumulator) =>
@@ -1360,12 +1378,12 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
           buyers.filter(
             (buyer) =>
               new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
-              new Date(new Date().setDate(startWeek.getDate() + i)).setHours(
-                0,
-                0,
-                0,
-                0
-              )
+                new Date(new Date().setDate(startWeek.getDate() + i)).setHours(
+                  0,
+                  0,
+                  0,
+                  0
+                ) && buyer.purchaseData.payment.pay_state === "SUCCEEDED"
           ).length
         );
       }
@@ -1377,7 +1395,8 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
               new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) >=
                 startWeek.setHours(0, 0, 0, 0) &&
               new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) <=
-                endWeek.setHours(23, 59, 0, 0)
+                endWeek.setHours(23, 59, 0, 0) &&
+              buyer.purchaseData.payment.pay_state === "SUCCEEDED"
           )
           .reduce(
             (currentVal, accumulator) =>
@@ -1395,48 +1414,10 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
   useEffect(() => {
     if (sellTableNav == "All time") {
       // let grouped = Object.groupBy(buyers, (buyer) => buyer.ticketId);
-      let grouped = buyers.reduce((current, acc) => {
-        if (current.ticketId) {
-          current[acc.ticketId].push(acc);
-        } else {
-          current[acc.ticketId] = [acc];
-        }
-        return current;
-      }, {});
-      setGroupSelledTable(
-        Object.entries(grouped).map((group) => {
-          let ticket = tickets.find((ticket) => ticket.id == group[0]);
-          return {
-            type: ticket.name,
-            totalSale: `${group[1].length} dari ${
-              ticket.quantity == -1 ? ticket.limit_daily : ticket.quantity
-            }`,
-            total: group[1].reduce(
-              (currentVal, accumulator) =>
-                accumulator.purchaseData.amount + currentVal,
-              0
-            ),
-          };
-        })
-      );
-    } else if (sellTableNav == "Today") {
-      let date = new Date();
-      // let grouped = Object.groupBy(
-      //   buyers.filter(
-      //     (buyer) =>
-      //       new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
-      //       date.setHours(0, 0, 0, 0)
-      //   ),
-      //   (buyer) => buyer.ticketId
-      // );
       let grouped = buyers
-        .filter(
-          (buyer) =>
-            new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
-            date.setHours(0, 0, 0, 0)
-        )
+        .filter((buyer) => buyer.purchaseData.payment.pay_state === "SUCCEEDED")
         .reduce((current, acc) => {
-          if (current.ticketId) {
+          if (current[acc.ticketId]) {
             current[acc.ticketId].push(acc);
           } else {
             current[acc.ticketId] = [acc];
@@ -1449,7 +1430,44 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
           return {
             type: ticket.name,
             totalSale: `${group[1].length} dari ${
-              ticket.quantity == -1 ? ticket.limit_daily : ticket.quantity
+              ticket.quantity == -1
+                ? ticket.limit_daily
+                : group[1].length + ticket.quantity
+            }`,
+            total: group[1].reduce(
+              (currentVal, accumulator) =>
+                accumulator.purchaseData.amount + currentVal,
+              0
+            ),
+          };
+        })
+      );
+    } else if (sellTableNav == "Today") {
+      let date = new Date();
+      let grouped = buyers
+        .filter(
+          (buyer) =>
+            new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) ===
+              date.setHours(0, 0, 0, 0) &&
+            buyer.purchaseData.payment.pay_state === "SUCCEEDED"
+        )
+        .reduce((current, acc) => {
+          if (current[acc.ticketId]) {
+            current[acc.ticketId].push(acc);
+          } else {
+            current[acc.ticketId] = [acc];
+          }
+          return current;
+        }, {});
+      setGroupSelledTable(
+        Object.entries(grouped).map((group) => {
+          let ticket = tickets.find((ticket) => ticket.id == group[0]);
+          return {
+            type: ticket.name,
+            totalSale: `${group[1].length} dari ${
+              ticket.quantity == -1
+                ? ticket.limit_daily
+                : ticket.quantity + group[1].length
             }`,
             total: group[1].reduce(
               (currentVal, accumulator) =>
@@ -1461,23 +1479,6 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
       );
     } else if (sellTableNav == "This Week") {
       let now = new Date().getDay();
-      // let grouped = Object.groupBy(
-      //   buyers.filter(
-      //     (buyer) =>
-      //       new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) >=
-      //         new Date(new Date().setDate(new Date().getDate() - now)).setHours(
-      //           0,
-      //           0,
-      //           0,
-      //           0
-      //         ) &&
-      //       new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) <=
-      //         new Date(
-      //           new Date().setDate(new Date().getDate() + (6 - now))
-      //         ).setHours(0, 0, 0, 0)
-      //   ),
-      //   (buyer) => buyer.ticketId
-      // );
       let grouped = buyers
         .filter(
           (buyer) =>
@@ -1491,10 +1492,11 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
             new Date(buyer.purchaseData.created_at).setHours(0, 0, 0, 0) <=
               new Date(
                 new Date().setDate(new Date().getDate() + (6 - now))
-              ).setHours(0, 0, 0, 0)
+              ).setHours(0, 0, 0, 0) &&
+            buyer.purchaseData.payment.pay_state === "SUCCEEDED"
         )
         .reduce((current, acc) => {
-          if (current.ticketId) {
+          if (current[acc.ticketId]) {
             current[acc.ticketId].push(acc);
           } else {
             current[acc.ticketId] = [acc];
@@ -1508,7 +1510,9 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
           return {
             type: ticket.name,
             totalSale: `${group[1].length} dari ${
-              ticket.quantity == -1 ? ticket.limit_daily : ticket.quantity
+              ticket.quantity == -1
+                ? ticket.limit_daily
+                : ticket.quantity + group[1].length
             }`,
             total: group[1].reduce(
               (currentVal, accumulator) =>
@@ -1928,7 +1932,12 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                   <div className={styles.CardInfoTitle1}>PENDAFTAR</div>
                   <div>
                     <div className={styles.CardInfoContent}>
-                      {buyers.length}
+                      {
+                        buyers.filter(
+                          (buyer) =>
+                            buyer.purchaseData.payment.pay_state === "SUCCEEDED"
+                        ).length
+                      }
                     </div>
                     <div className={styles.CardInfoSubtitle1}>Pendaftar</div>
                   </div>
@@ -1968,10 +1977,16 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                     {tickets.length > 0
                       ? tickets[0].quantity == -1
                         ? ""
-                        : `Dari ${tickets.reduce(
-                            (current, acc) => current + acc.quantity,
-                            0
-                          )} Tiket`
+                        : `Dari ${
+                            selledDataGraph.graph.data.reduce(
+                              (current, acc) => current + acc,
+                              0
+                            ) +
+                            tickets.reduce(
+                              (current, acc) => current + acc.quantity,
+                              0
+                            )
+                          } Tiket`
                       : ""}
                   </div>
                 </div>
@@ -2073,45 +2088,6 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                       />
                     </FieldBox>
                   </div>
-                  {/* <div className={styles.SelectBox}>
-									<FieldBox
-										label={<div className={styles.Subtitle}>Urutan:</div>}
-									>
-										<Select
-											options={[
-												{ label: "Terbaru", value: "Terbaru" },
-												{ label: "Terlama", value: "Terlama" },
-												{ label: "Terbesar", value: "Terbesar" },
-												{ label: "Terkecil", value: "Terkecil" },
-											]}
-											styles={{
-												option: (basicStyle, state) => ({
-													...basicStyle,
-													backgroundColor: state.isFocused
-														? "#fecadf"
-														: "white",
-												}),
-												control: (basicStyle, state) => ({
-													...basicStyle,
-													display: "flex",
-													flexDirection: "row",
-													borderStyle: "none!important",
-													boxShadow: "none!important",
-												}),
-												container: (basicStyle, state) => ({
-													...basicStyle,
-													width: "100%",
-													margin: "unset",
-													borderRadius: "8px",
-												}),
-											}}
-											onChange={(e) => {
-												setFilterOrder(e.value);
-											}}
-										/>
-									</FieldBox>
-								</div> */}
-
                   <div
                     className={styles.DownloadBox}
                     onClick={handleDownloadReport}
@@ -2300,16 +2276,22 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                         buyers
                           .filter(
                             (buyer) =>
-                              tickets
+                              (tickets
                                 .find((ticket) => ticket.id == buyer.ticketId)
                                 .name.toLowerCase()
                                 .includes(filterSearchCheckin.toLowerCase()) ||
-                              buyer.user.name
-                                .toLowerCase()
-                                .includes(filterSearchCheckin.toLowerCase()) ||
-                              buyer.user.email
-                                .toLowerCase()
-                                .includes(filterSearchCheckin.toLowerCase())
+                                buyer.user.name
+                                  .toLowerCase()
+                                  .includes(
+                                    filterSearchCheckin.toLowerCase()
+                                  ) ||
+                                buyer.user.email
+                                  .toLowerCase()
+                                  .includes(
+                                    filterSearchCheckin.toLowerCase()
+                                  )) &&
+                              buyer.purchaseData.payment.pay_state ===
+                                "SUCCEEDED"
                           )
                           .map((buyer, index) => {
                             return (
@@ -2584,25 +2566,29 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                       </thead>
                       <tbody>
                         {surveyRes && surveyRes.length > 0 ? (
-                          surveyRes.map((res, index) => {
-                            return (
-                              <tr>
-                                <td>{index + 1}</td>
-                                <td>{res.user.name}</td>
-                                <td>{res.user.email}</td>
-                                <td>
-                                  <Button
-                                    title={"Lihat Detail"}
-                                    center
-                                    style={{ width: "unset" }}
-                                    fnOnClick={() => {
-                                      openDetailSurvey(res);
-                                    }}
-                                  />
-                                </td>
-                              </tr>
-                            );
-                          })
+                          surveyRes
+                            .filter((survey) =>
+                              succeededBuyerIds.includes(survey.user_id)
+                            )
+                            .map((res, index) => {
+                              return (
+                                <tr>
+                                  <td>{index + 1}</td>
+                                  <td>{res.user.name}</td>
+                                  <td>{res.user.email}</td>
+                                  <td>
+                                    <Button
+                                      title={"Lihat Detail"}
+                                      center
+                                      style={{ width: "unset" }}
+                                      fnOnClick={() => {
+                                        openDetailSurvey(res);
+                                      }}
+                                    />
+                                  </td>
+                                </tr>
+                              );
+                            })
                         ) : (
                           <></>
                         )}
