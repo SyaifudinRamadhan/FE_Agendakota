@@ -203,7 +203,9 @@ const Register = ({ isLogin }) => {
           );
           // Redirect to home
           // window.location.reload();
-          navigate("/");
+          setTimeout(() => {
+            navigate("/my-tickets");
+          }, 50);
         } else {
           setAlertDanger({
             state: true,
@@ -271,13 +273,21 @@ const Register = ({ isLogin }) => {
   return (
     <div className={styles.BgLayout}>
       <div className={styles.BoxContent}>
-        <div className={styles.Content}>
+        <div
+          className={styles.Content}
+          style={{ marginTop: "auto", marginBottom: "auto" }}
+        >
           <div style={{ marginTop: 20 }}>
             <form onSubmit={handleRegDef}>
               <div className={styles2.FormHeader}>
                 <div className={styles2.TitleArea}>
-                  <h1 className={styles.Title}>Masuk atau Daftar</h1>
-                  <p className={styles.SubTitle}>
+                  <h1 className={styles.Title} style={{ textAlign: "center" }}>
+                    Masuk atau Daftar
+                  </h1>
+                  <p
+                    className={styles.SubTitle}
+                    style={{ textAlign: "center" }}
+                  >
                     Buat akun agendakota untuk dapat menggunakan fitur fitur
                     unggulan kami
                   </p>
@@ -312,10 +322,10 @@ const Register = ({ isLogin }) => {
                 </div>
               </div>
               <div className={`${styles.SubTitle} ${styles.TextCenter}`}>
-                Atau Daftar dengan Email
+                Register atau login sekali klik dengan google
               </div>
               <div>
-                <div
+                {/* <div
                   className={`${styles.BoxInput} ${
                     inputFocus === "email" || inputFocus === "name"
                       ? styles.ShadowBoxInput2
@@ -488,7 +498,7 @@ const Register = ({ isLogin }) => {
                       Login
                     </Link>
                   </div>
-                </div>
+                </div> */}
               </div>
             </form>
           </div>

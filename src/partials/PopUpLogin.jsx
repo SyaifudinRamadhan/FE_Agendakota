@@ -130,7 +130,7 @@ const loginGoogleLoad = async ({ email, credential }) => {
   }
 };
 
-const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
+const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
   // state control
   const [alertDanger, setAlertDanger] = useState({
     state: false,
@@ -361,15 +361,19 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
                 }}
               >
                 <div className={styles.AlertBox}>
-                  <Alert
-                    type={"warning"}
-                    isShow={true}
-                    setShowFn={() => {}}
-                    message={
-                      "Belum login atau sesi login telah habis. Login untuk melanjutkan"
-                    }
-                    closeBtn={false}
-                  />
+                  {!forTrx ? (
+                    <Alert
+                      type={"warning"}
+                      isShow={true}
+                      setShowFn={() => {}}
+                      message={
+                        "Belum login atau sesi login telah habis. Login untuk melanjutkan"
+                      }
+                      closeBtn={false}
+                    />
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 <div className={styles.Logo}>
                   <img src="/images/logo.png" alt="" />
@@ -386,7 +390,16 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
                     closeBtn={false}
                   />
                 </div>
-                <div className={styles.FormFieldBox}>
+                <div
+                  className={`${stylesLogin.SubTitle} ${stylesLogin.TextCenter}`}
+                  style={{ marginTop: "5px" }}
+                >
+                  Login / Register sekali klik dengan Google
+                </div>
+                <div
+                  className={styles.FormFieldBox}
+                  style={forTrx ? { marginBottom: "25px" } : {}}
+                >
                   <div className={stylesLogin.GoogleLoginBtn}>
                     <GoogleOAuthProvider
                       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
@@ -401,23 +414,37 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
                     </GoogleOAuthProvider>
                   </div>
                 </div>
-                <div
-                  className={`${stylesLogin.SubTitle} ${stylesLogin.TextCenter}`}
-                >
-                  Atau Masuk dengan Email
-                </div>
-                <div>
-                  {formMode === "login" ? (
-                    <>
-                      <div className={styles.InfoBox}>
+                {!forTrx ? (
+                  <div
+                    className={`${stylesLogin.SubTitle} ${stylesLogin.TextCenter}`}
+                  >
+                    Atau Login dengan email dan password
+                  </div>
+                ) : (
+                  <></>
+                )}
+                {!forTrx ? (
+                  <div>
+                    {formMode === "login" ? (
+                      <>
+                        {/* <div
+                        className={styles.InfoBox}
+                        style={{ marginTop: "20px" }}
+                      >
                         <BiInfoCircle />
                         <div className={styles.InfoText}>
                           Jika anda baru saja mendaftar / register, pastikan
                           anda sudah melakukan aktivasi akun melaui email
                           verifkasi yang anda peroleh.
                         </div>
-                      </div>
-                      <div
+                        <div className={styles.InfoText}>
+                          Gunakan fitur Login With Google diatas untuk Login
+                          atau Register dengan sekali klik. Atau bisa juga
+                          menggunakan fitur form login di bawah ini, jika anda
+                          sudah punya akun dan password.
+                        </div>
+                      </div> */}
+                        {/* <div
                         className={styles.InfoBox}
                         style={
                           showHint
@@ -437,143 +464,144 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
                           login selanjutnya anda tidak akan bisa menggunakan
                           fitur "Login With Google" pada akun anda tersebut.
                         </div>
-                      </div>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  <div
-                    className={`${stylesLogin.BoxInput} ${
-                      inputFocus === "email" || inputFocus === "username"
-                        ? stylesLogin.ShadowBoxInput2
-                        : inputFocus === "password" || inputFocus === "confirm"
-                        ? stylesLogin.ShadowBoxInput1
-                        : ""
-                    }`}
-                  >
-                    <div className={stylesLogin.FormFieldInput}>
-                      <label
-                        className={stylesLogin.TitleInput}
-                        style={{
-                          color:
-                            inputFocus === "email"
-                              ? "rgb(202, 12, 100)"
-                              : "#000",
-                        }}
-                        htmlFor="email-input"
-                        onFocus={() => {
-                          setInputFocus("email");
-                        }}
-                      >
-                        <BiEnvelope />
-                        <div>Email</div>
-                      </label>
-                      <InputForm
-                        id={"email-input"}
-                        className={stylesLogin.FieldInput}
-                        refData={fieldLogin.email}
-                        type={"text"}
-                        placeholder={"Tuliskan alamat email akunmu"}
-                      />
-                    </div>
-                    {formMode === "register" ? (
-                      <div className={stylesLogin.FormFieldInput}>
-                        <label
-                          className={stylesLogin.TitleInput}
-                          style={{
-                            color:
-                              inputFocus === "username"
-                                ? "rgb(202, 12, 100)"
-                                : "#000",
-                          }}
-                          htmlFor="username-input"
-                          onFocus={() => {
-                            setInputFocus("username");
-                          }}
-                        >
-                          <BiUser />
-                          <div>Username</div>
-                        </label>
-                        <InputForm
-                          id={"username-input"}
-                          className={stylesLogin.FieldInput}
-                          refData={fieldAddtional.username}
-                          type={"text"}
-                          placeholder={"Tuliskan username akunmu"}
-                        />
-                      </div>
+                      </div> */}
+                      </>
                     ) : (
                       <></>
                     )}
-                    <div className={stylesLogin.FormFieldInput}>
-                      <label
-                        className={stylesLogin.TitleInput}
-                        style={{
-                          color:
-                            inputFocus === "password"
-                              ? "rgb(202, 12, 100)"
-                              : "#000",
-                        }}
-                        htmlFor="pass-input"
-                        onFocus={() => {
-                          setInputFocus("password");
-                        }}
-                      >
-                        <BiKey />
-                        <div>Password</div>
-                      </label>
-                      <InputForm
-                        id={"pass-input"}
-                        className={stylesLogin.FieldInput}
-                        refData={fieldLogin.password}
-                        hidePassBtn={false}
-                        type={"password"}
-                        placeholder={"Tuliskan password akun agendakota"}
-                      />
-                    </div>
-                    {formMode === "register" ? (
+                    <div
+                      className={`${stylesLogin.BoxInput} ${
+                        inputFocus === "email" || inputFocus === "username"
+                          ? stylesLogin.ShadowBoxInput2
+                          : inputFocus === "password" ||
+                            inputFocus === "confirm"
+                          ? stylesLogin.ShadowBoxInput1
+                          : ""
+                      }`}
+                    >
                       <div className={stylesLogin.FormFieldInput}>
                         <label
                           className={stylesLogin.TitleInput}
                           style={{
                             color:
-                              inputFocus === "confirm"
+                              inputFocus === "email"
                                 ? "rgb(202, 12, 100)"
                                 : "#000",
                           }}
-                          htmlFor="confirm-pass-input"
+                          htmlFor="email-input"
                           onFocus={() => {
-                            setInputFocus("confirm");
+                            setInputFocus("email");
                           }}
                         >
-                          <BiLock />
-                          <div>Confirm</div>
+                          <BiEnvelope />
+                          <div>Email</div>
                         </label>
                         <InputForm
-                          id={"confirm-pass-input"}
+                          id={"email-input"}
                           className={stylesLogin.FieldInput}
-                          refData={fieldAddtional.confirm}
+                          refData={fieldLogin.email}
+                          type={"text"}
+                          placeholder={"Tuliskan alamat email akunmu"}
+                        />
+                      </div>
+                      {formMode === "register" ? (
+                        <div className={stylesLogin.FormFieldInput}>
+                          <label
+                            className={stylesLogin.TitleInput}
+                            style={{
+                              color:
+                                inputFocus === "username"
+                                  ? "rgb(202, 12, 100)"
+                                  : "#000",
+                            }}
+                            htmlFor="username-input"
+                            onFocus={() => {
+                              setInputFocus("username");
+                            }}
+                          >
+                            <BiUser />
+                            <div>Username</div>
+                          </label>
+                          <InputForm
+                            id={"username-input"}
+                            className={stylesLogin.FieldInput}
+                            refData={fieldAddtional.username}
+                            type={"text"}
+                            placeholder={"Tuliskan username akunmu"}
+                          />
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                      <div className={stylesLogin.FormFieldInput}>
+                        <label
+                          className={stylesLogin.TitleInput}
+                          style={{
+                            color:
+                              inputFocus === "password"
+                                ? "rgb(202, 12, 100)"
+                                : "#000",
+                          }}
+                          htmlFor="pass-input"
+                          onFocus={() => {
+                            setInputFocus("password");
+                          }}
+                        >
+                          <BiKey />
+                          <div>Password</div>
+                        </label>
+                        <InputForm
+                          id={"pass-input"}
+                          className={stylesLogin.FieldInput}
+                          refData={fieldLogin.password}
                           hidePassBtn={false}
                           type={"password"}
-                          placeholder={"Konfirmasi password akun agendakota"}
+                          placeholder={"Tuliskan password akun agendakota"}
                         />
                       </div>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
+                      {formMode === "register" ? (
+                        <div className={stylesLogin.FormFieldInput}>
+                          <label
+                            className={stylesLogin.TitleInput}
+                            style={{
+                              color:
+                                inputFocus === "confirm"
+                                  ? "rgb(202, 12, 100)"
+                                  : "#000",
+                            }}
+                            htmlFor="confirm-pass-input"
+                            onFocus={() => {
+                              setInputFocus("confirm");
+                            }}
+                          >
+                            <BiLock />
+                            <div>Confirm</div>
+                          </label>
+                          <InputForm
+                            id={"confirm-pass-input"}
+                            className={stylesLogin.FieldInput}
+                            refData={fieldAddtional.confirm}
+                            hidePassBtn={false}
+                            type={"password"}
+                            placeholder={"Konfirmasi password akun agendakota"}
+                          />
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
 
-                  <div className={stylesLogin.CapcthaField}>
-                    <ReCAPTCHA
-                      sitekey={process.env.REACT_APP_CAPTCHA_SITE_KEY}
-                      onChange={(value) => {
-                        setCaptchaState(value);
-                      }}
-                      style={{ margin: "auto" }}
-                    />
-                  </div>
+                    <div className={stylesLogin.CapcthaField}>
+                      <ReCAPTCHA
+                        sitekey={process.env.REACT_APP_CAPTCHA_SITE_KEY}
+                        onChange={(value) => {
+                          setCaptchaState(value);
+                        }}
+                        style={{ margin: "auto" }}
+                      />
+                    </div>
 
-                  <div
+                    {/* <div
                     className={styles.RegisterButton}
                     onClick={() => {
                       formMode === "login"
@@ -584,8 +612,8 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
                     {formMode === "login"
                       ? "Belum Punya Akun ? Daftar"
                       : "Sudah Punya Akun ? Login"}
-                  </div>
-                  <div
+                  </div> */}
+                    {/* <div
                     className={styles.RegisterButton}
                     style={{ marginTop: "0px" }}
                     onClick={() => {
@@ -593,41 +621,44 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {} }) => {
                     }}
                   >
                     Login gagal terus ? Tampilkan Petunjuk
-                  </div>
+                  </div> */}
 
-                  <div className={styles.FormFieldBox}>
-                    {loading ? (
-                      <Button
-                        bgColor={"rgb(212 132 169)"}
-                        borderColor={"rgb(212 132 169)"}
-                        title={"Loading ..."}
-                        icon={
-                          <div
-                            className="spinner-border"
-                            style={{ width: "20px", height: "20px" }}
-                            animation="border"
-                          />
-                        }
-                        center={true}
-                        style={{ width: "100%", textAlign: "center" }}
-                      />
-                    ) : (
-                      <Button
-                        title={formMode === "login" ? "Login" : "Register"}
-                        typeBtn="submit"
-                        classes={[styles.FormButton]}
-                        style={{ width: "100%", margin: "auto" }}
-                      />
-                    )}
-                    <div
-                      style={{
-                        flexDirection: "row",
-                        margin: "auto",
-                        gap: "10px",
-                      }}
-                    ></div>
+                    <div className={styles.FormFieldBox}>
+                      {loading ? (
+                        <Button
+                          bgColor={"rgb(212 132 169)"}
+                          borderColor={"rgb(212 132 169)"}
+                          title={"Loading ..."}
+                          icon={
+                            <div
+                              className="spinner-border"
+                              style={{ width: "20px", height: "20px" }}
+                              animation="border"
+                            />
+                          }
+                          center={true}
+                          style={{ width: "100%", textAlign: "center" }}
+                        />
+                      ) : (
+                        <Button
+                          title={formMode === "login" ? "Login" : "Register"}
+                          typeBtn="submit"
+                          classes={[styles.FormButton]}
+                          style={{ width: "100%", margin: "auto" }}
+                        />
+                      )}
+                      <div
+                        style={{
+                          flexDirection: "row",
+                          margin: "auto",
+                          gap: "10px",
+                        }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <></>
+                )}
               </form>
             </div>
           </div>

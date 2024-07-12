@@ -211,7 +211,7 @@ const WebFrame = () => {
   }, [location, typeRouter]);
 
   useEffect(() => {
-    if (isLogin && appData.accessToken) {
+    if (isLogin && appData.accessToken !== "") {
       isLoginLoad({ accessToken: appData.accessToken }).then((res) => {
         if (res.status === 200) {
           setLogin(true);
@@ -221,6 +221,7 @@ const WebFrame = () => {
     }
     if (
       isLogin &&
+      appData.accessToken &&
       window.location.pathname !== "/auth-user" &&
       window.location.pathname !== "/register-user"
     ) {
@@ -232,6 +233,7 @@ const WebFrame = () => {
             setWaitOrgDatasState(false);
           }, 100);
         } else if (res.status === 401) {
+          console.log("set is login false");
           setLogin(false);
         } else {
           setOrganizers([]);

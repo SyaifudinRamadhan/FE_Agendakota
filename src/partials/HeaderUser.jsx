@@ -60,8 +60,8 @@ const hideProfileMenuAuto = ({ setProfileActive }) => {
       try {
         let profileMenuChildren = Object.values(profileMenu.children);
         if (
-          e.target !== profileMenu &&
-          e.target !== profileIcon &&
+          e.target.id !== profileMenu.id &&
+          e.target.id !== profileIcon.id &&
           profileMenuChildren.reduce((current, acc) => {
             if (acc === e.target) {
               return current || true;
@@ -94,6 +94,7 @@ const HeaderUser = ({
   const [isProfileActive, setProfileActive] = useState(false);
   const [isMenuMobileActive, setMenuMobileActive] = useState(false);
   const [openPopUpCheckin, setPopUpQRState] = useState(false);
+  const [logoutClick, logoutClicked] = useState(false);
   const appData = useSelector((state) => state.appDataReducer);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -116,6 +117,8 @@ const HeaderUser = ({
 
   const handleLogout = () => {
     localStorage.setItem("access_token", "");
+    setLogin(null);
+    logoutClicked(true);
     dispatch(
       getAppData({
         accessToken: "",
@@ -124,7 +127,6 @@ const HeaderUser = ({
       })
     );
     navigate("/");
-    // setLogin(false);
     // setUserData(null);
     // setProfileActive(false);
     // // console.log("logout clickedd");
@@ -136,7 +138,7 @@ const HeaderUser = ({
   });
 
   useEffect(() => {
-    if (show === true) {
+    if (show === true && appData.accessToken !== "") {
       isLoginLoad({ accessToken: appData.accessToken }).then((res) => {
         if (res.status === 200) {
           setLogin(true);
@@ -158,7 +160,15 @@ const HeaderUser = ({
   return show ? (
     <>
       {/* ======== Login Pop Up =========== */}
-      {isLogin === false ? <PopUpLogin setLogin={setLogin} /> : <></>}
+      {isLogin === false ||
+      (isLogin === null &&
+        appData.accessToken === "" &&
+        show === true &&
+        !logoutClick) ? (
+        <PopUpLogin setLogin={setLogin} />
+      ) : (
+        <></>
+      )}
       {/* ================================= */}
       {/* ========= User Checkin Pop Up ========= */}
       {openPopUpCheckin ? (

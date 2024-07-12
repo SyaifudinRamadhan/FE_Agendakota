@@ -141,23 +141,25 @@ const Login = ({ isLogin }) => {
           "invite_team"
           ? window.location.href.split("org_id=")[1].split("&")[0]
           : null;
-      if (invRedirect) {
-        // console.log("LOGIN REDIRECT INVITATION");
-        navigate("/invitations");
-      } else if (invTeamRedirect) {
-        localStorage.setItem("active-org", invTeamRedirect);
-        dispatch(
-          getAppData({
-            accessToken: res.data.access_token,
-            activeOrg: invTeamRedirect,
-            activeEvent: localStorage.getItem("active-event"),
-          })
-        );
-        navigate("/organizer/events");
-      } else {
-        // console.log("LOGIN REDIRECT HOME");
-        navigate("/");
-      }
+      setTimeout(() => {
+        if (invRedirect) {
+          // console.log("LOGIN REDIRECT INVITATION");
+          navigate("/invitations");
+        } else if (invTeamRedirect) {
+          localStorage.setItem("active-org", invTeamRedirect);
+          dispatch(
+            getAppData({
+              accessToken: res.data.access_token,
+              activeOrg: invTeamRedirect,
+              activeEvent: localStorage.getItem("active-event"),
+            })
+          );
+          navigate("/organizer/events");
+        } else {
+          // console.log("LOGIN REDIRECT HOME");
+          navigate("/my-tickets");
+        }
+      }, 50);
     } else {
       setAlertDanger({
         state: true,
@@ -245,23 +247,25 @@ const Login = ({ isLogin }) => {
               "invite_team"
               ? window.location.href.split("org_id=")[1].split("&")[0]
               : null;
-          if (invRedirect) {
-            // console.log("LOGIN REDIRECT INVITATION");
-            navigate("/invitations");
-          } else if (invTeamRedirect) {
-            localStorage.setItem("active-org", invTeamRedirect);
-            dispatch(
-              getAppData({
-                accessToken: res.data.access_token,
-                activeOrg: invTeamRedirect,
-                activeEvent: localStorage.getItem("active-event"),
-              })
-            );
-            navigate("/organizer/events");
-          } else {
-            // console.log("LOGIN REDIRECT HOME");
-            navigate("/");
-          }
+          setTimeout(() => {
+            if (invRedirect) {
+              // console.log("LOGIN REDIRECT INVITATION");
+              navigate("/invitations");
+            } else if (invTeamRedirect) {
+              localStorage.setItem("active-org", invTeamRedirect);
+              dispatch(
+                getAppData({
+                  accessToken: res.data.access_token,
+                  activeOrg: invTeamRedirect,
+                  activeEvent: localStorage.getItem("active-event"),
+                })
+              );
+              navigate("/organizer/events");
+            } else {
+              // console.log("LOGIN REDIRECT HOME");
+              navigate("/my-tickets");
+            }
+          }, 50);
         } else {
           setAlertDanger({
             state: true,

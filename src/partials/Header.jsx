@@ -16,7 +16,8 @@ import AddCircle from "../icons/AddCircle";
 import { colors } from "../config";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAppData } from "../actions/appdata";
 
 const isLoginLoad = async (accessToken) => {
   try {
@@ -57,8 +58,8 @@ const hideProfileMenuAuto = ({ setProfileActive }) => {
       try {
         let profileMenuChildren = Object.values(profileMenu.children);
         if (
-          e.target !== profileMenu &&
-          e.target !== profileIcon &&
+          e.target.id !== profileMenu.id &&
+          e.target.id !== profileIcon.id &&
           profileMenuChildren.reduce((current, acc) => {
             if (acc === e.target) {
               return current || true;
@@ -69,9 +70,13 @@ const hideProfileMenuAuto = ({ setProfileActive }) => {
         ) {
           setProfileActive(false);
         }
-      } catch (error) {}
+      } catch (error) {
+        // console.log(error);
+      }
     });
-  } catch (error) {}
+  } catch (error) {
+    // console.log(error);
+  }
 };
 
 let loopLoad = 0;
@@ -89,14 +94,22 @@ const Header = ({
 
   const searchForm = useRef();
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const appData = useSelector((state) => state.appDataReducer);
 
   const handleLogout = () => {
     localStorage.clear();
-    setLogin(false);
+    setLogin(null);
     setUserData(null);
     setProfileActive(false);
+    dispatch(
+      getAppData({
+        accessToken: "",
+        activeOrg: localStorage.getItem("active-org"),
+        activeEvent: localStorage.getItem("active-event"),
+      })
+    );
   };
 
   const handleSearch = (e) => {
@@ -116,7 +129,7 @@ const Header = ({
 
   // single load
   useEffect(() => {
-    if (show === true) {
+    if (show === true && appData.accessToken !== "") {
       // console.log("load is login baasic", loopLoad);
       isLoginLoad(appData.accessToken).then((res) => {
         if (res.status === 200) {
