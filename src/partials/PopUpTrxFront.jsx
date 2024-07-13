@@ -933,7 +933,7 @@ const TrxContent = ({
       let interval =
         parseInt(payMethod) >= 11 && parseInt(payMethod) <= 15
           ? new Date(resTrx.payment.created.split("Z")[0]).setMinutes(
-              new Date(resTrx.payment.created.split("Z")[0]).getMinutes() + 2
+              new Date(resTrx.payment.created.split("Z")[0]).getMinutes() + 30
             ) - new Date(resTrx.payment.created.split("Z")[0])
           : parseInt(payMethod) === 21 || parseInt(payMethod) === 22
           ? new Date(resTrx.payment.expires_at.split("Z")[0]) - new Date()
