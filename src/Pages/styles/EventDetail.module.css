@@ -87,9 +87,14 @@
 .Navigation {
 	display: flex;
 	flex-direction: row;
-	overflow: auto;
 	gap: 12px;
-	margin-bottom: 39px;
+	margin-bottom: 29px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	overflow: auto;
+	position: sticky;
+	top: 90px;
+	background-color: #fff;
 }
 .NavBtn {
 	padding: 8px 12px 8px 12px;
@@ -394,6 +399,9 @@
 	flex-direction: column;
 	overflow: auto;
 }
+.CartBoxFull {
+	min-height: 56px;
+}
 .CartBoxTitle {
 	font-family: Inter;
 	font-size: 20px;
@@ -414,15 +422,36 @@
 	display: flex;
 	flex-direction: column;
 }
+.CartBlankFull {
+	flex-direction: row;
+	gap: 10px;
+}
 .CartBlank img {
 	width: 206.17px;
 	height: 206.17px;
 	transform: rotate(-15deg);
 }
+.CartBlankFull img {
+	height: 50px;
+	width: 50px;
+	margin: auto;
+}
 .CartBlank div {
 	font-family: Inter;
 	font-size: 20px;
 	font-weight: 600;
+}
+.CartBlankFull div{
+	font-size: 16px;
+}
+.CoverBuyButton{
+	margin-top: 20px;
+	padding: 20px;
+	border-radius: 10px;
+	background-color: #fff;
+	box-shadow: 0 0 18px #eaeaea;
+	position: sticky;
+	top: 100px;
 }
 .CollapseInfo {
 	display: none;
@@ -663,6 +692,7 @@
 		-ms-overflow-style: none; /* for Internet Explorer, Edge */
 		scrollbar-width: none; /* for Firefox */
 		overflow-x: auto; 
+		top: 70px;
 	}
 	.Navigation::-webkit-scrollbar {
     display: none;

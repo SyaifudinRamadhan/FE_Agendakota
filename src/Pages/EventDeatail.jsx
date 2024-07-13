@@ -1384,7 +1384,7 @@ const EventDetail = ({ isLogin }) => {
                   </div>
                   {/* -------------------------- */}
                   <Button
-                    title={"Checkout Ticket"}
+                    title={"Lanjutkan Pembayaran"}
                     center
                     style={{ width: "100%", marginTop: "20px" }}
                     fnOnClick={openTrxPopUp}
@@ -1860,8 +1860,12 @@ const EventDetail = ({ isLogin }) => {
                                 ]}
                             </div>
                             <Button
-                              title={"Tambahkan"}
-                              style={{ width: "unset", marginLeft: "auto" }}
+                              title={"Beli"}
+                              style={{
+                                width: "unset",
+                                minWidth: "75px",
+                                marginLeft: "auto",
+                              }}
                               center
                               fnOnClick={() => {
                                 if (
@@ -1895,7 +1899,7 @@ const EventDetail = ({ isLogin }) => {
                 ) : (
                   <div className={styles.CartBlank}>
                     <img src="/images/blank_events.png" alt="" />
-                    <div>Tiket Tidal / Belum Tersedia</div>
+                    <div>Tiket Tidak / Belum Tersedia</div>
                   </div>
                 )}
                 {/*  */}
@@ -2041,15 +2045,13 @@ const EventDetail = ({ isLogin }) => {
               </div>
               {/* --------------- */}
               {/* ------- CHART BOX -------- */}
-              <div id="cartbox" className={styles.CartBox}>
+              <div
+                id="cartbox"
+                className={`${styles.CartBox} ${styles.CartBoxFull}`}
+                style={cartData.length === 0 ? { display: "none" } : {}}
+              >
                 <div className={styles.CartBoxTitle}>
                   <div className={styles.CartBoxInner}>Keranjang Tiket </div>
-                  <Button
-                    title={"Checkout"}
-                    center
-                    style={{ width: "unset" }}
-                    fnOnClick={openTrxPopUp}
-                  />
                 </div>
                 <div className={styles.TicketBox}>
                   {cartData.length > 0 ? (
@@ -2327,49 +2329,15 @@ const EventDetail = ({ isLogin }) => {
                           </div>
                         );
                       })}
-                      <a
-                        href="#tickets"
-                        style={{
-                          textDecoration: "none",
-                          marginTop: "20px",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                        }}
-                      >
-                        <Button
-                          icon={<BiPlusCircle />}
-                          title={"Tambah Tiket"}
-                          style={{
-                            width: "150px",
-                          }}
-                        />
-                      </a>
                     </>
                   ) : (
                     <>
-                      <div className={styles.CartBlank}>
+                      <div
+                        className={`${styles.CartBlank} ${styles.CartBlankFull}`}
+                      >
                         <img src="/images/blank_events.png" alt="" />
                         <div>Yuk pilih tiket dulu !</div>
                       </div>
-                      <a
-                        href="#tickets"
-                        style={{
-                          textDecoration: "none",
-                          marginTop: "20px",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                        }}
-                        onClick={() => {
-                          setPageState(1);
-                        }}
-                      >
-                        <Button
-                          title={"Pilih Tiket"}
-                          style={{
-                            width: "90px",
-                          }}
-                        />
-                      </a>
                     </>
                   )}
                 </div>
@@ -2407,12 +2375,31 @@ const EventDetail = ({ isLogin }) => {
                 </div> */}
               </div>
               {/* -------------------------- */}
-              <Button
-                title={"Checkout Ticket"}
-                center
-                style={{ width: "100%", marginTop: "20px" }}
-                fnOnClick={openTrxPopUp}
-              />
+              <div className={styles.CoverBuyButton}>
+                {cartData.length === 0 ? (
+                  <a href="#tickets">
+                    <Button
+                      title={"Beli Tiket"}
+                      center
+                      style={{
+                        width: "100%",
+                      }}
+                      fnOnClick={() => {
+                        setPageState(1);
+                      }}
+                    />
+                  </a>
+                ) : (
+                  <Button
+                    title={"Lanjutkan Pembayaran"}
+                    center
+                    style={{
+                      width: "100%",
+                    }}
+                    fnOnClick={openTrxPopUp}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
