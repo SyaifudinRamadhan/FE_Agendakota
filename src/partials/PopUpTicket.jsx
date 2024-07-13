@@ -494,7 +494,15 @@ const PopUpTicket = ({
           setAlert({
             state: true,
             type: "danger",
-            content: "Data gagal di simpan. Silahlan ulangi lagi",
+            content:
+              res.status === 500
+                ? "Data gagal di simpan. Silahlan ulangi lagi"
+                : Object.values(res.data.data).reduce((current, acc) => {
+                    return (
+                      (current === "" ? current : current + ", ") +
+                      (Array.isArray(acc) ? acc.join(", ") : acc)
+                    );
+                  }, ""),
           });
           resetAlert();
         }
@@ -651,7 +659,15 @@ const PopUpTicket = ({
           setAlert({
             state: true,
             type: "danger",
-            content: "Data gagal di simpan. Silahlan ulangi lagi",
+            content:
+              res.status === 500
+                ? "Data gagal di simpan. Silahlan ulangi lagi"
+                : Object.values(res.data.data).reduce((current, acc) => {
+                    return (
+                      (current === "" ? current : current + ", ") +
+                      (Array.isArray(acc) ? acc.join(", ") : acc)
+                    );
+                  }, ""),
           });
           resetAlert();
         }
@@ -875,7 +891,15 @@ const PopUpTicket = ({
           setAlert({
             state: true,
             type: "danger",
-            content: "Data gagal di simpan. Silahlan ulangi lagi",
+            content:
+              res.status === 500
+                ? "Data gagal di simpan. Silahlan ulangi lagi"
+                : Object.values(res.data.data).reduce((current, acc) => {
+                    return (
+                      (current === "" ? current : current + ", ") +
+                      (Array.isArray(acc) ? acc.join(", ") : acc)
+                    );
+                  }, ""),
           });
           resetAlert();
         }
@@ -1249,7 +1273,15 @@ const PopUpTicket = ({
           setAlert({
             state: true,
             type: "danger",
-            content: "Data gagal di simpan. Silahlan ulangi lagi",
+            content:
+              res.status === 500
+                ? "Data gagal di simpan. Silahlan ulangi lagi"
+                : Object.values(res.data.data).reduce((current, acc) => {
+                    return (
+                      (current === "" ? current : current + ", ") +
+                      (Array.isArray(acc) ? acc.join(", ") : acc)
+                    );
+                  }, ""),
           });
           resetAlert();
         }
@@ -2354,7 +2386,6 @@ const PopUpTicket = ({
                   </div>
                 </div>
                 <div className={styles2.BottomContainer}>
-                  {console.log(evtCategory)}
                   {evtCategory && evtCategory.value === "Webinar" ? (
                     <InputLabeled
                       type={"text"}

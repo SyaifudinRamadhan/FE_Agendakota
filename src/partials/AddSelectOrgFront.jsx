@@ -186,7 +186,17 @@ const AddSelectOrgFront = ({
                     state: true,
                     type: "danger",
                     content:
-                      "Server Error. Silahkan coba beberapa saat kembali",
+                      res.status === 500
+                        ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                        : Object.values(res.data.data).reduce(
+                            (current, acc) => {
+                              return (
+                                (current === "" ? current : current + ", ") +
+                                (Array.isArray(acc) ? acc.join(", ") : acc)
+                              );
+                            },
+                            ""
+                          ),
                   });
                 }
               });
@@ -214,7 +224,15 @@ const AddSelectOrgFront = ({
             setShowAlert({
               state: true,
               type: "danger",
-              content: "Server Error. Silahkan coba beberapa saat kembali",
+              content:
+                res.status === 500
+                  ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                  : Object.values(res.data.data).reduce((current, acc) => {
+                      return (
+                        (current === "" ? current : current + ", ") +
+                        (Array.isArray(acc) ? acc.join(", ") : acc)
+                      );
+                    }, ""),
             });
           }
         });
@@ -259,7 +277,17 @@ const AddSelectOrgFront = ({
                     state: true,
                     type: "danger",
                     content:
-                      "Server Error. Silahkan coba beberapa saat kembali",
+                      res.status === 500
+                        ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                        : Object.values(res.data.data).reduce(
+                            (current, acc) => {
+                              return (
+                                (current === "" ? current : current + ", ") +
+                                (Array.isArray(acc) ? acc.join(", ") : acc)
+                              );
+                            },
+                            ""
+                          ),
                   });
                 }
               });
@@ -287,7 +315,15 @@ const AddSelectOrgFront = ({
             setShowAlert({
               state: true,
               type: "danger",
-              content: "Server Error. Silahkan coba beberapa saat kembali",
+              content:
+                res.status === 500
+                  ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                  : Object.values(res.data.data).reduce((current, acc) => {
+                      return (
+                        (current === "" ? current : current + ", ") +
+                        (Array.isArray(acc) ? acc.join(", ") : acc)
+                      );
+                    }, ""),
             });
           }
         });
@@ -358,7 +394,15 @@ const AddSelectOrgFront = ({
           setShowAlert({
             state: true,
             type: "danger",
-            content: "Pastikan semua field sudah terisi dengan benar",
+            content:
+              res.status === 500
+                ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                : Object.values(res.data.data).reduce((current, acc) => {
+                    return (
+                      (current === "" ? current : current + ", ") +
+                      (Array.isArray(acc) ? acc.join(", ") : acc)
+                    );
+                  }, ""),
           });
           setTimeout(() => {
             resetAlert();

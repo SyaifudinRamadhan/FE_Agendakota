@@ -1170,11 +1170,14 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
               meet_link: ticket.secretInfo ? ticket.secretInfo.meet_link : "",
             });
           });
+          console.log(tickets, "FROM MASTER DATA");
           setTickets(tickets);
           setPchsData(res.data.tickets);
         } else if (res.status === 401) {
           fnSetLogin(false);
           setFirstLoadState(null);
+        } else if (res.status === 404) {
+          setTickets([]);
         } else if (res.status !== 404) {
           setErrorState(true);
         }
@@ -1189,6 +1192,8 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
         } else if (res.status === 401) {
           fnSetLogin(false);
           setFirstLoadState(null);
+        } else if (res.status === 404) {
+          setRefundDatas([]);
         } else if (res.status !== 404) {
           setErrorState(true);
         }
@@ -1204,6 +1209,8 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
         } else if (res.status === 401) {
           fnSetLogin(false);
           setFirstLoadState(null);
+        } else if (res.status === 404) {
+          setSurveyRes([]);
         } else if (res.status != 404) {
           setErrorState(true);
         }
@@ -1215,6 +1222,14 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
     if (tickets.length > 0 && title) {
       setTicketSettingsData({
         limitPchs: tickets[0].max_purchase,
+        singleTrxs: ticketSettings.singleTrxs,
+        maxLimitRsc: ticketSettings.maxLimitRsc,
+        globalSeatMap: ticketSettings.globalSeatMap,
+        enableRefundReq: ticketSettings.enableRefundReq,
+      });
+    } else if (tickets.length === 0) {
+      setTicketSettingsData({
+        limitPchs: 5,
         singleTrxs: ticketSettings.singleTrxs,
         maxLimitRsc: ticketSettings.maxLimitRsc,
         globalSeatMap: ticketSettings.globalSeatMap,

@@ -1034,7 +1034,17 @@ const EditorAddEvtAct = ({
                     state: true,
                     type: "danger",
                     content:
-                      "Coba periksa kembali input tanggal ticket. Jangan melebihi batas akhir event",
+                      res.status === 500
+                        ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                        : Object.values(res.data.data).reduce(
+                            (current, acc) => {
+                              return (
+                                (current === "" ? current : current + ", ") +
+                                (Array.isArray(acc) ? acc.join(", ") : acc)
+                              );
+                            },
+                            ""
+                          ),
                   });
                   setLoading(false);
                 }
@@ -1044,7 +1054,15 @@ const EditorAddEvtAct = ({
               setAlert({
                 state: true,
                 type: "success",
-                content: "Data berhasil disimpan sebagai draft",
+                content:
+                  res.status === 500
+                    ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                    : Object.values(res.data.data).reduce((current, acc) => {
+                        return (
+                          (current === "" ? current : current + ", ") +
+                          (Array.isArray(acc) ? acc.join(", ") : acc)
+                        );
+                      }, ""),
               });
               // resetAllForm();
               localStorage.setItem("active-event", savedEventId);
@@ -1067,7 +1085,15 @@ const EditorAddEvtAct = ({
             setAlert({
               state: true,
               type: "danger",
-              content: "Data gagal disimpan. Coba cek kembali dan coba lagi",
+              content:
+                res.status === 500
+                  ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                  : Object.values(res.data.data).reduce((current, acc) => {
+                      return (
+                        (current === "" ? current : current + ", ") +
+                        (Array.isArray(acc) ? acc.join(", ") : acc)
+                      );
+                    }, ""),
             });
             resetAlert(3000);
           }
@@ -1219,7 +1245,17 @@ const EditorAddEvtAct = ({
                     state: true,
                     type: "danger",
                     content:
-                      "Coba periksa kembali input tanggal ticket. Jangan melebihi batas akhir event",
+                      res.status === 500
+                        ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                        : Object.values(res.data.data).reduce(
+                            (current, acc) => {
+                              return (
+                                (current === "" ? current : current + ", ") +
+                                (Array.isArray(acc) ? acc.join(", ") : acc)
+                              );
+                            },
+                            ""
+                          ),
                   });
                   setLoading(false);
                 }
@@ -1252,7 +1288,15 @@ const EditorAddEvtAct = ({
             setAlert({
               state: true,
               type: "danger",
-              content: "Data gagal disimpan. Coba cek kembali dan coba lagi",
+              content:
+                res.status === 500
+                  ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                  : Object.values(res.data.data).reduce((current, acc) => {
+                      return (
+                        (current === "" ? current : current + ", ") +
+                        (Array.isArray(acc) ? acc.join(", ") : acc)
+                      );
+                    }, ""),
             });
             resetAlert(3000);
           }
@@ -1419,7 +1463,17 @@ const EditorAddEvtAct = ({
                     state: true,
                     type: "danger",
                     content:
-                      "Data gagal disimpan. Silahkan diperiksa dan coba lagi",
+                      res.status === 500
+                        ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                        : Object.values(res.data.data).reduce(
+                            (current, acc) => {
+                              return (
+                                (current === "" ? current : current + ", ") +
+                                (Array.isArray(acc) ? acc.join(", ") : acc)
+                              );
+                            },
+                            ""
+                          ),
                   });
                   setLoading(false);
                 }
@@ -1452,7 +1506,15 @@ const EditorAddEvtAct = ({
             setAlert({
               state: true,
               type: "danger",
-              content: "Data gagal disimpan. Silahkan diperiksa dan coba lagi",
+              content:
+                res.status === 500
+                  ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                  : Object.values(res.data.data).reduce((current, acc) => {
+                      return (
+                        (current === "" ? current : current + ", ") +
+                        (Array.isArray(acc) ? acc.join(", ") : acc)
+                      );
+                    }, ""),
             });
             resetAlert(3000);
           }
@@ -1605,7 +1667,17 @@ const EditorAddEvtAct = ({
                     state: true,
                     type: "danger",
                     content:
-                      "Data gagal disimpan. Silahkan diperiksa dan coba lagi",
+                      res.status === 500
+                        ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                        : Object.values(res.data.data).reduce(
+                            (current, acc) => {
+                              return (
+                                (current === "" ? current : current + ", ") +
+                                (Array.isArray(acc) ? acc.join(", ") : acc)
+                              );
+                            },
+                            ""
+                          ),
                   });
                   setLoading(false);
                 }
@@ -1638,7 +1710,15 @@ const EditorAddEvtAct = ({
             setAlert({
               state: true,
               type: "danger",
-              content: "Data gagal disimpan. Silahkan diperiksa dan coba lagi",
+              content:
+                res.status === 500
+                  ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                  : Object.values(res.data.data).reduce((current, acc) => {
+                      return (
+                        (current === "" ? current : current + ", ") +
+                        (Array.isArray(acc) ? acc.join(", ") : acc)
+                      );
+                    }, ""),
             });
             resetAlert(3000);
           }
@@ -1768,7 +1848,15 @@ const EditorAddEvtAct = ({
           setAlert({
             state: true,
             type: "danger",
-            content: "Data gagal disimpan. Silahkan diperiksa dan coba lagi",
+            content:
+              res.status === 500
+                ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
+                : Object.values(res.data.data).reduce((current, acc) => {
+                    return (
+                      (current === "" ? current : current + ", ") +
+                      (Array.isArray(acc) ? acc.join(", ") : acc)
+                    );
+                  }, ""),
           });
           setLoading(false);
         }
