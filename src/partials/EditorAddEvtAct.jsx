@@ -1054,15 +1054,7 @@ const EditorAddEvtAct = ({
               setAlert({
                 state: true,
                 type: "success",
-                content:
-                  res.status === 500
-                    ? "Terjadi masalah jaringan. Silahkan coba beberapa saat lagi."
-                    : Object.values(res.data.data).reduce((current, acc) => {
-                        return (
-                          (current === "" ? current : current + ", ") +
-                          (Array.isArray(acc) ? acc.join(", ") : acc)
-                        );
-                      }, ""),
+                content: "Data berhasil disimpan sebagai draft",
               });
               // resetAllForm();
               localStorage.setItem("active-event", savedEventId);

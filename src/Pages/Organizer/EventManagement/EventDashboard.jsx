@@ -1170,7 +1170,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
               meet_link: ticket.secretInfo ? ticket.secretInfo.meet_link : "",
             });
           });
-          console.log(tickets, "FROM MASTER DATA");
+          // console.log(tickets, "FROM MASTER DATA");
           setTickets(tickets);
           setPchsData(res.data.tickets);
         } else if (res.status === 401) {
