@@ -800,19 +800,19 @@ const ReviewContent = ({
                           : "Virtual Account / BANK"}
                       </div>
                       <Chip
-                        options={Object.entries(payMethod[1]).map(
-                          (value, index) => value[0].toString()
-                        )}
+                        options={Object.entries(payMethod[1])
+                          .filter((val) => val[0].toString() !== "035")
+                          .map((value, index) => value[0].toString())}
                         value={trxMethod}
                         setValue={setTrxMethod}
-                        labelItem={Object.entries(payMethod[1]).map(
-                          (value, index) => (
+                        labelItem={Object.entries(payMethod[1])
+                          .filter((val) => val[1][1] !== "BSI")
+                          .map((value, index) => (
                             <div className={styles.PaymentBtn}>
                               <img src={`/icons/${value[1][0]}.png`} alt="" />
                               <div>{value[1][1]}</div>
                             </div>
-                          )
-                        )}
+                          ))}
                         multiple={false}
                         itemStyle={{ padding: "10px 10px" }}
                         containerStyle={{ flexWrap: "wrap" }}
@@ -1273,7 +1273,7 @@ const TrxContent = ({
                   />
                 </span>
               </div>
-              <p>PT. Cipta Wisata Medika</p>
+              {/* <p>PT. Cipta Wisata Medika</p> */}
             </div>
           ) : (
             <></>

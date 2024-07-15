@@ -138,7 +138,7 @@ const PopUpTrxInDetail = ({ trxData }) => {
                   />
                 </span>
               </div>
-              <p>PT. Cipta Wisata Medika</p>
+              {/* <p>PT. Cipta Wisata Medika</p> */}
             </div>
           )}
           <div style={{ marginTop: "24px" }}>

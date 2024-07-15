@@ -1237,6 +1237,13 @@ const PopUpTicketIn = ({
                         )}
                       </div>
                     </div>
+                    <div className={styles.SubTitle} style={{ color: "red" }}>
+                      PERLU DIINGAT : Jika tiket berstatus berstatus "Waiting
+                      Accepted" karena telah mengundang teman / user lain namun
+                      belum di "accept" oleh pnerima, maka tiket tidak bisa
+                      digunakan untuk checkin kecuali telah melakukan "Get Back"
+                      atau menarik kembali undanganya
+                    </div>
                     <div className={styles.Separation}></div>
                     <div>
                       <div
@@ -1427,6 +1434,20 @@ const PopUpTicketIn = ({
                         Transfer kepemilikan atau undang teman untuk menggunakan
                         tiket ini
                       </div>
+                      {ticketData.is_mine !== 1 ? (
+                        <div
+                          className={styles.SubTitle}
+                          style={{ color: "red" }}
+                        >
+                          PERLU DIINGAT : Jika tiket berstatus berstatus
+                          "Waiting Accepted" karena telah mengundang teman /
+                          user lain namun belum di "accept" oleh pnerima, maka
+                          tiket tidak bisa digunakan untuk checkin kecuali telah
+                          melakukan "Get Back" atau menarik kembali undanganya
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                       {ticketData.is_mine === 1 ? (
                         <>
                           <label htmlFor="inv">Email of Invitee</label>

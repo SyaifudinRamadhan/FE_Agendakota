@@ -2237,6 +2237,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
             >
               <div className={styles.BasicCardInfo}>
                 <div className={styles.CardInfoTitle2}>Checkin User</div>
+
                 <div className={styles.Split}>
                   <div className={styles.SearchBox}>
                     <FieldBox
@@ -2271,7 +2272,19 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                     </FieldBox>
                   </div>
                 </div>
-
+                <div
+                  className={styles.Subtitle}
+                  style={{
+                    backgroundColor: "#eaeaea",
+                    borderRadius: "12px",
+                    padding: "10px",
+                    color: "#666666",
+                  }}
+                >
+                  Informasi : Jika tiket berstatus berstatus "Waiting Accepted",
+                  maka tiket tidak bisa digunakan untuk checkin kecuali telah
+                  melakukan "Get Back" atau menarik kembali undanganya
+                </div>
                 <div
                   className={styles.BasicTable}
                   style={{ maxHeight: "450px" }}
