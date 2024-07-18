@@ -507,7 +507,7 @@ const Login = ({ isLogin }) => {
                       gap: "10px",
                     }}
                   >
-                    <div>Login gagal terus ? </div>
+                    {/* <div>Login gagal terus ? </div>
                     <div
                       style={{
                         textDecoration: "none",
@@ -519,7 +519,7 @@ const Login = ({ isLogin }) => {
                       }}
                     >
                       Tampilkan Petunjuk
-                    </div>
+                    </div> */}
                   </div>
                   <p
                     className={styles.SubTitle}

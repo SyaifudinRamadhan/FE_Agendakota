@@ -1657,7 +1657,18 @@ const EventDetail = ({ isLogin }) => {
                   event.event.tickets.map((ticket) => {
                     return (
                       <div className={styles.TicketBox}>
-                        <div className={styles.TicketCard}>
+                        <div
+                          className={styles.TicketCard}
+                          style={
+                            event.event.category !== "Attraction" &&
+                            event.event.category !== "Daily Activities" &&
+                            event.event.category !==
+                              "Tour Travel (recurring)" &&
+                            ticket.quantity === 0
+                              ? { opacity: "0.5" }
+                              : {}
+                          }
+                        >
                           <div className={styles.TicketSplit}>
                             {event.event.category === "Attraction" ||
                             event.event.category === "Daily Activities" ||
@@ -1755,13 +1766,26 @@ const EventDetail = ({ isLogin }) => {
                                       "Tour Travel (recurring)") &&
                                   ticket.quantity === 0
                                     ? "Hari Ini Tersedia"
+                                    : event.event.category !== "Attraction" &&
+                                      event.event.category !==
+                                        "Daily Activities" &&
+                                      event.event.category !==
+                                        "Tour Travel (recurring)" &&
+                                      ticket.quantity === 0
+                                    ? ""
                                     : "Tiket Tersedia"}{" "}
                                   {/* <span style={{ color: "#000" }}>
 																		{ticket.quantity}
 																	</span> */}
                                 </div>
                                 <div className={styles.TextBasic}>
-                                  {ticket.quantity}
+                                  {event.event.category !== "Attraction" &&
+                                  event.event.category !== "Daily Activities" &&
+                                  event.event.category !==
+                                    "Tour Travel (recurring)" &&
+                                  ticket.quantity === 0
+                                    ? "Sold Out"
+                                    : ticket.quantity}
                                 </div>
                               </div>
                               <div
@@ -1859,31 +1883,48 @@ const EventDetail = ({ isLogin }) => {
                                   new Date(ticket.end_date).getMonth()
                                 ]}
                             </div>
-                            <Button
-                              title={"Beli"}
-                              style={{
-                                width: "unset",
-                                minWidth: "75px",
-                                marginLeft: "auto",
-                              }}
-                              center
-                              fnOnClick={() => {
-                                if (
-                                  event.event.category === "Attraction" ||
-                                  event.event.category === "Daily Activities" ||
-                                  event.event.category ===
-                                    "Tour Travel (recurring)"
-                                ) {
-                                  setPopUpSelectDate({
-                                    state: true,
-                                    ticketId: ticket.id,
-                                    data: ticket,
-                                  });
-                                } else {
-                                  handleAddToChart(ticket.id, ticket);
-                                }
-                              }}
-                            />
+                            {event.event.category !== "Attraction" &&
+                            event.event.category !== "Daily Activities" &&
+                            event.event.category !==
+                              "Tour Travel (recurring)" &&
+                            ticket.quantity === 0 ? (
+                              <Button
+                                title={"Sold Out"}
+                                style={{
+                                  width: "unset",
+                                  minWidth: "75px",
+                                  marginLeft: "auto",
+                                }}
+                                center
+                              />
+                            ) : (
+                              <Button
+                                title={"Beli"}
+                                style={{
+                                  width: "unset",
+                                  minWidth: "75px",
+                                  marginLeft: "auto",
+                                }}
+                                center
+                                fnOnClick={() => {
+                                  if (
+                                    event.event.category === "Attraction" ||
+                                    event.event.category ===
+                                      "Daily Activities" ||
+                                    event.event.category ===
+                                      "Tour Travel (recurring)"
+                                  ) {
+                                    setPopUpSelectDate({
+                                      state: true,
+                                      ticketId: ticket.id,
+                                      data: ticket,
+                                    });
+                                  } else {
+                                    handleAddToChart(ticket.id, ticket);
+                                  }
+                                }}
+                              />
+                            )}
                           </div>
                         </div>
                       </div>

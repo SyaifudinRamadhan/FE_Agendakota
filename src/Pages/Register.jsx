@@ -325,7 +325,7 @@ const Register = ({ isLogin }) => {
                 Register atau login sekali klik dengan google
               </div>
               <div>
-                {/* <div
+                <div
                   className={`${styles.BoxInput} ${
                     inputFocus === "email" || inputFocus === "name"
                       ? styles.ShadowBoxInput2
@@ -498,7 +498,7 @@ const Register = ({ isLogin }) => {
                       Login
                     </Link>
                   </div>
-                </div> */}
+                </div>
               </div>
             </form>
           </div>

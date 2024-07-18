@@ -2,6 +2,7 @@
 	0% {
 		translate: 0px 0px;
 	}
+
 	100% {
 		translate: 1000px 0px;
 	}
@@ -11,6 +12,7 @@
 	0% {
 		translate: 1000px 0px;
 	}
+
 	100% {
 		translate: 0px 0px;
 	}
@@ -20,6 +22,7 @@
 	0% {
 		translate: 0px 1000px;
 	}
+
 	100% {
 		translate: 0px 0px;
 	}
@@ -29,6 +32,7 @@
 	0% {
 		opacity: 0;
 	}
+
 	100% {
 		opacity: 1;
 	}
@@ -44,6 +48,7 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+
 .NavPane {
 	display: flex;
 	flex-direction: row;
@@ -58,6 +63,7 @@
 	margin-bottom: 17px;
 	cursor: pointer;
 }
+
 .MainNavPane {
 	color: #000;
 	white-space: nowrap;
@@ -66,24 +72,29 @@
 	display: inline;
 	max-width: 230px;
 }
+
 .SplitPanel {
 	display: flex;
 	flex-direction: row;
 	gap: 45px;
 }
+
 .LeftPanel {
 	width: 55%;
 }
+
 .MainBanner {
 	width: 100%;
 	margin-bottom: 27px;
 }
+
 .MainBanner img {
 	width: 100%;
 	aspect-ratio: 5/3;
 	border-radius: 12px;
 	object-fit: cover;
 }
+
 .Navigation {
 	display: flex;
 	flex-direction: row;
@@ -95,7 +106,9 @@
 	position: sticky;
 	top: 90px;
 	background-color: #fff;
+	z-index: 1;
 }
+
 .NavBtn {
 	padding: 8px 12px 8px 12px;
 	border-radius: 10px;
@@ -109,46 +122,56 @@
 	flex-direction: row;
 	cursor: pointer;
 }
+
 .NavBtnActive {
 	background-color: #ca0c6412;
 	color: #ca0c64;
 	border: 1px solid #ca0c64;
 }
+
 .GroupContent {
 	gap: 20px;
 	margin-bottom: 32px;
 }
+
 .GroupTitle {
 	font-family: Inter;
 	font-size: 20px;
 	font-weight: 700;
 }
+
 .GroupContentData {
 	font-size: 15px;
 }
+
 .GlobalSeatMap {
 	width: 100%;
 	margin-top: 20px;
 }
+
 .TicketBox {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
 }
+
 .TicketCard {
 	border-radius: 16px 16px 0px 0px;
 	box-shadow: 0 0 18px #eaeaea;
 	width: 100%;
 	max-width: 434.83px;
 }
+
 .TicketDivider {
 	position: relative;
 	padding-top: 11.5px;
 	padding-bottom: 11.5px;
 }
+
 .Dashed {
 	border: 1px dashed #ddd;
 }
+
 .HalfCircleLeft,
 .HalfCircleRight {
 	width: 10.815px;
@@ -158,28 +181,33 @@
 	position: absolute;
 	top: 0;
 }
+
 .HalfCircleLeft {
 	border-top-right-radius: 50%;
 	border-bottom-right-radius: 50%;
 	left: 0;
 }
+
 .HalfCircleRight {
 	border-top-left-radius: 50%;
 	border-bottom-left-radius: 50%;
 	right: 0;
 }
+
 .TicketTop {
 	width: 100%;
 	/* height: 108px; */
 	padding: 16px 24px 12px 20px;
 	gap: 10px;
 }
+
 .CoverBox {
 	width: 85px;
 	display: flex;
 	align-items: center;
 	padding: 16px 0px 12px 20px;
 }
+
 .CoverBox img {
 	aspect-ratio: 1;
 	width: 100%;
@@ -187,10 +215,12 @@
 	border-radius: 12px;
 	object-fit: cover;
 }
+
 .TicketSplit {
 	display: flex;
 	flex-direction: row;
 }
+
 .TicketBottom {
 	width: 100%;
 	padding: 12px 24px 20px 20px;
@@ -199,6 +229,7 @@
 	flex-direction: row;
 	gap: 15px;
 }
+
 .TicketTitle {
 	font-family: Inter;
 	font-size: 18px;
@@ -208,6 +239,7 @@
 	flex-direction: row;
 	gap: 10px;
 }
+
 .TicketPrice {
 	font-family: Inter;
 	font-size: 16px;
@@ -216,6 +248,7 @@
 	flex-direction: row;
 	gap: 10px;
 }
+
 .TicketDesc {
 	font-family: Inter;
 	font-size: 14px;
@@ -228,12 +261,14 @@
 	text-overflow: ellipsis;
 	display: inline; */
 }
+
 .TicketTime {
 	font-family: Inter;
 	font-size: 14px;
 	font-weight: 500;
 	color: #000;
 }
+
 .ActionTicket {
 	color: #ca0c64;
 	border: 1px solid #ca0c64;
@@ -244,26 +279,33 @@
 	display: flex;
 	cursor: pointer;
 }
+
 .ActionTicket svg {
 	margin: auto;
 	width: 90%;
 	height: 90%;
 }
+
 .TicketCount {
 	font-weight: 500;
 }
+
 .TextSecondary {
 	color: #888888;
 }
+
 .TextPrimary {
 	color: #ca0c64;
 }
+
 .TicketBasic {
 	color: #000;
 }
+
 .RightPanel {
 	width: 41%;
 }
+
 .RightInfo {
 	width: 100%;
 	padding: 24px;
@@ -273,6 +315,7 @@
 	background-color: #fff;
 	margin-bottom: 24px;
 }
+
 .InfoTitle {
 	font-family: Inter;
 	font-size: 20px;
@@ -281,6 +324,7 @@
 	letter-spacing: 0em;
 	text-align: left;
 }
+
 .Address {
 	font-family: Inter;
 	font-size: 14px;
@@ -295,15 +339,18 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 }
-.Address *{
+
+.Address * {
 	color: #888 !important;
 	text-decoration: none !important;
 }
+
 .BoxTime {
 	gap: 12px;
 	margin-top: 12px;
 	width: fit-content;
 }
+
 .Time {
 	font-family: Inter;
 	font-size: 14px;
@@ -317,32 +364,39 @@
 	grid-area: 10px;
 	width: 100%;
 }
+
 .Time .Clock {
 	margin-left: auto;
 	display: flex;
 	flex-direction: row;
 	gap: 5px;
 }
-.Time .Date{
+
+.Time .Date {
 	display: flex;
 	flex-direction: row;
 	gap: 5px;
 	margin-right: 10px;
 }
-.Time .Clock svg, .Time .Date svg{
+
+.Time .Clock svg,
+.Time .Date svg {
 	flex: 0 0 16px;
 	margin-top: auto;
 	margin-bottom: auto;
 }
-.Time .Date div{
+
+.Time .Date div {
 	margin-top: auto;
 	margin-bottom: auto;
 	flex: 0 0 calc(100% - 16px);
 }
-.Time .Clock div{
+
+.Time .Clock div {
 	margin-top: auto;
 	margin-bottom: auto;
 }
+
 .FooterInfo {
 	margin-top: 32px;
 	display: flex;
@@ -351,6 +405,7 @@
 	margin-bottom: 0;
 	align-items: center;
 }
+
 .Subtitle {
 	font-family: Inter;
 	font-size: 16px;
@@ -362,6 +417,7 @@
 	flex-shrink: 0;
 	flex-grow: 0;
 }
+
 .InfoOrg {
 	display: flex;
 	flex-direction: row;
@@ -374,18 +430,21 @@
 	flex-shrink: 0;
 	flex-grow: 0;
 }
+
 .InfoOrg img {
 	width: 32px;
 	border-radius: 50%;
 	aspect-ratio: 1;
 }
-.InfoOrg p{
+
+.InfoOrg p {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	text-wrap: nowrap;
 	max-width: calc(100% - 47px);
 	font-size: 13px;
 }
+
 .CartBox {
 	width: 100%;
 	min-height: 556px;
@@ -399,9 +458,11 @@
 	flex-direction: column;
 	overflow: auto;
 }
+
 .CartBoxFull {
 	min-height: 56px;
 }
+
 .CartBoxTitle {
 	font-family: Inter;
 	font-size: 20px;
@@ -411,40 +472,48 @@
 	gap: 5px;
 	width: 100%;
 }
-.CartBoxInner{
+
+.CartBoxInner {
 	margin-top: auto;
 	margin-bottom: auto;
 	margin-right: auto;
 }
+
 .CartBlank {
 	margin: auto;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
 }
+
 .CartBlankFull {
 	flex-direction: row;
 	gap: 10px;
 }
+
 .CartBlank img {
 	width: 206.17px;
 	height: 206.17px;
 	transform: rotate(-15deg);
 }
+
 .CartBlankFull img {
 	height: 50px;
 	width: 50px;
 	margin: auto;
 }
+
 .CartBlank div {
 	font-family: Inter;
 	font-size: 20px;
 	font-weight: 600;
 }
-.CartBlankFull div{
+
+.CartBlankFull div {
 	font-size: 16px;
 }
-.CoverBuyButton{
+
+.CoverBuyButton {
 	margin-top: 20px;
 	padding: 20px;
 	border-radius: 10px;
@@ -453,9 +522,11 @@
 	position: sticky;
 	top: 100px;
 }
+
 .CollapseInfo {
 	display: none;
 }
+
 .CollapseWrapper {
 	position: fixed;
 	right: 0;
@@ -467,6 +538,7 @@
 	display: none;
 	animation: fade 300ms;
 }
+
 .CollapseSidebar {
 	/* background-color: white; */
 	height: 100%;
@@ -479,10 +551,12 @@
 	display: flex;
 	flex-direction: row;
 }
+
 .CollapseSidebarLeft {
 	width: 20px;
 	position: relative;
 }
+
 .CollapseSidebarRight {
 	background-color: white;
 	height: 100%;
@@ -492,6 +566,7 @@
 	overflow: auto;
 	animation: showRight 300ms;
 }
+
 .CloseSidebar {
 	position: absolute;
 	left: 0;
@@ -505,15 +580,19 @@
 	display: flex;
 	cursor: pointer;
 }
+
 .CloseSidebar svg {
 	margin: auto;
 }
+
 .CloseSidebar .CartBox {
 	animation: fade 500ms;
 }
-.FloatCartIconLink{
+
+.FloatCartIconLink {
 	text-decoration: none;
 }
+
 .FloatCartIcon {
 	position: fixed;
 	bottom: 30px;
@@ -526,32 +605,38 @@
 	color: #fff;
 	display: none;
 	cursor: pointer;
-	z-index: 1;
+	z-index: 2;
 	flex-direction: row;
 	/* animation: hideRight 500ms; */
 }
+
 .FloatCartIcon svg {
 	margin: auto 10px;
 	width: 30px;
 	height: 60%;
 }
-.FloatCartIcon div{
+
+.FloatCartIcon div {
 	margin-top: auto;
 	margin-bottom: auto;
 }
-.DateSelectorGroup{
+
+.DateSelectorGroup {
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
 }
-.DateSelectorGroup button{
+
+.DateSelectorGroup button {
 	margin-left: auto;
 	margin-right: auto;
 	width: 100% !important;
 }
-.DateSelector{
+
+.DateSelector {
 	margin-right: auto;
 }
+
 .DateSelector,
 .RenderDates {
 	display: flex;
@@ -561,21 +646,25 @@
 	align-items: center;
 	width: 100%;
 }
+
 .DateSelector label {
 	display: flex;
 	align-items: center;
 	cursor: pointer;
 }
+
 .DateSelector svg {
 	width: 25px;
 	height: 25px;
 	color: rgb(255, 170, 0);
 }
+
 .RenderDates {
 	flex-direction: column;
 	align-items: start;
 	padding-top: 2px;
 }
+
 .DateSeatMap {
 	display: flex;
 	flex-direction: row;
@@ -585,6 +674,7 @@
 	align-items: center;
 	/* border-bottom: 1px dashed #777575; */
 }
+
 .PopUpAlert {
 	display: flex;
 	flex-direction: column;
@@ -592,71 +682,85 @@
 	text-align: center;
 	width: 100%;
 }
+
 .PopUpAlert svg {
 	margin-left: auto;
 	margin-right: auto;
 	width: 65px;
 	height: 65px;
 }
+
 .AlertContent {
 	text-align: center;
 }
+
 .PopUpAlert button {
 	margin-left: auto;
 	margin-right: auto;
 }
-.PopUpDate{
+
+.PopUpDate {
 	gap: 30px;
 }
-.PopUpDate .AlertContent{
+
+.PopUpDate .AlertContent {
 	font-weight: 600;
 	font-size: 20px;
 }
-.PopUpGroupButton{
+
+.PopUpGroupButton {
 	display: flex;
 	flex-direction: row;
 	margin-left: auto;
 	gap: 10px;
 }
-.BoxAddress{
+
+.BoxAddress {
 	display: flex;
 	flex-direction: row;
 	gap: 5px;
 	margin-top: 12px;
 }
-.BoxAddress svg{
+
+.BoxAddress svg {
 	margin-top: auto;
 	margin-bottom: auto;
 	font-size: 25px;
 	color: #888;
 	flex: 0 0 16px;
 }
-.BoxAddress p{
+
+.BoxAddress p {
 	margin-top: auto;
 	margin-bottom: auto;
 }
-.OpenDesc{
+
+.OpenDesc {
 	font-size: 14px;
 	cursor: pointer;
 	display: flex;
 	flex-direction: row;
 	gap: 5px
 }
-.OpenDesc svg{
+
+.OpenDesc svg {
 	margin-top: auto;
 	margin-bottom: auto;
 	font-size: 16px;
 }
-.CartSubTotal{
+
+.CartSubTotal {
 	margin-top: auto;
 }
-.CartSubTotal div{
+
+.CartSubTotal div {
 	display: flex;
 	flex-direction: row;
 	margin-top: 10px;
 	gap: 10px;
 }
-.CartSubTotal .SubTotalNum{
+
+.CartSubTotal .SubTotalNum {
 	margin-left: auto;
 }
 
@@ -664,40 +768,52 @@
 	.CollapseInfo {
 		display: unset;
 	}
+
 	.CollapseWrapper {
 		display: unset;
 	}
+
 	.SplitPanel {
 		flex-direction: column;
 	}
+
 	.LeftPanel {
 		width: 100%;
 	}
+
 	.RightPanel {
 		display: none;
 	}
+
 	.FloatCartIcon {
 		display: flex;
 		animation: showRight 500ms;
 	}
+
 	.DateSeatMap {
 		flex-direction: column;
 		gap: 10px;
 		text-align: center;
 	}
+
 	.DateSeatMap button {
 		margin-left: unset !important;
 	}
-	.Navigation{
-		-ms-overflow-style: none; /* for Internet Explorer, Edge */
-		scrollbar-width: none; /* for Firefox */
-		overflow-x: auto; 
+
+	.Navigation {
+		-ms-overflow-style: none;
+		/* for Internet Explorer, Edge */
+		scrollbar-width: none;
+		/* for Firefox */
+		overflow-x: auto;
 		top: 70px;
 	}
+
 	.Navigation::-webkit-scrollbar {
-    display: none;
-  }
+		display: none;
+	}
 }
+
 /* @media (max-width: 450px) {
 	.DateSelectorGroup{
 		flex-direction: column;
@@ -708,39 +824,46 @@
 		width: 100% !important;
 	}
 } */
- @media (max-width: 772px){
+@media (max-width: 772px) {
 	.TicketSplit {
 		flex-direction: column;
 	}
+
 	.CoverBox {
 		width: 100%;
 		padding: 16px 24px 12px 20px;
 	}
+
 	.CoverBox img {
 		width: 50%;
 	}
- }
-@media (max-width: 450px){
-	.MainBanner{
+}
+
+@media (max-width: 450px) {
+	.MainBanner {
 		margin-left: -40px;
-    margin-right: -40px;
-    border-radius: 0px;
+		margin-right: -40px;
+		border-radius: 0px;
 		width: unset;
 	}
-	.MainBanner img{
+
+	.MainBanner img {
 		border-radius: 0px;
 	}
-	.RightInfo{
+
+	.RightInfo {
 		margin-left: -40px;
-    margin-right: -40px;
-    width: unset;
-    box-shadow: unset;
+		margin-right: -40px;
+		width: unset;
+		box-shadow: unset;
 		padding-bottom: 24px;
-    border-bottom: 10px solid #f7f7f7;
-    border-radius: 0px;
+		border-bottom: 10px solid #f7f7f7;
+		border-radius: 0px;
 	}
 }
+
 @media (max-width: 420px) {
+
 	/* .Time {
 		flex-direction: column;
 		gap: 5px;
