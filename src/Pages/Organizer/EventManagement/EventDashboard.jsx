@@ -415,6 +415,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
   const [pausedProcess, setPausedProcess] = useState(null);
   const [popUpActive, setPopUpActive] = useState(false);
   const [succeededBuyerIds, setSuccededBuyerId] = useState([]);
+  const [userRegister, setUserRegister] = useState([]);
 
   const [popUpTitle, setPopUpTitle] = useState("");
   const [popUpContent, setPopUpContent] = useState(<></>);
@@ -1295,6 +1296,18 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
           )
           .map((buyer) => buyer.purchaseData.user_id)
       );
+      setUserRegister(
+        buyers
+          .filter(
+            (buyer) => buyer.purchaseData.payment.pay_state === "SUCCEEDED"
+          )
+          .reduce((current, acc) => {
+            if (!current.includes(acc.purchaseData.user_id)) {
+              current.push(acc.purchaseData.user_id);
+            }
+            return current;
+          }, [])
+      );
       // console.log(buyers);
       setAttendees(attendees);
       buyers = null;
@@ -1948,13 +1961,11 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                   <div className={styles.CardInfoTitle1}>PENDAFTAR</div>
                   <div>
                     <div className={styles.CardInfoContent}>
-                      {
-                        surveyRes.filter((survey) =>
-                          succeededBuyerIds.includes(survey.user_id)
-                        ).length
-                      }
+                      {userRegister.length}
                     </div>
-                    <div className={styles.CardInfoSubtitle1}>Pendaftar</div>
+                    <div className={styles.CardInfoSubtitle1}>
+                      Akun Pengguna
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2596,7 +2607,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                         {surveyRes && surveyRes.length > 0 ? (
                           surveyRes
                             .filter((survey) =>
-                              succeededBuyerIds.includes(survey.user_id)
+                              userRegister.includes(survey.user_id)
                             )
                             .map((res, index) => {
                               return (
