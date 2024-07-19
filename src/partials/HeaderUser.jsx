@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  BiCalendarEvent,
   BiCog,
   BiCompass,
   BiGroup,
@@ -19,6 +20,7 @@ import PopUpCheckinUser from "./PopUpCheckinUserr";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAppData } from "../actions/appdata";
+import Icons from "../icons";
 
 const isLoginLoad = async ({ accessToken }) => {
   try {
@@ -90,6 +92,7 @@ const HeaderUser = ({
   organizerMode = false,
   active = "",
   show = false,
+  fnSetOrganizerAreaVisible = () => {},
 }) => {
   const [isProfileActive, setProfileActive] = useState(false);
   const [isMenuMobileActive, setMenuMobileActive] = useState(false);
@@ -219,6 +222,22 @@ const HeaderUser = ({
               <BiCompass size={20} />
               Explore Events
             </Link>
+            <Link
+              to="/my-tickets"
+              className={styles.MenuMobileItem}
+              style={{ flexDirection: "row", cursor: "pointer" }}
+            >
+              <img src={Icons.Ticket} alt="Tickets" />
+              My Tickets
+            </Link>
+            <Link
+              to="/invitations"
+              className={styles.MenuMobileItem}
+              style={{ flexDirection: "row", cursor: "pointer" }}
+            >
+              <BiNote size={20} />
+              Invitation
+            </Link>
             <div
               onClick={() => {
                 setPopUpQRState(true);
@@ -229,6 +248,23 @@ const HeaderUser = ({
             >
               <BiQrScan size={20} />
               QR Check-in
+            </div>
+            <div
+              onClick={() => {
+                setMenuMobileActive(false);
+                fnSetOrganizerAreaVisible(true);
+              }}
+              className={`${styles.MenuMobileItem}`}
+              style={{
+                borderWidth: 1,
+                borderStyle: "solid",
+                borderColor: "#ddd",
+                backgroundColor: "#ca0c64",
+                color: "white",
+                borderRadius: "15px",
+              }}
+            >
+              Organizations
             </div>
             {/* <a href="/invitations" className={styles.MenuMobileItem}>
 							<BiGroup size={20} />

@@ -1931,12 +1931,13 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                       {attendees.length}
                     </div>
                     <div className={styles.CardInfoSubtitle1}>
-                      {new Date() > new Date(basicEndEvt)
-                        ? "Evennt telah selesai"
+                      {/* {new Date() > new Date(basicEndEvt)
+                        ? "Belum ada tiket yang dicheckin"
                         : new Date() <= new Date(basicEndEvt) &&
                           new Date() >= new Date(basicStartEvt)
-                        ? "Event sedang dilaksanakan"
-                        : "Event telah selesai"}
+                        ? "Tiket sudah checkin"
+                        : "Tiket sudah checkin"} */}
+                      Sudah Checkin
                     </div>
                   </div>
                 </div>
@@ -1948,9 +1949,8 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
                   <div>
                     <div className={styles.CardInfoContent}>
                       {
-                        buyers.filter(
-                          (buyer) =>
-                            buyer.purchaseData.payment.pay_state === "SUCCEEDED"
+                        surveyRes.filter((survey) =>
+                          succeededBuyerIds.includes(survey.user_id)
                         ).length
                       }
                     </div>

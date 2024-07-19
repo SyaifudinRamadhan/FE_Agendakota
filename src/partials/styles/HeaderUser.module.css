@@ -12,15 +12,18 @@
 	z-index: 10;
 	background-color: #fff;
 }
+
 .Logo {
 	height: 30px;
 	width: min-content;
 	aspect-ratio: 2061/421;
 }
+
 .LogoArea {
 	width: 25%;
 	flex-direction: row;
 }
+
 .Right {
 	display: flex;
 	flex-direction: row;
@@ -29,6 +32,7 @@
 	flex-grow: 1;
 	gap: 10px;
 }
+
 .Item {
 	padding: 0px 15px;
 	border-radius: 8px;
@@ -42,6 +46,7 @@
 	color: #222;
 	height: 35px;
 }
+
 .ProfileIcon {
 	height: 50px;
 	aspect-ratio: 1;
@@ -62,6 +67,7 @@
 	z-index: 10;
 	box-shadow: 1px 1px 5px 1px #ddd;
 }
+
 .ProfileMenuItem {
 	text-decoration: none;
 	color: #333;
@@ -75,22 +81,27 @@
 	font-weight: 600;
 	border-radius: 8px;
 }
+
 .ProfileMenuItem:hover,
 .MenuMobileItem:hover {
 	background-color: #f9f9f9;
 }
+
 .ProfileMenuItemActive {
 	background-color: #eee !important;
 }
+
 .Separator {
 	width: 60%;
 	height: 1px;
 	background-color: #ddd;
 	margin: 10px 20%;
 }
+
 .MenuMobile {
 	display: none;
 }
+
 .ProfileMenuMobile {
 	display: unset;
 }
@@ -99,12 +110,15 @@
 	.Header {
 		display: none;
 	}
+
 	.ProfileMenu {
 		display: none;
 	}
+
 	.ProfileMenuMobile {
 		display: unset;
 	}
+
 	.HeaderMobile {
 		display: flex;
 		flex-direction: row;
@@ -119,15 +133,18 @@
 		z-index: 5;
 		background-color: #fff;
 	}
+
 	.LogoArea {
 		width: auto;
 		display: flex;
 		flex-grow: 1;
 	}
+
 	.Logo {
 		width: min-content;
 		height: 30px;
 	}
+
 	.Toggler {
 		border: 1px solid #ddd;
 		height: 40px;
@@ -138,6 +155,7 @@
 		justify-content: center;
 		font-size: 24px;
 	}
+
 	.MenuMobile {
 		display: flex;
 		position: fixed;
@@ -153,11 +171,14 @@
 		transition: 0.3s;
 		z-index: 5;
 		overflow-y: auto;
-		height: calc(100% - 140px);
+		/* height: calc(100% - 140px); */
+		height: calc(100% - 70px);
 	}
+
 	.MenuMobileActive {
 		left: 0%;
 	}
+
 	.MenuMobileItem,
 	.ProfileMenuItem {
 		width: 100%;
@@ -170,19 +191,23 @@
 		align-items: center;
 		gap: 20px;
 	}
+
 	.Separator {
 		width: 100%;
 		margin-left: 0px;
 		margin-right: 0px;
 	}
+
 	.ProfileMenuItem {
 		height: 50px;
 		font-size: unset;
 	}
+
 	.ProfileMenuItem svg {
 		width: 20px;
 		height: 20px;
 	}
+
 	.ProfileMenu {
 		position: static;
 		width: 100%;

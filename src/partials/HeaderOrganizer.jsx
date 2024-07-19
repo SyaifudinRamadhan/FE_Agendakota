@@ -5,6 +5,7 @@ import Icons from "../icons";
 import Button from "../components/Button";
 import Separator from "../components/Separator";
 import {
+  BiArrowBack,
   BiCertification,
   BiPlusCircle,
   BiSolidBank,
@@ -103,6 +104,27 @@ const HeaderOrganizer = ({
       show={show}
       childrenExtra={
         <>
+          <div
+            onClick={() => {
+              navigate("/my-tickets");
+              // console.log("CLICK OPEN POPUP CHECKIN");
+            }}
+            className={`${styles.MenuMobileItem}`}
+            style={{
+              borderWidth: 1,
+              borderRadius: "15px",
+              flexDirection: "row",
+              paddingTop: "0",
+            }}
+          >
+            <BiArrowBack size={20} />
+            Back User Basic
+          </div>
+          <hr
+            style={{
+              marginBottom: "15px",
+            }}
+          />
           <Select
             options={
               organizers &&

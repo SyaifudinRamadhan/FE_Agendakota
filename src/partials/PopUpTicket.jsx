@@ -1602,7 +1602,7 @@ const PopUpTicket = ({
         },
       }}
       classNames={{
-        wrapper: [!orgId ? styles2.PopUpWrapper2 : styles2.PopUpWrapper],
+        wrapper: [!orgId ? styles2.PopUpWrapper2 : styles2.PopUpWrapper2],
         modalDialog: [styles2.ModalDialog],
         popUpBox: [styles2.PopUpBox],
         header: [],

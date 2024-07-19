@@ -16,11 +16,6 @@ import PopUp from "../../partials/PopUp";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
-// let codes = "";
-// let load = 0;
-
-// let handleKeydown = null;
-
 const handleSuccess = (res) => {
   return {
     data: res.data,
@@ -43,18 +38,18 @@ const handleError = (error) => {
   }
 };
 
-const checkin = async ({ eventId, token }) => {
+const downloadTicket = async ({ pchId, token }) => {
   try {
-    let res = await axios.post(
-      process.env.REACT_APP_BACKEND_URL + "/api/checkin",
-      {
-        event_id: eventId,
-      },
+    let res = await axios.get(
+      process.env.REACT_APP_BACKEND_URL +
+        "/api/download-ticket?purchase_id=" +
+        pchId,
       {
         headers: {
           Authorization: "Bearer " + token,
           "x-api-key": process.env.REACT_APP_BACKEND_KEY,
         },
+        responseType: "blob",
       }
     );
     return handleSuccess(res);
@@ -63,7 +58,7 @@ const checkin = async ({ eventId, token }) => {
   }
 };
 
-const SelfCheckin = ({ isLogin, fnSetLogin = () => {} }) => {
+const DownloadTicket = ({ isLogin, fnSetLogin = () => {} }) => {
   // ================== State control ============================
   const [firstLoad, setFirstLoad] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -81,73 +76,32 @@ const SelfCheckin = ({ isLogin, fnSetLogin = () => {} }) => {
 
   const navigate = useNavigate();
 
-  const handleCheckin = (qrStr) => {
+  const handleDownloadTicket = (pchId) => {
     setLoading(true);
-    checkin({
-      eventId: qrStr,
-      token: appData.accessToken,
-    }).then((res) => {
-      if (res.status === 201) {
-        setAlert({
-          state: true,
-          type: "success",
-          content: (
-            <div className={styles.NotifBox}>
-              <div className={styles.IslandGroup}>
-                Checkin
-                <div className={styles.DynaminIsland}>
-                  <BiCheckCircle />
-                  <p>Success</p>
-                </div>
-              </div>
-              <div className={styles.ProfileBox}>
-                <img
-                  src={process.env.REACT_APP_BACKEND_URL + res.data.user.photo}
-                  className={styles.ProfileIcon}
-                />
-                <div>
-                  <b>{res.data.user.name}</b>
-                </div>
-                <div>{res.data.user.email}</div>
-                <div style={{ marginTop: "20px" }}>
-                  <b>
-                    {res.data.ticket.name} - {res.data.event.name}
-                  </b>
-                </div>
-                <div>
-                  {moment(res.data.purchase.created_at)
-                    .locale("id")
-                    .format("DD MMM Y")}
-                </div>
-                <div>
-                  <b>Rp. {numberFormat.format(res.data.purchase.amount)},-</b>
-                </div>
-                <div>
-                  <b>
-                    {" "}
-                    Checkin On{" "}
-                    {moment(res.data.checkin_on)
-                      .locale("id")
-                      .format("DD MMM Y")}
-                  </b>
-                </div>
-              </div>
-            </div>
-          ),
-        });
+    downloadTicket({ pchId, token: appData.accessToken }).then((res) => {
+      if (res.status === 200) {
+        let url = window.URL.createObjectURL(
+          new Blob([res.data], { type: "application/pdf" })
+        );
+        let link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "agendakota_ticket.pdf");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setLoading(false);
+        navigate("/my-tickets");
       } else if (res.status === 401) {
         fnSetLogin(false);
-        setPausedProcess(`checkin~!@!~${qrStr}`);
+        setPausedProcess("download~!@!~" + pchId);
       } else {
         setAlert({
           state: true,
           type: "danger",
           content:
-            res.status == 404
-              ? "Transaksi tidak dapat ditemukan / kadaluwarsa"
-              : res.status == 403
-              ? "Tiket sudah tidak berlaku / sudah digunakan"
-              : "Error internal server. Silahkan coba lagi",
+            res.status === 404
+              ? "Mohon maaf. Data purchase tiket tidak ditemukan"
+              : "Mohon maaf, terjadi kesalahan saat mengirim data. Silahkan dicoba lagi",
         });
       }
       setLoading(false);
@@ -156,7 +110,7 @@ const SelfCheckin = ({ isLogin, fnSetLogin = () => {} }) => {
 
   useEffect(() => {
     if (isLogin && pausedProcess && appData.accessToken) {
-      handleCheckin(pausedProcess.split("~!@!~")[1]);
+      handleDownloadTicket(pausedProcess.split("~!@!~")[1]);
       console.log("Run paused process");
       setPausedProcess(null);
     }
@@ -164,7 +118,7 @@ const SelfCheckin = ({ isLogin, fnSetLogin = () => {} }) => {
 
   useEffect(() => {
     if (!firstLoad && appData.accessToken) {
-      handleCheckin(id);
+      handleDownloadTicket(id);
       console.log("First load");
       setFirstLoad(true);
     }
@@ -183,7 +137,7 @@ const SelfCheckin = ({ isLogin, fnSetLogin = () => {} }) => {
             ) : (
               <>
                 <div className={styles.Header}>
-                  <div>User Checkin</div>
+                  <div>Download Tiket</div>
                 </div>
 
                 <div id="alert" className={`${styles.Center} ${styles.Alert}`}>
@@ -210,4 +164,4 @@ const SelfCheckin = ({ isLogin, fnSetLogin = () => {} }) => {
   );
 };
 
-export default SelfCheckin;
+export default DownloadTicket;

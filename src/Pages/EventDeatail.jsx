@@ -570,12 +570,35 @@ const EventDetail = ({ isLogin }) => {
 
   const filterDateSelector = ({ date }) => {
     let props = {};
+    let dayMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    let index = 0;
+    let indexDay = 0;
+    // search index day of today from available days event, for get time limitation
+    do {
+      indexDay = dayMap.indexOf(event.available_days[index].day);
+      index++;
+    } while (indexDay < new Date().getDay());
+    let limitTimeToday =
+      event.available_days[index - 1].max_limit_time.split(":");
+    let now = new Date();
+    limitTimeToday = new Date(
+      new Date().setHours(
+        limitTimeToday[0],
+        limitTimeToday[1],
+        limitTimeToday[2],
+        0
+      )
+    );
     if (
       !event.available_days
         .map((avldt) => avldt.day)
         .includes(date.format("ddd")) ||
       new Date(date.format()).setHours(0, 0, 0, 0) <
-        new Date().setHours(0, 0, 0, 0)
+        new Date().setHours(0, 0, 0, 0) ||
+      (now.getDate() === parseInt(date.format("D")) &&
+        now.getMonth() === parseInt(date.format("M")) - 1 &&
+        now.getFullYear() === parseInt(date.format("YYYY")) &&
+        now > limitTimeToday)
     ) {
       props.disabled = true;
     }
@@ -584,6 +607,25 @@ const EventDetail = ({ isLogin }) => {
 
   const filterDateSelectorCart = (date, thisIndex, cartData) => {
     let props = {};
+    let dayMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    let index = 0;
+    let indexDay = 0;
+    // search index day of today from available days event, for get time limitation
+    do {
+      indexDay = dayMap.indexOf(event.available_days[index].day);
+      index++;
+    } while (indexDay < new Date().getDay());
+    let limitTimeToday =
+      event.available_days[index - 1].max_limit_time.split(":");
+    let now = new Date();
+    limitTimeToday = new Date(
+      new Date().setHours(
+        limitTimeToday[0],
+        limitTimeToday[1],
+        limitTimeToday[2],
+        0
+      )
+    );
     if (
       !event.available_days
         .map((avldt) => avldt.day)
@@ -595,7 +637,11 @@ const EventDetail = ({ isLogin }) => {
           cart.visitDate.format() === date.format()
       ).length > 0 ||
       new Date(date.format()).setHours(0, 0, 0, 0) <
-        new Date().setHours(0, 0, 0, 0)
+        new Date().setHours(0, 0, 0, 0) ||
+      (now.getDate() === parseInt(date.format("D")) &&
+        now.getMonth() === parseInt(date.format("M")) - 1 &&
+        now.getFullYear() === parseInt(date.format("YYYY")) &&
+        now > limitTimeToday)
     ) {
       props.disabled = true;
     }
@@ -659,6 +705,7 @@ const EventDetail = ({ isLogin }) => {
       }).then((res) => {
         if (res.status === 200) {
           let nullDate = "";
+          let zeroQtyIndexs = [];
           for (let i = 0; i < cartData.length; i++) {
             if (
               cartData[i].data.quantity > res.data.tickets[i].quantity &&
@@ -680,19 +727,32 @@ const EventDetail = ({ isLogin }) => {
                   i === cartData.length - 1 ? ")" : ""
                 }`;
               }
+              zeroQtyIndexs.push(i);
               cartData[i].seatNumbers = [];
             }
             cartData[i].data.quantity = res.data.tickets[i].quantity;
           }
+
           if (nullDate !== "") {
+            zeroQtyIndexs.forEach((zIndex) => {
+              cartData.splice(zIndex, 1);
+            });
+            setCartData([...cartData]);
             setPopUpAlert({
               state: true,
               type: "danger",
               content: `Mohon maaf. Ketersediaan tiket ${nullDate} sudah habis !`,
             });
           }
+          // This re-set lengthAddCart state for refresh view data
+          let lnAddChart = lengthAddCart;
+          setLengthAddCart(0);
+          setTimeout(() => {
+            setLengthAddCart(lnAddChart);
+          }, 50);
         } else {
           cartData.splice(cartData.length - lengthAddCart, lengthAddCart);
+          console.log(cartData, cartData.length - lengthAddCart, lengthAddCart);
           setPopUpAlert({
             state: true,
             type: "danger",

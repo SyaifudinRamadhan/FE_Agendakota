@@ -27,8 +27,10 @@ const SidebarUser = ({
   organizers,
   setOrganizers,
   setLogin,
+  isOrganizerAreaVisible = false,
+  fnSetOrganizerAreaVisible = () => {},
 }) => {
-  const [isOrganizerAreaVisible, setOrganizerAreaVisible] = useState(false);
+  // const [isOrganizerAreaVisible, setOrganizerAreaVisible] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
   const [isPopUpAddOrg, setPopUpAddOrg] = useState(false);
   const navigate = useNavigate();
@@ -36,10 +38,10 @@ const SidebarUser = ({
   const appData = useSelector((state) => state.appDataReducer);
 
   const overlayClick = () => {
-    setOrganizerAreaVisible(false);
+    fnSetOrganizerAreaVisible(false);
   };
   const showOrganizers = () => {
-    setOrganizerAreaVisible(true);
+    fnSetOrganizerAreaVisible(true);
   };
 
   const openPopUporg = () => {
@@ -210,7 +212,7 @@ const SidebarUser = ({
         </div>
       ) : (
         <>
-          <div className={styles.SidebarMobile}>
+          <div className={styles.SidebarMobile} style={{ display: "none" }}>
             <div className={styles.MenuArea}>
               <Link
                 to="/events"

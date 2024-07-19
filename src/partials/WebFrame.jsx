@@ -37,6 +37,7 @@ import PrivacyPolicy from "../Pages/PrivacyPolicy";
 import RefundCancelEvent from "../Pages/RefundCancelEvent";
 import Price from "../Pages/Price";
 import SelfCheckin from "../Pages/User/SelfCheckin";
+import DownloadTicket from "../Pages/User/DownloadTicket";
 
 // let firstLoad = true;
 
@@ -133,6 +134,7 @@ const WebFrame = () => {
   // From pages routers
   const [isLogin, setLogin] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [isOrganizerAreaVisible, setOrganizerAreaVisible] = useState(false);
   // From user routers
   const [activePath, setActivePath] = useState(null);
   const [organizers, setOrganizers] = useState(null);
@@ -271,12 +273,15 @@ const WebFrame = () => {
             expand={true}
             active={activePath}
             show={typeRouter === "user" ? true : false}
+            fnSetOrganizerAreaVisible={setOrganizerAreaVisible}
           />
           <SidebarUser
             active={activePath}
             organizers={organizers}
             setOrganizers={setOrganizers}
             setLogin={setLogin}
+            isOrganizerAreaVisible={isOrganizerAreaVisible}
+            fnSetOrganizerAreaVisible={setOrganizerAreaVisible}
           />
         </>
       ) : typeRouter === "organizer" ? (
@@ -387,6 +392,12 @@ const WebFrame = () => {
             <Route
               path="/self-checkin/:id"
               element={<SelfCheckin isLogin={isLogin} fnSetLogin={setLogin} />}
+            />
+            <Route
+              path="/download-ticket/:id"
+              element={
+                <DownloadTicket isLogin={isLogin} fnSetLogin={setLogin} />
+              }
             />
             <Route
               path="/invitations"

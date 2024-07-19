@@ -223,7 +223,7 @@ const BasicSidebarExt = ({
         </div>
       ) : (
         <>
-          <div className={styles.SidebarMobile}>
+          <div className={styles.SidebarMobile} style={{ display: "none" }}>
             <div className={styles.MenuArea}>
               <Link
                 to="/events"
