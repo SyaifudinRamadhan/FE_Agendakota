@@ -2880,7 +2880,7 @@ const EditorAddEvtAct = ({
                         className={styles.TextSecondary}
                         style={blankStart || blankEnd ? { color: "red" } : {}}
                       >
-                        Mulai *
+                        Mulai Event *
                       </p>
                     }
                     style={{ boxShadow: "none", outline: "none" }}
@@ -2912,7 +2912,7 @@ const EditorAddEvtAct = ({
                         className={styles.TextSecondary}
                         style={blankEnd || blankStart ? { color: "red" } : {}}
                       >
-                        Berakhir *
+                        Akhir Event *
                       </p>
                     }
                     style={{ boxShadow: "none", outline: "none" }}

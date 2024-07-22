@@ -2224,7 +2224,7 @@ const PopUpTicket = ({
                                   blankStart || blankEnd ? { color: "red" } : {}
                                 }
                               >
-                                Mulai *
+                                Mulai Jual *
                               </p>
                             }
                             style={{ boxShadow: "none", outline: "none" }}
@@ -2248,7 +2248,7 @@ const PopUpTicket = ({
                                   blankStart || blankEnd ? { color: "red" } : {}
                                 }
                               >
-                                Berakhir *
+                                Akhir Jual *
                               </p>
                             }
                             style={{ boxShadow: "none", outline: "none" }}

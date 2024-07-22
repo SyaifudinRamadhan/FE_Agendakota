@@ -575,27 +575,35 @@ const EventDetail = ({ isLogin }) => {
     let indexDay = 0;
     // search index day of today from available days event, for get time limitation
     do {
-      indexDay = dayMap.indexOf(event.available_days[index].day);
+      indexDay = event.available_days[index]
+        ? dayMap.indexOf(event.available_days[index].day)
+        : -1;
       index++;
-    } while (indexDay < new Date().getDay());
-    let limitTimeToday =
-      event.available_days[index - 1].max_limit_time.split(":");
+    } while (indexDay < new Date().getDay() && index < dayMap.length);
+
+    let limitTimeToday = null;
     let now = new Date();
-    limitTimeToday = new Date(
-      new Date().setHours(
-        limitTimeToday[0],
-        limitTimeToday[1],
-        limitTimeToday[2],
-        0
-      )
-    );
+    if (event.available_days[index - 1]) {
+      limitTimeToday =
+        event.available_days[index - 1].max_limit_time.split(":");
+      limitTimeToday = new Date(
+        new Date().setHours(
+          limitTimeToday[0],
+          limitTimeToday[1],
+          limitTimeToday[2],
+          0
+        )
+      );
+    }
+
     if (
       !event.available_days
         .map((avldt) => avldt.day)
         .includes(date.format("ddd")) ||
       new Date(date.format()).setHours(0, 0, 0, 0) <
         new Date().setHours(0, 0, 0, 0) ||
-      (now.getDate() === parseInt(date.format("D")) &&
+      (limitTimeToday &&
+        now.getDate() === parseInt(date.format("D")) &&
         now.getMonth() === parseInt(date.format("M")) - 1 &&
         now.getFullYear() === parseInt(date.format("YYYY")) &&
         now > limitTimeToday)

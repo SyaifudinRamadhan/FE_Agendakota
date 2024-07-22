@@ -221,12 +221,7 @@ const WebFrame = () => {
         }
       });
     }
-    if (
-      isLogin &&
-      appData.accessToken &&
-      window.location.pathname !== "/auth-user" &&
-      window.location.pathname !== "/register-user"
-    ) {
+    if (isLogin && appData.accessToken) {
       loadOrganizers({ token: appData.accessToken }).then((res) => {
         // console.log(res);
         if (res.status === 200) {
