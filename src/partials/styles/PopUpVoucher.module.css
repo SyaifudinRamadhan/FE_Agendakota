@@ -1,0 +1,132 @@
+.PopUpContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+
+/* .PopUpContentMain {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 2px;
+  gap: 10px;
+  height: calc(100% - 35px);
+  padding-bottom: 20px;
+  overflow-y: auto;
+  max-height: 300px;
+  min-height: 250px;
+} */
+
+.PopUpContentMain {
+  height: calc(100% - 35px);
+  padding-bottom: 20px;
+  overflow-y: auto;
+  max-height: 300px;
+  min-height: 250px;
+}
+
+.PopUpContentMainInner {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 2px;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+
+.PopUpContentNav {
+  margin-top: auto;
+  max-height: 100px;
+}
+
+.NavButton {
+  width: 100%;
+  padding: 7px;
+  display: flex;
+  gap: 7px;
+  flex-direction: row;
+  border-radius: 20px;
+  background-color: rgba(221, 0, 100, 0.08);
+  border: 1px solid rgba(221, 0, 100, 0.08);
+  color: rgb(202, 12, 100);
+  font-weight: 600;
+}
+
+.NavButton svg {
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 20px;
+  height: 20px;
+}
+
+.NavButton div {
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 14px;
+}
+
+.VoucherCard {
+  border-radius: 10px;
+  box-shadow: 0 0 4px 1px #e7e7e7;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: calc(33.3% - 6.7px);
+  padding: 15px;
+  height: fit-content;
+}
+
+.VoucherCard .Icon {
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 30px;
+  height: 30px;
+}
+
+.VoucherCard .Info {
+  margin-top: auto;
+  margin-bottom: auto;
+  width: calc(100% - 55px);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+}
+
+.Info h6 {
+  font-weight: 600;
+  color: #000;
+  font-size: 14px;
+}
+
+.Info svg {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  color: red;
+  right: -18px;
+  top: -5px;
+}
+
+.Info p {
+  font-size: 12px;
+  color: #888;
+}
+
+@media (max-width: 992px) {
+  .PopUpContentMain {
+    flex-direction: column;
+    flex-wrap: unset;
+    max-height: unset;
+    min-height: unset;
+  }
+
+  .VoucherCard {
+    width: 100%;
+  }
+}

@@ -23,6 +23,7 @@ import {
   BiQuestionMark,
   BiScreenshot,
   BiSearch,
+  BiSolidDiscount,
   BiTime,
   BiUserCircle,
   BiZoomIn,
@@ -67,6 +68,7 @@ import InputCheckRadio from "../../../components/InputCheckRadio";
 import { useDispatch, useSelector } from "react-redux";
 import { getAppData } from "../../../actions/appdata";
 import { useNavigate } from "react-router-dom";
+import PopUpVoucher from "../../../partials/PopUpVoucher";
 //   import faker from 'faker';
 
 ChartJS.register(
@@ -421,6 +423,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
   const [popUpContent, setPopUpContent] = useState(<></>);
   const [contentBody, setContentBody] = useState("General");
   const [tickets, setTickets] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
   const [ticketSettings, setTicketSettingsData] = useState({
     limitPchs: null,
     singleTrxs: null,
@@ -467,6 +470,11 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
     setPopUpTitle("Tickets");
   };
 
+  const openVoucher = () => {
+    setPopUpActive(true);
+    setPopUpTitle("Vouchers");
+  };
+
   const cardFeature = [
     {
       title: "Edit",
@@ -493,6 +501,14 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
       icon: <BiCard className={`${styles.CardIcon}`} />,
       desc: "Manage your event sessions with different agendas",
       fnOnClick: openTicket,
+      disabled: false,
+      isAddOn: false,
+    },
+    {
+      title: "Voucher",
+      icon: <BiSolidDiscount className={`${styles.CardIcon}`} />,
+      desc: "Manage your event vouchers promotion",
+      fnOnClick: openVoucher,
       disabled: false,
       isAddOn: false,
     },
@@ -1135,6 +1151,7 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
           setLockedIndexSurvey(mainIndexMap);
           setCsIndexSurvey(secIndexMap);
           // setTickets(res.data.event.tickets);
+          setVouchers(res.data.vouchers);
         } else if (res.status === 401) {
           fnSetLogin(false);
           setFirstLoadState(null);
@@ -1554,7 +1571,10 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
   }, [sellTableNav, buyers]);
 
   useEffect(() => {
-    if (!popUpActive && popUpTitle === "Tickets") {
+    if (
+      !popUpActive &&
+      (popUpTitle === "Tickets" || popUpTitle === "Vouchers")
+    ) {
       setFirstLoadState(null);
     }
   }, [popUpActive, popUpTitle]);
@@ -1621,6 +1641,19 @@ const EventDashboard = ({ organization, isLogin, fnSetLogin }) => {
           evtCategory={category ? { label: category, value: category } : null}
           orgId={curentOrg}
           fnSetGlobalLoading={setLoading}
+        />
+        <PopUpVoucher
+          isPopActive={popUpActive}
+          titlePopUp={popUpTitle}
+          setPopUpActive={setPopUpActive}
+          tickets={tickets.filter((ticket) => ticket.deleted === 0)}
+          vouchers={vouchers}
+          orgId={curentOrg}
+          eventId={eventId}
+          endEvent={basicEndEvt ? basicEndEvt.replaceAll(" ", "T") : null}
+          isLogin={isLogin}
+          token={appData.accessToken}
+          fnSetLogin={fnSetLogin}
         />
         <PopUp
           width="45%"

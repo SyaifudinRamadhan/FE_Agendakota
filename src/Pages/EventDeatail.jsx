@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import ErrorPage from "../partials/ErrorPage";
 import styles from "./styles/EventDetail.module.css";
+import stylesVoucher from "../partials/styles/PopUpVoucher.module.css";
 import {
   BiCalendar,
   BiCalendarWeek,
@@ -41,6 +42,7 @@ import PopUpTrxFront from "../partials/PopUpTrxFront";
 import { useNavigate } from "react-router-dom";
 import stylesPopUpDate from "../partials/styles/PopUpTrx.module.css";
 import Footer from "../partials/Footer";
+import Select from "react-select";
 
 const dummyData = [
   {
@@ -309,6 +311,7 @@ const EventDetail = ({ isLogin }) => {
   const { id } = useParams();
 
   const [event, setEvent] = useState(null);
+  const [vouchers, setVouchers] = useState([]);
   const [errorState, setErrorState] = useState(false);
   const [loading, setLoading] = useState(true);
   const [start, setStart] = useState(null);
@@ -318,6 +321,7 @@ const EventDetail = ({ isLogin }) => {
   const [numberFormat, setNumFormat] = useState(Intl.NumberFormat("id-ID"));
   const [ticketsViewData, setTicketsViewData] = useState(null);
   const [cartData, setCartData] = useState([]);
+  const [selectedVoucher, setSelectedVoucher] = useState([]);
   const [lengthAddCart, setLengthAddCart] = useState(0);
   const [popUpAlert, setPopUpAlert] = useState({
     state: false,
@@ -700,6 +704,60 @@ const EventDetail = ({ isLogin }) => {
     }, timeout);
   };
 
+  const isEnabledVoucher = (cartData = [], voucherTickets = []) => {
+    voucherTickets = voucherTickets.map((fTicket) => fTicket.ticket_id);
+    let i = 0;
+    let findData = -1;
+    do {
+      findData = voucherTickets.indexOf(cartData[i].data.id);
+      i++;
+    } while (i < cartData.length && findData === -1);
+    console.log(findData === -1 ? false : true);
+    return findData === -1 ? false : true;
+  };
+
+  const generateSubTotal = (cartData, selectedVoucher) => {
+    let total = 0;
+    let discount = 0;
+    let nowAvlQty = selectedVoucher ? selectedVoucher.avl_qty : 0;
+    let vouherTickets = selectedVoucher
+      ? selectedVoucher.for_tickets.map((fTicket) => fTicket.ticket_id)
+      : [];
+
+    cartData.forEach((cart) => {
+      for (let i = 0; i < parseInt(cart.count); i++) {
+        if (
+          selectedVoucher &&
+          nowAvlQty > 0 &&
+          new Date() >= new Date(selectedVoucher.start.split(" ")[0]) &&
+          new Date() <=
+            new Date(selectedVoucher.end.split(" ")[0] + "T23:59:00") &&
+          (selectedVoucher.for_tickets.length === 0 ||
+            (selectedVoucher.for_tickets.length > 0 &&
+              vouherTickets.indexOf(cart.data.id) != -1))
+        ) {
+          let discountVal =
+            selectedVoucher.discount > 1
+              ? selectedVoucher.discount
+              : parseInt(
+                  cart.customPrice ? cart.customPrice : cart.data.price
+                ) * selectedVoucher.discount;
+          discount += discountVal;
+          let formula =
+            parseInt(cart.customPrice ? cart.customPrice : cart.data.price) -
+            discountVal;
+          total += formula < 0 ? 0 : formula;
+          nowAvlQty--;
+        } else {
+          total += parseInt(
+            cart.customPrice ? cart.customPrice : cart.data.price
+          );
+        }
+      }
+    });
+    return { total, discount };
+  };
+
   useEffect(() => {
     if (
       cartData.length > 0 &&
@@ -776,6 +834,10 @@ const EventDetail = ({ isLogin }) => {
   }, [cartData]);
 
   useEffect(() => {
+    setSelectedVoucher([]);
+  }, [cartData]);
+
+  useEffect(() => {
     if (!event && !errorState) {
       loadDetail({ eventId: id }).then((res) => {
         if (res.status === 200) {
@@ -808,6 +870,7 @@ const EventDetail = ({ isLogin }) => {
               .padStart(2, "0")} WIB`
           );
           setEvent(res.data);
+          setVouchers(res.data.vouchers);
           setLoading(false);
         } else {
           setErrorState(true);
@@ -882,6 +945,9 @@ const EventDetail = ({ isLogin }) => {
         <PopUpTrxFront
           fnSetActive={setPopUpTrx}
           cartData={cartData}
+          selectedVoucher={
+            selectedVoucher.length === 0 ? null : selectedVoucher[0].value
+          }
           eventData={{ ...event.event, available_days: event.available_days }}
           isLogin={isLogin}
         />
@@ -1422,35 +1488,182 @@ const EventDetail = ({ isLogin }) => {
                   <img src="/images/blank_events.png" alt="" />
                   <div>Yuk pilih tiket dulu !</div>
                 </div> */}
-                    <div className={styles.CartSubTotal}>
-                      <hr />
-                      <div>
-                        <b>Subtotal</b>
-                        <p className={styles.SubTotalNum}>
-                          Rp.
-                          {numberFormat.format(
-                            cartData.reduce((currentVal, prevVal) => {
-                              if (prevVal.customPrice) {
-                                return (
-                                  currentVal +
-                                  parseInt(prevVal.customPrice) *
-                                    parseInt(prevVal.count)
-                                );
-                              } else {
-                                return (
-                                  currentVal +
-                                  parseInt(prevVal.data.price) *
-                                    parseInt(prevVal.count)
-                                );
-                              }
-                            }, 0)
-                          )}
-                          ,-
-                        </p>
-                      </div>
-                    </div>
                   </div>
                   {/* -------------------------- */}
+                  <div>
+                    {cartData.reduce((currentVal, prevVal) => {
+                      if (prevVal.customPrice) {
+                        return (
+                          currentVal +
+                          parseInt(prevVal.customPrice) *
+                            parseInt(prevVal.count)
+                        );
+                      } else {
+                        return (
+                          currentVal +
+                          parseInt(prevVal.data.price) * parseInt(prevVal.count)
+                        );
+                      }
+                    }, 0) === 0 || vouchers.length === 0 ? (
+                      <></>
+                    ) : (
+                      <>
+                        <div
+                          style={{ flexDirection: "column" }}
+                          className={styles.ReactSelectBox}
+                        >
+                          <div
+                            style={{
+                              marginBottom: "20px",
+                              marginTop: "20px",
+                            }}
+                          >
+                            <b>Pilih Voucher</b>
+                          </div>
+                          <Select
+                            placeholder="Pilih Voucher"
+                            styles={{
+                              option: (basicStyle, state) => ({
+                                ...basicStyle,
+                                backgroundColor: state.isFocused
+                                  ? "#fecadf"
+                                  : "white",
+                                fontSize: "13px",
+                              }),
+                              control: (basicStyle, state) => ({
+                                ...basicStyle,
+                                display: "flex",
+                                flexDirection: "row",
+                                border: "none!important",
+                                borderRadius: "8px",
+                                height:
+                                  state.getValue().length === 0
+                                    ? "41px"
+                                    : "91px",
+                                fontSize: "13px",
+                                boxShadow: "0px 0px 10px -5px #000000a6",
+                              }),
+                            }}
+                            options={vouchers.map((voucher) => ({
+                              label: (
+                                <div
+                                  className={stylesVoucher.VoucherCard}
+                                  style={
+                                    (voucher.for_tickets.length > 0 &&
+                                      !isEnabledVoucher(
+                                        cartData,
+                                        voucher.for_tickets
+                                      )) ||
+                                    voucher.avl_qty == 0 ||
+                                    new Date() <
+                                      new Date(voucher.start.split(" ")[0]) ||
+                                    new Date() >
+                                      new Date(
+                                        voucher.end.split(" ")[0] + "T23:59:00"
+                                      )
+                                      ? {
+                                          cursor: "not-allowed",
+                                          opacity: "0.3",
+                                        }
+                                      : { cursor: "pointer" }
+                                  }
+                                >
+                                  <div className={stylesVoucher.Icon}>
+                                    <img
+                                      src="/images/voucher.png"
+                                      alt=""
+                                      srcset=""
+                                    />
+                                  </div>
+                                  <div className={stylesVoucher.Info}>
+                                    <h6>{voucher.name}</h6>
+                                    {voucher.for_tickets.length > 0 &&
+                                    !isEnabledVoucher(
+                                      cartData,
+                                      voucher.for_tickets
+                                    ) ? (
+                                      <p style={{ color: "red" }}>
+                                        Tidak Tersedia
+                                      </p>
+                                    ) : (
+                                      <></>
+                                    )}
+                                    <p>{voucher.code}</p>
+                                    <p>
+                                      {moment(voucher.start)
+                                        .locale("id")
+                                        .format("DD/MMM/Y")}{" "}
+                                      -{" "}
+                                      {moment(voucher.end)
+                                        .locale("id")
+                                        .format("DD/MMM/Y")}
+                                    </p>
+                                  </div>
+                                </div>
+                              ),
+                              value: voucher,
+                              isDisabled:
+                                (voucher.for_tickets.length > 0 &&
+                                  !isEnabledVoucher(
+                                    cartData,
+                                    voucher.for_tickets
+                                  )) ||
+                                voucher.avl_qty == 0 ||
+                                new Date() <
+                                  new Date(voucher.start.split(" ")[0]) ||
+                                new Date() >
+                                  new Date(
+                                    voucher.end.split(" ")[0] + "T23:59:00"
+                                  ),
+                            }))}
+                            onChange={(e) => {
+                              setSelectedVoucher([e]);
+                            }}
+                            value={
+                              selectedVoucher.length === 0
+                                ? null
+                                : selectedVoucher[0]
+                            }
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div
+                    className={styles.CartSubTotal}
+                    style={{ marginTop: "20px" }}
+                  >
+                    <div>
+                      <b>Subtotal</b>
+                      <p className={styles.SubTotalNum}>
+                        Rp.
+                        {numberFormat.format(
+                          // cartData.reduce((currentVal, prevVal) => {
+                          //   if (prevVal.customPrice) {
+                          //     return (
+                          //       currentVal +
+                          //       parseInt(prevVal.customPrice) *
+                          //         parseInt(prevVal.count)
+                          //     );
+                          //   } else {
+                          //     return (
+                          //       currentVal +
+                          //       parseInt(prevVal.data.price) *
+                          //         parseInt(prevVal.count)
+                          //     );
+                          //   }
+                          // }, 0)
+                          generateSubTotal(
+                            cartData,
+                            selectedVoucher.length === 0
+                              ? null
+                              : selectedVoucher[0].value
+                          ).total
+                        )}
+                        ,-
+                      </p>
+                    </div>
+                  </div>
                   <Button
                     title={"Lanjutkan Pembayaran"}
                     center
@@ -2157,7 +2370,11 @@ const EventDetail = ({ isLogin }) => {
               <div
                 id="cartbox"
                 className={`${styles.CartBox} ${styles.CartBoxFull}`}
-                style={cartData.length === 0 ? { display: "none" } : {}}
+                style={
+                  cartData.length === 0
+                    ? { display: "none" }
+                    : { overflow: "unset" }
+                }
               >
                 <div className={styles.CartBoxTitle}>
                   <div className={styles.CartBoxInner}>Keranjang Tiket </div>
@@ -2450,6 +2667,190 @@ const EventDetail = ({ isLogin }) => {
                     </>
                   )}
                 </div>
+                <div>
+                  {cartData.reduce((currentVal, prevVal) => {
+                    if (prevVal.customPrice) {
+                      return (
+                        currentVal +
+                        parseInt(prevVal.customPrice) * parseInt(prevVal.count)
+                      );
+                    } else {
+                      return (
+                        currentVal +
+                        parseInt(prevVal.data.price) * parseInt(prevVal.count)
+                      );
+                    }
+                  }, 0) === 0 || vouchers.length === 0 ? (
+                    <></>
+                  ) : (
+                    <>
+                      <hr />
+                      <div
+                        style={{ flexDirection: "column" }}
+                        className={styles.ReactSelectBox}
+                      >
+                        <div
+                          style={{ marginBottom: "20px", marginTop: "20px" }}
+                        >
+                          <b>Pilih Voucher</b>
+                        </div>
+                        <Select
+                          placeholder="Pilih Voucher"
+                          styles={{
+                            option: (basicStyle, state) => ({
+                              ...basicStyle,
+                              backgroundColor: state.isFocused
+                                ? "#fecadf"
+                                : "white",
+                              fontSize: "13px",
+                            }),
+                            control: (basicStyle, state) => ({
+                              ...basicStyle,
+                              display: "flex",
+                              flexDirection: "row",
+                              border: "none!important",
+                              borderRadius: "8px",
+                              height:
+                                state.getValue().length === 0 ? "41px" : "91px",
+                              fontSize: "13px",
+                              boxShadow: "0px 0px 10px -5px #000000a6",
+                            }),
+                          }}
+                          options={vouchers.map((voucher) => ({
+                            label: (
+                              <div
+                                className={stylesVoucher.VoucherCard}
+                                style={
+                                  (voucher.for_tickets.length > 0 &&
+                                    !isEnabledVoucher(
+                                      cartData,
+                                      voucher.for_tickets
+                                    )) ||
+                                  voucher.avl_qty == 0 ||
+                                  new Date() <
+                                    new Date(voucher.start.split(" ")[0]) ||
+                                  new Date() >
+                                    new Date(
+                                      voucher.end.split(" ")[0] + "T23:59:00"
+                                    )
+                                    ? {
+                                        cursor: "not-allowed",
+                                        opacity: "0.3",
+                                        width: "100%",
+                                      }
+                                    : { cursor: "pointer", width: "100%" }
+                                }
+                              >
+                                <div className={stylesVoucher.Icon}>
+                                  <img
+                                    src="/images/voucher.png"
+                                    alt=""
+                                    srcset=""
+                                  />
+                                </div>
+                                <div className={stylesVoucher.Info}>
+                                  <h6>{voucher.name}</h6>
+                                  {voucher.for_tickets.length > 0 &&
+                                  !isEnabledVoucher(
+                                    cartData,
+                                    voucher.for_tickets
+                                  ) ? (
+                                    <p style={{ color: "red" }}>
+                                      Tidak Tersedia
+                                    </p>
+                                  ) : (
+                                    <></>
+                                  )}
+                                  <p>{voucher.code}</p>
+                                  <p>
+                                    {moment(voucher.start)
+                                      .locale("id")
+                                      .format("DD/MMM/Y")}{" "}
+                                    -{" "}
+                                    {moment(voucher.end)
+                                      .locale("id")
+                                      .format("DD/MMM/Y")}
+                                  </p>
+                                </div>
+                              </div>
+                            ),
+                            value: voucher,
+                            isDisabled:
+                              (voucher.for_tickets.length > 0 &&
+                                !isEnabledVoucher(
+                                  cartData,
+                                  voucher.for_tickets
+                                )) ||
+                              voucher.avl_qty == 0 ||
+                              new Date() <
+                                new Date(voucher.start.split(" ")[0]) ||
+                              new Date() >
+                                new Date(
+                                  voucher.end.split(" ")[0] + "T23:59:00"
+                                ),
+                          }))}
+                          onChange={(e) => {
+                            console.log(e);
+                            setSelectedVoucher([e]);
+                          }}
+                          value={
+                            selectedVoucher.length === 0
+                              ? null
+                              : selectedVoucher[0]
+                          }
+                        />
+                        {/* <div>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Mollitia illo perspiciatis nostrum cum
+                          cupiditate. Officia sint odio doloribus quos quam,
+                          vero voluptatem, fuga ipsum eveniet quod enim? Ab,
+                          quia inventore.. Lorem ipsum dolor sit amet
+                          consectetur adipisicing elit. Eaque saepe, deleniti
+                          cupiditate dolorem aperiam soluta ipsum sunt.
+                          Consequatur quisquam numquam mollitia? Tempora aperiam
+                          earum, provident dolorem minus libero fugiat
+                          voluptates.. Lorem ipsum, dolor sit amet consectetur
+                          adipisicing elit. Accusantium eum at atque. Eos ab
+                          corporis optio aut, sint eius corrupti! Ad numquam
+                          temporibus minima, quas in sequi distinctio ratione
+                          consequatur.
+                        </div> */}
+
+                        {/* <div
+                          id="react-select-2-listbox"
+                          class="css-1nmdiq5-menu"
+                        >
+                          <div class=" css-1n6sfyn-MenuList">
+                            <div
+                              class=" css-xoszrd-option"
+                              aria-disabled="true"
+                              id="react-select-2-option-0"
+                              tabindex="-1"
+                            >
+                              Test Voucher
+                            </div>
+                            <div
+                              class=" css-1esxxiq-option"
+                              aria-disabled="true"
+                              id="react-select-2-option-1"
+                              tabindex="-1"
+                            >
+                              Test Voucher 2
+                            </div>
+                            <div
+                              class=" css-1esxxiq-option"
+                              aria-disabled="true"
+                              id="react-select-2-option-2"
+                              tabindex="-1"
+                            >
+                              Test Voucher 3
+                            </div>
+                          </div>
+                        </div> */}
+                      </div>
+                    </>
+                  )}
+                </div>
                 <div className={styles.CartSubTotal}>
                   <hr />
                   <div>
@@ -2457,21 +2858,27 @@ const EventDetail = ({ isLogin }) => {
                     <p className={styles.SubTotalNum}>
                       Rp.
                       {numberFormat.format(
-                        cartData.reduce((currentVal, prevVal) => {
-                          if (prevVal.customPrice) {
-                            return (
-                              currentVal +
-                              parseInt(prevVal.customPrice) *
-                                parseInt(prevVal.count)
-                            );
-                          } else {
-                            return (
-                              currentVal +
-                              parseInt(prevVal.data.price) *
-                                parseInt(prevVal.count)
-                            );
-                          }
-                        }, 0)
+                        // cartData.reduce((currentVal, prevVal) => {
+                        //   if (prevVal.customPrice) {
+                        //     return (
+                        //       currentVal +
+                        //       parseInt(prevVal.customPrice) *
+                        //         parseInt(prevVal.count)
+                        //     );
+                        //   } else {
+                        //     return (
+                        //       currentVal +
+                        //       parseInt(prevVal.data.price) *
+                        //         parseInt(prevVal.count)
+                        //     );
+                        //   }
+                        // }, 0)
+                        generateSubTotal(
+                          cartData,
+                          selectedVoucher.length === 0
+                            ? null
+                            : selectedVoucher[0].value
+                        ).total
                       )}
                       ,-
                     </p>

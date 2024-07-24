@@ -97,6 +97,7 @@ const submitSurvey = async ({ event_id, files_data, survey_ans, token }) => {
 
 const createTrx = async ({
   ticket_ids,
+  voucher_code,
   pay_method,
   custom_prices,
   visit_dates,
@@ -110,6 +111,7 @@ const createTrx = async ({
       process.env.REACT_APP_BACKEND_URL + "/api/buy-ticket",
       {
         ticket_ids,
+        voucher_code,
         pay_method,
         custom_prices,
         visit_dates,
@@ -146,6 +148,47 @@ const loadCommData = async () => {
   }
 };
 
+const generateSubTotal = (cartData, selectedVoucher) => {
+  let total = 0;
+  let discount = 0;
+  let nowAvlQty = selectedVoucher ? selectedVoucher.avl_qty : 0;
+  let vouherTickets = selectedVoucher
+    ? selectedVoucher.for_tickets.map((fTicket) => fTicket.ticket_id)
+    : [];
+
+  cartData.forEach((cart) => {
+    for (let i = 0; i < parseInt(cart.count); i++) {
+      if (
+        selectedVoucher &&
+        nowAvlQty > 0 &&
+        new Date() >= new Date(selectedVoucher.start.split(" ")[0]) &&
+        new Date() <=
+          new Date(selectedVoucher.end.split(" ")[0] + "T23:59:00") &&
+        (selectedVoucher.for_tickets.length === 0 ||
+          (selectedVoucher.for_tickets.length > 0 &&
+            vouherTickets.indexOf(cart.data.id) != -1))
+      ) {
+        let discountVal =
+          selectedVoucher.discount > 1
+            ? selectedVoucher.discount
+            : parseInt(cart.customPrice ? cart.customPrice : cart.data.price) *
+              selectedVoucher.discount;
+        discount += discountVal;
+        let formula =
+          parseInt(cart.customPrice ? cart.customPrice : cart.data.price) -
+          discountVal;
+        total += formula < 0 ? 0 : formula;
+        nowAvlQty--;
+      } else {
+        total += parseInt(
+          cart.customPrice ? cart.customPrice : cart.data.price
+        );
+      }
+    }
+  });
+  return { total, discount };
+};
+
 const HeaderPopUp = () => {
   return (
     <div className={styles.HeaderBox}>
@@ -159,6 +202,7 @@ const HeaderPopUp = () => {
 
 const ReviewContent = ({
   dataTrx,
+  selectedVoucher,
   dataEvent,
   fnSetDataTrxSurvey,
   alert,
@@ -170,20 +214,10 @@ const ReviewContent = ({
   const [end, setEnd] = useState(null);
   const [trxMethod, setTrxMethod] = useState("");
   const [showTrxMethods, setShowTrxMethods] = useState(false);
-  const [basicPrice, setBasicPrice] = useState(
-    dataTrx.reduce((currentVal, prevVal) => {
-      if (prevVal.customPrice) {
-        return (
-          currentVal + parseInt(prevVal.customPrice) * parseInt(prevVal.count)
-        );
-      } else {
-        return (
-          currentVal + parseInt(prevVal.data.price) * parseInt(prevVal.count)
-        );
-      }
-    }, 0)
-  );
   const [numberFormat, setNumFormat] = useState(Intl.NumberFormat("id-ID"));
+  const [subTotalData, setsubTotalData] = useState(
+    generateSubTotal(dataTrx, selectedVoucher)
+  );
 
   const accSnk = useRef();
 
@@ -254,7 +288,7 @@ const ReviewContent = ({
       custom_prices: {},
       visit_dates: {},
       seat_numbers: {},
-      voucher_code: null,
+      voucher_code: selectedVoucher ? selectedVoucher.code : null,
     };
     if (!failedIndicator) {
       // console.log(dataTrx, "CART DATA");
@@ -604,20 +638,7 @@ const ReviewContent = ({
             <p>Total</p>
             <div>
               Rp.
-              {/* {numberFormat.format(
-                basicPrice +
-                  commisionData.admin_fee_trx +
-                  basicPrice * commisionData.tax_fee +
-                  (commisionData.mul_pay_gate_fee *
-                  config.payMethods["VA"][trxMethod]
-                    ? config.payMethods["VA"][trxMethod][2]
-                    : config.payMethods["e-wallet"][trxMethod]
-                    ? config.payMethods["e-wallet"][trxMethod][2]
-                    : config.payMethods["qris"][trxMethod]
-                    ? config.payMethods["qris"][trxMethod][2]
-                    : 0)
-              )} */}
-              {numberFormat.format(basicPrice)}
+              {numberFormat.format(subTotalData.total)}
             </div>
           </div>
           <div className={styles.Separation}></div>
@@ -661,7 +682,21 @@ const ReviewContent = ({
           </div>
 
           <div className={styles.Separation}></div>
-          {basicPrice === 0 ? (
+          {subTotalData.discount === 0 ? (
+            <></>
+          ) : (
+            <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+              <div className={styles.TextSecondary}>Diskon </div>
+              <div
+                style={{ marginLeft: "auto" }}
+                className={styles.TextPrimary}
+              >
+                -Rp.
+                {numberFormat.format(subTotalData.discount)}
+              </div>
+            </div>
+          )}
+          {subTotalData.total === 0 ? (
             <></>
           ) : (
             <>
@@ -677,7 +712,9 @@ const ReviewContent = ({
                     className={styles.TextPrimary}
                   >
                     Rp.
-                    {numberFormat.format(basicPrice * commisionData.tax_fee)}
+                    {numberFormat.format(
+                      subTotalData.total * commisionData.tax_fee
+                    )}
                   </div>
                 </div>
               )}
@@ -690,7 +727,7 @@ const ReviewContent = ({
                 >
                   Rp.
                   {numberFormat.format(
-                    basicPrice === 0 ? 0 : commisionData.admin_fee_trx
+                    subTotalData.total === 0 ? 0 : commisionData.admin_fee_trx
                   )}
                 </div>
               </div>
@@ -707,9 +744,10 @@ const ReviewContent = ({
                         ? config.payMethods["VA"][trxMethod][2]
                         : config.payMethods["e-wallet"][trxMethod]
                         ? config.payMethods["e-wallet"][trxMethod][2] *
-                          basicPrice
+                          subTotalData.total
                         : config.payMethods["qris"][trxMethod]
-                        ? config.payMethods["qris"][trxMethod][2] * basicPrice
+                        ? config.payMethods["qris"][trxMethod][2] *
+                          subTotalData.total
                         : 0)
                   )}
                 </div>
@@ -721,21 +759,23 @@ const ReviewContent = ({
             <div style={{ marginLeft: "auto" }} className={styles.TextPrimary}>
               Rp.
               {numberFormat.format(
-                basicPrice +
-                  (basicPrice === 0 ? 0 : commisionData.admin_fee_trx) +
-                  basicPrice * commisionData.tax_fee +
+                subTotalData.total +
+                  (subTotalData.total === 0 ? 0 : commisionData.admin_fee_trx) +
+                  subTotalData.total * commisionData.tax_fee +
                   commisionData.mul_pay_gate_fee *
                     (config.payMethods["VA"][trxMethod]
                       ? config.payMethods["VA"][trxMethod][2]
                       : config.payMethods["e-wallet"][trxMethod]
-                      ? config.payMethods["e-wallet"][trxMethod][2] * basicPrice
+                      ? config.payMethods["e-wallet"][trxMethod][2] *
+                        subTotalData.total
                       : config.payMethods["qris"][trxMethod]
-                      ? config.payMethods["qris"][trxMethod][2] * basicPrice
+                      ? config.payMethods["qris"][trxMethod][2] *
+                        subTotalData.total
                       : 0)
               )}
             </div>
           </div>
-          {basicPrice === 0 ? (
+          {subTotalData.total === 0 ? (
             <></>
           ) : (
             <>
@@ -882,6 +922,7 @@ const ReviewContent = ({
 
 const TrxContent = ({
   dataTrx,
+  selectedVoucher,
   resTrx,
   payMethod,
   dataEvent,
@@ -893,6 +934,9 @@ const TrxContent = ({
   const [numberFormat, setNumFormat] = useState(Intl.NumberFormat("id-ID"));
   const [loop, setLoop] = useState(0);
   const [showInterval, setShowInterval] = useState("");
+  const [subTotalData, setsubTotalData] = useState(
+    generateSubTotal(dataTrx, selectedVoucher)
+  );
   const navigate = useNavigate();
 
   const handleCopy = (text) => {
@@ -1157,6 +1201,17 @@ const TrxContent = ({
             </div>
           ))}
         </div>
+        {subTotalData.discount === 0 ? (
+          <></>
+        ) : (
+          <div className={styles.FlexRow} style={{ marginBottom: "5px" }}>
+            <div className={styles.TextSecondary}>Diskon</div>
+            <div style={{ marginLeft: "auto" }} className={styles.TextPrimary}>
+              -Rp.
+              {numberFormat.format(subTotalData.discount)}
+            </div>
+          </div>
+        )}
         <div className={styles.Separation}></div>
 
         {resTrx.total === 0 ? (
@@ -1514,7 +1569,12 @@ const TrxContent = ({
   );
 };
 
-const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
+const PopUpTrxFront = ({
+  fnSetActive,
+  cartData,
+  eventData,
+  selectedVoucher,
+}) => {
   const [viewState, setViewState] = useState("review");
   const [resTrx, setResTrx] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -1746,6 +1806,7 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
               {viewState === "review" ? (
                 <ReviewContent
                   dataTrx={cartData}
+                  selectedVoucher={selectedVoucher}
                   dataEvent={eventData}
                   fnSetDataTrxSurvey={setFinalData}
                   alert={alert}
@@ -1766,6 +1827,7 @@ const PopUpTrxFront = ({ fnSetActive, cartData, eventData }) => {
               ) : (
                 <TrxContent
                   dataTrx={cartData}
+                  selectedVoucher={selectedVoucher}
                   resTrx={resTrx}
                   dataEvent={eventData}
                   payMethod={finalData.trx.pay_method}
