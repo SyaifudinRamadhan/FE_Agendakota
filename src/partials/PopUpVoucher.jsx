@@ -250,7 +250,8 @@ const PopUpVoucher = ({
       discount.current.value === "" ||
       discount.current.value === " " ||
       discount.current.value == 0 ||
-      (!discountTyoeToogle.current.checked && discount.current.value > 100) ||
+      (!discountTyoeToogle.current.checked &&
+        (discount.current.value > 100 || discount.current.value < 1)) ||
       (discountTyoeToogle.current.checked && discount.current.value < 2)
     ) {
       setBlankDiscount(true);
@@ -260,8 +261,9 @@ const PopUpVoucher = ({
         discount.current.value === " " ||
         discount.current.value == 0
           ? "Nilai diskon wajib diisi !"
-          : !discountTyoeToogle.current.checked && discount.current.value > 100
-          ? "NIlai diskon maksimal adalah 100%"
+          : !discountTyoeToogle.current.checked &&
+            (discount.current.value > 100 || discount.current.value < 1)
+          ? "Nilai diskon maksimal adalah 100% dan minimal 1%"
           : "Nilai diskon minimal Rp 2,-";
     }
 

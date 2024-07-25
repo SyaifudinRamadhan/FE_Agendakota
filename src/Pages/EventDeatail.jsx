@@ -712,7 +712,6 @@ const EventDetail = ({ isLogin }) => {
       findData = voucherTickets.indexOf(cartData[i].data.id);
       i++;
     } while (i < cartData.length && findData === -1);
-    console.log(findData === -1 ? false : true);
     return findData === -1 ? false : true;
   };
 
@@ -729,7 +728,8 @@ const EventDetail = ({ isLogin }) => {
         if (
           selectedVoucher &&
           nowAvlQty > 0 &&
-          new Date() >= new Date(selectedVoucher.start.split(" ")[0]) &&
+          new Date() >=
+            new Date(selectedVoucher.start.split(" ")[0] + "T00:00:00") &&
           new Date() <=
             new Date(selectedVoucher.end.split(" ")[0] + "T23:59:00") &&
           (selectedVoucher.for_tickets.length === 0 ||
@@ -1518,10 +1518,10 @@ const EventDetail = ({ isLogin }) => {
                               marginTop: "20px",
                             }}
                           >
-                            <b>Pilih Voucher</b>
+                            <b>Pilih Voucher / Ketik Kode Voucher</b>
                           </div>
                           <Select
-                            placeholder="Pilih Voucher"
+                            placeholder="Pilih / Ketik Kode Voucher"
                             styles={{
                               option: (basicStyle, state) => ({
                                 ...basicStyle,
@@ -1556,7 +1556,10 @@ const EventDetail = ({ isLogin }) => {
                                       )) ||
                                     voucher.avl_qty == 0 ||
                                     new Date() <
-                                      new Date(voucher.start.split(" ")[0]) ||
+                                      new Date(
+                                        voucher.start.split(" ")[0] +
+                                          "T00:00:00"
+                                      ) ||
                                     new Date() >
                                       new Date(
                                         voucher.end.split(" ")[0] + "T23:59:00"
@@ -1585,10 +1588,21 @@ const EventDetail = ({ isLogin }) => {
                                       <p style={{ color: "red" }}>
                                         Tidak Tersedia
                                       </p>
+                                    ) : voucher.avl_qty === 0 ? (
+                                      <p style={{ color: "red" }}>
+                                        Sudah Habis
+                                      </p>
                                     ) : (
                                       <></>
                                     )}
-                                    <p>{voucher.code}</p>
+                                    <p>
+                                      Diskon{" "}
+                                      {voucher.discount > 1
+                                        ? `Rp.${numberFormat.format(
+                                            voucher.discount
+                                          )},-/tiket`
+                                        : `${voucher.discount * 100}%`}
+                                    </p>
                                     <p>
                                       {moment(voucher.start)
                                         .locale("id")
@@ -1601,7 +1615,7 @@ const EventDetail = ({ isLogin }) => {
                                   </div>
                                 </div>
                               ),
-                              value: voucher,
+                              value: voucher.code,
                               isDisabled:
                                 (voucher.for_tickets.length > 0 &&
                                   !isEnabledVoucher(
@@ -1610,19 +1624,31 @@ const EventDetail = ({ isLogin }) => {
                                   )) ||
                                 voucher.avl_qty == 0 ||
                                 new Date() <
-                                  new Date(voucher.start.split(" ")[0]) ||
+                                  new Date(
+                                    voucher.start.split(" ")[0] + "T00:00:00"
+                                  ) ||
                                 new Date() >
                                   new Date(
                                     voucher.end.split(" ")[0] + "T23:59:00"
                                   ),
                             }))}
                             onChange={(e) => {
-                              setSelectedVoucher([e]);
+                              setSelectedVoucher([
+                                {
+                                  label: e.label,
+                                  value: vouchers.filter(
+                                    (voucher) => voucher.code === e.value
+                                  )[0],
+                                },
+                              ]);
                             }}
                             value={
                               selectedVoucher.length === 0
                                 ? null
-                                : selectedVoucher[0]
+                                : {
+                                    label: selectedVoucher[0].label,
+                                    value: selectedVoucher[0].value.code,
+                                  }
                             }
                           />
                         </div>
@@ -1638,21 +1664,6 @@ const EventDetail = ({ isLogin }) => {
                       <p className={styles.SubTotalNum}>
                         Rp.
                         {numberFormat.format(
-                          // cartData.reduce((currentVal, prevVal) => {
-                          //   if (prevVal.customPrice) {
-                          //     return (
-                          //       currentVal +
-                          //       parseInt(prevVal.customPrice) *
-                          //         parseInt(prevVal.count)
-                          //     );
-                          //   } else {
-                          //     return (
-                          //       currentVal +
-                          //       parseInt(prevVal.data.price) *
-                          //         parseInt(prevVal.count)
-                          //     );
-                          //   }
-                          // }, 0)
                           generateSubTotal(
                             cartData,
                             selectedVoucher.length === 0
@@ -2692,10 +2703,10 @@ const EventDetail = ({ isLogin }) => {
                         <div
                           style={{ marginBottom: "20px", marginTop: "20px" }}
                         >
-                          <b>Pilih Voucher</b>
+                          <b>Pilih Voucher / Ketik Kode Voucher</b>
                         </div>
                         <Select
-                          placeholder="Pilih Voucher"
+                          placeholder="Pilih / Ketik Kode Voucher"
                           styles={{
                             option: (basicStyle, state) => ({
                               ...basicStyle,
@@ -2728,7 +2739,9 @@ const EventDetail = ({ isLogin }) => {
                                     )) ||
                                   voucher.avl_qty == 0 ||
                                   new Date() <
-                                    new Date(voucher.start.split(" ")[0]) ||
+                                    new Date(
+                                      voucher.start.split(" ")[0] + "T00:00:00"
+                                    ) ||
                                   new Date() >
                                     new Date(
                                       voucher.end.split(" ")[0] + "T23:59:00"
@@ -2758,10 +2771,19 @@ const EventDetail = ({ isLogin }) => {
                                     <p style={{ color: "red" }}>
                                       Tidak Tersedia
                                     </p>
+                                  ) : voucher.avl_qty === 0 ? (
+                                    <p style={{ color: "red" }}>Sudah Habis</p>
                                   ) : (
                                     <></>
                                   )}
-                                  <p>{voucher.code}</p>
+                                  <p>
+                                    Diskon{" "}
+                                    {voucher.discount > 1
+                                      ? `Rp.${numberFormat.format(
+                                          voucher.discount
+                                        )},-/tiket`
+                                      : `${voucher.discount * 100}%`}
+                                  </p>
                                   <p>
                                     {moment(voucher.start)
                                       .locale("id")
@@ -2774,7 +2796,7 @@ const EventDetail = ({ isLogin }) => {
                                 </div>
                               </div>
                             ),
-                            value: voucher,
+                            value: voucher.code,
                             isDisabled:
                               (voucher.for_tickets.length > 0 &&
                                 !isEnabledVoucher(
@@ -2783,70 +2805,33 @@ const EventDetail = ({ isLogin }) => {
                                 )) ||
                               voucher.avl_qty == 0 ||
                               new Date() <
-                                new Date(voucher.start.split(" ")[0]) ||
+                                new Date(
+                                  voucher.start.split(" ")[0] + "T00:00:00"
+                                ) ||
                               new Date() >
                                 new Date(
                                   voucher.end.split(" ")[0] + "T23:59:00"
                                 ),
                           }))}
                           onChange={(e) => {
-                            console.log(e);
-                            setSelectedVoucher([e]);
+                            setSelectedVoucher([
+                              {
+                                label: e.label,
+                                value: vouchers.filter(
+                                  (voucher) => voucher.code === e.value
+                                )[0],
+                              },
+                            ]);
                           }}
                           value={
                             selectedVoucher.length === 0
                               ? null
-                              : selectedVoucher[0]
+                              : {
+                                  label: selectedVoucher[0].label,
+                                  value: selectedVoucher[0].value.code,
+                                }
                           }
                         />
-                        {/* <div>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Mollitia illo perspiciatis nostrum cum
-                          cupiditate. Officia sint odio doloribus quos quam,
-                          vero voluptatem, fuga ipsum eveniet quod enim? Ab,
-                          quia inventore.. Lorem ipsum dolor sit amet
-                          consectetur adipisicing elit. Eaque saepe, deleniti
-                          cupiditate dolorem aperiam soluta ipsum sunt.
-                          Consequatur quisquam numquam mollitia? Tempora aperiam
-                          earum, provident dolorem minus libero fugiat
-                          voluptates.. Lorem ipsum, dolor sit amet consectetur
-                          adipisicing elit. Accusantium eum at atque. Eos ab
-                          corporis optio aut, sint eius corrupti! Ad numquam
-                          temporibus minima, quas in sequi distinctio ratione
-                          consequatur.
-                        </div> */}
-
-                        {/* <div
-                          id="react-select-2-listbox"
-                          class="css-1nmdiq5-menu"
-                        >
-                          <div class=" css-1n6sfyn-MenuList">
-                            <div
-                              class=" css-xoszrd-option"
-                              aria-disabled="true"
-                              id="react-select-2-option-0"
-                              tabindex="-1"
-                            >
-                              Test Voucher
-                            </div>
-                            <div
-                              class=" css-1esxxiq-option"
-                              aria-disabled="true"
-                              id="react-select-2-option-1"
-                              tabindex="-1"
-                            >
-                              Test Voucher 2
-                            </div>
-                            <div
-                              class=" css-1esxxiq-option"
-                              aria-disabled="true"
-                              id="react-select-2-option-2"
-                              tabindex="-1"
-                            >
-                              Test Voucher 3
-                            </div>
-                          </div>
-                        </div> */}
                       </div>
                     </>
                   )}
@@ -2858,21 +2843,6 @@ const EventDetail = ({ isLogin }) => {
                     <p className={styles.SubTotalNum}>
                       Rp.
                       {numberFormat.format(
-                        // cartData.reduce((currentVal, prevVal) => {
-                        //   if (prevVal.customPrice) {
-                        //     return (
-                        //       currentVal +
-                        //       parseInt(prevVal.customPrice) *
-                        //         parseInt(prevVal.count)
-                        //     );
-                        //   } else {
-                        //     return (
-                        //       currentVal +
-                        //       parseInt(prevVal.data.price) *
-                        //         parseInt(prevVal.count)
-                        //     );
-                        //   }
-                        // }, 0)
                         generateSubTotal(
                           cartData,
                           selectedVoucher.length === 0
