@@ -1271,21 +1271,7 @@ const TrxContent = ({
             <p>Total</p>
             <div>
               Rp.
-              {numberFormat.format(
-                dataTrx.reduce((currentVal, prevVal) => {
-                  if (prevVal.customPrice) {
-                    return (
-                      currentVal +
-                      parseInt(prevVal.customPrice) * parseInt(prevVal.count)
-                    );
-                  } else {
-                    return (
-                      currentVal +
-                      parseInt(prevVal.data.price) * parseInt(prevVal.count)
-                    );
-                  }
-                }, 0)
-              )}
+              {numberFormat.format(resTrx.total)}
             </div>
           </div>
 
