@@ -101,6 +101,9 @@ const Setting = ({ isLogin, fnSetLogin = () => {} }) => {
           fieldProfile.newPass.current.value !==
           fieldProfile.confirmPass.current.value
             ? "Konfirmasi password tidak sesuai dengan password baru !"
+            : fieldProfile.newPass.current.value.split("").length < 8 ||
+              fieldProfile.confirmPass.current.value.split("").length < 8
+            ? "Password minimal 8 karakter"
             : "Semua field selain password lama wajib diisi !!!",
       });
       setTimeout(() => {
@@ -228,11 +231,13 @@ const Setting = ({ isLogin, fnSetLogin = () => {} }) => {
               </div>
               <div className={styles2.FormFieldBox}>
                 <div className={styles2.TitleInput}>Password Lama</div>
-                <InputForm
-                  refData={fieldProfile.lastPass}
-                  type={"password"}
-                  placeholder={"Tuliskan password lama kamu"}
-                />
+                <div className={styles3.FormFieldInput}>
+                  <InputForm
+                    refData={fieldProfile.lastPass}
+                    type={"password"}
+                    placeholder={"Tuliskan password lama kamu"}
+                  />
+                </div>
               </div>
               <div className={styles2.FormFieldBox}>
                 <div className={styles2.FormFooter}>
@@ -244,21 +249,27 @@ const Setting = ({ isLogin, fnSetLogin = () => {} }) => {
               </div>
               <div className={styles2.FormFieldBox}>
                 <div className={styles2.TitleInput}>Password Baru</div>
-                <InputForm
-                  refData={fieldProfile.newPass}
-                  type={"password"}
-                  placeholder={
-                    "Tuliskan password baru yang diinginkan min 8 karakter"
-                  }
-                />
+                <div className={styles3.FormFieldInput}>
+                  <InputForm
+                    refData={fieldProfile.newPass}
+                    type={"password"}
+                    placeholder={
+                      "Tuliskan password baru yang diinginkan min 8 karakter"
+                    }
+                    required
+                  />
+                </div>
               </div>
               <div className={styles2.FormFieldBox}>
                 <div className={styles2.TitleInput}>Konfirmasi Password</div>
-                <InputForm
-                  refData={fieldProfile.confirmPass}
-                  type={"password"}
-                  placeholder={"Tuliskan kembali password baru diatas"}
-                />
+                <div className={styles3.FormFieldInput}>
+                  <InputForm
+                    refData={fieldProfile.confirmPass}
+                    type={"password"}
+                    placeholder={"Tuliskan kembali password baru diatas"}
+                    required
+                  />
+                </div>
               </div>
             </div>
           </form>

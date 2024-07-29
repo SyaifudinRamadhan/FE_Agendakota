@@ -146,12 +146,17 @@ const Register = ({ isLogin }) => {
       !fieldLogin.password.current.value ||
       fieldLogin.password.current.value === "" ||
       !fieldLogin.rePassword.current.value ||
-      fieldLogin.rePassword.current.value === "" ||
-      !captcha
+      fieldLogin.rePassword.current.value === ""
     ) {
       setAlertDanger({
         state: true,
         content: "Semua field wajib diisi !!!",
+        variant: "danger",
+      });
+    } else if (!captcha) {
+      setAlertDanger({
+        state: true,
+        content: "Re-Captcha wajib diisi !!!",
         variant: "danger",
       });
     } else if (
@@ -354,7 +359,8 @@ const Register = ({ isLogin }) => {
                       id={"email-input"}
                       className={`${styles.FieldInput} input-labeled-field`}
                       refData={fieldLogin.email}
-                      type={"text"}
+                      type={"email"}
+                      required
                       placeholder={"Tuliskan alamat email akunmu"}
                       onFocus={() => {
                         setInputFocus("email");
@@ -382,6 +388,7 @@ const Register = ({ isLogin }) => {
                       className={`${styles.FieldInput} input-labeled-field`}
                       refData={fieldLogin.name}
                       type={"text"}
+                      required
                       placeholder={"Tuliskan username akunmu"}
                       onFocus={() => {
                         setInputFocus("name");
@@ -410,9 +417,8 @@ const Register = ({ isLogin }) => {
                       id={"pass-input"}
                       className={`${styles.FieldInput} input-labeled-field`}
                       refData={fieldLogin.password}
-                      hidePassBtn={false}
                       type={"password"}
-                      min={8}
+                      required
                       placeholder={"Tuliskan password akun agendakota"}
                       onFocus={() => {
                         setInputFocus("password");
@@ -441,10 +447,9 @@ const Register = ({ isLogin }) => {
                       id={"retype-pass-input"}
                       className={`${styles.FieldInput} input-labeled-field`}
                       refData={fieldLogin.rePassword}
-                      hidePassBtn={false}
                       type={"password"}
+                      required
                       placeholder={"Tuliskan ulang password mu"}
-                      min={8}
                       onFocus={() => {
                         setInputFocus("retype-password");
                       }}

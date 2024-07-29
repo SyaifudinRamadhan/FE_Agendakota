@@ -145,37 +145,41 @@ const Home = () => {
             }
           });
           setTimeout(() => {
-            mainGetRequest({ path: "spotlight" }).then((res) => {
+            mainGetRequest({ path: "active-spotlights" }).then((res) => {
               if (res.status === 200) {
-                setSpotlightEvent(res.data.spotlight);
+                setSpotlightEvent(res.data.spotlights);
               } else {
                 setSpotlightEvent([]);
               }
             });
             setTimeout(() => {
-              mainGetRequest({ path: "special-day" }).then((res) => {
+              mainGetRequest({ path: "active-special-days" }).then((res) => {
                 if (res.status === 200) {
-                  setSpcDayEvent(res.data.special_day);
+                  setSpcDayEvent(res.data.special_days);
                 } else {
                   setSpcDayEvent([]);
                 }
               });
               setTimeout(() => {
-                mainGetRequest({ path: "selected-event" }).then((res) => {
-                  if (res.status === 200) {
-                    setSlcEvent(res.data.selected_event);
-                  } else {
-                    setSlcEvent([]);
-                  }
-                });
-                setTimeout(() => {
-                  mainGetRequest({ path: "selected-activity" }).then((res) => {
+                mainGetRequest({ path: "active-selected-events" }).then(
+                  (res) => {
                     if (res.status === 200) {
-                      setSlcActivity(res.data.selected_activity);
+                      setSlcEvent(res.data.selected_events);
                     } else {
-                      setSlcActivity([]);
+                      setSlcEvent([]);
                     }
-                  });
+                  }
+                );
+                setTimeout(() => {
+                  mainGetRequest({ path: "active-selected-activities" }).then(
+                    (res) => {
+                      if (res.status === 200) {
+                        setSlcActivity(res.data.selected_activities);
+                      } else {
+                        setSlcActivity([]);
+                      }
+                    }
+                  );
                   setTimeout(() => {
                     mainGetRequest({ path: "pop-events" }).then((res) => {
                       if (res.status === 200) {
@@ -447,57 +451,61 @@ const Home = () => {
           </div>
         </section>
 
-        {spotlightEvent &&
-        spotlightEvent.events &&
-        spotlightEvent.events.length > 0 ? (
-          <section className={styles.CustomSpotlight}>
-            <div>
-              <div
-                className={styles.CustomSpotBox}
-                style={{
-                  backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${spotlightEvent.data.banner}")`,
-                }}
-              >
-                <div className={styles.CustomSpotText}>
-                  <div className={styles.CustomSpotTitle}>
-                    {spotlightEvent.data.title}
-                  </div>
-                  <div className={styles.CustomSpotSubtitle}>
-                    {spotlightEvent.data.sub_title}
-                  </div>
-                  <Button
-                    title={"Create Event"}
-                    icon={<BiPlusCircle />}
-                    classes={[styles.ButtonBasic]}
-                    style={{ width: "unset", marginRight: "auto" }}
-                    fnOnClick={() => navigate("/create-event")}
-                  />
-                </div>
-                <div className={styles.CustomSpotEvents}>
-                  <Slider
+        {spotlightEvent && spotlightEvent.length > 0 ? (
+          spotlightEvent.map((spotlightEvent) =>
+            spotlightEvent.events.length > 0 ? (
+              <section className={styles.CustomSpotlight}>
+                <div>
+                  <div
+                    className={styles.CustomSpotBox}
                     style={{
-                      flexDirection: "row",
-                      marginTop: 20,
-                      gap: 20,
-                      display: "flex",
-                      padding: "0px",
+                      backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}${spotlightEvent.data.banner}")`,
                     }}
-                    distanceCard={20}
-                    navigatorClasses={[styles.CustomNavSlideSpot]}
-                    content={[
-                      ...spotlightEvent.events.map((event, e) => (
-                        <Event
-                          style={{ maxWidth: "313px", flexBasis: "100%" }}
-                          data={event}
-                          key={e}
-                        />
-                      )),
-                    ]}
-                  />
+                  >
+                    <div className={styles.CustomSpotText}>
+                      <div className={styles.CustomSpotTitle}>
+                        {spotlightEvent.data.title}
+                      </div>
+                      <div className={styles.CustomSpotSubtitle}>
+                        {spotlightEvent.data.sub_title}
+                      </div>
+                      <Button
+                        title={"Create Event"}
+                        icon={<BiPlusCircle />}
+                        classes={[styles.ButtonBasic]}
+                        style={{ width: "unset", marginRight: "auto" }}
+                        fnOnClick={() => navigate("/create-event")}
+                      />
+                    </div>
+                    <div className={styles.CustomSpotEvents}>
+                      <Slider
+                        style={{
+                          flexDirection: "row",
+                          marginTop: 20,
+                          gap: 20,
+                          display: "flex",
+                          padding: "0px",
+                        }}
+                        distanceCard={20}
+                        navigatorClasses={[styles.CustomNavSlideSpot]}
+                        content={[
+                          ...spotlightEvent.events.map((event, e) => (
+                            <Event
+                              style={{ maxWidth: "313px", flexBasis: "100%" }}
+                              data={event}
+                              key={e}
+                            />
+                          )),
+                        ]}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </section>
+              </section>
+            ) : (
+              <></>
+            )
+          )
         ) : !spotlightEvent ? (
           <section className={styles.CustomSpotlight}>
             <div>
@@ -554,35 +562,39 @@ const Home = () => {
           </div>
         )}
 
-        {specialDayEvent &&
-        specialDayEvent.events &&
-        specialDayEvent.events.length > 0 ? (
-          <section>
-            <h3 style={{ marginTop: 0, padding: 0 }}>
-              {specialDayEvent.data.title}
-            </h3>
-            <Slider
-              style={{
-                flexDirection: "row",
-                marginTop: 20,
-                gap: 20,
-                display: "flex",
-              }}
-              distanceCard={20}
-              content={specialDayEvent.events.map((event, e) => (
-                <Event style={{ maxWidth: "313px" }} data={event} key={e} />
-              ))}
-            />
-            <div className={styles.SelectedEvent}>
-              <Button
-                title={<div>Lihat Semuanya</div>}
-                classes={[styles.ButtonBasic]}
-                fnOnClick={() => {
-                  navigate("/special-day");
-                }}
-              />
-            </div>
-          </section>
+        {specialDayEvent && specialDayEvent.length > 0 ? (
+          specialDayEvent.map((specialDayEvent) =>
+            specialDayEvent.events.length > 0 ? (
+              <section>
+                <h3 style={{ marginTop: 0, padding: 0 }}>
+                  {specialDayEvent.data.title}
+                </h3>
+                <Slider
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 20,
+                    gap: 20,
+                    display: "flex",
+                  }}
+                  distanceCard={20}
+                  content={specialDayEvent.events.map((event, e) => (
+                    <Event style={{ maxWidth: "313px" }} data={event} key={e} />
+                  ))}
+                />
+                <div className={styles.SelectedEvent}>
+                  <Button
+                    title={<div>Lihat Semuanya</div>}
+                    classes={[styles.ButtonBasic]}
+                    fnOnClick={() => {
+                      navigate("/special-day");
+                    }}
+                  />
+                </div>
+              </section>
+            ) : (
+              <></>
+            )
+          )
         ) : !specialDayEvent ? (
           <section>
             <HeaderSkeleton />
@@ -623,35 +635,39 @@ const Home = () => {
           <></>
         )}
 
-        {selectedEvent &&
-        selectedEvent.events &&
-        selectedEvent.events.length > 0 ? (
-          <section>
-            <h3 style={{ marginTop: 0, padding: 0 }}>
-              {selectedEvent.data.title}
-            </h3>
-            <Slider
-              style={{
-                flexDirection: "row",
-                marginTop: 20,
-                gap: 20,
-                display: "flex",
-              }}
-              distanceCard={20}
-              content={selectedEvent.events.map((event, e) => (
-                <Event style={{ maxWidth: "313px" }} data={event} key={e} />
-              ))}
-            />
-            <div className={styles.SelectedEvent}>
-              <Button
-                title={<div>Lihat Semuanya</div>}
-                classes={[styles.ButtonBasic]}
-                fnOnClick={() => {
-                  navigate("/selected-events");
-                }}
-              />
-            </div>
-          </section>
+        {selectedEvent && selectedEvent.length > 0 ? (
+          selectedEvent.map((selectedEvent) =>
+            selectedEvent.events.length > 0 ? (
+              <section>
+                <h3 style={{ marginTop: 0, padding: 0 }}>
+                  {selectedEvent.data.title}
+                </h3>
+                <Slider
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 20,
+                    gap: 20,
+                    display: "flex",
+                  }}
+                  distanceCard={20}
+                  content={selectedEvent.events.map((event, e) => (
+                    <Event style={{ maxWidth: "313px" }} data={event} key={e} />
+                  ))}
+                />
+                <div className={styles.SelectedEvent}>
+                  <Button
+                    title={<div>Lihat Semuanya</div>}
+                    classes={[styles.ButtonBasic]}
+                    fnOnClick={() => {
+                      navigate("/selected-events");
+                    }}
+                  />
+                </div>
+              </section>
+            ) : (
+              <></>
+            )
+          )
         ) : !selectedEvent ? (
           <section>
             <HeaderSkeleton />
@@ -965,48 +981,52 @@ const Home = () => {
           )}
         </section>
 
-        {selectedActivity &&
-        selectedActivity.events &&
-        selectedActivity.events.length > 0 ? (
-          <section>
-            <h3 style={{ marginTop: 0, padding: 0 }}>
-              {selectedActivity.data.title}
-            </h3>
-            {/* <Chip
-						options={[
-							"Hiburan",
-							"Kuliner",
-							"Shoping",
-							"Healing",
-							"Kesehatan",
-							"Kecantikan",
-						]}
-						value={city}
-						setValue={setCity}
-						multiple={false}
-					/> */}
-            <Slider
-              style={{
-                flexDirection: "row",
-                marginTop: 20,
-                gap: 20,
-                display: "flex",
-              }}
-              distanceCard={20}
-              content={selectedActivity.events.map((event, e) => (
-                <Event style={{ maxWidth: "313px" }} data={event} key={e} />
-              ))}
-            />
-            <div className={styles.SelectedEvent}>
-              <Button
-                title={<div>Lihat Semuanya</div>}
-                classes={[styles.ButtonBasic]}
-                fnOnClick={() => {
-                  navigate("/selected-activities");
-                }}
-              />
-            </div>
-          </section>
+        {selectedActivity && selectedActivity.length > 0 ? (
+          selectedActivity.map((selectedActivity) =>
+            selectedActivity.events.length > 0 ? (
+              <section>
+                <h3 style={{ marginTop: 0, padding: 0 }}>
+                  {selectedActivity.data.title}
+                </h3>
+                {/* <Chip
+              options={[
+                "Hiburan",
+                "Kuliner",
+                "Shoping",
+                "Healing",
+                "Kesehatan",
+                "Kecantikan",
+              ]}
+              value={city}
+              setValue={setCity}
+              multiple={false}
+            /> */}
+                <Slider
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 20,
+                    gap: 20,
+                    display: "flex",
+                  }}
+                  distanceCard={20}
+                  content={selectedActivity.events.map((event, e) => (
+                    <Event style={{ maxWidth: "313px" }} data={event} key={e} />
+                  ))}
+                />
+                <div className={styles.SelectedEvent}>
+                  <Button
+                    title={<div>Lihat Semuanya</div>}
+                    classes={[styles.ButtonBasic]}
+                    fnOnClick={() => {
+                      navigate("/selected-activities");
+                    }}
+                  />
+                </div>
+              </section>
+            ) : (
+              <></>
+            )
+          )
         ) : !selectedActivity ? (
           <section>
             <HeaderSkeleton />

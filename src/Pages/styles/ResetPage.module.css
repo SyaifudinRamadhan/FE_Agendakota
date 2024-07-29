@@ -1,0 +1,118 @@
+.FormReset {
+  margin: auto;
+  background-color: #fff;
+  box-shadow: 0 0 5px 0px #919191;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 8px;
+  max-width: 550px;
+}
+
+.FormReset h5 {
+  text-align: center;
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.FormReset button {
+  margin: auto;
+  width: 100%;
+}
+
+.InfoBox {
+  background-color: #eaeaea;
+  color: #888;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.InfoBox * {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.InfoBox svg {
+  width: 20px;
+  height: 20px;
+}
+
+.InfoBox ol {
+  width: calc(100% - 29px);
+  margin-left: 5px;
+}
+
+.FieldBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.BgLayout {
+  height: calc(100% - 90px);
+  top: 90px;
+}
+
+.PassField {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+}
+
+.PassField input {
+  width: 100%;
+}
+
+.PassField button {
+  background: white;
+  border-color: white;
+  color: black;
+  display: unset;
+  position: absolute;
+  right: 8px;
+  top: 2px;
+  width: unset;
+}
+
+.Notification {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Notification svg,
+.Notification p,
+.Notification button {
+  margin: auto;
+}
+
+.Notification svg {
+  width: 50px;
+  height: 50px;
+}
+
+.Notification p {
+  text-align: center;
+}
+
+@media (max-width: 550px) {
+  .BgLayout {
+    padding: 0;
+    top: 70px;
+    height: calc(100% - 70px);
+  }
+
+  .FormReset {
+    margin: 0px !important;
+    border-radius: 0px;
+    height: 100%;
+    padding-bottom: 80px;
+  }
+}

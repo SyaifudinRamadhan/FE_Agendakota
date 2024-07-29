@@ -38,6 +38,7 @@ import RefundCancelEvent from "../Pages/RefundCancelEvent";
 import Price from "../Pages/Price";
 import SelfCheckin from "../Pages/User/SelfCheckin";
 import DownloadTicket from "../Pages/User/DownloadTicket";
+import ResetPage from "../Pages/ResetPage";
 
 // let firstLoad = true;
 
@@ -169,6 +170,11 @@ const WebFrame = () => {
       window.location.pathname === "/privacy-policy" ||
       window.location.pathname === "/refund-cancel-event" ||
       window.location.pathname === "/trx-price" ||
+      window.location.pathname === "/reset-password" ||
+      window.location.pathname === "/reset-password/" ||
+      (window.location.pathname.indexOf("/reset-password/") === 0 &&
+        window.location.pathname.split("/reset-password/")[1] !== "" &&
+        window.location.pathname.split("/reset-password/")[1] !== undefined) ||
       (window.location.pathname.indexOf("/event/") === 0 &&
         window.location.pathname.split("/event/")[1] !== "" &&
         window.location.pathname.split("/event/")[1] !== undefined) ||
@@ -352,6 +358,14 @@ const WebFrame = () => {
             <Route
               path="/register-user"
               element={<Register isLogin={isLogin} />}
+            />
+            <Route
+              path="/reset-password/:token"
+              element={<ResetPage isLogin={isLogin} />}
+            />
+            <Route
+              path="/reset-password"
+              element={<ResetPage isLogin={isLogin} />}
             />
             <Route
               path="/create-event"

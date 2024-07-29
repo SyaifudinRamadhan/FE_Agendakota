@@ -417,7 +417,8 @@ const Login = ({ isLogin }) => {
                       id={"email-input"}
                       className={`${styles.FieldInput} input-labeled-field`}
                       refData={fieldLogin.email}
-                      type={"text"}
+                      type={"email"}
+                      required
                       style={{}}
                       placeholder={"Tuliskan alamat email akunmu"}
                     />
@@ -444,7 +445,7 @@ const Login = ({ isLogin }) => {
                       id={"pass-input"}
                       className={`${styles.FieldInput} input-labeled-field`}
                       refData={fieldLogin.password}
-                      hidePassBtn={false}
+                      required
                       type={"password"}
                       placeholder={"Tuliskan password akun agendakota"}
                     />
@@ -498,6 +499,21 @@ const Login = ({ isLogin }) => {
                       to="/register-user"
                     >
                       Daftar
+                    </Link>
+                  </div>
+                  <div
+                    style={{
+                      flexDirection: "row",
+                      margin: "auto",
+                      gap: "10px",
+                    }}
+                  >
+                    <div>Lupa Password ? </div>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      to="/reset-password"
+                    >
+                      Reset Password
                     </Link>
                   </div>
                   <div

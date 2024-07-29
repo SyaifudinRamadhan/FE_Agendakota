@@ -118,6 +118,45 @@
   color: #888;
 }
 
+.CopyBox {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+}
+
+.CopyBox p {
+  margin-top: auto;
+  margin-bottom: auto;
+  width: calc(100% - 82px);
+  text-align: end;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Badge {
+  padding: 5px;
+  border-radius: 10px;
+  color: #454545;
+  background-color: #ddd;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  cursor: pointer;
+  min-width: 71px;
+}
+
+.Badge * {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.Alert {
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+}
+
 @media (max-width: 992px) {
   .PopUpContentMain {
     flex-direction: column;
@@ -128,5 +167,9 @@
 
   .VoucherCard {
     width: 100%;
+  }
+
+  .Alert {
+    top: -12px;
   }
 }

@@ -7,6 +7,7 @@
 	overflow-y: auto;
 	padding: 50px 0px;
 }
+
 .BoxContent {
 	position: absolute;
 	width: 50%;
@@ -20,16 +21,19 @@
 	border-radius: 8px;
 	background-color: #fff;
 }
+
 .Logo {
 	margin: auto;
 	width: 200px;
 }
+
 .Content {
 	width: 434px;
 	margin-top: 72px;
 	margin-left: auto;
 	margin-right: auto;
 }
+
 .Title {
 	color: #2c2c2c;
 	font-family: Inter;
@@ -38,6 +42,7 @@
 	font-weight: 700;
 	line-height: normal;
 }
+
 .SubTitle {
 	color: #8b8b8b;
 	font-family: Inter;
@@ -47,23 +52,28 @@
 	line-height: normal;
 	margin-top: 10px;
 }
+
 .TextCenter {
 	text-align: center;
 	width: 100%;
 	margin: 32px 0px;
 }
+
 .GoogleLoginBtn iframe {
 	margin: auto !important;
 	margin-top: 20px;
 	width: unset !important;
 	height: unset !important;
 }
+
 .ShadowBoxInput1 {
 	box-shadow: 0px 20px 15px 0px #ff799333;
 }
+
 .ShadowBoxInput2 {
 	box-shadow: 0px -20px 15px 0px #ff799333;
 }
+
 .BoxInput {
 	display: flex;
 	flex-direction: column;
@@ -71,27 +81,33 @@
 	border-radius: 8px;
 	margin-bottom: 30px;
 }
+
 .FormFieldInput {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
 	padding: 12px;
 	gap: 10px;
+	position: relative;
 }
+
 .TitleInput {
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
 }
+
 .TitleInput svg {
 	width: 20px;
 	height: 20px;
 }
+
 .TitleInput svg,
 .TitleInput div {
 	margin-top: auto;
 	margin-bottom: auto;
 }
+
 .FieldInput {
 	width: 100%;
 	border: none !important;
@@ -100,6 +116,7 @@
 	text-align: end;
 	padding-right: 12px !important;
 }
+
 .CapcthaField {
 	width: 100%;
 	margin-bottom: 20px;

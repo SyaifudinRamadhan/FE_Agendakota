@@ -6,6 +6,7 @@ import {
   BiArrowBack,
   BiCalendar,
   BiCard,
+  BiCopy,
   BiFilter,
   BiGrid,
   BiInfoCircle,
@@ -202,6 +203,16 @@ const PopUpVoucher = ({
     ) {
       end.current.value = "";
     }
+  };
+
+  const copyHandle = (url) => {
+    // process to copy
+    navigator.clipboard.writeText(url);
+    setAlert({
+      state: true,
+      type: "success",
+      content: "Kode voucher berhasil dicopy !",
+    });
   };
 
   const basicValidator = (create = false) => {
@@ -579,6 +590,7 @@ const PopUpVoucher = ({
             }}
             message={alert.content}
             closeBtn={true}
+            className={[styles.Alert]}
           />
           {loading ? (
             <div style={{ padding: "50px", width: "100%" }}>
@@ -900,6 +912,45 @@ const PopUpVoucher = ({
                   setBlankDiscount(false);
                 }}
               />
+              <div
+                className={styles2.Info2}
+                style={{
+                  marginLeft: "0px",
+                  marginRight: "0px",
+                  marginBottom: "0px",
+                }}
+              >
+                <div className={styles2.CmdField}>
+                  <BiInfoCircle />
+                </div>
+                <p></p>
+                <ol>
+                  <b style={{ marginLeft: "-15px", marginBottom: "10px" }}>
+                    Apa itu kode voucher ?
+                  </b>
+                  <li>
+                    Kode Voucher merupakan kode unik dari setiap voucher.
+                    Berbeda dengan nama voucher, yang merupkan penamaan atau
+                    labeling dari suatu voucher
+                  </li>
+                  <li>
+                    Setiap voucher tidak boleh dan tidak akan bisa memiliki kode
+                    voucher yang sama
+                  </li>
+                  <li>
+                    Kode voucher ini, tidak digenerate otomatis. Namun
+                    didefinikan atau ditentukan oleh organizer event sendiri
+                  </li>
+                  <li>
+                    Setelah voucher disimpan, kode voucher sudah tidak dapat
+                    diubah lagi. (DIkunci)
+                  </li>
+                  <li>
+                    Kode voucher inilah yang akan digunakan sebagai inputan
+                    untuk memilih voucher saat user akan membeli tiket anda
+                  </li>
+                </ol>
+              </div>
               <InputLabeled
                 type={"text"}
                 id={"code"}
@@ -921,6 +972,24 @@ const PopUpVoucher = ({
                 }}
                 readOnly={mode === "add" ? false : true}
               />
+              {mode === "edit" ? (
+                <FieldBox label={"Kode Voucher"} iconSvg={<BiCard />}>
+                  <div className={`${styles.CopyBox}`}>
+                    <p>{code.current ? code.current.value : ""}</p>
+                    <div
+                      className={styles.Badge}
+                      onClick={() => {
+                        copyHandle(code.current ? code.current.value : "");
+                      }}
+                    >
+                      <BiCopy />
+                      Copy
+                    </div>
+                  </div>
+                </FieldBox>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </>

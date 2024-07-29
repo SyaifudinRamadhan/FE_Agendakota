@@ -197,12 +197,24 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
       !fieldLogin.email.current ||
       fieldLogin.email.current.value === "" ||
       !fieldLogin.password.current ||
-      fieldLogin.password.current.value === "" ||
-      !captcha
+      fieldLogin.password.current.value === ""
     ) {
       setAlertDanger({
         state: true,
         content: "Semua field wajib diisi !!!",
+        variant: "danger",
+      });
+      setTimeout(() => {
+        setAlertDanger({
+          state: false,
+          content: "Semua field wajib diisi !!!",
+          variant: "danger",
+        });
+      }, 3000);
+    } else if (!captcha) {
+      setAlertDanger({
+        state: true,
+        content: "Re-Captha wajib diisi !!!",
         variant: "danger",
       });
       setTimeout(() => {
@@ -231,12 +243,24 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
       !fieldAddtional.username.current ||
       fieldAddtional.username.current.value === "" ||
       !fieldAddtional.confirm.current ||
-      fieldAddtional.confirm.current.value === "" ||
-      !captcha
+      fieldAddtional.confirm.current.value === ""
     ) {
       setAlertDanger({
         state: true,
         content: "Semua field wajib diisi !!!",
+        variant: "danger",
+      });
+      setTimeout(() => {
+        setAlertDanger({
+          state: false,
+          content: "Semua field wajib diisi !!!",
+          variant: "danger",
+        });
+      }, 3000);
+    } else if (!captcha) {
+      setAlertDanger({
+        state: true,
+        content: "Re-Captha wajib diisi !!!",
         variant: "danger",
       });
       setTimeout(() => {
@@ -252,6 +276,19 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
       setAlertDanger({
         state: true,
         content: "Konfirmasi password tidak sesuai !!!",
+        variant: "danger",
+      });
+      setTimeout(() => {
+        setAlertDanger({
+          state: false,
+          content: "Semua field wajib diisi !!!",
+          variant: "danger",
+        });
+      }, 3000);
+    } else if (fieldLogin.password.current.value.length < 8) {
+      setAlertDanger({
+        state: true,
+        content: "Password minimal 8 karakter",
         variant: "danger",
       });
       setTimeout(() => {
@@ -488,7 +525,8 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
                         id={"email-input"}
                         className={stylesLogin.FieldInput}
                         refData={fieldLogin.email}
-                        type={"text"}
+                        type={"email"}
+                        required
                         placeholder={"Tuliskan alamat email akunmu"}
                       />
                     </div>
@@ -515,6 +553,7 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
                           className={stylesLogin.FieldInput}
                           refData={fieldAddtional.username}
                           type={"text"}
+                          required
                           placeholder={"Tuliskan username akunmu"}
                         />
                       </div>
@@ -542,8 +581,9 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
                         id={"pass-input"}
                         className={stylesLogin.FieldInput}
                         refData={fieldLogin.password}
-                        hidePassBtn={false}
+                        // hidePassBtn={false}
                         type={"password"}
+                        required
                         placeholder={"Tuliskan password akun agendakota"}
                       />
                     </div>
@@ -569,8 +609,9 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
                           id={"confirm-pass-input"}
                           className={stylesLogin.FieldInput}
                           refData={fieldAddtional.confirm}
-                          hidePassBtn={false}
+                          // hidePassBtn={false}
                           type={"password"}
+                          required
                           placeholder={"Konfirmasi password akun agendakota"}
                         />
                       </div>
@@ -591,6 +632,7 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
 
                   <div
                     className={styles.RegisterButton}
+                    style={{ marginBottom: "0px" }}
                     onClick={() => {
                       formMode === "login"
                         ? setFormMode("register")
@@ -600,6 +642,15 @@ const PopUpLogin = ({ setLogin, addtionalStyle = {}, forTrx = false }) => {
                     {formMode === "login"
                       ? "Belum Punya Akun ? Daftar"
                       : "Sudah Punya Akun ? Login"}
+                  </div>
+                  <div
+                    className={styles.RegisterButton}
+                    style={{ marginTop: "10px" }}
+                    onClick={() => {
+                      window.location.href = "/reset-password";
+                    }}
+                  >
+                    Lupa Password ? Reset Password
                   </div>
                   {/* <div
                     className={styles.RegisterButton}

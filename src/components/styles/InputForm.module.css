@@ -26,16 +26,24 @@ input[type="password" i]:focus,
 	box-shadow: #f59abf;
 	border: 1px solid #fae1eb;
 }
+
 .HidePassword {
-	margin-top: -48px;
+	/* margin-top: -48px;
 	margin-bottom: 10px;
 	margin-left: auto;
 	margin-right: 5px;
 	width: unset;
 	box-shadow: none;
 	padding-left: 5px;
+	padding-right: 2px; */
+	width: unset;
+	box-shadow: none;
+	padding-left: 5px;
 	padding-right: 2px;
+	position: absolute;
+	right: 8px;
 }
+
 .InputPassword {
-	padding-right: 29px;
+	padding-right: 29px !important;
 }
