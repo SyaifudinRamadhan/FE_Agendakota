@@ -237,6 +237,12 @@ const PopUpVoucher = ({
       setBlankEnd(true);
       error = "Tanggal voucher berakhir wajib diisi !";
     } else if (
+      new Date(start.current.value).setHours(0, 0, 0) >
+      new Date(end.current.value).setHours(0, 0, 0)
+    ) {
+      setBlankEnd(true);
+      error = "Tanggal mulai dan berakhir voucher terbalik !";
+    } else if (
       !qty.current ||
       qty.current.value === "" ||
       qty.current.value === " " ||
@@ -746,7 +752,18 @@ const PopUpVoucher = ({
                     }
                     style={{ boxShadow: "none", outline: "none" }}
                     refData={start}
-                    min={new Date().toISOString().split("T")[0]}
+                    min={
+                      new Date(
+                        new Date().setHours(0, 0, 0) -
+                          new Date(
+                            new Date().setHours(0, 0, 0)
+                          ).getTimezoneOffset() *
+                            1000 *
+                            60
+                      )
+                        .toISOString()
+                        .split("T")[0]
+                    }
                     max={endEvent ? endEvent.split("T")[0] : undefined}
                     fnOnChange={selectStartDate}
                     fnOnInput={() => {
@@ -771,7 +788,16 @@ const PopUpVoucher = ({
                     min={
                       startSell
                         ? startSell
-                        : new Date().toISOString().split("T")[0]
+                        : new Date(
+                            new Date().setHours(0, 0, 0) -
+                              new Date(
+                                new Date().setHours(0, 0, 0)
+                              ).getTimezoneOffset() *
+                                1000 *
+                                60
+                          )
+                            .toISOString()
+                            .split("T")[0]
                     }
                     max={endEvent ? endEvent.split("T")[0] : undefined}
                     fnOnInput={() => {

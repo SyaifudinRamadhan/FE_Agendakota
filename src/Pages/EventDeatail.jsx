@@ -1952,11 +1952,13 @@ const EventDetail = ({ isLogin }) => {
                         <div
                           className={styles.TicketCard}
                           style={
-                            event.event.category !== "Attraction" &&
-                            event.event.category !== "Daily Activities" &&
-                            event.event.category !==
-                              "Tour Travel (recurring)" &&
-                            ticket.quantity === 0
+                            (event.event.category !== "Attraction" &&
+                              event.event.category !== "Daily Activities" &&
+                              event.event.category !==
+                                "Tour Travel (recurring)" &&
+                              ticket.quantity === 0) ||
+                            new Date() < new Date(ticket.start_date) ||
+                            new Date() > new Date(ticket.end_date)
                               ? { opacity: "0.5" }
                               : {}
                           }
@@ -2182,6 +2184,17 @@ const EventDetail = ({ isLogin }) => {
                             ticket.quantity === 0 ? (
                               <Button
                                 title={"Sold Out"}
+                                style={{
+                                  width: "unset",
+                                  minWidth: "75px",
+                                  marginLeft: "auto",
+                                }}
+                                center
+                              />
+                            ) : new Date() < new Date(ticket.start_date) ||
+                              new Date() > new Date(ticket.end_date) ? (
+                              <Button
+                                title={"Belum Teresedia"}
                                 style={{
                                   width: "unset",
                                   minWidth: "75px",

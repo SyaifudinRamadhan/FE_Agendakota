@@ -773,8 +773,8 @@ const config = {
 			// "015": ["ID_JENIUSPAY", "JeniusPay", 0.02],
 		},
 		qris: {
-			// "021": ["ID_DANA", "DANA", 0.007],
-			// "022": ["ID_LINKAJA", "LinkAja", 0.007],
+			"021": ["ID_DANA", "DANA", 0.007],
+			"022": ["ID_LINKAJA", "LinkAja", 0.007],
 		},
 		VA: {
 			"031": ["BCA", "BCA", 4000],

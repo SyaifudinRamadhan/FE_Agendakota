@@ -1171,9 +1171,10 @@ const PopUpTicket = ({
       (forEvtAct === "Onsite Event" ||
         forEvtAct === "Online Event" ||
         forEvtAct === "Hybrid Event") &&
-      (new Date(start.current.value) > new Date(end.current.value) ||
-        new Date(end.current.value) > new Date(endEvent) ||
-        new Date(start.current.value) > new Date(endEvent))
+      (new Date(start.current.value).setHours(0, 0, 0) >
+        new Date(end.current.value).setHours(0, 0, 0) ||
+        new Date(end.current.value).setHours(0, 0, 0) > new Date(endEvent) ||
+        new Date(start.current.value).setHours(0, 0, 0) > new Date(endEvent))
     ) {
       setAlert({
         state: true,
@@ -2229,7 +2230,18 @@ const PopUpTicket = ({
                             }
                             style={{ boxShadow: "none", outline: "none" }}
                             refData={start}
-                            min={new Date().toISOString().split("T")[0]}
+                            min={
+                              new Date(
+                                new Date().setHours(0, 0, 0) -
+                                  new Date(
+                                    new Date().setHours(0, 0, 0)
+                                  ).getTimezoneOffset() *
+                                    1000 *
+                                    60
+                              )
+                                .toISOString()
+                                .split("T")[0]
+                            }
                             max={endEvent ? endEvent.split("T")[0] : undefined}
                             fnOnChange={selectedStartSell}
                             fnOnInput={() => {
@@ -2256,7 +2268,16 @@ const PopUpTicket = ({
                             min={
                               startSell
                                 ? startSell
-                                : new Date().toISOString().split("T")[0]
+                                : new Date(
+                                    new Date().setHours(0, 0, 0) -
+                                      new Date(
+                                        new Date().setHours(0, 0, 0)
+                                      ).getTimezoneOffset() *
+                                        1000 *
+                                        60
+                                  )
+                                    .toISOString()
+                                    .split("T")[0]
                             }
                             max={endEvent ? endEvent.split("T")[0] : undefined}
                             fnOnInput={() => {

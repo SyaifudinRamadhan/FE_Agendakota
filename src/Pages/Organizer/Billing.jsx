@@ -796,6 +796,7 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
               </div>
             </>
           );
+          setDataTable(null);
         } else if (res.status === 401) {
           fnSetLogin(false);
           setPausedProcess("add-wd");
@@ -904,6 +905,8 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
       );
       setDataTable(data);
       // console.log("reload data table");
+    } else {
+      setDataTable(null);
     }
   }, [selectedEvent]);
 
@@ -1039,7 +1042,10 @@ const OrganizerBilling = ({ organization, fnSetLogin, isLogin }) => {
           label: events[0].event.name,
           value: events[0].event.id,
         });
+      } else {
+        setSelectedEvent(null);
       }
+
       if (banks.length === 0) {
         handleAddBankRq();
       }
