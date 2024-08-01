@@ -156,9 +156,9 @@ const addData = async ({
     let finalStartEvent = new Date(start_date + "T" + start_time);
     let finalEndEvent = new Date(end_date + "T" + end_time);
     let originDistance = finalEndEvent.getTime() - finalStartEvent.getTime();
-    if (originDistance < 3600000) {
-      originDistance = 3600000;
-    }
+    // if (originDistance < 3600000) {
+    //   originDistance = 3600000;
+    // }
     if (new Date() >= finalStartEvent) {
       finalStartEvent = new Date().setMinutes(
         new Date().getMinutes() + 5,
@@ -174,7 +174,7 @@ const addData = async ({
       start_date = iso.split("T")[0];
       start_time = iso.split("T")[1];
     }
-    if (finalEndEvent - finalStartEvent < 3600000) {
+    if (finalEndEvent - finalStartEvent < originDistance) {
       finalEndEvent = new Date(finalStartEvent);
       finalEndEvent.setTime(finalEndEvent.getTime() + originDistance);
       let iso = new Date(
@@ -632,7 +632,7 @@ const EditorAddEvtAct = ({
           category === "" ||
           category === null))
     ) {
-      let content = "Semua field kecuali ticket";
+      let content = "Semua field kecuali ticket wajib diisi";
       if (title.current.value === "" || title.current.value.length > 200) {
         setBlankTitle(true);
       }
@@ -746,7 +746,7 @@ const EditorAddEvtAct = ({
         state: true,
         type: "danger",
         content:
-          "Periksa input tanggal. Pastikan tidak terbalik / melebihi tanggal saat ini",
+          "Periksa input tanggal dan waktu. Pastikan tidak terbalik / melebihi tanggal saat ini",
       });
       resetAlert(3000);
       return false;

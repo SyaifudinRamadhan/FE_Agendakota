@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles/PopUpCheckin.module.css";
 import {
   BiArrowBack,
@@ -81,6 +81,7 @@ const PopUpCheckin = ({
   // const [menu, setMenu] = useState("Alert");
   const [lastMenu, setLastMenu] = useState("");
   const [strCode, setStrCode] = useState(null);
+  const inputCode = useRef();
   // const [enterCLick, setEnterClick] = useState(false);
   const [firstLoad, setFirstLoadState] = useState(true);
   const [isLoading, setLoading] = useState(false);
@@ -173,19 +174,26 @@ const PopUpCheckin = ({
   }, [pausedProcess, isLogin]);
 
   useEffect(() => {
-    if (firstLoad) {
+    if (
+      firstLoad &&
+      appData.accessToken !== null &&
+      appData.accessToken !== "" &&
+      orgId &&
+      eventId
+    ) {
       handleKeydown = (e) => {
         if (e.keyCode === 13) {
-          // console.log(e.keyCode);
-          codes = "";
-          handleCheckin(codes);
+          if (inputCode.current) {
+            handleCheckin(inputCode.current.value);
+          }
           setLastMenu("Laser USB");
           setMenu("Alert");
           setStrCode(null);
+          codes = "";
         } else if (e.keyCode === 8) {
           codes = codes.slice(0, codes.length - 1);
           setStrCode(codes);
-        } else {
+        } else if (e.keyCode !== 16) {
           // console.log(e, codes);
           codes += e.key;
           setStrCode(codes);
@@ -296,6 +304,7 @@ const PopUpCheckin = ({
                 value={strCode}
                 style={{ textAlign: "center" }}
                 placeholder={"Atau ketik kode uniknya disini !!!"}
+                refData={inputCode}
               />
             </div>
           ) : (
