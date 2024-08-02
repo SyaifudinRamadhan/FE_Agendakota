@@ -1957,8 +1957,10 @@ const EventDetail = ({ isLogin }) => {
                               event.event.category !==
                                 "Tour Travel (recurring)" &&
                               ticket.quantity === 0) ||
-                            new Date() < new Date(ticket.start_date) ||
-                            new Date() > new Date(ticket.end_date)
+                            new Date() <
+                              new Date(ticket.start_date).setHours(0, 0, 0) ||
+                            new Date() >
+                              new Date(ticket.end_date).setHours(23, 59, 0)
                               ? { opacity: "0.5" }
                               : {}
                           }
@@ -2191,8 +2193,14 @@ const EventDetail = ({ isLogin }) => {
                                 }}
                                 center
                               />
-                            ) : new Date() < new Date(ticket.start_date) ||
-                              new Date() > new Date(ticket.end_date) ? (
+                            ) : new Date() <
+                                new Date(ticket.start_date).setHours(0, 0, 0) ||
+                              new Date() >
+                                new Date(ticket.end_date).setHours(
+                                  23,
+                                  59,
+                                  0
+                                ) ? (
                               <Button
                                 title={"Belum Teresedia"}
                                 style={{
